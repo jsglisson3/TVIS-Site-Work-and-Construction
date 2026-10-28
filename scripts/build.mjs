@@ -43,6 +43,9 @@ const vars = {
   base: show('baseLocation', 'CITY, TN'),
   service_area: show('serviceArea', 'TOWNS AND COUNTIES'),
   hours: show('hours', 'HOURS'),
+  // hours are optional (Jeremy: not important); the line simply disappears while blank
+  hours_footer: filled('hours') ? `<li>${esc(config.hours)}</li>` : '',
+  hours_dl: filled('hours') ? `<div><dt>Hours</dt><dd>${esc(config.hours)}</dd></div>` : '',
   licensed: filled('licensedLine') ? `<p class="licensed">${esc(config.licensedLine)}</p>` : `<p class="licensed">${tbd('LICENSED AND INSURED LINE')}</p>`,
   response_time: show('responseTime', '1 BUSINESS DAY'),
   facebook: config.facebook || '#facebook-url-needed',
@@ -292,7 +295,7 @@ function localBusinessJsonLd() {
   if (digits) data.telephone = tel.replace('tel:', '');
   if (filled('email')) data.email = config.email;
   if (filled('hours')) data.openingHours = config.hours; // free text until real hours are set; see README
-  if (filled('serviceArea')) data.areaServed = config.serviceArea.split(',').map(t => ({ '@type': 'Place', name: t.trim() })).filter(t => t.name);
+  if (filled('serviceArea')) data.areaServed = [{ '@type': 'City', name: 'Chattanooga, TN' }].concat(config.serviceArea.split(',').map(t => ({ '@type': 'Place', name: t.trim() })).filter(t => t.name && !/^chattanooga,? tn$/i.test(t.name)));
   const same = [config.facebook, config.instagram, config.googleBusinessProfile].filter(Boolean);
   if (same.length) data.sameAs = same;
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;

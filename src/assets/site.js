@@ -129,3 +129,167 @@
   var start = new URLSearchParams(location.search).get('type');
   if (start && bar.querySelector('[data-filter="' + start.replace(/[^a-z-]/g, '') + '"]')) apply(start, false);
 })();
+
+// ---- estimate form: prefill, photo previews and shrinking, spam checks, send, thank-you ----
+(function () {
+  var box = document.querySelector('[data-estimate]');
+  if (!box) return;
+  var form = box.querySelector('form');
+  var typeSel = form.querySelector('#f-type');
+  var whoRadios = [].slice.call(form.querySelectorAll('input[name="I am a"]'));
+  var fileInput = form.querySelector('input[type=file]');
+  var thumbs = form.querySelector('[data-thumbs]');
+  var photoErr = form.querySelector('[data-photo-err]');
+  var hint = form.querySelector('[data-hint]');
+  var pdfNote = form.querySelector('[data-pdf-note]');
+  var sendBtn = form.querySelector('.est-send');
+  var fail = form.querySelector('[data-fail]');
+  var thanks = box.querySelector('[data-thanks]');
+  var MAX_FILES = 10, MAX_BYTES = 25 * 1024 * 1024, MAX_PX = 1600;
+  var files = [];                 // the running list of photos the visitor picked
+  var opened = Date.now();        // for the "sent too fast" spam check
+
+  // the visible label is what gets emailed, so make it the value too
+  [].forEach.call(typeSel.options, function (o) { if (o.textContent && o.value === '') o.value = o.textContent; });
+  typeSel.options[0].value = '';
+
+  // ---- prefill from the button that sent the visitor (?type=pad&who=builder), or the page's defaults
+  var q = new URLSearchParams(location.search);
+  var type = q.get('type') || box.getAttribute('data-type');
+  var who = q.get('who') || box.getAttribute('data-who');
+  if (type) { var opt = typeSel.querySelector('option[data-type="' + type.replace(/[^a-z]/g, '') + '"]'); if (opt) opt.selected = true; }
+  if (who) whoRadios.forEach(function (r) { if (r.getAttribute('data-who') === who.replace(/[^a-z]/g, '')) r.checked = true; });
+
+  // ---- hidden source fields, from what site.js remembered on the first page
+  var src = {};
+  try { src = JSON.parse(sessionStorage.getItem('tvis_src') || '{}'); } catch (e) {}
+  src.page = location.pathname + location.search;
+  if (!src.landing_page) src.landing_page = location.pathname;
+  if (src.referrer === undefined) src.referrer = document.referrer || '';
+  form.querySelectorAll('[data-src]').forEach(function (h) { h.value = src[h.getAttribute('data-src')] || ''; });
+
+  // ---- builders can attach PDF plans
+  function syncWho() {
+    var builder = whoRadios.some(function (r) { return r.checked && r.getAttribute('data-who') === 'builder'; });
+    fileInput.setAttribute('accept', builder ? fileInput.getAttribute('data-accept-builder') : 'image/*');
+    if (hint) hint.textContent = builder ? 'Photos of the lot, plus PDF plans or a plat if you have them. Up to 10 files.' : 'Take new ones or pick from your phone. Up to 10 photos.';
+    if (pdfNote) pdfNote.hidden = builder;
+  }
+  whoRadios.forEach(function (r) { r.addEventListener('change', syncWho); });
+  syncWho();
+
+  // ---- photos: keep a list with thumbnails, so picking twice adds instead of replacing
+  function renderThumbs() {
+    thumbs.innerHTML = '';
+    files.forEach(function (f, i) {
+      var li = document.createElement('li');
+      if (/pdf/i.test(f.type) || /\.pdf$/i.test(f.name)) {
+        var d = document.createElement('div'); d.className = 'pdf'; d.textContent = f.name; li.appendChild(d);
+      } else {
+        var img = document.createElement('img'); img.alt = 'Photo ' + (i + 1); img.src = URL.createObjectURL(f);
+        img.onload = function () { URL.revokeObjectURL(img.src); };
+        li.appendChild(img);
+      }
+      var rm = document.createElement('button'); rm.type = 'button'; rm.textContent = '×'; rm.setAttribute('aria-label', 'Remove ' + f.name);
+      rm.addEventListener('click', function () { files.splice(i, 1); renderThumbs(); });
+      li.appendChild(rm);
+      thumbs.appendChild(li);
+    });
+  }
+  fileInput.addEventListener('change', function () {
+    var msg = '';
+    [].forEach.call(fileInput.files, function (f) {
+      if (files.length >= MAX_FILES) { msg = 'That\'s the limit of ' + MAX_FILES + ' files. You can send more after we talk.'; return; }
+      if (f.size > MAX_BYTES) { msg = f.name + ' is too large (over 25 MB).'; return; }
+      files.push(f);
+    });
+    fileInput.value = '';
+    photoErr.textContent = msg; photoErr.hidden = !msg;
+    renderThumbs();
+  });
+
+  // Shrinks a photo to ~1600px JPEG before upload (phone photos are often 4000px+ and 5 MB each).
+  // Returns the original if the browser can't decode it (HEIC in Chrome) or it's already small.
+  function shrink(file) {
+    return new Promise(function (resolve) {
+      if (!/^image\//.test(file.type) || /gif|svg/.test(file.type) || file.size < 400 * 1024) return resolve(file);
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var s = Math.min(1, MAX_PX / Math.max(img.naturalWidth, img.naturalHeight));
+        if (s === 1 && file.size < 1.5 * 1024 * 1024) return resolve(file);
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function (b) {
+          if (!b) return resolve(file);
+          resolve(new File([b], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg', lastModified: file.lastModified }));
+        }, 'image/jpeg', 0.82);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(file); };
+      img.src = url;
+    });
+  }
+  window.tvisShrinkPhoto = shrink; // for the future "Visualize your project" page
+
+  // ---- inline validation
+  function setErr(el, bad) {
+    var err = el.closest('.f').querySelector('.f-err');
+    el.setAttribute('aria-invalid', bad ? 'true' : 'false');
+    if (err) err.hidden = !bad;
+    return !bad;
+  }
+  function validate() {
+    var ok = true, first = null;
+    form.querySelectorAll('[required]').forEach(function (el) {
+      var bad = !el.value.trim();
+      if (el.type === 'tel' && !bad) bad = el.value.replace(/\D/g, '').length < 10;
+      if (!setErr(el, bad)) { ok = false; first = first || el; }
+    });
+    var em = form.querySelector('#f-email');
+    if (em && em.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) { setErr(em, true); ok = false; first = first || em; }
+    if (first) first.focus();
+    return ok;
+  }
+  form.querySelectorAll('[required], #f-email').forEach(function (el) {
+    el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') validate(); });
+  });
+
+  function showThanks() {
+    form.hidden = true;
+    var notice = box.querySelector('.form-off'); if (notice) notice.hidden = true;
+    thanks.hidden = false;
+    var h = thanks.querySelector('.thanks-h'); if (h) h.focus({ preventScroll: true });
+    thanks.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    fail.hidden = true;
+    if (!form.getAttribute('action')) {
+      var off = box.querySelector('.form-off');
+      if (off) { off.classList.remove('flash'); void off.offsetWidth; off.classList.add('flash'); off.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+      return;
+    }
+    if (!validate()) return;
+    // honeypot filled or sent within 3 seconds: almost certainly a bot, so pretend it worked
+    if (form.querySelector('[name=_gotcha]').value || Date.now() - opened < 3000) { showThanks(); return; }
+    sendBtn.disabled = true; sendBtn.textContent = files.length ? 'Sending photos…' : 'Sending…';
+    var fd = new FormData(form);
+    fd.delete('photos[]');
+    Promise.all(files.map(shrink)).then(function (ready) {
+      ready.forEach(function (f) { fd.append('photos[]', f, f.name); });
+      return fetch(form.getAttribute('action'), { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      if (window.tvisTrack) window.tvisTrack('lead', { project_type: typeSel.value, customer_type: (whoRadios.filter(function (x) { return x.checked; })[0] || {}).value, photos: files.length });
+      showThanks();
+    }).catch(function () {
+      fail.hidden = false;
+      sendBtn.disabled = false; sendBtn.textContent = 'Send my estimate request';
+    });
+  });
+})();
+
+// ---- /thanks (Basin's redirect for browsers without JavaScript): count the lead here instead ----
+if (document.body.classList.contains('page-thanks') && window.tvisTrack) window.tvisTrack('lead', { via: 'redirect' });

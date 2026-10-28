@@ -2,40 +2,20 @@
 
 Read this first. It is the full brief plus every decision made so far, so a Claude Code session in this folder can continue without the earlier conversation.
 
-Last updated 2026-10-28.
+Last updated 2026-10-28 (all pages built).
 
 ## Status
 
-- Research and design phase: **done and approved by Jeremy** (design review page: https://claude.ai/artifact/PdHEFQ2Ln37rjNDSD46U1V, version 2 "lighter").
-- Homepage: **built and approved**, with the hero headline changed to **"Groundwork Done Right."** ("From the Ground Up." stays as the tagline in the footer and config).
-- Homeowners page (`/homeowners`): **built** (driveways before/after, shed pad cross-section animation, drainage, cleanup; Lighthouse mobile 99/100/100/100). Not yet reviewed by Jeremy.
-- Builders page (`/builders`): **built** (phase track linking to the four sections, licensed-connections note, dark "Have a lot ready to go?" CTA; Lighthouse mobile 99/100/100/100). Estimate links use `?who=builder&type=siteprep|utility|concrete`; the form's project-type values must match `driveway, pad, drainage, siteprep, utility, concrete, cleanup, home, other`.
-- More Services, Home Construction and Projects pages: **built** (Lighthouse mobile 98 to 100 everywhere). Projects has filter buttons (hidden without JS, all cards show), deep links like `/projects?type=drainage`, and every project gets its own page at `/project/<folder-name>` with all photos grouped Before / In progress / After and "Get an estimate for a project like this". Sample projects (title starts with "Sample") are noindex and left out of the sitemap.
-- Next: everything in "What's left" below, in that order. **Read "Session notes, 2026-10-27" first**: the estimate page and form markup and styles exist, but the form's JavaScript isn't written yet.
+- Research and design: **done and approved by Jeremy** (design review page: https://claude.ai/artifact/PdHEFQ2Ln37rjNDSD46U1V, version 2 "lighter").
+- **Every page is built** (2026-10-28): homepage (approved, H1 "Groundwork Done Right."), `/homeowners`, `/builders`, `/more-services`, `/home-construction`, `/projects` plus `/project/<folder>` detail pages, `/estimate`, `/lp/shed-garage-pads` (landing layout, noindex), `/thanks` (Basin's no-JS redirect target) and `404.html`. All three machine moments are in (dozer, shed pad cross-section, excavator dump).
+- Checked at 390px and 1440px with no sideways scroll. Lighthouse mobile 2026-10-28: performance 96 to 99, accessibility 100, best practices 100, SEO 100 on every indexable page (noindex pages score 66 on SEO by design).
+- Docs: `README.md` (setup, Basin, tracking, landing pages, launch checks), `HOW-TO-ADD-A-PROJECT.md`, `photos/site/README.txt` (every photo slot).
+- GitHub: repo is `jsglisson3/TVIS-Sitework-and-Construction`. Jeremy pushed the folder himself ("Initial site launch") and does all commits and pushes from VS Code. Deploy workflow is at `.github/workflows/deploy.yml`; it needs Settings > Pages > Source: GitHub Actions turned on once.
+- **Waiting on Jeremy / Joey:** everything in "Placeholders still waiting" at the bottom, plus the ad headline for the landing page, whether the phone takes texts, the owner's first name, the Basin account, and real photos.
 
-## Session notes, 2026-10-27 (stopped partway through the estimate form)
+### If you pick this up later
 
-Jeremy asked for: npm install, move deploy.yml, then estimate form → landing page → 404 → docs → Lighthouse, **showing him each page in the browser before moving on**. Nothing has been shown to him yet.
-
-**Done this session**
-- `npm install` ran. `setup/deploy.yml` moved to `.github/workflows/deploy.yml` (`setup/` removed).
-- `scripts/build.mjs`: new tokens `{{talk}}` ("Call" / "Call or text" plus `ownerFirstName` when filled), `{{talk_who}}` (that line, only when there's a name or texting is on), `{{text_link}}` and `{{mbar_text}}` (only when `phoneTakesTexts` is true and a phone is set), `{{form_notice}}` (yellow "form isn't connected yet, please call" box while `formEndpoint` is empty). Pages with `layout: landing` now also swap `{{> footer}}` for `footer-landing` (**that partial isn't created yet**, and neither is `header-landing`). New front matter `form_type:` / `form_who:` set the form's defaults on pages with no `?type=`/`?who=` (meant for the ad landing page).
-- `src/partials/icons.html`: the icon sprite, moved out of `header.html` (which now includes it) so the landing header can share it. Added `#i-text` and `#i-addphoto`.
-- `footer.html`: the phone bar includes `{{mbar_text}}`.
-- `src/partials/excavator.html`: thank-you machine moment. Charcoal boom, stick and bucket and an olive cab, like the logo. CSS animates the arm lifting, the bucket dumping, clods falling and the pile growing, then the message fades in. **Not yet checked in a browser.** The bucket's rotation angle (`exc-dump`, -80deg around 272px 102px) and the clod positions probably need adjusting by eye.
-- `src/partials/estimate-form.html`: all nine fields in brief order. "I'm a..." uses radio buttons styled as big tap targets. Project type options carry `data-type` codes (driveway, pad, drainage, siteprep, utility, concrete, cleanup, home, other), and the visible label is what gets emailed. Field `name`s are readable labels so Basin emails read cleanly, except `email` (lowercase so Basin can use it for reply-to). Photos go as `photos[]`, with `data-accept-builder="image/*,application/pdf"`. Hidden source fields use `data-src` keys that match `sessionStorage.tvis_src`. The honeypot is `_gotcha` (**confirm Basin's honeypot setting uses that name**). Hidden thank-you block `[data-thanks]`. It posts natively as multipart, so it works without JS.
-- `src/pages/estimate.html`: heading, the form, and a sidebar with `#contact` ("Talk to TVIS": phone, email, hours, based in, service area, socials) plus "What happens next" (4 steps, from the answer to question 5). Uses `schema: yes`.
-- `site.css`: an "estimate form" block appended at the end (form fields, tap buttons, photo picker and thumbnails, thank-you and excavator keyframes, sidebar). The phone bar is now flex so the optional Text button fits. On `.page-estimate` the bar shows Call only.
-
-**Not done, next steps in order**
-1. **`site.js` form script, which is not written** (the append failed and nothing landed). It needs to: prefill from `?type=`/`?who=`, falling back to the box's `data-type`/`data-who`; set `option.value = textContent`; fill `[data-src]` hidden fields (`page` = current path, with a fallback for `landing_page`/`referrer`); when Builder is picked, switch `accept` and the hint/note text; keep a running photo list with thumbnails and remove buttons (max 10, 25 MB each); resize to 1600px JPEG through a canvas before upload, sending the original if the browser can't decode it (HEIC in Chrome), and expose it as `window.tvisShrinkPhoto` for the future Visualize page; validate inline (`.f-err` under each field, `aria-invalid`, phone needs at least 10 digits); if `action` is empty, scroll to `.form-off`; if the honeypot is filled or the form went out in under 3s, show the thank-you without sending; otherwise `fetch` POST the FormData (delete the empty `photos[]`, append the resized files) with `Accept: application/json`; on success call `tvisTrack('lead', …)`, hide the form, show `[data-thanks]` and focus `.thanks-h`; on failure show `[data-fail]`. The CSS references a `.flash` class on `.form-off` that hasn't been defined yet.
-2. Check `/estimate` at 390 and 1440 against `docs/design/estimate-*.jpg` and adjust the excavator. Puppeteer-core and Lighthouse are installed in the session scratchpad only, not the project. Reinstall somewhere outside the repo if needed. Chrome is at `C:\Program Files\Google\Chrome\Application\chrome.exe`. **Show Jeremy, and wait for his OK.**
-3. A `/thanks` page (noindex, excavator plus message, fires the lead event on load) for the no-JS path, and set Basin's redirect to it. Optional, but it was planned.
-4. Landing page: `src/pages/lp-shed-garage-pads.html` with `path: /lp/shed-garage-pads`, `layout: landing`, `noindex: yes`, `form_type: pad`. Create `header-landing.html` (unlinked logo, phone, `{{> icons}}`) and `footer-landing.html` (name, phone, licensed line, phone bar where Estimate points to `#estimate`). Planned content: hero; benefit bullets drawn from the approved pad step copy; `{{ba slot="lp-pads"}}`; 3 steps (send photos → we talk it through and visit if needed → you get an estimate); `{{> estimate-form}}` in `#estimate`. The headline should match the ad, but the ad copy is unknown, so use the brief's "Shed & Garage Pad Preparation" and ask Jeremy. No second animation, because the excavator is that page's one moment.
-5. `404.html`: `src/pages/404.html` with `path: /404`, `noindex: yes`, a plain "Page not found", links to the main pages and the phone.
-6. Prefill wiring (item 3 below): most buttons are already wired. Still to do: check `index.html` and any generic `/estimate` links.
-7. Docs: `HOW-TO-ADD-A-PROJECT.md` and a full `README.md`, covering the new partials, the `form_type`/`form_who` front matter, how to copy the landing page, Basin setup (endpoint, honeypot name, redirect, test with 3 phone photos).
-8. Check every page at 390/1440 and run Lighthouse mobile at 90+ on each; finish with the placeholder checklist.
+Work in `src/`, run `npm run dev`, check 390/1440 and Lighthouse before calling anything done. Form project-type codes: `driveway, pad, drainage, siteprep, utility, concrete, cleanup, home, other`; customer codes `homeowner, builder, other`. To add a landing page, copy `src/pages/lp-shed-garage-pads.html` (see README). Known small items: the excavator's bucket angle could be tuned by eye once Jeremy has seen it; the three "Sample:" project folders should be deleted when real jobs exist.
 
 ## How the site is built (already in place)
 
@@ -45,7 +25,7 @@ Jeremy asked for: npm install, move deploy.yml, then estimate form → landing p
 - `site.config.json` is the single source of business details (NAP consistency for local SEO).
 - `photos/site/<slot>.jpg` replaces the matching placeholder block automatically (resized to webp, metadata stripped).
 - `projects/YYYY-MM-town-job/` folders → gallery. `project.txt` keys: title, category, town, status, featured, description. Photos named `before-N`, `progress-N`, `after-N`. Blank status shows In Progress until after photos exist. Newest first, featured pinned. The build also writes `dist/projects.json` (keep its shape stable for the future auto-posting automation). Three sample folders exist; their titles start with "Sample:".
-- `setup/deploy.yml` is the GitHub Pages workflow. It must move to `.github/workflows/deploy.yml` (the remote tools could not write into `.github`). When there's no custom domain yet, it builds with `BASE_PATH=/<repo>`.
+- `.github/workflows/deploy.yml` is the GitHub Pages workflow. When there's no custom domain yet, it builds with `BASE_PATH=/<repo>`.
 - Lighthouse mobile on the homepage: 99 / 100 / 100 / 100. Keep every page at 90+.
 
 ## Design system (approved; don't drift)
@@ -65,8 +45,8 @@ Jeremy asked for: npm install, move deploy.yml, then estimate form → landing p
 One moving moment per page at most, no loops, never covering text or buttons, inline SVG + CSS only, `prefers-reduced-motion` shows the finished state.
 
 1. **Homepage hero (done):** a small olive dozer (`src/partials/dozer.html`) drives in once and grades a gravel strip along the hero bottom, then parks.
-2. **Homeowners `#pads` section (to build):** a cross-section of a shed pad builds up as it scrolls into view: native ground → graded dirt → gravel base in layers → shed set on top. Use IntersectionObserver to start it once; static final state without JS or with reduced motion.
-3. **Estimate form thank-you (to build):** a small excavator (match the logo's excavator silhouette, olive/charcoal) dumps a bucket, then the thank-you message shows.
+2. **Homeowners `#pads` section (done):** a cross-section of a shed pad builds up as it scrolls into view: native ground → graded dirt → gravel base in layers → shed set on top. Use IntersectionObserver to start it once; static final state without JS or with reduced motion.
+3. **Estimate form thank-you (done):** a small excavator (match the logo's excavator silhouette, olive/charcoal) dumps a bucket, then the thank-you message shows.
 
 ## Open questions: answers (Jeremy said "go with your picks")
 
@@ -79,13 +59,7 @@ One moving moment per page at most, no loops, never covering text or buttons, in
 
 ## What's left, in order
 
-1. Header: build the remaining pages from the brief below: `/estimate`, plus `/lp/shed-garage-pads` (landing layout, noindex) and a `404.html`. Keep each section's anchor exactly as listed.
-2. The estimate form with Basin wiring (POST multipart, `photos[]` multiple, `accept="image/*,application/pdf"` when Builder is picked, client-side photo resize to ~1600px before upload, honeypot + time check, hidden fields for page/referrer/UTM from `sessionStorage.tvis_src`, prefill from `?type=` and `?who=`, thank-you state with the excavator and `{{phone}}`, fire `tvisTrack('lead')`).
-3. Wire every "Get an Estimate" button to the right prefill (`/estimate?type=drainage`, `/estimate?who=builder`, etc.).
-4. ~~Projects page~~ (done) with filters (All · Driveways · Shed & Garage Pads · Drainage · New Construction Sitework · Concrete · Property Cleanup · Home Construction), status badges, project detail view with all photos and "Get an estimate for a project like this". Works without JS (filters can enhance).
-5. `HOW-TO-ADD-A-PROJECT.md` (one page, non-technical; remind to skip photos with house numbers, license plates or faces) and a full `README.md`.
-6. Check every page at 390px and 1440px in a browser and fix what you see; run Lighthouse mobile on each page; fix anything under 90.
-7. Finish with a checklist of every placeholder still waiting on real info.
+All build items are done (2026-10-28). Remaining work is content: fill `site.config.json`, add photos to `photos/site/`, replace the sample projects, set up Basin, add tracking IDs, then run the launch checks in README.md.
 
 ## Research highlights to apply
 
@@ -189,4 +163,4 @@ Hero, short benefit bullets, a before-and-after, a three-step how it works, and 
 
 ### Placeholders still waiting
 
-[PHONE], [EMAIL], [CITY, TN], [TOWNS AND COUNTIES], [HOURS], [LICENSED AND INSURED LINE], Facebook / Instagram / Google Business Profile URLs, [DOMAIN], [1 BUSINESS DAY], [OWNER TO SUPPLY] Home Construction intro, Basin form endpoint, tracking IDs, real jobsite photos (arriving this week), logo SVG (optional).
+[PHONE], [EMAIL], [LICENSED AND INSURED LINE] (hours are optional and hidden while blank; base location and service area were set 2026-10-28: Chattanooga, TN / Chattanooga and the surrounding counties), Facebook / Instagram / Google Business Profile URLs, [DOMAIN], [1 BUSINESS DAY], [OWNER TO SUPPLY] Home Construction intro, Basin form endpoint, tracking IDs, real jobsite photos (arriving this week), logo SVG (optional).

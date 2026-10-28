@@ -24,5 +24,4 @@ Marketing site for an excavation and sitework company in Chattanooga, TN. Its on
 - Lighthouse mobile must score 90+ on every page. Check pages in a real browser and fix what you see before calling anything done.
 - Keep the `projects/` folder format and `project.txt` fields stable. A future automation depends on them.
 - Shared pieces live in `src/partials/`, page files in `src/pages/`, and business details only in `site.config.json`. Don't hard-code the phone number or email anywhere.
-- Jeremy commits and syncs from VS Code. Keep the folder tidy and update README.md when the structure changes.
-- `setup/deploy.yml` belongs in `.github/workflows/deploy.yml`. Move it there as the first step.
+- Jeremy commits and pushes himself from VS Code to github.com/jsglisson3/TVIS-Sitework-and-Construction. Never run git push or set up anything that pushes for him. Keep the folder tidy and update README.md when the structure changes.
