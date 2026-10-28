@@ -1,0 +1,118 @@
+<!-- Estimate form. Posts to Basin (site.config.json > formEndpoint) as multipart, so it works without JavaScript too.
+     With JavaScript (site.js): prefill from ?type= / ?who=, photo previews, photos shrunk to ~1600px before upload,
+     spam checks, ad source fields, and the thank-you state. Field names are what shows in the emails. -->
+<div class="est" data-estimate data-type="{{form_type}}" data-who="{{form_who}}">
+  {{form_notice}}
+  <form class="est-form" action="{{form_endpoint}}" method="post" enctype="multipart/form-data" novalidate>
+    <fieldset class="f f-who">
+      <legend class="f-l">I'm a...</legend>
+      <div class="who-opts">
+        <label><input type="radio" name="I am a" value="Homeowner" data-who="homeowner" checked><span>Homeowner</span></label>
+        <label><input type="radio" name="I am a" value="Builder or contractor" data-who="builder"><span>Builder or Contractor</span></label>
+        <label><input type="radio" name="I am a" value="Other" data-who="other"><span>Other</span></label>
+      </div>
+    </fieldset>
+
+    <div class="f">
+      <label class="f-l" for="f-type">Project type</label>
+      <select id="f-type" name="Project type" required>
+        <option value="">Choose one</option>
+        <option data-type="driveway">Driveway repair or installation</option>
+        <option data-type="pad">Shed or garage pad</option>
+        <option data-type="drainage">Drainage</option>
+        <option data-type="siteprep">Site prep or excavation</option>
+        <option data-type="utility">Utility trenching</option>
+        <option data-type="concrete">Concrete</option>
+        <option data-type="cleanup">Demolition or cleanup</option>
+        <option data-type="home">Home construction or renovation</option>
+        <option data-type="other">Other</option>
+      </select>
+      <p class="f-err" hidden>Pick the closest match. "Other" is fine.</p>
+    </div>
+
+    <div class="f-row">
+      <div class="f">
+        <label class="f-l" for="f-name">Name</label>
+        <input id="f-name" name="Name" type="text" autocomplete="name" required>
+        <p class="f-err" hidden>Please add your name.</p>
+      </div>
+      <div class="f">
+        <label class="f-l" for="f-phone">Phone</label>
+        <input id="f-phone" name="Phone" type="tel" autocomplete="tel" inputmode="tel" required>
+        <p class="f-err" hidden>Please add a phone number we can reach you at.</p>
+      </div>
+    </div>
+
+    <div class="f-row">
+      <div class="f">
+        <label class="f-l" for="f-email">Email <span class="opt">optional</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email">
+        <p class="f-err" hidden>That email doesn't look right.</p>
+      </div>
+      <div class="f">
+        <label class="f-l" for="f-address">Project address or town</label>
+        <input id="f-address" name="Project address or town" type="text" autocomplete="street-address" required>
+        <p class="f-err" hidden>Add the address, or at least the town.</p>
+      </div>
+    </div>
+
+    <div class="f">
+      <label class="f-l" for="f-details">Tell us about your project</label>
+      <textarea id="f-details" name="Project details" rows="4" placeholder="e.g. 12x16 shed going in the back corner, ground slopes toward the fence." required></textarea>
+      <p class="f-err" hidden>A sentence or two is plenty.</p>
+    </div>
+
+    <div class="f f-photos" data-photos>
+      <span class="f-l" id="f-photos-l">Photos of the area <span class="opt">optional, but they help a lot</span></span>
+      <label class="add-photos">
+        <input type="file" name="photos[]" multiple accept="image/*" aria-labelledby="f-photos-l f-photos-hint" data-accept-builder="image/*,application/pdf">
+        <span class="add-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-addphoto"/></svg></span>
+        <span class="add-t"><b>Add photos</b><span id="f-photos-hint" data-hint>Take new ones or pick from your phone. Up to 10 photos.</span></span>
+      </label>
+      <ul class="thumbs" data-thumbs aria-label="Photos added"></ul>
+      <p class="f-note" data-pdf-note>Builders and contractors can also attach PDF plans.</p>
+      <p class="f-err" data-photo-err role="alert" hidden></p>
+    </div>
+
+    <div class="f">
+      <label class="f-l" for="f-heard">How did you hear about us? <span class="opt">optional</span></label>
+      <select id="f-heard" name="Heard about us">
+        <option value="">Choose one</option>
+        <option>Facebook</option>
+        <option>Instagram</option>
+        <option>Google search or Maps</option>
+        <option>Friend, neighbor or family</option>
+        <option>Saw us on a job</option>
+        <option>Builder or contractor referral</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <!-- Behind the scenes: where the visitor came from (filled by site.js from sessionStorage.tvis_src) -->
+    <input type="hidden" name="Form page" data-src="page">
+    <input type="hidden" name="First page visited" data-src="landing_page">
+    <input type="hidden" name="Referrer" data-src="referrer">
+    <input type="hidden" name="utm_source" data-src="utm_source">
+    <input type="hidden" name="utm_medium" data-src="utm_medium">
+    <input type="hidden" name="utm_campaign" data-src="utm_campaign">
+    <input type="hidden" name="utm_content" data-src="utm_content">
+    <input type="hidden" name="utm_term" data-src="utm_term">
+    <input type="hidden" name="fbclid" data-src="fbclid">
+    <input type="hidden" name="gclid" data-src="gclid">
+    <!-- Spam: real people never see or fill this; site.js also blocks sends faster than a few seconds -->
+    <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+
+    <button class="btn btn-primary btn-block est-send" type="submit">Send my estimate request</button>
+    <p class="f-err est-fail" data-fail role="alert" hidden>Something went wrong sending your request. Please try again, or call <a href="{{phone_href}}" data-track="call">{{phone}}</a>.</p>
+    <p class="est-alt">Prefer to talk? {{talk}} <a href="{{phone_href}}" data-track="call">{{phone}}</a>.</p>
+  </form>
+
+  <div class="thanks" data-thanks hidden>
+    {{> excavator}}
+    <div class="thanks-msg">
+      <h2 class="thanks-h" tabindex="-1">Thank you. Your request is in.</h2>
+      <p>We'll get back to you within {{response_time}}.</p>
+      <p>Want to talk sooner? {{talk}} <a class="thanks-phone" href="{{phone_href}}" data-track="call">{{phone}}</a></p>
+    </div>
+  </div>
+</div>

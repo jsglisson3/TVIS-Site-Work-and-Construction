@@ -1,0 +1,6 @@
+title: Sample: Driveway regrade and culvert
+category: Driveways
+town: [TOWN]
+status: Completed
+featured: yes
+description: Sample project showing how a finished job appears. Washed-out ruts regraded, new culvert under the entrance, fresh crusher run on top.

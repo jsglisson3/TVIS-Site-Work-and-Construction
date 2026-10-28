@@ -1,0 +1,32 @@
+<figure class="xsec" data-xsec>
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="xsec-t">
+    <title id="xsec-t">Cross-section of a TVIS shed pad: native ground, graded and compacted subgrade, gravel base placed in two compacted lifts, and the building on top.</title>
+    <defs>
+      <pattern id="gravel" width="14" height="10" patternUnits="userSpaceOnUse"><rect width="14" height="10" fill="#CFC8AF"/><circle cx="4" cy="3" r="1.8" fill="#AFA78C"/><circle cx="11" cy="7" r="1.5" fill="#B9B196"/></pattern>
+      <pattern id="gravel2" width="12" height="9" patternUnits="userSpaceOnUse"><rect width="12" height="9" fill="#BDB59B"/><circle cx="3" cy="6" r="2" fill="#A39B80"/><circle cx="9" cy="2.5" r="1.6" fill="#ABA388"/></pattern>
+    </defs>
+    <!-- native ground, always there -->
+    <path d="M0 236H640V300H0z" fill="#8C7B5E"/>
+    <path d="M0 200L640 262" stroke="#5E5646" stroke-width="2.5" stroke-dasharray="8 6" fill="none"/>
+    <!-- 1: graded and compacted subgrade -->
+    <path class="layer layer-cut l1" d="M60 236l26-26h468l26 26z" fill="#A38E69"/>
+    <!-- 2 and 3: gravel base in two lifts -->
+    <path class="layer l2" d="M86 210l14-16h440l14 16z" fill="url(#gravel2)"/>
+    <path class="layer l3" d="M100 194l12-15h416l12 15z" fill="url(#gravel)"/>
+    <!-- 4: the building -->
+    <g class="layer l4">
+      <path d="M150 179V98h340v81z" fill="#72852E"/>
+      <path d="M290 179v-58h60v58z" fill="#5E6E24"/>
+      <path d="M318 121h4v58h-4z" fill="#4F5D1E"/>
+      <path d="M136 100L320 50l184 50z" fill="#232B2E"/>
+    </g>
+  </svg>
+  <figcaption>
+    <ul class="xsec-key">
+      <li class="k0"><i style="background:#8C7B5E"></i>Native ground, with the original slope dashed</li>
+      <li class="layer l1"><i style="background:#A38E69"></i>Cut and filled level, then compacted</li>
+      <li class="layer l3"><i style="background:#CFC8AF"></i>Gravel base, placed and compacted in lifts</li>
+      <li class="layer l4"><i style="background:#72852E"></i>Your shed, garage or metal building</li>
+    </ul>
+  </figcaption>
+</figure>

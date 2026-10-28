@@ -1,0 +1,28 @@
+{
+  "_readme": "Business details used on every page. Leave a value empty (\"\") and the site shows a yellow [PLACEHOLDER] until you fill it in. See README.md.",
+
+  "name": "TVIS Site Work and Construction",
+  "tagline": "From the Ground Up.",
+  "phone": "",
+  "phoneTakesTexts": false,
+  "ownerFirstName": "",
+  "email": "",
+  "baseLocation": "",
+  "serviceArea": "",
+  "hours": "",
+  "licensedLine": "",
+  "responseTime": "",
+  "facebook": "",
+  "instagram": "",
+  "googleBusinessProfile": "",
+  "domain": "",
+
+  "formEndpoint": "",
+
+  "tracking": {
+    "googleAnalyticsId": "",
+    "googleAdsId": "",
+    "googleAdsLeadLabel": "",
+    "metaPixelId": ""
+  }
+}

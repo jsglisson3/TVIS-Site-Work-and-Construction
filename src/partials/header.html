@@ -1,0 +1,36 @@
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="hdr-logo" href="/" aria-label="{{name}} home"><img src="/assets/img/logo.png" alt="{{name}}" width="440" height="202"></a>
+    <nav class="nav" aria-label="Main">
+      <ul class="nav-list">
+        <li><a href="/"{{nav_home}}>Home</a></li>
+        <li><a href="/homeowners"{{nav_homeowners}}>Homeowners</a></li>
+        <li><a href="/builders"{{nav_builders}}>Builders &amp; Contractors</a></li>
+        <li class="has-sub">
+          <button class="sub-btn" type="button" aria-expanded="false" aria-controls="sub-more">More Services</button>
+          <ul class="sub" id="sub-more">
+            <li><a href="/more-services"{{nav_more_services}}>Miscellaneous Services</a></li>
+            <li><a href="/home-construction"{{nav_home_construction}}>Home Construction</a></li>
+          </ul>
+        </li>
+        <li><a href="/projects"{{nav_projects}}>Projects</a></li>
+      </ul>
+    </nav>
+    <a class="hdr-phone" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>{{phone}}</a>
+    <a class="btn btn-primary hdr-cta" href="/estimate"{{nav_estimate}}>Get an Estimate</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mmenu"><span class="menu-bars" aria-hidden="true"></span><span class="menu-label">Menu</span></button>
+  </div>
+  <div class="mmenu" id="mmenu" hidden>
+    <a class="mmenu-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call {{phone}}</a>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/homeowners">Homeowners</a></li>
+      <li><a href="/builders">Builders &amp; Contractors</a></li>
+      <li><a href="/more-services">Miscellaneous Services</a></li>
+      <li class="mmenu-sub"><a href="/home-construction">Home Construction</a></li>
+      <li><a href="/projects">Projects</a></li>
+    </ul>
+    <a class="btn btn-primary btn-block" href="/estimate">Get an Estimate</a>
+  </div>
+</header>
+{{> icons}}

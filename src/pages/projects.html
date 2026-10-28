@@ -1,0 +1,42 @@
+---
+title: Projects: Driveways, Shed Pads, Drainage & Sitework Near Chattanooga, TN | TVIS
+description: Before-and-after photos of real TVIS jobs around Chattanooga: gravel driveways, shed and garage pads, French drains, new construction sitework, concrete and cleanup.
+nav: projects
+body_class: page-projects
+---
+<section class="sec proj-page" aria-labelledby="projects-h">
+  <div class="wrap">
+    <div class="sec-head proj-head">
+      <h1 id="projects-h">Projects</h1>
+      <p>Real TVIS work, ongoing and finished. Drag the handle on any photo to compare before and after.</p>
+    </div>
+    <ul class="filters" data-filters hidden aria-label="Filter projects by type">
+      <li><button type="button" data-filter="all" aria-pressed="true">All</button></li>
+      <li><button type="button" data-filter="driveways" aria-pressed="false">Driveways</button></li>
+      <li><button type="button" data-filter="shed-and-garage-pads" aria-pressed="false">Shed &amp; Garage Pads</button></li>
+      <li><button type="button" data-filter="drainage" aria-pressed="false">Drainage</button></li>
+      <li><button type="button" data-filter="new-construction-sitework" aria-pressed="false">New Construction Sitework</button></li>
+      <li><button type="button" data-filter="concrete" aria-pressed="false">Concrete</button></li>
+      <li><button type="button" data-filter="property-cleanup" aria-pressed="false">Property Cleanup</button></li>
+      <li><button type="button" data-filter="home-construction" aria-pressed="false">Home Construction</button></li>
+    </ul>
+    <p class="filter-status" role="status" aria-live="polite"></p>
+    <div class="proj-grid proj-all">
+{{project_cards}}
+    </div>
+    <p class="empty" data-empty hidden>No projects in this category yet. <a href="/projects">See all projects</a>.</p>
+  </div>
+</section>
+
+<section class="sec sec-warm callout" aria-labelledby="pj-cta-h">
+  <div class="wrap">
+    <div>
+      <h2 id="pj-cta-h">Have a project like one of these?</h2>
+      <p>Send a few photos of your property and a short description.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="/estimate">Request an Estimate</a>
+      <a class="bigphone" href="{{phone_href}}" data-track="call">{{phone}}</a>
+    </div>
+  </div>
+</section>

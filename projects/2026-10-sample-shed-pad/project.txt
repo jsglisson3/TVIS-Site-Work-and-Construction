@@ -1,0 +1,6 @@
+title: Sample: Backyard shed pad
+category: Shed & Garage Pads
+town: [TOWN]
+status: 
+featured: no
+description: Sample project with no after photos yet, so it shows as In Progress. A 12x16 gravel pad on a sloped corner of the yard.
