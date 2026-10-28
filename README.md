@@ -80,7 +80,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. It also strips the content-credential metadata that file transfers sometimes add to the SVG logos and inline drawings, so the published site stays small, and it adds a content hash to the `site.css` and `site.js` links (`?v=...`) so a browser never pairs new pages with an old stylesheet after a deploy. |
 | `scripts/diagrams.mjs` | The drawn cross-sections (driveway, pad, drainage, cleanup, site prep, utilities, concrete, final grade, plus the dark `heroScene()` for the homepage hero) used wherever a photo is missing, and the `{{diagram}}` token behind the animated pad section. |
 | `scripts/make-samples.mjs` | Renders those drawings into the three `Sample:` project folders. Not part of the build. |
-| `scripts/trace-logo.py` | How the logo PNG was traced to SVG, in case the logo file ever changes. |
+| `scripts/trace-logo.py` | Rebuilds `logo.svg` and `logo-reverse.svg` from the original logo PNG as a clean vector (straight edges, sharp corners, identical window panes). Run it if the logo artwork ever changes; the usage is at the top of the file. |
 | `scripts/serve.mjs` | The local preview server. |
 | `photos/site/` | Photos for fixed spots on the pages. |
 | `projects/` | One folder per job. Becomes the Projects gallery, each project's page and the homepage's Recent projects. |

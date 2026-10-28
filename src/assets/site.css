@@ -113,8 +113,10 @@ p,li,dd,dt{max-width:68ch}
 
 /* ---------- header ---------- */
 .hdr{position:sticky;top:0;z-index:50;background:var(--paper);color:var(--ink)}
+.hdr{transition:box-shadow .2s ease}
+.hdr.is-scrolled{box-shadow:0 1px 0 var(--stone),0 12px 28px -14px rgba(35,43,46,.28)}
 .hdr-in{display:flex;align-items:center;gap:clamp(20px,2.4vw,36px);height:var(--hdr-h);padding:0 var(--gut);max-width:var(--max);margin:0 auto}
-.hdr-logo{display:block;height:88px;aspect-ratio:1617/746;flex:none}
+.hdr-logo{display:block;height:88px;aspect-ratio:1619/746;flex:none}
 .hdr-logo img{height:100%;width:auto}
 .nav{margin-left:auto}
 .nav-list{display:flex;gap:clamp(18px,2.2vw,32px);align-items:center}
@@ -158,6 +160,8 @@ p,li,dd,dt{max-width:68ch}
 .mmenu-foot{margin-top:auto;padding-top:28px;display:flex;justify-content:flex-start}
 .mmenu-social{display:flex;gap:4px;margin-left:-8px}
 body.menu-open{overflow:hidden}
+.mmenu:not([hidden]){animation:mmenu-in .2s ease-out}
+@keyframes mmenu-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
 /* ---------- the first screen: a jobsite photograph under a dark scrim ---------- */
 .hero{position:relative;isolation:isolate;overflow:hidden;background:#1B2225;color:#fff;display:flex;align-items:center;min-height:clamp(560px,calc(100svh - var(--hdr-h)),820px)}
@@ -272,14 +276,15 @@ body.menu-open{overflow:hidden}
 .ftr-ground.go .track-run{animation:track-run 1.6s linear both}
 @keyframes track-run{from{stroke-dashoffset:84}to{stroke-dashoffset:0}}
 .ftr .tbd{background:#5A5220;color:#FFF3A8}
-.ftr-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(40px,5vw,64px)}
+.ftr-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(28px,3.4vw,44px)}
 .ftr-logo{display:block;width:min(280px,72vw)}
 .ftr-desc{margin-top:20px;max-width:34ch;color:#E3E7E0}
 .ftr .socials{margin:16px 0 0 -10px}
 .ftr-h{font:700 17px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--olive-light);margin-bottom:16px}
 .ftr-list{display:grid;gap:10px;font-size:var(--t-small);align-content:start}
 .ftr-list a{text-decoration:none}
-.ftr-list a:hover{text-decoration:underline;text-underline-offset:4px}
+.ftr-list a,.ftr-bottom a{transition:color .15s}
+.ftr-list a:hover{color:var(--olive-light);text-decoration:underline;text-underline-offset:4px}
 .ftr-phone{display:inline-block;font:700 clamp(28px,2.4vw,36px)/1 var(--display);letter-spacing:.01em;text-decoration:none;margin-bottom:6px}
 .ftr-phone:hover{color:var(--olive-light)}
 .ftr-phone .tbd{font-size:.8em;white-space:nowrap}
@@ -287,7 +292,10 @@ body.menu-open{overflow:hidden}
 .ftr .licensed{margin-top:12px;font-size:var(--t-small)}
 .ftr-bottom{padding-top:20px;padding-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:12px 32px;flex-wrap:wrap;font-size:var(--t-small)}
 .ftr-bottom a{text-decoration:none}
-.ftr-bottom a:hover{text-decoration:underline;text-underline-offset:4px}
+.ftr-bottom a:hover{color:var(--olive-light);text-decoration:underline;text-underline-offset:4px}
+.ftr-top{display:inline-flex;align-items:center;gap:8px}
+.ftr-top svg{width:16px;height:16px;transition:transform .15s}
+.ftr-top:hover svg{transform:translateY(-3px)}
 .socials{display:flex;gap:6px}
 .socials a{width:44px;height:44px;display:grid;place-items:center;color:#fff}
 .socials a:hover{color:var(--olive-light)}

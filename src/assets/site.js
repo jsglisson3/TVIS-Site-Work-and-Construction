@@ -52,6 +52,14 @@
   });
   if (menu) menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
 
+  // ---- header: a soft shadow once the page scrolls under it ----
+  var hdr = document.querySelector('.hdr');
+  if (hdr) {
+    var onScroll = function () { hdr.classList.toggle('is-scrolled', window.scrollY > 8); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
   // ---- More Services dropdown (click / tap / keyboard) ----
   document.querySelectorAll('.sub-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
