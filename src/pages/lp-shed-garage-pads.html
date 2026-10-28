@@ -9,20 +9,21 @@ form_type: pad
 form_who: homeowner
 ---
 <!-- Ad landing page template. To make one for another campaign: copy this file, change the front matter
-     (path, title, description, form_type), the headline and bullets, and the photo slot names. -->
-<section class="phero lp-hero">
-  {{photo slot="lp-pads-hero" label="finished shed sitting square on a fresh gravel pad" alt="Finished shed on a level gravel pad" kind="Page photo" eager}}
-  <div class="wrap phero-in">
+     (path, title, description, form_type), the headline and bullets, and the photo slot names.
+     Match the headline to the ad's wording. -->
+<section class="phero" data-chapter="olive">
+  <div class="wrap">
     <h1>Shed &amp; Garage Pad Preparation</h1>
     <p>A level, well-drained gravel pad for your shed, garage, carport or metal building, built by a Chattanooga sitework crew.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="#estimate">Get a pad estimate</a>
-      <a class="btn btn-outline" href="{{phone_href}}" data-track="call"><svg aria-hidden="true"><use href="#i-phone"/></svg>{{phone}}</a>
+    <div class="hero-act">
+      <a class="btn btn-light" href="#estimate">Get an estimate</a>
+      <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
     </div>
   </div>
 </section>
+{{photo slot="lp-pads-hero" label="finished shed sitting square on a fresh gravel pad" alt="Finished shed on a level gravel pad" kind="Page photo" eager}}
 
-<section class="sec lp-why" aria-labelledby="lp-why-h">
+<section class="sec" aria-labelledby="lp-why-h">
   <div class="wrap lp-two">
     <div>
       <h2 id="lp-why-h">A pad that stays flat</h2>
@@ -32,26 +33,25 @@ form_who: homeowner
         <li>Stone placed in layers and compacted, so it stays flat.</li>
         <li>Ready for a shed, detached garage, carport, trailer or metal building.</li>
       </ul>
-      <a class="btn btn-primary" href="#estimate">Get a pad estimate</a>
+      <a class="btn btn-primary" href="#estimate">Get an estimate</a>
     </div>
-    <div class="sv-media">{{ba slot="lp-pads" before="sloped backyard corner" after="level gravel pad ready for the shed" alt="shed pad preparation"}}</div>
+    <div class="sv-media">{{ba slot="lp-pads" draw="pad" before="sloped backyard corner" after="level gravel pad ready for the shed" alt="shed pad preparation"}}</div>
   </div>
 </section>
 
-<section class="sec sec-warm lp-how" aria-labelledby="lp-how-h">
+<section class="sec sec-tint how" aria-labelledby="lp-how-h">
   <div class="wrap">
-    <h2 id="lp-how-h">How it works</h2>
-    <ol class="how">
-      <li><h3>Send a photo of the spot</h3><p>Tell us the building size and where it's going. A phone photo is plenty.</p></li>
-      <li><h3>We talk it through</h3><p>We call you, and visit the site if it needs a look.</p></li>
-      <li><h3>You get an estimate</h3><p>Clear scope, then we schedule the work.</p></li>
-    </ol>
+    <div class="how-text">
+      <h2 id="lp-how-h">What happens next</h2>
+      <p>Send a photo of the spot and the building size. We look it over, call you to talk it through, and visit the site if it needs a look.</p>
+    </div>
+    {{> next-steps}}
   </div>
 </section>
 
 <section class="sec lp-form" id="estimate" aria-labelledby="lp-form-h">
   <div class="wrap lp-form-in">
-    <h2 id="lp-form-h">Get a pad estimate</h2>
+    <h2 id="lp-form-h">Get an estimate</h2>
     <p class="lead">Tell us about your project and we'll discuss the next steps.</p>
     {{> estimate-form}}
   </div>

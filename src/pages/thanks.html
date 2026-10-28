@@ -9,16 +9,11 @@ body_class: page-thanks
 <!-- Basin redirects here after a submission from a browser without JavaScript. Set it as the form's redirect URL in Basin. -->
 <section class="sec thanks-page">
   <div class="wrap">
-    <div class="est">
-      <div class="thanks">
-        {{> excavator}}
-        <div class="thanks-msg">
-          <h1 class="thanks-h">Thank you. Your request is in.</h1>
-          <p>We'll get back to you within {{response_time}}.</p>
-          <p>Want to talk sooner? {{talk}} <a class="thanks-phone" href="{{phone_href}}" data-track="call">{{phone}}</a></p>
-          <p><a href="/">Back to the homepage</a></p>
-        </div>
-      </div>
+    <div class="thanks">
+      <h1 class="thanks-h"><span>Thank you.</span>Your request is in.</h1>
+      <p>We'll get back to you within {{response_time}}.</p>
+      <p>Want to talk sooner? {{talk}} <a class="thanks-phone" href="{{phone_href}}" data-track="call">{{phone}}</a></p>
+      <p><a href="/">Back to the homepage</a></p>
     </div>
   </div>
 </section>

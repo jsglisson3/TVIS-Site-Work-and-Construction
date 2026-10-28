@@ -4,24 +4,24 @@ description: Site prep, building pad excavation, utility trenching, driveways, c
 nav: builders
 body_class: page-builders
 ---
-<section class="phero">
-  {{photo slot="builders-hero" label="new home lot during site prep, machine on site" alt="New residential lot being prepared for construction" kind="Page photo" eager}}
-  <div class="wrap phero-in">
+<section class="phero" data-chapter="olive">
+  <div class="wrap">
     <h1>Sitework Solutions for Builders &amp; Contractors</h1>
     <p>TVIS partners with homebuilders, general contractors, and property investors to provide dependable site preparation, excavation, utility trenching, and finish work for residential construction projects.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="/estimate?who=builder">Send the address and plans</a>
-      <a class="btn btn-outline" href="{{phone_href}}" data-track="call"><svg aria-hidden="true"><use href="#i-phone"/></svg>{{phone}}</a>
+    <div class="hero-act">
+      <a class="btn btn-light" href="/estimate?who=builder">Send the address and plans</a>
+      <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
     </div>
   </div>
 </section>
+{{photo slot="builders-hero" label="new home lot during site prep, machine on site" alt="New residential lot being prepared for construction" kind="Page photo" eager}}
 
 <nav class="jump" aria-label="On this page">
   <ul>
-    <li><a href="#site-prep">Site Prep</a></li>
-    <li><a href="#utilities">Utilities</a></li>
-    <li><a href="#concrete">Driveways &amp; Concrete</a></li>
-    <li><a href="#final-grading">Final Grading</a></li>
+    <li><a href="#site-prep"><span class="jump-long">Site Prep</span><span class="jump-short">Site prep</span></a></li>
+    <li><a href="#utilities"><span class="jump-long">Utilities</span><span class="jump-short">Utilities</span></a></li>
+    <li><a href="#concrete"><span class="jump-long">Driveways &amp; Concrete</span><span class="jump-short">Concrete</span></a></li>
+    <li><a href="#final-grading"><span class="jump-long">Final Grading</span><span class="jump-short">Grading</span></a></li>
   </ul>
 </nav>
 
@@ -41,11 +41,12 @@ body_class: page-builders
   </div>
 </section>
 
-<section class="sec sec-warm sv" id="site-prep" aria-labelledby="site-prep-h">
+<section class="sec sec-tint sv" id="site-prep" aria-labelledby="site-prep-h">
   <div class="wrap">
-    <div class="sv-media">{{photo slot="builders-site-prep" label="building pad cut and graded on a new lot" alt="Building pad excavated and graded for a new home" sizes="(min-width: 900px) 55vw, 100vw"}}</div>
+    <div class="sv-media">{{ba slot="builders-site-prep" draw="siteprep" before="raw, sloped lot before clearing" after="building pad cut and graded with footings in" alt="new home site prep"}}</div>
     <div>
       <h2 id="site-prep-h">Site Prep &amp; Excavation</h2>
+      <p class="sv-intro">A lot that's ready for the foundation crew: cleared, the pad cut to grade, and an access drive the concrete trucks can use.</p>
       <ul class="bul">
         <li>New home site preparation</li>
         <li>Building pad excavation and grading</li>
@@ -53,16 +54,17 @@ body_class: page-builders
         <li>Soil relocation and spreading</li>
         <li>Construction access and driveway preparation</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=siteprep">Get a site prep estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=siteprep">Get an estimate</a>
     </div>
   </div>
 </section>
 
 <section class="sec sv sv-flip" id="utilities" aria-labelledby="utilities-h">
   <div class="wrap">
-    <div class="sv-media">{{photo slot="builders-utilities" label="open utility trench with pipe or conduit" alt="Utility trench with pipe being installed" sizes="(min-width: 900px) 55vw, 100vw"}}</div>
+    <div class="sv-media">{{photo slot="builders-utilities" draw="utilities" label="open utility trench with pipe or conduit" alt="Utility trench with pipe being installed" sizes="(min-width: 900px) 55vw, 100vw"}}</div>
     <div>
       <h2 id="utilities-h">Underground Utilities</h2>
+      <p class="sv-intro">Trenches cut to depth, bedded, and backfilled in compacted lifts, so the yard doesn't settle along the line later.</p>
       <ul class="bul">
         <li>Waterline trenching and installation</li>
         <li>Electrical utility trenching</li>
@@ -71,16 +73,17 @@ body_class: page-builders
         <li>Trench backfilling and compaction</li>
       </ul>
       <p class="fine">Qualified trades handle licensed connections where required.</p>
-      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=utility">Get a utility trenching estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=utility">Get an estimate</a>
     </div>
   </div>
 </section>
 
-<section class="sec sec-warm sv" id="concrete" aria-labelledby="concrete-h">
+<section class="sec sec-tint sv" id="concrete" aria-labelledby="concrete-h">
   <div class="wrap">
-    <div class="sv-media">{{ba slot="builders-concrete" before="lot entrance before the drive goes in" after="finished driveway and apron" alt="new construction driveway"}}</div>
+    <div class="sv-media">{{ba slot="builders-concrete" draw="concrete" before="compacted gravel base inside the forms" after="finished concrete driveway and apron" alt="new construction driveway"}}</div>
     <div>
       <h2 id="concrete-h">Driveways, Culverts &amp; Concrete</h2>
+      <p class="sv-intro">The drive, the culvert and the concrete from one crew, with the base compacted properly before anything gets poured.</p>
       <ul class="bul">
         <li>Gravel driveway construction</li>
         <li>Culvert installation</li>
@@ -88,16 +91,17 @@ body_class: page-builders
         <li>Sidewalks and concrete pads</li>
         <li>Base preparation and compaction</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=concrete">Get a driveway or concrete estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=concrete">Get an estimate</a>
     </div>
   </div>
 </section>
 
 <section class="sec sv sv-flip" id="final-grading" aria-labelledby="final-grading-h">
   <div class="wrap">
-    <div class="sv-media">{{photo slot="builders-final-grading" label="finished lot: final grade, topsoil, clean site" alt="Finished new home lot after final grading and cleanup" sizes="(min-width: 900px) 55vw, 100vw"}}</div>
+    <div class="sv-media">{{ba slot="builders-final-grading" draw="finalgrade" before="rough lot after construction with spoil piles" after="finished lot: final grade, topsoil, clean site" alt="final grading and site completion"}}</div>
     <div>
       <h2 id="final-grading-h">Final Grading &amp; Site Completion</h2>
+      <p class="sv-intro">A finished lot the buyer sees: smooth grade that drains away from the house, topsoil down, drive graveled, site clean.</p>
       <ul class="bul">
         <li>Finish grading</li>
         <li>Final driveway gravel</li>
@@ -106,19 +110,19 @@ body_class: page-builders
         <li>Final site cleanup</li>
         <li>Yard restoration</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=siteprep">Get a final grading estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=builder&amp;type=siteprep">Get an estimate</a>
     </div>
   </div>
 </section>
 
-<section class="sec builder-cta" aria-labelledby="b-cta-h">
+<section class="sec builder-cta area" data-chapter="dark" aria-labelledby="b-cta-h">
   <div class="wrap">
     <div>
       <h2 id="b-cta-h">Have a lot ready to go?</h2>
-      <p>Send us the address and plans.</p>
+      <p>Send us the address and plans. PDF plans and plats attach straight to the estimate form.</p>
     </div>
     <div class="cta-actions">
-      <a class="btn btn-primary" href="/estimate?who=builder">Send the address and plans</a>
+      <a class="btn btn-light" href="/estimate?who=builder">Send the address and plans</a>
       <a class="bigphone bigphone-light" href="{{phone_href}}" data-track="call">{{phone}}</a>
     </div>
   </div>

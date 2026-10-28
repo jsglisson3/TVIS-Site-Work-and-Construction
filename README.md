@@ -2,7 +2,7 @@
 
 Marketing site for TVIS Site Work and Construction, an excavation and sitework company in Chattanooga, TN. Plain HTML, CSS and a little JavaScript, built by a small Node script and published to GitHub Pages by a GitHub Action on every push to `main`.
 
-Live at https://jsglisson3.github.io/TVIS-Sitework-and-Construction/ until a custom domain is set (see below).
+Live at https://jsglisson3.github.io/TVIS-Site-Work-and-Construction/ until a custom domain is set (see below).
 
 ## Run it on your computer
 
@@ -17,7 +17,7 @@ Re-run `npm run dev` after changing anything. Press Ctrl+C to stop it.
 
 ## Publish
 
-Push to `main` and the Action in `.github/workflows/deploy.yml` builds and publishes the site. One-time setup on GitHub: **Settings > Pages > Build and deployment > Source: GitHub Actions**. The first deploy shows up under the repo's **Actions** tab and takes about a minute.
+Push to `main` and the Action in `.github/workflows/deploy.yml` builds and publishes the site. One-time setup on GitHub (done): **Settings > Pages > Build and deployment > Source: GitHub Actions**. Each deploy shows up under the repo's **Actions** tab and takes about a minute.
 
 **Custom domain later:** put it in `site.config.json > domain` (for example `tvissitework.com`), push, then add it under Settings > Pages > Custom domain and point the domain's DNS at GitHub Pages. The build writes `CNAME`, the sitemap and canonical links from that one setting.
 
@@ -31,20 +31,20 @@ Everything that changes from business to business lives in `site.config.json`. E
 | `phoneTakesTexts` | `true` adds a Text button next to Call on phones. |
 | `ownerFirstName` | Optional. Shows "Call or text Joey" style lines. |
 | `email` | Where the estimate emails go (also set in Basin, below). |
-| `baseLocation` | e.g. `Ooltewah, TN`. |
-| `serviceArea` | Towns and counties, one line. |
+| `baseLocation` | e.g. `Chattanooga, TN`. |
+| `serviceArea` | Towns and counties, one line. Shown under the homepage headline. |
 | `hours` | Optional, e.g. `Mon–Fri 7am–5pm`. The hours line stays hidden while blank. |
 | `licensedLine` | The exact licensed and insured wording the business can stand behind. |
 | `responseTime` | e.g. `1 business day`. Shown on the thank-you message. |
-| `facebook`, `instagram`, `googleBusinessProfile` | Full URLs. |
+| `facebook`, `instagram`, `googleBusinessProfile` | Full URLs. The small marks in the header and footer link to them. |
 | `domain` | Custom domain, once there is one. |
 | `formEndpoint` | The Basin form URL (below). |
 | `tracking.*` | Google Analytics, Google Ads and Meta Pixel IDs. Leave blank until the accounts exist. |
 
 ## Photos
 
-- **Fixed spots on the pages:** drop photos into `photos/site/`, named after the spot. Each gray placeholder says the file name it wants, and `photos/site/README.txt` lists them all. The build resizes photos and strips GPS data.
-- **Projects gallery:** one folder per job in `projects/`. See `HOW-TO-ADD-A-PROJECT.md`.
+- **Fixed spots on the pages:** drop photos into `photos/site/`, named after the spot. `photos/site/README.txt` lists every spot and the shot it wants. A spot with no photo yet stays hidden (no gray box on the public site); where a picture is needed to explain the work, a drawn cross-section stands in until the photo lands. To see every empty spot and its file name, add `?slots` to any page address, e.g. `http://localhost:8080/homeowners?slots`. The build resizes photos and strips GPS data.
+- **Projects gallery:** one folder per job in `projects/`. See `HOW-TO-ADD-A-PROJECT.md`. The three `Sample:` folders hold drawn pictures, not photos; delete them once real jobs exist.
 
 Never use another company's photos.
 
@@ -67,7 +67,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 
 ## Ad landing pages
 
-`src/pages/lp-shed-garage-pads.html` is the template: logo and phone only, no menu, benefit bullets, a before/after, three steps and the form on the page. To make one for another campaign, copy the file, then change the front matter (`path`, `title`, `description`, `form_type`), the headline and bullets, and the photo slot names. Landing pages are `noindex` and `/lp/` is blocked in `robots.txt`, so only people who click the ad see them. Link to them with UTM tags, e.g. `/lp/shed-garage-pads?utm_source=facebook&utm_campaign=pads-fall`.
+`src/pages/lp-shed-garage-pads.html` is the template: logo and phone only, no menu, benefit bullets, a before/after, what happens next, and the form on the page. To make one for another campaign, copy the file, then change the front matter (`path`, `title`, `description`, `form_type`), the headline and bullets, and the photo slot names. Match the headline to the ad's wording. Landing pages are `noindex` and `/lp/` is blocked in `robots.txt`, so only people who click the ad see them. Link to them with UTM tags, e.g. `/lp/shed-garage-pads?utm_source=facebook&utm_campaign=pads-fall`.
 
 ## Where things live
 
@@ -75,21 +75,26 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | --- | --- |
 | `site.config.json` | Business details. The only place the phone number, email and so on are written. |
 | `src/pages/` | One file per page. The block between the `---` lines sets the title, search description and options. |
-| `src/partials/` | Pieces shared by pages: header, footer, `<head>`, the estimate form, the dozer, excavator and shed pad drawings. |
-| `src/assets/` | `site.css`, `site.js`, fonts and logos. |
+| `src/partials/` | Pieces shared by pages: `layout`, `head`, `header` / `footer` (and the `-landing` versions for ad pages), the estimate form, `next-steps` (the "what happens next" slip), `dozer` (the footer machine), `icons`. |
+| `src/assets/` | `site.css`, `site.js`, the fonts, and `img/` with the logo as SVG (`logo.svg` full colour, `logo-white.svg` for olive backgrounds, `logo-reverse.svg` for the dark footer) plus `logo-clean.png`, used only to make the favicon and the social preview image. |
+| `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. It also strips the content-credential metadata that file transfers sometimes add to the SVG logos and inline drawings, so the published site stays small. |
+| `scripts/diagrams.mjs` | The drawn cross-sections (driveway, pad, drainage, cleanup, site prep, utilities, concrete, final grade) used wherever a photo is missing, and the `{{diagram}}` token behind the animated pad section. |
+| `scripts/make-samples.mjs` | Renders those drawings into the three `Sample:` project folders. Not part of the build. |
+| `scripts/trace-logo.py` | How the logo PNG was traced to SVG, in case the logo file ever changes. |
+| `scripts/serve.mjs` | The local preview server. |
 | `photos/site/` | Photos for fixed spots on the pages. |
 | `projects/` | One folder per job. Becomes the Projects gallery, each project's page and the homepage's Recent projects. |
-| `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. |
-| `scripts/serve.mjs` | The local preview server. |
 | `.github/workflows/deploy.yml` | Publishes the site on every push to `main`. |
-| `docs/` | The approved design mockups, the research, and `HANDOFF.md` with the full brief and decisions. |
+| `docs/` | `HANDOFF.md` (the full brief, the design system and every decision), `ROADMAP.md` (the phases to launch and after), the early mockups in `design/`, and the research. |
 
 `dist/` and `node_modules/` are generated; don't edit or commit them.
 
 ## Checks before launch
 
+`LAUNCH-CHECKLIST.md` has the full list. The short version:
+
 - Every page at phone width (390px) and desktop (1440px), no sideways scroll.
-- Lighthouse mobile 90+ on every page (last run: 98 to 100 on all).
+- Lighthouse mobile 90+ on every page (last run 2026-10-28: 96 to 100 on every category).
 - Send a test estimate with photos from a phone.
 - Tap every phone number and button on a phone.
 - Replace the three "Sample:" project folders with real jobs.

@@ -9,6 +9,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { diagram, hasBefore } from './diagrams.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -44,8 +45,9 @@ const vars = {
   service_area: show('serviceArea', 'TOWNS AND COUNTIES'),
   hours: show('hours', 'HOURS'),
   // hours are optional (Jeremy: not important); the line simply disappears while blank
-  hours_footer: filled('hours') ? `<li>${esc(config.hours)}</li>` : '',
+  hours_footer: filled('hours') ? `<p>${esc(config.hours)}</p>` : '',
   hours_dl: filled('hours') ? `<div><dt>Hours</dt><dd>${esc(config.hours)}</dd></div>` : '',
+  licensed_inline: filled('licensedLine') ? esc(config.licensedLine) : tbd('LICENSED AND INSURED LINE'),
   licensed: filled('licensedLine') ? `<p class="licensed">${esc(config.licensedLine)}</p>` : `<p class="licensed">${tbd('LICENSED AND INSURED LINE')}</p>`,
   response_time: show('responseTime', '1 BUSINESS DAY'),
   facebook: config.facebook || '#facebook-url-needed',
@@ -57,6 +59,8 @@ const vars = {
   talk,
   talk_who: texts || filled('ownerFirstName') ? `<p class="talk-who">${talk}</p>` : '',
   text_link: texts ? `<a class="text-link" href="${sms}" data-track="call">Text ${esc(config.phone)}</a>` : '',
+  // which sections are olive or charcoal fields (the header takes their ink while they are under it)
+
   mbar_text: texts ? `<a class="mbar-text" href="${sms}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-text"/></svg>Text</a>` : '',
   year: String(YEAR),
 };
@@ -112,21 +116,39 @@ async function loadSitePhotos() {
   }
 }
 
+// The note on an empty slot is hidden until the page is opened with ?slots (site.js adds body.show-slots),
+// so Jeremy can see which file name each spot wants without placeholder boxes on the live site.
+const slotNote = (slot, label) => `<span class="slot-note" hidden>photos/site/${esc(slot)}.jpg: ${esc(label)}</span>`;
+
 function photoBlock(attrs) {
-  const { slot, label = '', alt = label, sizes = '100vw', eager, kind = 'Photo' } = attrs;
+  const { slot, label = '', alt = label, sizes = '100vw', eager, kind = 'Photo', draw } = attrs;
   const p = sitePhotos[slot];
   if (p) return `<div class="photo">${imgTag(p, alt, { sizes, eager: eager !== undefined })}</div>`;
-  return `<div class="photo ph" role="img" aria-label="${esc(kind)} placeholder: ${esc(label)}"><span class="shot"><b>${esc(kind)}:</b> ${esc(label)}<small>Add photos/site/${esc(slot)}.jpg</small></span></div>`;
+  if (draw) { const [name, state] = draw.split(':'); return `<div class="photo photo-drawn">${diagram(name, state || 'after')}${slotNote(slot, label)}</div>`; }
+  // no photo and no drawing: the spot disappears from the page until the file exists
+  return `<div class="photo photo-empty" hidden>${slotNote(slot, label)}</div>`;
 }
 
 // Before/after pair for a fixed spot: photos/site/<slot>-before.jpg and <slot>-after.jpg.
 // Until both exist, shows the slider with labeled placeholder halves.
+// Until both photos exist, a slot that names a drawing shows the drawn before and after instead,
+// so the compare slider works from day one. With neither, the slot is hidden.
 function baBlock(attrs) {
-  const { slot, before = '', after = '', alt = '', sizes = '(min-width: 900px) 55vw, 100vw' } = attrs;
+  const { slot, before = '', after = '', alt = '', sizes = '(min-width: 900px) 55vw, 100vw', draw } = attrs;
   const b = sitePhotos[`${slot}-before`], a = sitePhotos[`${slot}-after`];
-  const half = (p, kind, label, cls) => p
-    ? `<div class="ba-img ${cls}">${imgTag(p, `${kind}: ${alt || label}`, { sizes })}</div>`
-    : `<div class="ba-img ${cls} ph" role="img" aria-label="${kind} photo placeholder: ${esc(label)}"><span class="shot"><b>${kind}:</b> ${esc(label)}<small>Add photos/site/${esc(slot)}-${kind.toLowerCase()}.jpg</small></span></div>`;
+  const notes = slotNote(`${slot}-before`, before) + slotNote(`${slot}-after`, after);
+  if (!(b && a)) {
+    if (!draw || !hasBefore(draw)) return `<div class="ba ba-empty" hidden>${notes}</div>`;
+    return `<div class="ba ba-drawn" data-ba>
+  <div class="ba-img ba-before">${diagram(draw, 'before')}</div>
+  <div class="ba-img ba-after">${diagram(draw, 'after')}</div>
+  <span class="ba-tag ba-tag-b">Before</span><span class="ba-tag ba-tag-a">After</span>
+  <span class="ba-handle" aria-hidden="true"></span>
+  <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare the drawn before and after: ${esc(alt || after)}">
+  ${notes}
+</div>`;
+  }
+  const half = (p, kind, label, cls) => `<div class="ba-img ${cls}">${imgTag(p, `${kind}: ${alt || label}`, { sizes })}</div>`;
   return `<div class="ba" data-ba>
   ${half(b, 'Before', before, 'ba-before')}
   ${half(a, 'After', after, 'ba-after')}
@@ -246,9 +268,13 @@ ${baSlider(p, sizes)}
 </article>`;
 }
 
+// Some file transfers stamp SVG markup (standalone .svg files and inline <svg> in partials/pages) with a
+// signed content-credential manifest. It is harmless but bulky, so the build strips it before shipping.
+const stripCredentials = s => s.replace(/ xmlns:c2pa="[^"]*"/g, '').replace(/<metadata>\s*<c2pa:manifest>[\s\S]*?<\/c2pa:manifest>\s*<\/metadata>/g, '');
+
 // ---------- templating ----------
 async function readPartial(name) {
-  return fs.readFile(path.join(ROOT, 'src', 'partials', `${name}.html`), 'utf8');
+  return stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'partials', `${name}.html`), 'utf8'));
 }
 
 function parseAttrs(s) {
@@ -265,6 +291,7 @@ async function render(tpl, ctx, depth = 0) {
   // photo slots
   tpl = tpl.replace(/\{\{photo ([^}]*)\}\}/g, (_, a) => photoBlock(parseAttrs(a)));
   tpl = tpl.replace(/\{\{ba ([^}]*)\}\}/g, (_, a) => baBlock(parseAttrs(a)));
+  tpl = tpl.replace(/\{\{diagram ([^}]*)\}\}/g, (_, a) => { const d = parseAttrs(a); return diagram(d.name, d.state || 'after', { animate: 'animate' in d, label: d.label }); });
   // simple values
   return tpl.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (m, k) => (k in ctx ? ctx[k] : m));
 }
@@ -320,9 +347,6 @@ async function brandImages() {
   const out = path.join(DIST, 'assets', 'img');
   await fs.mkdir(out, { recursive: true });
   const logo = path.join(ROOT, 'src', 'assets', 'img', 'logo-clean.png');
-  const rev = path.join(ROOT, 'src', 'assets', 'img', 'logo-reverse.png');
-  await sharp(logo).resize({ width: 440 }).png({ compressionLevel: 9, palette: true }).toFile(path.join(out, 'logo.png'));
-  await sharp(rev).resize({ width: 440 }).png({ compressionLevel: 9, palette: true }).toFile(path.join(out, 'logo-reverse.png'));
   // Square icon: the houses-and-excavator mark from the top of the logo
   const m = await sharp(logo).metadata();
   const markH = Math.round(m.height * 0.62);
@@ -345,7 +369,9 @@ async function copyDir(from, to) {
   await fs.mkdir(to, { recursive: true });
   for (const e of await fs.readdir(from, { withFileTypes: true })) {
     const s = path.join(from, e.name), d = path.join(to, e.name);
-    if (e.isDirectory()) await copyDir(s, d); else await fs.copyFile(s, d);
+    if (e.isDirectory()) await copyDir(s, d);
+    else if (e.name.endsWith('.svg')) await fs.writeFile(d, stripCredentials(await fs.readFile(s, 'utf8')));
+    else await fs.copyFile(s, d);
   }
 }
 
@@ -403,7 +429,7 @@ async function main() {
     console.log(`  page ${urlPath}`);
   }
   for (const f of (await fs.readdir(path.join(ROOT, 'src', 'pages'))).filter(f => f.endsWith('.html'))) {
-    const [meta, body] = frontMatter(await fs.readFile(path.join(ROOT, 'src', 'pages', f), 'utf8'));
+    const [meta, body] = frontMatter(stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'pages', f), 'utf8')));
     await renderPage(meta, body, meta.path || '/' + f.replace(/\.html$/, '').replace(/^index$/, ''));
   }
   for (const p of projects) {

@@ -5,13 +5,19 @@ nav: estimate
 body_class: page-estimate
 schema: yes
 ---
+<section class="phero" data-chapter="olive">
+  <div class="wrap">
+    <h1>Request a Project Estimate</h1>
+    <p>Tell us about your project and we'll discuss the next steps.</p>
+    <div class="hero-act">
+      <a class="hero-call" href="{{phone_href}}" data-track="call">Prefer to talk? Call {{phone}}</a>
+    </div>
+  </div>
+</section>
+
 <section class="sec est-page">
   <div class="wrap est-grid">
     <div class="est-main">
-      <header class="est-head">
-        <h1>Request a Project Estimate</h1>
-        <p class="lead">Tell us about your project and we'll discuss the next steps.</p>
-      </header>
       {{> estimate-form}}
     </div>
 
@@ -28,20 +34,12 @@ schema: yes
           <div><dt>Service area</dt><dd>{{service_area}}</dd></div>
         </dl>
         <div class="socials">
-          <a href="{{facebook}}" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
-          <a href="{{instagram}}" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
-          <a href="{{gbp}}" aria-label="Google Business Profile"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>
+          <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
+          <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
+          <a href="{{gbp}}" aria-label="{{name}} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>
         </div>
       </div>
-      <div class="next">
-        <h2>What happens next</h2>
-        <ol>
-          <li>We look at your photos and details.</li>
-          <li>We call you to talk it through.</li>
-          <li>We visit the site if needed.</li>
-          <li>You get an estimate.</li>
-        </ol>
-      </div>
+      {{> next-steps}}
     </aside>
   </div>
 </section>

@@ -102,17 +102,14 @@
     <!-- Spam: real people never see or fill this; site.js also blocks sends faster than a few seconds -->
     <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
 
-    <button class="btn btn-primary btn-block est-send" type="submit">Send my estimate request</button>
+    <button class="btn btn-primary btn-block est-send" type="submit">Send estimate request</button>
     <p class="f-err est-fail" data-fail role="alert" hidden>Something went wrong sending your request. Please try again, or call <a href="{{phone_href}}" data-track="call">{{phone}}</a>.</p>
     <p class="est-alt">Prefer to talk? {{talk}} <a href="{{phone_href}}" data-track="call">{{phone}}</a>.</p>
   </form>
 
   <div class="thanks" data-thanks hidden>
-    {{> excavator}}
-    <div class="thanks-msg">
-      <h2 class="thanks-h" tabindex="-1">Thank you. Your request is in.</h2>
-      <p>We'll get back to you within {{response_time}}.</p>
-      <p>Want to talk sooner? {{talk}} <a class="thanks-phone" href="{{phone_href}}" data-track="call">{{phone}}</a></p>
-    </div>
+    <h2 class="thanks-h" tabindex="-1"><span>Thank you.</span>Your request is in.</h2>
+    <p>We'll get back to you within {{response_time}}.</p>
+    <p>Want to talk sooner? {{talk}} <a class="thanks-phone" href="{{phone_href}}" data-track="call">{{phone}}</a></p>
   </div>
 </div>

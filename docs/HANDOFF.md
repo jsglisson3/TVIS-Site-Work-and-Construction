@@ -1,52 +1,70 @@
 # TVIS website: build handoff
 
-Read this first. It is the full brief plus every decision made so far, so a Claude Code session in this folder can continue without the earlier conversation.
+Read this first. It is the full brief plus every decision made so far, so a Claude Code session in this folder can continue without the earlier conversation. `docs/ROADMAP.md` has the phases from here to launch and after.
 
-Last updated 2026-10-28 (all pages built).
+Last updated 2026-10-28, 05:40 UTC (full redesign pass plus two polish passes, overnight build; not yet in Jeremy's folder).
 
 ## Status
 
-- Research and design: **done and approved by Jeremy** (design review page: https://claude.ai/artifact/PdHEFQ2Ln37rjNDSD46U1V, version 2 "lighter").
-- **Every page is built** (2026-10-28): homepage (approved, H1 "Groundwork Done Right."), `/homeowners`, `/builders`, `/more-services`, `/home-construction`, `/projects` plus `/project/<folder>` detail pages, `/estimate`, `/lp/shed-garage-pads` (landing layout, noindex), `/thanks` (Basin's no-JS redirect target) and `404.html`. All three machine moments are in (dozer, shed pad cross-section, excavator dump).
-- Checked at 390px and 1440px with no sideways scroll. Lighthouse mobile 2026-10-28: performance 96 to 99, accessibility 100, best practices 100, SEO 100 on every indexable page (noindex pages score 66 on SEO by design).
-- Docs: `README.md` (setup, Basin, tracking, landing pages, launch checks), `HOW-TO-ADD-A-PROJECT.md`, `photos/site/README.txt` (every photo slot).
-- GitHub: repo is `jsglisson3/TVIS-Sitework-and-Construction`. Jeremy pushed the folder himself ("Initial site launch") and does all commits and pushes from VS Code. Deploy workflow is at `.github/workflows/deploy.yml`; it needs Settings > Pages > Source: GitHub Actions turned on once.
-- **Waiting on Jeremy / Joey:** everything in "Placeholders still waiting" at the bottom, plus the ad headline for the landing page, whether the phone takes texts, the owner's first name, the Basin account, and real photos.
+- Research and the first design: done and approved by Jeremy on 2026-10-28 (review page: https://claude.ai/artifact/PdHEFQ2Ln37rjNDSD46U1V). The site was built from it the same day and went live at https://jsglisson3.github.io/TVIS-Site-Work-and-Construction/.
+- **Jeremy then asked for a full redesign pass** ("you can do way better than this"; the header, footer, logo and hero matter most; the first dozer looked amateur; the type was weak; the logo was fuzzy). That pass is done in `src/` and is what this document now describes. The mockups in `docs/design/` are the earlier, superseded look; the build is the reference now.
+- Every page is built: homepage, `/homeowners`, `/builders`, `/more-services`, `/home-construction`, `/projects` plus `/project/<folder>` detail pages, `/estimate`, `/lp/shed-garage-pads` (landing layout, noindex), `/thanks` (Basin's no-JS redirect target) and `404.html`.
+- Checked 2026-10-28 at 390px and 1440px with no sideways scroll. Lighthouse mobile: homepage 98 / 100 / 100 / 100, homeowners 98 / 100 / 100 / 100, estimate 98 / 97 / 100 / 100. Estimate form prefill and the thank-you state tested in a headless browser against a fake endpoint.
+- Docs: `README.md`, `HOW-TO-ADD-A-PROJECT.md`, `photos/site/README.txt`, `LAUNCH-CHECKLIST.md`, `docs/ROADMAP.md`.
+- GitHub: repo `jsglisson3/TVIS-Site-Work-and-Construction`, Pages source = GitHub Actions (on). Jeremy does every commit and push from VS Code; each sync redeploys. The Claude GitHub App is not installed and Jeremy wants to keep merging manually.
+- **Waiting on Jeremy / Joey:** everything under "Placeholders still waiting" at the bottom, the Basin account, and real photos.
 
 ### If you pick this up later
 
-Work in `src/`, run `npm run dev`, check 390/1440 and Lighthouse before calling anything done. Form project-type codes: `driveway, pad, drainage, siteprep, utility, concrete, cleanup, home, other`; customer codes `homeowner, builder, other`. To add a landing page, copy `src/pages/lp-shed-garage-pads.html` (see README). Known small items: the excavator's bucket angle could be tuned by eye once Jeremy has seen it; the three "Sample:" project folders should be deleted when real jobs exist.
+Work in `src/`, run `npm run dev`, check 390/1440 and Lighthouse before calling anything done, and look at your own screenshots. Form project-type codes: `driveway, pad, drainage, siteprep, utility, concrete, cleanup, home, other`; customer codes `homeowner, builder, other`. To add a landing page, copy `src/pages/lp-shed-garage-pads.html` (see README). One editor at a time: if Claude Code on Jeremy's PC and the project chat both touch the folder, update this file before switching.
+
+Known small items: the three "Sample:" project folders hold drawn pictures and should be deleted once real jobs exist; `src/pages/home-construction.html` still needs Joey's intro; the inspector's one remaining fail on the homepage (the phone call bar covers large text at some scroll positions) is accepted, because the bar is the site's main conversion control.
 
 ## How the site is built (already in place)
 
 - Plain HTML/CSS/JS, no framework. `npm run build` runs `scripts/build.mjs` (only dependency: `sharp`) and writes `dist/`. `npm run dev` builds and serves `dist/` at http://localhost:8080 with clean URLs (`/homeowners` serves `homeowners.html`, same as GitHub Pages).
-- `src/pages/*.html`: one file per page. Front matter between `---` lines: `title`, `description`, `path` (optional), `nav` (which menu item is current: home, homeowners, builders, more_services, home_construction, projects, estimate), `schema: yes` (adds LocalBusiness JSON-LD), `noindex: yes`, `layout: landing` (uses `src/partials/header-landing.html`, which still needs creating), `body_class`.
-- Template tokens: `{{> partial}}`, `{{phone}}`, `{{phone_href}}`, `{{email}}`, `{{base}}`, `{{service_area}}`, `{{hours}}`, `{{licensed}}`, `{{response_time}}`, `{{facebook}}`, `{{instagram}}`, `{{gbp}}`, `{{form_endpoint}}`, `{{year}}`, `{{recent_projects}}`, `{{project_cards}}`, `{{home_construction_cards}}`, and `{{photo slot="name" label="shot description" alt="..." sizes="..." [eager]}}`. Empty config values render as yellow `<span class="tbd">[PLACEHOLDER]</span>`.
+- `src/pages/*.html`: one file per page. Front matter between `---` lines: `title`, `description`, `path` (optional), `nav` (which menu item is current: home, homeowners, builders, more_services, home_construction, projects, estimate), `schema: yes` (adds LocalBusiness JSON-LD), `noindex: yes`, `sitemap: no`, `layout: landing` (uses the `-landing` header and footer), `body_class`, `form_type` and `form_who` (prefill for a landing page's form).
+- Template tokens: `{{> partial}}`, `{{phone}}`, `{{phone_href}}`, `{{email}}`, `{{base}}`, `{{service_area}}`, `{{hours}}`, `{{hours_footer}}`, `{{licensed}}`, `{{licensed_inline}}`, `{{response_time}}`, `{{facebook}}`, `{{instagram}}`, `{{gbp}}`, `{{form_endpoint}}`, `{{year}}`, `{{recent_projects}}`, `{{project_cards}}`, `{{home_construction_cards}}`. Empty config values render as yellow `<span class="tbd">[PLACEHOLDER]</span>`.
+- Pictures: `{{photo slot="name" label="shot" alt="..." [draw="scene[:state]"] [sizes="..."] [eager]}}` shows `photos/site/<slot>.jpg` when it exists, otherwise the named drawing, otherwise nothing (a hidden note that `?slots` on the URL reveals). `{{ba slot="name" before="..." after="..." alt="..." [draw="scene"]}}` is the drag slider: real `-before`/`-after` photos when both exist, otherwise the drawn pair. `{{diagram name="pad" state="after" animate label="..."}}` places a drawing inline (the animated pad cross-section on `/homeowners`).
+- Drawings live in `scripts/diagrams.mjs`: cross-sections of the work (driveway, pad, drainage, cleanup, siteprep, utilities, concrete, finalgrade) in the brand palette, with `before`, `after` and for some `progress` states. They are honest stand-ins, not pretend photos; nothing on the page calls them photos.
 - `site.config.json` is the single source of business details (NAP consistency for local SEO).
-- `photos/site/<slot>.jpg` replaces the matching placeholder block automatically (resized to webp, metadata stripped).
-- `projects/YYYY-MM-town-job/` folders → gallery. `project.txt` keys: title, category, town, status, featured, description. Photos named `before-N`, `progress-N`, `after-N`. Blank status shows In Progress until after photos exist. Newest first, featured pinned. The build also writes `dist/projects.json` (keep its shape stable for the future auto-posting automation). Three sample folders exist; their titles start with "Sample:".
+- `projects/YYYY-MM-town-job/` folders → gallery. `project.txt` keys: title, category, town, status, featured, description. Photos named `before-N`, `progress-N`, `after-N`. Blank status shows In Progress until after photos exist. Newest first, featured pinned. The build also writes `dist/projects.json` (keep its shape stable for the future auto-posting automation). Three sample folders exist with drawn pictures from `scripts/make-samples.mjs`; their titles start with "Sample:".
+- Logo: `src/assets/img/logo.svg` (traced from the cleaned PNG with `scripts/trace-logo.py`, 12 KB, crisp at any size), `logo-white.svg` (olive backgrounds) and `logo-reverse.svg` (dark footer). `logo-clean.png` stays only for the favicon and the social preview image.
 - `.github/workflows/deploy.yml` is the GitHub Pages workflow. When there's no custom domain yet, it builds with `BASE_PATH=/<repo>`.
-- Lighthouse mobile on the homepage: 99 / 100 / 100 / 100. Keep every page at 90+.
 
-## Design system (approved; don't drift)
+## Design system (the redesign; don't drift)
 
-- Light scheme. White and warm gray pages; charcoal only for text and the footer; olive for buttons and accents. Jeremy found the first dark version too dark, especially on phones.
-- Colors (measured from the logo): charcoal `#232B2E`, charcoal-2 `#2E373B`, olive `#72852E`, button olive `#5E6E24` (hover `#4F5D1E`), olive on dark `#A3B654`, olive tint `#EEF1E2`, warm gray `#F3F2EE`, stone `#E4E1D8`, white.
-- Type: Barlow Condensed 700/800 uppercase headings, Source Sans 3 body at 18px. Self-hosted in `src/assets/fonts/`. Five sizes max.
-- Square flat buttons, no shadows at rest, no gradients (except the photo overlay scrim), no carousels, no animated counters, no icon-card grids, no tiny letter-spaced labels.
-- Cards: white on warm gray (or the reverse), photo on top, no borders. Photos full color, square corners.
-- Before/after: drag slider (`[data-ba]`, range input, keyboard accessible), already in `site.css`/`site.js` and the build's `baSlider()`.
-- Phone: sticky bottom bar (Call / Get an Estimate), white header, full-screen white menu with Call at the top. On the estimate page the bar should become a single Call button.
-- Hero overlay as light as the real photo allows once it arrives (Jeremy wants the hero brighter).
-- Mockups for reference: `docs/design/` (homepage, Homeowners page, estimate form at phone and desktop).
+Built with the `frontend-design` and `design-taste-frontend` skills. The dealt direction was tasteskill's `type-only-statement` (seed 1632684356, palette and type kept from the brand): a page that opens on one big statement in the brand's own colour, with the subject's world drawn into the sections. Redraws recorded: the features section to `features-capabilities-at-poster-scale` (the service list), the showcase adapted to the existing drag slider, the work section kept as cards (the dealt "book-spine index" needs 20 to 40 project names and there are 3).
 
-## Animated "machine moments" (approved)
+- **Scheme:** light pages. The olive field (`--field #6B7C2A`) is the opening of every page (full screen on the homepage, a short band on inner pages) and nothing else; charcoal is the footer and the builder call-out; the Estimate band at the foot of the homepage is pale (`#DCE4B9`) with the word in charcoal and turns olive only on hover. Jeremy's note after seeing the first pass: he likes the green but it must not overpower everything, so keep olive to the openings, buttons and accents. White on the field measures 4.6:1.
+- **Colours:** field `#6B7C2A`, olive `#72852E`, olive-deep `#5E6E24` (buttons), olive-light `#A3B654` (on dark), pale `#DCE4B9`, tint `#EEF1E2`, warm `#F3F2EE`, stone `#E4E1D8`, charcoal `#232B2E`, ink-soft `#4A5256`. Earth tones in the drawings: topsoil `#8C7B5E`, base stone `#B8AF94`, crusher run `#CFC8AF`, red-clay subsoil `#A8765B`.
+- **Type, five sizes only:** `--t-statement` clamp(60px, 17.5vw, 250px) for the homepage statement (phone: clamp(56px, 18.5vw, 120px)); `--t-h2` clamp(36px, 5.2vw, 84px); `--t-h3` clamp(26px, 2.2vw, 32px); `--t-body` 19px (18 on phones); `--t-small` 17px (16). Barlow Condensed 700/800 uppercase for headings and buttons, Source Sans 3 for everything else. Self-hosted in `src/assets/fonts/`. Headlines fit in two lines at every width.
+- **Homepage:** full-screen olive field with the statement "Groundwork / Done Right." (white, then charcoal), the service line and estimate button at its foot; the hero photo strip appears under it once `home-hero.jpg` exists; intro lead with four run-in columns; "The work we do" as a poster-scale list of eight linked services; drawn before/after slider; recent projects; "What happens next" with the slip; the giant word ESTIMATE on a pale band as the closing link.
+- **Header:** fixed; takes the colour of the chapter under it (`data-chapter="olive"` on heroes and the Estimate band, `"dark"` on the footer), white logo on olive, full-colour logo on white; hides on scroll-down and comes back on scroll-up. Nav: Homeowners, Builders & Contractors, Projects, More (Miscellaneous Services, Home Construction), quiet Facebook and Instagram marks, phone, Get an estimate. Phones: Call + menu button; the menu is a full-screen white sheet with large charcoal links (Get an estimate in olive) and call/social at the foot; sticky bottom bar with Call and Get an estimate (plus Text when `phoneTakesTexts`). Because that bar is always on screen, the page openings on phones carry no buttons of their own (only the builders page keeps "Send the address and plans"), the homepage field is two-thirds of the screen so the intro shows beneath it, and the footer's "Back to top" is hidden.
+- **Footer:** charcoal. Reverse logo, description, based-in/serving, licensed line, hours; a large Call block with the phone number; the dozer strip; links, socials, legal. Landing pages use a shorter header and footer (logo, phone, call block, dozer, legal).
+- **Inner pages:** a short olive opening (h1 in two lines or fewer, the intro at the third size up to 50 characters a line, the buttons), then the sticky jump bar where a page has sections. Each service section puts its heading across the full width, then the bullets on one side and the drawn or real before/after on the other; on phones the order is heading, picture, text.
+- **Buttons:** square, flat, no shadows, no gradients; one label everywhere, "Get an estimate". `.btn-primary` olive-deep, `.btn-light` white on olive, `.btn-ink` charcoal.
+- **No** carousels, counters, icon-card grids, tiny letter-spaced labels, numbered steps unless the content is a sequence, gray photo boxes or yellow placeholders meant for launch.
+- **Before/after:** drag slider (`[data-ba]`, range input, keyboard accessible) over real photo pairs or the drawn pairs.
 
-One moving moment per page at most, no loops, never covering text or buttons, inline SVG + CSS only, `prefers-reduced-motion` shows the finished state.
+## Motion (one planned moment per page, `prefers-reduced-motion` shows the finished state)
 
-1. **Homepage hero (done):** a small olive dozer (`src/partials/dozer.html`) drives in once and grades a gravel strip along the hero bottom, then parks.
-2. **Homeowners `#pads` section (done):** a cross-section of a shed pad builds up as it scrolls into view: native ground → graded dirt → gravel base in layers → shed set on top. Use IntersectionObserver to start it once; static final state without JS or with reduced motion.
-3. **Estimate form thank-you (done):** a small excavator (match the logo's excavator silhouette, olive/charcoal) dumps a bucket, then the thank-you message shows.
+1. **Homepage load:** the statement's two lines, the service line and the buttons settle into place once (`settle` keyframes). This is the "classy landing page load-in" Jeremy asked for.
+2. **Homeowners `#pads`:** the drawn pad cross-section builds up as it scrolls into view: cut and fill, base stone, crusher run, then the building. IntersectionObserver starts it once; static final state without JS.
+3. **Footer:** a small dozer (`src/partials/dozer.html`) rolls in once along the footer strip when the footer comes into view, in the spirit of the boat on Jeremy's FOTCL site. It was moved here from the homepage hero at Jeremy's request.
+4. Removed: the excavator bucket-dump on the thank-you. The thank-you is now typographic ("Thank you. / Your request is in.").
+
+## Second pass (2026-10-28, after the first screenshots)
+
+Inspector run on every inner page, then fixed: section headings that wrapped to three lines, the "Before" tag reading as a label above headings on phones, the jump bar and project filters clipping at the phone edge (short jump labels under 600px, filters wrap), the estimate page headline back to Joey's "Request a Project Estimate" with a call link in the opening, focus rings in olive-deep on light grounds, lone project photos shown at two-thirds width, the "what happens next" slip as a valid definition list (accessibility 100). Remaining inspector items are accepted on purpose: no photographs or footage yet (content), little motion (one moment per page), the phone call bar covering a heading at some scroll positions, the intro paragraphs at four lines (Joey's copy as written), one empty rest in the inner openings.
+
+## Third pass (2026-10-28, fresh eyes on the phone)
+
+Looked at header, hero, footer and logo at 390px as a first-time visitor from an ad. Fixed: the opening repeated Call and Get an estimate right above the sticky bar that already has them (hidden on phones, except the builders ask); the homepage field was a full screen of olive with two lines of type (now two-thirds, with the intro peeking); the orphaned "Back to top" link in the phone footer (hidden). Stopped here on purpose so Jeremy's reactions drive the next pass instead of guesses.
+
+## Self-audit (2026-10-28, scored before Jeremy's review)
+
+Scored the way `docs/ROADMAP.md` Phase 5 asks, out of 100: design 22/25 (no real hero photo yet), phone layout 14/15 (the call bar can cover large text at some scroll positions; accepted), copy 12/15 (Joey's words throughout, one button label, no AI tells; no trust strip because nothing true exists to put in it yet), speed 15/15, trust 6/15 (phone, email, licensed line, reviews and real photos all still missing), motion 9/10, accessibility 5/5. **83/100.** The gap is content, not design: real photos and the business details would carry it past 90.
 
 ## Open questions: answers (Jeremy said "go with your picks")
 
@@ -59,7 +77,7 @@ One moving moment per page at most, no loops, never covering text or buttons, in
 
 ## What's left, in order
 
-All build items are done (2026-10-28). Remaining work is content: fill `site.config.json`, add photos to `photos/site/`, replace the sample projects, set up Basin, add tracking IDs, then run the launch checks in README.md.
+Build and redesign are done (2026-10-28). What remains is content and connection, in the order `docs/ROADMAP.md` gives: fill `site.config.json`, add photos to `photos/site/`, replace the sample projects, set up Basin, add tracking IDs, buy the domain, then run `LAUNCH-CHECKLIST.md`.
 
 ## Research highlights to apply
 
@@ -163,4 +181,4 @@ Hero, short benefit bullets, a before-and-after, a three-step how it works, and 
 
 ### Placeholders still waiting
 
-[PHONE], [EMAIL], [LICENSED AND INSURED LINE] (hours are optional and hidden while blank; base location and service area were set 2026-10-28: Chattanooga, TN / Chattanooga and the surrounding counties), Facebook / Instagram / Google Business Profile URLs, [DOMAIN], [1 BUSINESS DAY], [OWNER TO SUPPLY] Home Construction intro, Basin form endpoint, tracking IDs, real jobsite photos (arriving this week), logo SVG (optional).
+[PHONE], [EMAIL], [LICENSED AND INSURED LINE] (hours are optional and hidden while blank; base location and service area were set 2026-10-28: Chattanooga, TN / Chattanooga and the surrounding counties), Facebook / Instagram / Google Business Profile URLs, [DOMAIN], [1 BUSINESS DAY], [OWNER TO SUPPLY] Home Construction intro, Basin form endpoint, tracking IDs, real jobsite photos (arriving this week). The logo SVG is done.

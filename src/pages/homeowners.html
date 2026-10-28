@@ -4,29 +4,33 @@ description: Gravel driveway repair, shed and garage pads, French drains and yar
 nav: homeowners
 body_class: page-homeowners
 ---
-<section class="phero">
-  {{photo slot="homeowners-hero" label="homeowner property after driveway and pad work" alt="Chattanooga-area home with a new gravel driveway and shed pad" kind="Page photo" eager}}
-  <div class="wrap phero-in">
+<section class="phero" data-chapter="olive">
+  <div class="wrap">
     <h1>Property Improvements Made Simple.</h1>
     <p>From a washed-out gravel driveway to a new garage pad, TVIS helps homeowners maintain, improve, and prepare their properties with practical excavation and sitework solutions.</p>
+    <div class="hero-act">
+      <a class="btn btn-light" href="/estimate?who=homeowner">Get an estimate</a>
+      <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
+    </div>
   </div>
 </section>
+{{photo slot="homeowners-hero" label="homeowner property after driveway and pad work" alt="Chattanooga-area home with a new gravel driveway and shed pad" kind="Page photo" eager}}
 
 <nav class="jump" aria-label="On this page">
   <ul>
-    <li><a href="#driveways">Driveways</a></li>
-    <li><a href="#pads">Shed &amp; Garage Pads</a></li>
-    <li><a href="#drainage">Drainage</a></li>
-    <li><a href="#cleanup">Yard Cleanup</a></li>
+    <li><a href="#driveways"><span class="jump-long">Driveways</span><span class="jump-short">Driveways</span></a></li>
+    <li><a href="#pads"><span class="jump-long">Shed &amp; Garage Pads</span><span class="jump-short">Pads</span></a></li>
+    <li><a href="#drainage"><span class="jump-long">Drainage</span><span class="jump-short">Drainage</span></a></li>
+    <li><a href="#cleanup"><span class="jump-long">Yard Cleanup</span><span class="jump-short">Cleanup</span></a></li>
   </ul>
 </nav>
 
 <section class="sec sv" id="driveways" aria-labelledby="driveways-h">
   <div class="wrap">
-    <div class="sv-media">{{ba slot="homeowners-driveways" before="washed-out gravel driveway with ruts" after="regraded driveway with fresh crusher run" alt="gravel driveway repair"}}</div>
+    <div class="sv-media">{{ba slot="homeowners-driveways" draw="driveway" before="washed-out gravel driveway with ruts" after="regraded driveway with fresh crusher run" alt="gravel driveway repair"}}</div>
     <div>
       <h2 id="driveways-h">Driveways &amp; Gravel Work</h2>
-      <p class="sv-intro">Gravel driveway repair, resurfacing and new installs, including culverts where water crosses the drive.</p>
+      <p class="sv-intro">A driveway that sheds water instead of holding it: ruts cut out, a compacted base, fresh stone on top, and a culvert where the water crosses the drive.</p>
       <ul class="bul">
         <li>Gravel driveway repair and resurfacing</li>
         <li>New gravel driveway installation</li>
@@ -34,19 +38,29 @@ body_class: page-homeowners
         <li>Culvert installation and replacement</li>
         <li>Gravel parking areas</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=driveway">Get a driveway estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=driveway">Get an estimate</a>
     </div>
   </div>
 </section>
 
-<section class="sec sec-warm pads" id="pads" aria-labelledby="pads-h">
+<section class="sec sec-tint pads" id="pads" aria-labelledby="pads-h">
   <div class="wrap">
     <div class="pads-top">
       <div>
         <h2 id="pads-h">Shed &amp; Garage Pad Preparation</h2>
-        <p>A level, well-drained gravel pad keeps a shed door from sticking and a garage slab from cracking. Here's how a TVIS pad goes in, from bare ground to a building that sits square.</p>
+        <p>A level, well-drained gravel pad keeps a shed door from sticking and a garage slab from cracking. This is how a TVIS pad goes in, from a sloped corner of the yard to a building that sits square.</p>
       </div>
-      {{> pad-xsec}}
+      <figure class="xsec" data-xsec>
+        {{diagram name="pad" state="after" animate label="Cross-section of a TVIS shed pad: the sloped yard cut and filled level and compacted, gravel base placed in two compacted lifts, and the shed set square on top. The original slope is shown as a dashed line."}}
+        <figcaption>
+          <ul class="xsec-key">
+            <li><i style="background:#8C7B5E"></i>Cut and filled level, then compacted</li>
+            <li class="layer l2"><i style="background:#B8AF94"></i>Stone base, placed and compacted in lifts</li>
+            <li class="layer l3"><i style="background:#CFC8AF"></i>Crusher run, compacted smooth</li>
+            <li class="layer l4"><i style="background:#5E6E24"></i>Your shed, garage or metal building</li>
+          </ul>
+        </figcaption>
+      </figure>
     </div>
     <ol class="steps">
       <li>{{photo slot="pads-step-1" label="cleared, staked area" alt="Cleared and staked site for a shed pad" sizes="(min-width: 900px) 25vw, 50vw"}}<h3>Cleared site</h3><p>Brush, roots and topsoil come out so the pad sits on firm ground.</p></li>
@@ -65,7 +79,7 @@ body_class: page-homeowners
       </ul>
       <div>
         <p>Tell us the building size and send a photo of the spot. That's usually enough for a first look.</p>
-        <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=pad">Get a pad estimate</a>
+        <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=pad">Get an estimate</a>
       </div>
     </div>
   </div>
@@ -73,10 +87,10 @@ body_class: page-homeowners
 
 <section class="sec sv sv-flip" id="drainage" aria-labelledby="drainage-h">
   <div class="wrap">
-    <div class="sv-media">{{ba slot="homeowners-drainage" before="standing water in the yard after rain" after="French drain finished, yard dry" alt="French drain installation"}}</div>
+    <div class="sv-media">{{ba slot="homeowners-drainage" draw="drainage" before="standing water in the yard after rain" after="French drain finished, yard dry" alt="French drain installation"}}</div>
     <div>
       <h2 id="drainage-h">Residential Drainage Solutions</h2>
-      <p class="sv-intro">French drain installation, downspout drains and regrading for yards that hold water.</p>
+      <p class="sv-intro">A dry yard and a dry foundation: French drains, downspout piping and regrading that move the water away instead of letting it sit.</p>
       <ul class="bul">
         <li>French drain installation</li>
         <li>Gutter downspout drains</li>
@@ -85,17 +99,17 @@ body_class: page-homeowners
         <li>Standing water corrections</li>
         <li>Drainage swales and grading</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=drainage">Get a drainage estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=drainage">Get an estimate</a>
     </div>
   </div>
 </section>
 
-<section class="sec sec-warm sv" id="cleanup" aria-labelledby="cleanup-h">
+<section class="sec sec-tint sv" id="cleanup" aria-labelledby="cleanup-h">
   <div class="wrap">
-    <div class="sv-media">{{ba slot="homeowners-cleanup" before="old shed and overgrowth" after="cleared, leveled yard" alt="shed demolition and yard cleanup"}}</div>
+    <div class="sv-media">{{ba slot="homeowners-cleanup" draw="cleanup" before="old shed and overgrowth" after="cleared, leveled yard" alt="shed demolition and yard cleanup"}}</div>
     <div>
       <h2 id="cleanup-h">Yard Cleanup &amp; Small Demolition</h2>
-      <p class="sv-intro">Old sheds, trailers, overgrowth and debris, torn out and hauled off.</p>
+      <p class="sv-intro">A clean, level yard you can actually use: old sheds, trailers, overgrowth and debris torn out and hauled off.</p>
       <ul class="bul">
         <li>Shed demolition and removal</li>
         <li>Trailer demolition and removal</li>
@@ -104,7 +118,7 @@ body_class: page-homeowners
         <li>Yard leveling and repair</li>
         <li>Debris and material removal</li>
       </ul>
-      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=cleanup">Get a cleanup estimate</a>
+      <a class="btn btn-primary" href="/estimate?who=homeowner&amp;type=cleanup">Get an estimate</a>
     </div>
   </div>
 </section>
@@ -113,15 +127,11 @@ body_class: page-homeowners
   <div class="wrap">
     <div>
       <h2 id="ho-cta-h">Not sure what your property needs?</h2>
-      <p class="area-text">Send a few photos and a short description. We'll let you know how we can help.</p>
+      <p>Send a few photos and a short description. We'll let you know how we can help, and photos of the area help us understand the job before we call.</p>
     </div>
-    <div class="cta-card cta-card-warm">
-      <h3>Request an estimate</h3>
-      <p>Photos of the area help us understand the job before we call.</p>
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="/estimate?who=homeowner">Request an Estimate</a>
-        <a class="bigphone" href="{{phone_href}}" data-track="call">{{phone}}</a>
-      </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="/estimate?who=homeowner">Get an estimate</a>
+      <a class="bigphone" href="{{phone_href}}" data-track="call">{{phone}}</a>
     </div>
   </div>
 </section>
