@@ -5,6 +5,7 @@
 //   stripped of GPS/camera data, and the project cards are written into the pages.
 // - Site photos dropped into photos/site/ replace the labeled placeholder blocks.
 import fs from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -377,11 +378,20 @@ async function copyDir(from, to) {
 
 const withBase = html => (BASE ? html.replace(/(href|src|action)="\/(?!\/)/g, `$1="${BASE}/`).replace(/(srcset="[^"]*)/g, s => s.replace(/(^srcset="|, )\//g, `$1${BASE}/`)) : html);
 
+const ASSET_VERSIONS = [];
+const versionAssets = html => ASSET_VERSIONS.reduce((h, [a, b]) => h.split(a).join(b), html);
+
 async function main() {
   const t0 = Date.now();
   await fs.mkdir(DIST, { recursive: true });
   for (const f of await fs.readdir(DIST)) if (!['gallery', 'img'].includes(f)) await fs.rm(path.join(DIST, f), { recursive: true, force: true }); // keep resized photos as a cache
   await copyDir(path.join(ROOT, 'src', 'assets'), path.join(DIST, 'assets'));
+  // Version the stylesheet and script by their content, so a browser that cached an old copy
+  // always fetches the new one when the pages change (otherwise new pages render with old styles).
+  for (const f of ['site.css', 'site.js']) {
+    const v = createHash('sha1').update(await fs.readFile(path.join(DIST, 'assets', f))).digest('hex').slice(0, 10);
+    ASSET_VERSIONS.push([`/assets/${f}"`, `/assets/${f}?v=${v}"`]);
+  }
   await brandImages();
   await loadSitePhotos();
   const projects = await loadProjects();
@@ -424,7 +434,7 @@ async function main() {
     html = withBase(html);
     const outFile = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     await fs.mkdir(path.dirname(path.join(DIST, outFile)), { recursive: true });
-    await fs.writeFile(path.join(DIST, outFile), html);
+    await fs.writeFile(path.join(DIST, outFile), versionAssets(html));
     if (meta.noindex !== 'yes' && meta.sitemap !== 'no') sitemap.push(urlPath);
     console.log(`  page ${urlPath}`);
   }
