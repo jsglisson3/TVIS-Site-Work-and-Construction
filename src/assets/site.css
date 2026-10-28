@@ -2,9 +2,9 @@
    Colors measured from the logo. Light scheme: white and warm gray pages,
    charcoal for text and the footer, olive for actions and accents. */
 
-@font-face{font-family:"Barlow Condensed";src:url(/assets/fonts/BarlowCondensed-700.woff2) format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"Barlow Condensed";src:url(/assets/fonts/BarlowCondensed-800.woff2) format("woff2");font-weight:800;font-display:swap}
-@font-face{font-family:"Source Sans 3";src:url(/assets/fonts/SourceSans3.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(fonts/BarlowCondensed-700.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(fonts/BarlowCondensed-800.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"Source Sans 3";src:url(fonts/SourceSans3.woff2) format("woff2");font-weight:200 900;font-display:swap}
 
 :root{
   --charcoal:#232B2E;
