@@ -14,13 +14,15 @@ Marketing site for an excavation and sitework company in Chattanooga, TN. Its on
 ## Rules
 
 - Use the brief's copy as written. Never invent reviews, testimonials, license numbers, years in business, project counts, awards, prices, response times or service towns. Missing details stay as visible `[PLACEHOLDERS]` driven by `site.config.json`.
-- Never use photos from other companies. A photo spot with no photo stays hidden or shows a drawn cross-section from `scripts/diagrams.mjs`; never a gray box, and never a drawing presented as a photo. Add `?slots` to a page URL to see the empty spots.
+- Never use photos from other companies. A photo spot with no photo shows a drawn cross-section from `scripts/diagrams.mjs` (the homepage hero uses the dark `heroScene()`); never a gray box, and never a drawing presented as a photo. Add `?slots` to a page URL to see the empty spots.
 - Stay inside the design system in HANDOFF.md:
-  - light pages; the olive field only for page openings (full screen on the homepage, a short band inside); charcoal only for text, the footer and the builder call-out; Jeremy likes the green but it must not overpower everything
-  - the colours and the five type sizes listed there, headlines in two lines or fewer at every width
-  - square flat buttons, one label everywhere ("Get an estimate"), no shadows at rest, no gradients beyond the photo scrim
+  - light pages on white and warm gray; olive is an accent only (buttons, bars, bullets), never a full-screen slab; Jeremy likes the green but it must not overpower everything
+  - the dark fields are the hero, the statement band and the footer; the header is white with the full-colour logo, big and crisp
+  - the hero headline is "Groundwork / Done Right." (Jeremy's choice); "From the Ground Up." stays as the tagline in the footer and config
+  - the colours and type sizes listed there, headlines in two lines or fewer at every width
+  - square flat buttons, no shadows at rest, no gradients beyond the photo scrim
   - no carousels, counters, icon-card grids or tiny letter-spaced labels
-- Motion is limited to one planned moment per page (homepage load-in, the pad build-up on `/homeowners`, the footer dozer), and it must respect `prefers-reduced-motion`.
+- Motion is limited to one planned moment per page (the hero settle on the homepage, the pad build-up on `/homeowners`, the footer dozer), and it must respect `prefers-reduced-motion`.
 - Every page must work at 390px and 1440px with no sideways scroll.
 - Lighthouse mobile must score 90+ on every page. Check pages in a real browser, look at the screenshots, and fix what you see before calling anything done.
 - Keep the `projects/` folder format and `project.txt` fields stable. A future automation depends on them.

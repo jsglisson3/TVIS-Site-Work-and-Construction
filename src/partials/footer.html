@@ -1,40 +1,52 @@
-<!-- Footer: the way to reach TVIS, set large on the charcoal field. The dozer parks on the ground line. -->
-<footer class="ftr" data-chapter="dark">
-  <div class="wrap ftr-top">
-    <a class="ftr-logo" href="/" aria-label="{{name}}, home"><img src="/assets/img/logo-reverse.svg" alt="" width="1617" height="746" loading="lazy" decoding="async"></a>
-    <div class="ftr-notes">
-      <p>Excavation, sitework, driveways and drainage for homeowners, builders and contractors.</p>
-      <p>Based in {{base}}. Serving {{service_area}}.</p>
-      {{licensed}}
-      {{hours_footer}}
-    </div>
-    <a class="ftr-up" href="#top">Back to top</a>
-  </div>
-  <div class="wrap ftr-call">
-    <p class="ftr-talk">{{talk}}</p>
-    <a class="ftr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
-    <p class="ftr-alt">{{text_link}}<span>{{email}}</span><a href="/estimate">Get an estimate</a></p>
-  </div>
+<!-- Footer: charcoal. The dozer rolls along the ground line once, the one motion moment down here. -->
+<footer class="ftr">
   <div class="ftr-ground" data-ground aria-hidden="true">{{> dozer}}</div>
-  <div class="wrap ftr-meta">
-    <ul class="ftr-links">
-      <li><a href="/homeowners">Homeowners</a></li>
-      <li><a href="/builders">Builders &amp; Contractors</a></li>
-      <li><a href="/more-services">Miscellaneous Services</a></li>
-      <li><a href="/home-construction">Home Construction</a></li>
-      <li><a href="/projects">Projects</a></li>
-      <li><a href="/estimate">Get an estimate</a></li>
-    </ul>
-    <div class="socials">
-      <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
-      <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
-      <a href="{{gbp}}" aria-label="{{name}} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>
+  <div class="wrap ftr-grid">
+    <div class="ftr-brand">
+      <a class="ftr-logo" href="/" aria-label="{{name}}, home"><img src="/assets/img/logo-reverse.svg" alt="" width="1617" height="746" decoding="async"></a>
+      <p class="ftr-desc">Excavation, sitework, driveways and drainage for homeowners, builders and contractors.</p>
+      <div class="socials">
+        <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
+        <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
+        <a href="{{gbp}}" aria-label="{{name}} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>
+      </div>
     </div>
+    <div>
+      <h2 class="ftr-h">Contact</h2>
+      <p class="ftr-talk">{{talk}}</p>
+      <a class="ftr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
+      <div class="ftr-list">
+        {{text_link}}
+        <span>{{email}}</span>
+        {{hours_footer}}
+      </div>
+    </div>
+    <div>
+      <h2 class="ftr-h">Pages</h2>
+      <ul class="ftr-list">
+        <li><a href="/homeowners">Homeowners</a></li>
+        <li><a href="/builders">Builders &amp; Contractors</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/more-services">Miscellaneous Services</a></li>
+        <li><a href="/home-construction">Home Construction</a></li>
+        <li><a href="/estimate">Get an Estimate</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="ftr-h">Service area</h2>
+      <div class="ftr-list">
+        <p>Based in {{base}}. Serving {{service_area}}.</p>
+        {{licensed}}
+      </div>
+    </div>
+  </div>
+  <div class="wrap ftr-bottom">
     <p class="ftr-legal">&copy; <span data-year>{{year}}</span> {{name}}. {{tagline}}</p>
+    <a href="#top">Back to top</a>
   </div>
 </footer>
 <nav class="mbar" aria-label="Quick contact">
   <a class="mbar-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call</a>
   {{mbar_text}}
-  <a class="mbar-est" href="/estimate">Get an estimate</a>
+  <a class="mbar-est" href="/estimate">Get an Estimate</a>
 </nav>

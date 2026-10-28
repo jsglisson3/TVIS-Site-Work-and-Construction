@@ -14,6 +14,7 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 - [ ] `facebook`, `instagram`, `googleBusinessProfile`: full URLs (the small marks in the header and footer link to them)
 - [x] `baseLocation`: Chattanooga, TN
 - [x] `serviceArea`: Chattanooga and the surrounding counties
+- [ ] `serviceTowns`: the towns and counties Joey actually serves (shown on the homepage under "Serving Chattanooga and surrounding communities"; stays a yellow placeholder until filled)
 
 ## Estimate form
 
@@ -23,7 +24,7 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 
 ## Photos
 
-- [ ] Fixed spots: the 30 files listed in `photos/site/README.txt`. `home-hero.jpg` first, then the before/after pairs; the drawings stay in until each pair exists
+- [ ] Fixed spots: the 34 files listed in `photos/site/README.txt`. `home-hero.jpg` first (it fills the whole first screen), then the two "who it is for" cards and four service cards, then the before/after pairs; the drawings stay in until each photo exists
 - [ ] Projects: replace the three `Sample:` folders in `projects/` with real jobs (see `HOW-TO-ADD-A-PROJECT.md`)
 
 ## Copy
@@ -41,7 +42,7 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 
 ## Quality bar (re-check after the content lands)
 
-- [x] Redesign built with the frontend-design and design-taste-frontend skills, screenshots reviewed at 390px and 1440px (2026-10-28)
-- [x] Lighthouse mobile 90+ on every page (last run 2026-10-28: 96 to 100)
-- [x] Self-scored pass out of 100: 83 on 2026-10-28 (see `docs/HANDOFF.md`); re-score once photos and details are in, aim for 90+
+- [x] Full rebuild to the original brief with the frontend-design and design-taste-frontend skills, screenshots reviewed at 390px and 1440px (2026-10-28)
+- [x] Lighthouse mobile 90+ on every page (last run 2026-10-28 after the rebuild: 97 to 100)
+- [ ] Re-run the design inspector once real photos are in (it flags a page with no photographs); aim for a clean pass
 - [ ] Jeremy approves every page on his phone

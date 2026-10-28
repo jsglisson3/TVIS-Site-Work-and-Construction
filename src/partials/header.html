@@ -1,10 +1,8 @@
-<!-- Site header. It floats over the olive hero (white logo and links) and turns white with the ink
-     logo once a light section is under it; site.js switches the state from data-chapter on sections. -->
+<!-- Site header: white, with the full-colour logo. Phone menu opens full screen with the phone number first. -->
 <header class="hdr" data-hdr>
   <div class="hdr-in">
     <a class="hdr-logo" href="/" aria-label="{{name}}, home">
       <img class="logo-ink" src="/assets/img/logo.svg" alt="" width="1617" height="746" decoding="async">
-      <img class="logo-light" src="/assets/img/logo-white.svg" alt="" width="1617" height="746" decoding="async">
     </a>
     <nav class="nav" aria-label="Main">
       <ul class="nav-list">
@@ -25,11 +23,12 @@
       <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
     </div>
     <a class="hdr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
-    <a class="btn hdr-cta" href="/estimate"{{nav_estimate}}>Get an estimate</a>
+    <a class="btn hdr-cta" href="/estimate"{{nav_estimate}}>Get an Estimate</a>
     <a class="hdr-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mmenu"><span class="menu-bars" aria-hidden="true"></span><span class="menu-label">Menu</span></button>
   </div>
   <div class="mmenu" id="mmenu" hidden>
+    <a class="mmenu-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>{{talk}} {{phone}}</a>
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/homeowners">Homeowners</a></li>
@@ -37,10 +36,9 @@
       <li><a href="/projects">Projects</a></li>
       <li><a href="/more-services">Miscellaneous Services</a></li>
       <li><a href="/home-construction">Home Construction</a></li>
-      <li><a href="/estimate">Get an estimate</a></li>
+      <li><a href="/estimate">Get an Estimate</a></li>
     </ul>
     <div class="mmenu-foot">
-      <a class="mmenu-call" href="{{phone_href}}" data-track="call">{{talk}} {{phone}}</a>
       <div class="mmenu-social">
         <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
         <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>

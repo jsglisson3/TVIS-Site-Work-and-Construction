@@ -78,36 +78,16 @@
   document.querySelectorAll('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();
 
-// ---- header: white-on-colour over olive and charcoal sections, solid white elsewhere ----
+// ---- phones, homepage: the Call / Get an Estimate bar waits until the opening has scrolled away,
+//      because the opening already carries both buttons ----
 (function () {
-  var hdr = document.querySelector('[data-hdr]');
-  if (!hdr || !('IntersectionObserver' in window)) return;
-  var fields = [].slice.call(document.querySelectorAll('[data-chapter]'));
-  var io, on = {};
-  function build() {
-    if (io) io.disconnect();
-    // only the band the header covers counts, so the switch happens exactly at a section edge
-    io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { on[e.target.getAttribute('data-id')] = e.isIntersecting ? e.target.getAttribute('data-chapter') : ''; });
-      var kinds = fields.map(function (f) { return on[f.getAttribute('data-id')]; });
-      hdr.classList.toggle('over-field', kinds.indexOf('olive') !== -1);
-      hdr.classList.toggle('over-dark', kinds.indexOf('olive') === -1 && kinds.indexOf('dark') !== -1);
-    }, { rootMargin: '0px 0px -' + Math.max(0, window.innerHeight - hdr.offsetHeight) + 'px 0px' });
-    fields.forEach(function (f, i) { f.setAttribute('data-id', String(i)); io.observe(f); });
-  }
-  build();
-  var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); });
-  // tuck the header away while reading down the page; bring it back on the first scroll up
-  var last = window.scrollY, ticking = false;
-  window.addEventListener('scroll', function () {
-    if (ticking) return; ticking = true;
-    requestAnimationFrame(function () {
-      var y = window.scrollY, down = y > last + 4, up = y < last - 4;
-      if (down && y > 240 && !document.body.classList.contains('menu-open')) hdr.classList.add('tucked');
-      else if (up || y <= 240) hdr.classList.remove('tucked');
-      last = y; ticking = false;
-    });
-  }, { passive: true });
+  var hero = document.querySelector('.hero');
+  if (!hero || !('IntersectionObserver' in window)) return;
+  var wait = window.matchMedia('(max-width: 900px)');
+  new IntersectionObserver(function (entries) {
+    var visible = entries[0].isIntersecting;
+    document.body.classList.toggle('mbar-wait', visible && wait.matches);
+  }, { threshold: 0, rootMargin: '0px 0px -80px 0px' }).observe(hero);
 })();
 
 // ---- ?slots shows the file name each empty photo spot wants (for adding photos, not for visitors) ----

@@ -20,6 +20,7 @@ body_class: page-projects
       <li><button type="button" data-filter="property-cleanup" aria-pressed="false">Property Cleanup</button></li>
       <li><button type="button" data-filter="home-construction" aria-pressed="false">Home Construction</button></li>
     </ul>
+    <script>document.querySelector("[data-filters]").hidden=false</script>
     <p class="filter-status" role="status" aria-live="polite"></p>
     <div class="proj-grid proj-all">
 {{project_cards}}

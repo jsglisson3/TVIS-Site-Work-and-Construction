@@ -1,17 +1,22 @@
-<footer class="ftr ftr-landing" data-chapter="dark">
-  <div class="wrap ftr-call">
-    <p class="ftr-talk">{{talk}}</p>
-    <a class="ftr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
-    <p class="ftr-alt">{{text_link}}<span>{{name}}</span><span>{{service_area}}</span></p>
-    {{licensed}}
-  </div>
+<footer class="ftr ftr-landing">
   <div class="ftr-ground" data-ground aria-hidden="true">{{> dozer}}</div>
-  <div class="wrap ftr-meta">
+  <div class="wrap ftr-grid">
+    <div>
+      <p class="ftr-talk">{{talk}}</p>
+      <a class="ftr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
+      <div class="ftr-list">
+        <span>{{name}}</span>
+        <span>{{service_area}}</span>
+        {{licensed}}
+      </div>
+    </div>
+  </div>
+  <div class="wrap ftr-bottom">
     <p class="ftr-legal">&copy; <span data-year>{{year}}</span> {{name}}. {{tagline}}</p>
   </div>
 </footer>
 <nav class="mbar" aria-label="Quick contact">
   <a class="mbar-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call</a>
   {{mbar_text}}
-  <a class="mbar-est" href="#estimate">Get an estimate</a>
+  <a class="mbar-est" href="#estimate">Get an Estimate</a>
 </nav>

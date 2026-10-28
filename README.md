@@ -76,9 +76,9 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | `site.config.json` | Business details. The only place the phone number, email and so on are written. |
 | `src/pages/` | One file per page. The block between the `---` lines sets the title, search description and options. |
 | `src/partials/` | Pieces shared by pages: `layout`, `head`, `header` / `footer` (and the `-landing` versions for ad pages), the estimate form, `next-steps` (the "what happens next" slip), `dozer` (the footer machine), `icons`. |
-| `src/assets/` | `site.css`, `site.js`, the fonts, and `img/` with the logo as SVG (`logo.svg` full colour, `logo-white.svg` for olive backgrounds, `logo-reverse.svg` for the dark footer) plus `logo-clean.png`, used only to make the favicon and the social preview image. |
-| `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. It also strips the content-credential metadata that file transfers sometimes add to the SVG logos and inline drawings, so the published site stays small. |
-| `scripts/diagrams.mjs` | The drawn cross-sections (driveway, pad, drainage, cleanup, site prep, utilities, concrete, final grade) used wherever a photo is missing, and the `{{diagram}}` token behind the animated pad section. |
+| `src/assets/` | `site.css`, `site.js`, the fonts, and `img/` with the logo as SVG (`logo.svg` full colour for the white header, `logo-reverse.svg` for the dark footer) plus `logo-clean.png`, used only to make the favicon and the social preview image. |
+| `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. It also strips the content-credential metadata that file transfers sometimes add to the SVG logos and inline drawings, so the published site stays small, and it adds a content hash to the `site.css` and `site.js` links (`?v=...`) so a browser never pairs new pages with an old stylesheet after a deploy. |
+| `scripts/diagrams.mjs` | The drawn cross-sections (driveway, pad, drainage, cleanup, site prep, utilities, concrete, final grade, plus the dark `heroScene()` for the homepage hero) used wherever a photo is missing, and the `{{diagram}}` token behind the animated pad section. |
 | `scripts/make-samples.mjs` | Renders those drawings into the three `Sample:` project folders. Not part of the build. |
 | `scripts/trace-logo.py` | How the logo PNG was traced to SVG, in case the logo file ever changes. |
 | `scripts/serve.mjs` | The local preview server. |
@@ -94,7 +94,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 `LAUNCH-CHECKLIST.md` has the full list. The short version:
 
 - Every page at phone width (390px) and desktop (1440px), no sideways scroll.
-- Lighthouse mobile 90+ on every page (last run 2026-10-28: 96 to 100 on every category).
+- Lighthouse mobile 90+ on every page (last run 2026-10-28 after the rebuild: 97 to 100 on every page).
 - Send a test estimate with photos from a phone.
 - Tap every phone number and button on a phone.
 - Replace the three "Sample:" project folders with real jobs.

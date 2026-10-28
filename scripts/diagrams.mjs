@@ -305,6 +305,41 @@ const scenes = {
   },
 };
 
+// ---------- the homepage opening: the ground in cross-section, dark, until a hero photo exists ----------
+// 1600x900, anchored bottom-right so a phone crop keeps the trench. Quiet on purpose: the headline carries the page.
+export function heroScene() {
+  const W2 = 1600, H2 = 900;
+  const ground = [[0, 600], [260, 588], [520, 604], [800, 582], [1100, 568], [1350, 576], [1600, 560]];
+  const dn = (a, dy) => a.map(([x, y]) => [x, y + dy]);
+  const bottom = a => [...a, [a.at(-1)[0], H2 + 40], [a[0][0], H2 + 40]];
+  const ridge = (pts, fill) => poly([...pts, [W2, 700], [0, 700]], fill);
+  const tx0 = 1010, tx1 = 1190, tdepth = 250;                       // the French drain trench
+  const gy = at(ground, 1100);
+  let out = rect(0, 0, W2, H2, '#1B2225');
+  // two ridgelines far off, the way the land lies around Chattanooga
+  out += ridge([[0, 470], [180, 440], [380, 470], [620, 420], [860, 462], [1100, 430], [1340, 468], [1600, 436]], '#212A2D');
+  out += ridge([[0, 530], [240, 505], [520, 535], [780, 500], [1060, 528], [1320, 508], [1600, 530]], '#1D2528');
+  // strata: topsoil, subsoil, red clay
+  out += poly(bottom(dn(ground, 0)), '#553C30');
+  out += poly(between(ground, dn(ground, 190)), '#463B2F');
+  out += poly(between(ground, dn(ground, 34)), '#3A3329');
+  for (const d of [70, 120, 190]) out += line(dn(ground, d), '#000', 2, 'opacity=".18"');
+  // the trench cut into it: void, stone bed, pipe, stone cover
+  const trench = [[tx0, gy - 4], [tx1, gy - 4], [tx1 - 14, gy + tdepth], [tx0 + 14, gy + tdepth]];
+  out += poly(trench, '#161B1D');
+  out += `<defs><pattern id="hs" width="20" height="14" patternUnits="userSpaceOnUse"><rect width="20" height="14" fill="#4B4C46"/><circle cx="5" cy="4" r="2.3" fill="#62635B"/><circle cx="14" cy="10" r="2" fill="#383A35"/></pattern></defs>`;
+  out += poly([[tx0 + 14, gy + 44], [tx1 - 14, gy + 44], [tx1 - 14, gy + tdepth], [tx0 + 14, gy + tdepth]], 'url(#hs)');
+  out += poly([[tx0 + 3, gy + 4], [tx1 - 3, gy + 4], [tx1 - 13, gy + 44], [tx0 + 13, gy + 44]], '#2E2A24');
+  out += circle((tx0 + tx1) / 2, gy + 150, 30, '#E9E6DA', 'stroke="#161B1D" stroke-width="4"');
+  for (let a = 0; a < 6; a++) { const t = a * Math.PI / 3 + 0.4; out += circle((tx0 + tx1) / 2 + Math.cos(t) * 19, gy + 150 + Math.sin(t) * 19, 2.6, '#161B1D'); }
+  // the grade line, in the logo's olive
+  out += line(ground, '#72852E', 7);
+  // survey stakes and a string line
+  for (const sx of [760, 880, 1290]) { const sy = at(ground, sx); out += rect(sx - 4, sy - 84, 8, 84, '#8A7452') + rect(sx - 4, sy - 84, 8, 20, '#A3B654'); }
+  out += line([[760, at(ground, 760) - 72], [880, at(ground, 880) - 72]], '#A3B654', 2, 'opacity=".8"');
+  return `<svg class="dgm dgm-hero" viewBox="0 0 ${W2} ${H2}" preserveAspectRatio="xMaxYMax slice" role="img" aria-label="Cross-section of the ground: topsoil, subsoil and red clay, with a stone-filled French drain trench and perforated pipe, and survey stakes along the finished grade.">${out}</svg>`;
+}
+
 let uid = 0;
 export function diagram(name, state = 'after', opts = {}) {
   const fn = scenes[name];

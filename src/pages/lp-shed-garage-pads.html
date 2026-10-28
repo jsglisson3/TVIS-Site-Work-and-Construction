@@ -11,17 +11,19 @@ form_who: homeowner
 <!-- Ad landing page template. To make one for another campaign: copy this file, change the front matter
      (path, title, description, form_type), the headline and bullets, and the photo slot names.
      Match the headline to the ad's wording. -->
-<section class="phero" data-chapter="olive">
-  <div class="wrap">
+<section class="phero">
+  <div class="wrap phero-split">
+    <div class="phero-text">
     <h1>Shed &amp; Garage Pad Preparation</h1>
     <p>A level, well-drained gravel pad for your shed, garage, carport or metal building, built by a Chattanooga sitework crew.</p>
     <div class="hero-act">
-      <a class="btn btn-light" href="#estimate">Get an estimate</a>
+      <a class="btn btn-primary" href="#estimate">Get an estimate</a>
       <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
     </div>
+    </div>
+    <div class="phero-pic">{{photo slot="lp-pads-hero" label="finished shed sitting square on a fresh gravel pad" alt="Finished shed on a level gravel pad" kind="Page photo" draw="pad:after" sizes="(min-width: 900px) 520px, 100vw" eager}}</div>
   </div>
 </section>
-{{photo slot="lp-pads-hero" label="finished shed sitting square on a fresh gravel pad" alt="Finished shed on a level gravel pad" kind="Page photo" eager}}
 
 <section class="sec" aria-labelledby="lp-why-h">
   <div class="wrap lp-two">

@@ -4,17 +4,19 @@ description: Site prep, building pad excavation, utility trenching, driveways, c
 nav: builders
 body_class: page-builders
 ---
-<section class="phero" data-chapter="olive">
-  <div class="wrap">
+<section class="phero">
+  <div class="wrap phero-split">
+    <div class="phero-text">
     <h1>Sitework Solutions for Builders &amp; Contractors</h1>
     <p>TVIS partners with homebuilders, general contractors, and property investors to provide dependable site preparation, excavation, utility trenching, and finish work for residential construction projects.</p>
     <div class="hero-act">
-      <a class="btn btn-light" href="/estimate?who=builder">Send the address and plans</a>
+      <a class="btn btn-primary" href="/estimate?who=builder">Send the address and plans</a>
       <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
     </div>
+    </div>
+    <div class="phero-pic">{{photo slot="builders-hero" label="new home lot during site prep, machine on site" alt="New residential lot being prepared for construction" kind="Page photo" draw="siteprep:after" sizes="(min-width: 900px) 520px, 100vw" eager}}</div>
   </div>
 </section>
-{{photo slot="builders-hero" label="new home lot during site prep, machine on site" alt="New residential lot being prepared for construction" kind="Page photo" eager}}
 
 <nav class="jump" aria-label="On this page">
   <ul>
@@ -115,7 +117,7 @@ body_class: page-builders
   </div>
 </section>
 
-<section class="sec builder-cta area" data-chapter="dark" aria-labelledby="b-cta-h">
+<section class="sec builder-cta area" aria-labelledby="b-cta-h">
   <div class="wrap">
     <div>
       <h2 id="b-cta-h">Have a lot ready to go?</h2>

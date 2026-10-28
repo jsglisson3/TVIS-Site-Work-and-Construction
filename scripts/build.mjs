@@ -10,7 +10,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
-import { diagram, hasBefore } from './diagrams.mjs';
+import { diagram, hasBefore, heroScene } from './diagrams.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -44,6 +44,7 @@ const vars = {
   email: filled('email') ? `<a href="mailto:${esc(config.email)}">${esc(config.email)}</a>` : tbd('EMAIL'),
   base: show('baseLocation', 'CITY, TN'),
   service_area: show('serviceArea', 'TOWNS AND COUNTIES'),
+  service_towns: show('serviceTowns', 'TOWNS AND COUNTIES'),
   hours: show('hours', 'HOURS'),
   // hours are optional (Jeremy: not important); the line simply disappears while blank
   hours_footer: filled('hours') ? `<p>${esc(config.hours)}</p>` : '',
@@ -125,6 +126,7 @@ function photoBlock(attrs) {
   const { slot, label = '', alt = label, sizes = '100vw', eager, kind = 'Photo', draw } = attrs;
   const p = sitePhotos[slot];
   if (p) return `<div class="photo">${imgTag(p, alt, { sizes, eager: eager !== undefined })}</div>`;
+  if (draw === 'hero') return `<div class="photo photo-drawn photo-hero">${heroScene()}${slotNote(slot, label)}</div>`;
   if (draw) { const [name, state] = draw.split(':'); return `<div class="photo photo-drawn">${diagram(name, state || 'after')}${slotNote(slot, label)}</div>`; }
   // no photo and no drawing: the spot disappears from the page until the file exists
   return `<div class="photo photo-empty" hidden>${slotNote(slot, label)}</div>`;

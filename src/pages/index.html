@@ -6,59 +6,71 @@ nav: home
 schema: yes
 body_class: page-home
 ---
-<section class="hero" data-chapter="olive" aria-labelledby="hero-h">
-  <div class="wrap">
-    <h1 class="statement" id="hero-h"><span class="l1">Groundwork</span><span class="l2">Done Right.</span></h1>
+<section class="hero" aria-labelledby="hero-h">
+  <!-- Headline "Groundwork Done Right." is Jeremy's choice (2026-10-28); "From the Ground Up." stays the tagline (footer, config).
+       Full-width jobsite photograph with a dark overlay. Drop photos/site/home-hero.jpg in and it replaces the drawing. -->
+  <div class="hero-bg">
+    {{photo slot="home-hero" label="wide jobsite shot, excavator grading a residential lot, crew in frame" alt="TVIS crew grading a residential lot near Chattanooga" kind="Hero photo" draw="hero" eager}}
   </div>
-  <div class="wrap hero-foot">
-    <p class="hero-sub">Excavation, gravel driveways, shed and garage pads, drainage and site prep in {{service_area}}.</p>
+  <div class="wrap hero-in">
+    <h1 id="hero-h"><span>Groundwork</span><span>Done Right.</span></h1>
+    <p class="hero-sub">Professional Sitework, Driveways, Drainage &amp; Property Improvements.</p>
+    <p class="hero-line">Serving homeowners, builders, and contractors throughout Chattanooga and surrounding communities.</p>
     <div class="hero-act">
-      <a class="btn btn-light" href="/estimate">Get an estimate</a>
-      <a class="hero-call" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
+      <a class="btn btn-primary" href="/estimate">Request an Estimate</a>
+      <a class="btn btn-outline" href="{{phone_href}}" data-track="call">Call {{phone}}</a>
     </div>
   </div>
 </section>
 
-<!-- A wide jobsite photograph goes here once photos/site/home-hero.jpg exists; until then nothing shows. -->
-<div class="hero-photo">
-  {{photo slot="home-hero" label="wide jobsite shot, machine grading a residential lot" alt="TVIS crew grading a residential lot near Chattanooga" kind="Hero photo" eager}}
-</div>
-
-<section class="sec intro" aria-label="About TVIS">
+<section class="sec who" aria-labelledby="who-h">
   <div class="wrap">
-    <p class="intro-lead">From a washed-out gravel driveway to a new home site, TVIS Site Work and Construction does the excavation, grading and drainage that everything else gets built on.</p>
-    <div class="intro-cols">
-      <p><b><a href="/homeowners">Homeowners.</a></b> Driveway repair, shed and garage pads, French drains and yard cleanup, with an estimate from a few phone photos.</p>
-      <p><b><a href="/builders">Builders and contractors.</a></b> Site prep, building pads, utility trenching, driveways and final grading, coordinated by one sitework contractor.</p>
-      <p><b>Where we work.</b> Based in {{base}}, serving {{service_area}}.</p>
-      <p><b>Licensing and insurance.</b> {{licensed_inline}}</p>
+    <div class="sec-head"><h2 id="who-h">Who&rsquo;s the project for?</h2></div>
+    <div class="who-grid">
+      <a class="who-card" href="/homeowners">
+        {{photo slot="home-homeowner" label="homeowner driveway or backyard pad, finished" alt="Finished gravel driveway at a Chattanooga-area home" draw="driveway:after" sizes="(min-width: 900px) 600px, 100vw"}}
+        <span class="who-body">
+          <h3>I&rsquo;m a Homeowner</h3>
+          <p>Driveways, shed and garage pads, drainage and yard cleanup.</p>
+          <span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span>
+        </span>
+      </a>
+      <a class="who-card" href="/builders">
+        {{photo slot="home-builder" label="new-construction lot with pad cut and utilities trenched" alt="Graded new-construction lot with the building pad cut" draw="siteprep:after" sizes="(min-width: 900px) 600px, 100vw"}}
+        <span class="who-body">
+          <h3>I&rsquo;m a Builder or Contractor</h3>
+          <p>Site prep, utilities, driveways and final grading for new homes.</p>
+          <span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span>
+        </span>
+      </a>
     </div>
   </div>
 </section>
 
-<section class="sec caps" aria-labelledby="caps-h">
+<section class="sec svcs" aria-labelledby="svc-h">
   <div class="wrap">
-    <h2 class="caps-head" id="caps-h">The work we do</h2>
-    <ul class="caps-list">
-      <li><a href="/homeowners#driveways"><span class="caps-name">Gravel driveways</span><span class="caps-desc">Repair, resurfacing, new installs, widening and culverts.</span></a></li>
-      <li><a href="/homeowners#pads"><span class="caps-name">Shed &amp; garage pads</span><span class="caps-desc">Level, compacted gravel pads for sheds, garages, carports and metal buildings.</span></a></li>
-      <li><a href="/homeowners#drainage"><span class="caps-name">Drainage</span><span class="caps-desc">French drains, downspout piping, catch basins and standing-water fixes.</span></a></li>
-      <li><a href="/builders#site-prep"><span class="caps-name">New-home site prep</span><span class="caps-desc">Clearing, building pad excavation, rough grading and construction access.</span></a></li>
-      <li><a href="/builders#utilities"><span class="caps-name">Underground utilities</span><span class="caps-desc">Water, electrical and drainage trenching, conduit and backfill.</span></a></li>
-      <li><a href="/builders#concrete"><span class="caps-name">Culverts &amp; concrete</span><span class="caps-desc">Gravel drives, culverts, concrete driveways, aprons, sidewalks and pads.</span></a></li>
-      <li><a href="/builders#final-grading"><span class="caps-name">Final grading</span><span class="caps-desc">Finish grade, topsoil, final gravel and site cleanup.</span></a></li>
-      <li><a href="/homeowners#cleanup"><span class="caps-name">Cleanup &amp; demolition</span><span class="caps-desc">Old sheds, trailers, brush, overgrowth and debris, torn out and hauled off.</span></a></li>
-    </ul>
-  </div>
-</section>
-
-<section class="sec sec-tint show" aria-labelledby="show-h">
-  <div class="wrap">
-    <div class="show-head">
-      <h2 id="show-h" class="h3">Before and after</h2>
-      <p>Drag the handle. This is a gravel driveway the way we usually find it and the way we leave it: ruts cut out, a compacted stone base, fresh crusher run on top, and a culvert where the water crosses the entrance.</p>
+    <div class="sec-head">
+      <h2 id="svc-h">The work we do most</h2>
+      <p>Driveway repairs, shed and garage pads, French drains and residential site prep.</p>
     </div>
-    {{ba slot="home-showcase" draw="driveway" before="washed-out gravel driveway with ruts and standing water" after="the same driveway regraded with a new culvert and fresh crusher run" alt="gravel driveway repair" sizes="(min-width: 900px) 90vw, 100vw"}}
+    <div class="svc-grid">
+      <a class="svc-card" href="/homeowners#driveways">
+        {{photo slot="home-svc-driveways" label="regraded gravel driveway with fresh stone" alt="Regraded gravel driveway with fresh crusher run" draw="driveway:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        <span class="svc-body"><h3>Gravel Driveways</h3><p>Repairs, resurfacing, new installations and culverts.</p><span class="svc-more">See driveway services</span></span>
+      </a>
+      <a class="svc-card" href="/homeowners#pads">
+        {{photo slot="home-svc-pads" label="compacted gravel pad, shed going up" alt="Compacted gravel pad for a backyard shed" draw="pad:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        <span class="svc-body"><h3>Shed &amp; Garage Pads</h3><p>Site leveling, gravel bases and building pad preparation.</p><span class="svc-more">See pad services</span></span>
+      </a>
+      <a class="svc-card" href="/homeowners#drainage">
+        {{photo slot="home-svc-drainage" label="French drain trench with pipe and stone" alt="French drain trench with perforated pipe and stone" draw="drainage:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        <span class="svc-body"><h3>Drainage Solutions</h3><p>French drains, downspout piping and yard drainage.</p><span class="svc-more">See drainage services</span></span>
+      </a>
+      <a class="svc-card" href="/builders#site-prep">
+        {{photo slot="home-svc-siteprep" label="excavator grading a new home lot" alt="Excavator grading a new home site" draw="siteprep:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        <span class="svc-body"><h3>Site Preparation</h3><p>Excavation, grading, underground utilities and finish work.</p><span class="svc-more">See site prep</span></span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -74,14 +86,13 @@ body_class: page-home
   </div>
 </section>
 
-<section class="sec sec-tint how" aria-labelledby="how-h">
-  <div class="wrap">
-    <div class="how-text">
-      <h2 id="how-h">What happens next</h2>
-      <p>Send a few photos and a short description. We look them over, call you to talk it through, and visit the site if it needs a look.</p>
-      <a class="btn btn-primary" href="/estimate">Get an estimate</a>
+<section class="sec band" aria-labelledby="band-h">
+  <div class="wrap band-in">
+    <div>
+      <h2 id="band-h">Small Jobs. Big Projects. Same Attention to Detail.</h2>
+      <span class="bar" aria-hidden="true"></span>
     </div>
-    {{> next-steps}}
+    <p>Whether you&rsquo;re repairing a driveway, installing drainage, preparing a garage pad, or building a new home, TVIS Site Work and Construction is ready to help get the groundwork done.</p>
   </div>
 </section>
 
@@ -97,12 +108,18 @@ body_class: page-home
   </div>
 </section>
 
-<a class="cta-band" href="/estimate">
-  <span class="wrap">
-    <span class="cta-top">
-      <span class="cta-note">Send a few photos and a short description. We'll call you to talk it through.</span>
-      <svg class="cta-arrow" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38L38 10M16 10h22v22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square"/></svg>
-    </span>
-    <span class="cta-word">Estimate</span>
-  </span>
-</a>
+<section class="sec near" aria-labelledby="near-h">
+  <div class="wrap near-in">
+    <div>
+      <h2 id="near-h">Serving Chattanooga and surrounding communities</h2>
+      <p>Based in {{base}}. We work throughout {{service_area}}.</p>
+      <p class="towns">{{service_towns}}</p>
+    </div>
+    <div class="cta-card">
+      <h3>Ready to get the groundwork done?</h3>
+      <p>Send a few photos and a short description. We&rsquo;ll talk through the next steps.</p>
+      <a class="btn btn-primary" href="/estimate">Request an Estimate</a>
+      <a class="bigphone" href="{{phone_href}}" data-track="call">{{phone}}</a>
+    </div>
+  </div>
+</section>

@@ -7,10 +7,16 @@ spot with its file name, add ?slots to a page address, for example
 http://localhost:8080/homeowners?slots
 
 Homepage
-  home-hero.jpg                     wide jobsite shot, machine grading a residential lot
-                                    (shows full width under the green opening; the most important photo)
-  home-showcase-before.jpg          washed-out gravel driveway with ruts and standing water
-  home-showcase-after.jpg           the same driveway regraded with a new culvert and fresh crusher run
+  home-hero.jpg                     wide jobsite shot, excavator grading a residential lot, crew in frame
+                                    (fills the whole first screen under a dark overlay; the most important photo,
+                                    keep the machine or the work in the middle and the sky or ground at the edges)
+  home-homeowner.jpg                homeowner driveway or backyard pad, finished (the "I'm a Homeowner" card)
+  home-builder.jpg                  new-construction lot with pad cut and utilities trenched (the "I'm a Builder" card)
+  home-svc-driveways.jpg            regraded gravel driveway with fresh stone
+  home-svc-pads.jpg                 compacted gravel pad, shed going up
+  home-svc-drainage.jpg             French drain trench with pipe and stone
+  home-svc-siteprep.jpg             excavator grading a new home lot
+  (the homepage's Recent projects come from the projects/ folder, not from here)
 
 Homeowners page
   homeowners-hero.jpg               homeowner property after driveway and pad work
@@ -47,10 +53,10 @@ Shed pad ad landing page
   lp-pads-before.jpg                sloped backyard corner
   lp-pads-after.jpg                 level gravel pad ready for the shed
 
-That is 30 photos. Pairs ending -before.jpg / -after.jpg make a drag-to-compare
+That is 34 photos. Pairs ending -before.jpg / -after.jpg make a drag-to-compare
 slider once both exist; until then the drawing stays.
 
 .jpg, .png or .webp all work. Big phone photos are fine: the build shrinks them
 and removes GPS location data. Skip photos that show house numbers, license
 plates or faces. Wide, level shots in daylight work best; the hero photo is
-cropped to a wide strip, so keep the machine or the work near the middle.
+cropped to a wide frame, so keep the machine or the work near the middle.
