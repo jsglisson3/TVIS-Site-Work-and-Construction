@@ -56,7 +56,7 @@ def fix(path):
         x += w + gap
     new_dark = ''.join(keep)
     fill = re.search(r'fill="([^"]*)"', dark.group(1)).group(1)
-    letters_el = f'<path fill="{fill}" stroke="{fill}" stroke-width="4" stroke-linejoin="round" d="{"".join(out)}"/>'
+    letters_el = f'<path fill="{fill}" stroke="{fill}" stroke-width="9" stroke-linejoin="round" d="{"".join(out)}"/>'
     osubs = [sp for sp in re.findall(r'M[^M]*', olive.group(2)) if bbox(sp)[2] < 800]
     x0, x1, y0, y1 = BAR
     osubs.append(f'M{x0} {y0}L{x1} {y0}L{x1} {y1}L{x0} {y1}Z')

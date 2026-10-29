@@ -39,7 +39,7 @@
 
 *,*::before,*::after{box-sizing:border-box}
 *{margin:0;padding:0}
-html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hdr-h) + 24px);scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-padding-top:calc(var(--hdr-h) + 24px);scroll-behavior:smooth}
 html:has(.jump){scroll-padding-top:calc(var(--hdr-h) + 76px)}
 [hidden]{display:none!important}
 body{font:400 var(--t-body)/1.5 var(--text);color:var(--ink);background:var(--paper);padding-bottom:var(--mbar-h);overflow-x:clip}
@@ -113,15 +113,15 @@ p,li,dd,dt{max-width:68ch}
 
 
 /* ---------- header ---------- */
-.hdr{position:sticky;top:0;z-index:50;background:var(--paper);color:var(--ink)}
+.hdr{position:sticky;top:0;z-index:50;background:var(--paper);color:var(--ink);border-bottom:1px solid var(--stone)}
 .hdr{transition:box-shadow .2s ease}
 .hdr.is-scrolled{box-shadow:0 1px 0 var(--stone),0 12px 28px -14px rgba(35,43,46,.28)}
 .hdr-in{display:flex;align-items:center;gap:clamp(20px,2.4vw,36px);height:var(--hdr-h);padding:0 var(--gut);max-width:var(--max);margin:0 auto}
-.hdr-logo{display:block;height:88px;aspect-ratio:1619/776;flex:none}
+.hdr-logo{display:block;height:92px;aspect-ratio:1619/776;flex:none}
 .hdr-logo img{height:100%;width:auto}
 .nav{margin-left:auto}
 .nav-list{display:flex;gap:clamp(18px,2.2vw,32px);align-items:center}
-.nav-list a,.sub-btn{display:block;font:600 var(--t-small)/1 var(--text);text-decoration:none;padding:14px 0;color:inherit}
+.nav-list a,.sub-btn{display:block;font:600 17px/1 var(--text);letter-spacing:.005em;text-decoration:none;padding:14px 0;color:var(--ink)}
 .nav-list a:hover,.sub-btn:hover,.has-sub.open .sub-btn{box-shadow:inset 0 -3px 0 var(--olive)}
 .nav-list a[aria-current]{box-shadow:inset 0 -3px 0 var(--olive)}
 .sub-btn::after{content:"";display:inline-block;margin-left:8px;border:5px solid transparent;border-top-color:currentColor;transform:translateY(3px)}
@@ -132,11 +132,13 @@ p,li,dd,dt{max-width:68ch}
 .sub a{padding:13px 20px}
 .sub a:hover{background:var(--warm);box-shadow:none}
 .hdr-social{display:flex;gap:2px}
-.hdr-social a,.mmenu-social a{width:40px;height:40px;display:grid;place-items:center;color:var(--ink-soft)}
-.hdr-social svg,.mmenu-social svg{width:21px;height:21px}
-.hdr-social a:hover{color:var(--olive-deep)}
-.hdr-phone{display:flex;gap:8px;align-items:center;font:700 20px/1 var(--display);letter-spacing:.03em;text-decoration:none;white-space:nowrap}
-.hdr-phone svg{width:20px;height:20px}
+.hdr-social a,.mmenu-social a{width:44px;height:44px;display:grid;place-items:center}
+.hdr-social svg,.mmenu-social svg{width:28px;height:28px}
+.hdr-social a:hover svg,.mmenu-social a:hover svg{transform:scale(1.08)}
+.hdr-social svg,.mmenu-social svg{transition:transform .15s ease}
+.hdr-phone{display:flex;gap:8px;align-items:center;font:700 21px/1 var(--display);letter-spacing:.03em;text-decoration:none;white-space:nowrap;color:var(--ink)}
+.hdr-phone:hover{color:var(--olive-deep)}
+.hdr-phone svg{width:20px;height:20px;color:var(--olive-deep)}
 .hdr-phone .tbd{font-size:.85em}
 .hdr-cta{min-height:52px;padding:0 24px;background:var(--olive-deep);color:#fff}
 .hdr-cta:hover{background:var(--olive-deeper)}
@@ -409,6 +411,12 @@ body.menu-open{overflow:hidden}
 .cta-actions{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
 .builder-cta{background:var(--charcoal);color:#fff}
 .bigphone-light{color:#fff}
+.call-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:700 var(--t-body)/1 var(--display);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:2px solid currentColor;padding-bottom:4px}
+.call-link svg{width:20px;height:20px;color:var(--olive-deep)}
+.call-link:hover{color:var(--olive-deep)}
+.call-link-light{color:#fff}
+.call-link-light svg{color:var(--olive-light,#A3B654)}
+.cta-card .call-link{margin-top:22px}
 .callout .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:32px 64px;align-items:center}
 .callout p{margin-top:20px;max-width:42ch}
 

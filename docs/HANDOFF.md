@@ -243,3 +243,8 @@ The business is now **TVIS Construction** (Jeremy). `site.config.json > name` dr
 
 `formEndpoint` = Basin form https://usebasin.com/f/4513058586c6 (Basin account under tvisconstruction@gmail.com; notifications should go to info@tvisconstruction.com). The "form is being set up" notice disappears automatically. Do a real test submission with a photo after each change to the form.
 - 04:40 UTC: site email changed to **info@tvisconstruction.com** (Google Workspace on the domain, set up 2026-10-29). Only `site.config.json > email` changed.
+
+## Final polish (2026-10-29 04:55 UTC)
+
+- Phone number trimmed (Jeremy: "excessive"). It now shows in the desktop header, the footer, the estimate page contact card, the thank-you panel and the 404. Hero links say "Call us" and end-of-page CTAs say "Or call us" (class `call-link`); all still dial the number.
+- Header: Facebook shows the blue brand mark (icons.html `i-fb`, everywhere), phone has an icon, nav 17px ink, hairline under the header, logo 92px, font smoothing on. Logo lettering stroke raised to 9 for crisper small sizes.
