@@ -400,13 +400,13 @@ function trackingHead() {
 async function brandImages() {
   const out = path.join(DIST, 'assets', 'img');
   await fs.mkdir(out, { recursive: true });
-  const logo = path.join(ROOT, 'src', 'assets', 'img', 'logo-clean.png');
-  // Square icon: the houses-and-excavator mark from the top of the logo
-  const m = await sharp(logo).metadata();
-  const markH = Math.round(m.height * 0.62);
-  const mark = await sharp(logo).extract({ left: 0, top: 0, width: m.width, height: markH }).toBuffer();
-  const square = await sharp({ create: { width: m.width, height: m.width, channels: 4, background: '#ffffff' } })
-    .composite([{ input: mark, top: Math.round((m.width - markH) / 2), left: 0 }]).png().toBuffer();
+  // Round badge, as on Joey's new artwork (NewLogo.jpg): the logo inside an olive and charcoal ring.
+  // Used for the browser tab, phone home-screen icon and the logo Google shows.
+  const logoSvg = stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'assets', 'img', 'logo.svg'), 'utf8'));
+  const inner = logoSvg.replace(/<svg[^>]*>/, '<svg x="90" y="275" width="820" height="393" viewBox="79 97 1619 776" preserveAspectRatio="xMidYMid meet">');
+  const badgeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="488" fill="#FFFFFF"/><circle cx="500" cy="500" r="478" fill="none" stroke="#72852E" stroke-width="22"/><circle cx="500" cy="500" r="461" fill="none" stroke="#232B2E" stroke-width="12"/>${inner}</svg>`;
+  await fs.writeFile(path.join(out, 'logo-badge.svg'), badgeSvg);
+  const square = await sharp(Buffer.from(badgeSvg), { density: 144 }).resize(1024, 1024).png().toBuffer();
   for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180], ['logo-512.png', 512]]) {
     await sharp(square).resize(size, size).png().toFile(path.join(out, name));
   }
@@ -422,7 +422,7 @@ async function brandImages() {
     await sharp(photo).composite([{ input: scrim, left: 0, top: 0 }, { input: ogLogo, left: 64, top: 606 - 48 - lm.height }])
       .jpeg({ quality: 84 }).toFile(path.join(out, 'og-image.jpg'));
   } else {
-    const ogLogo = await sharp(logo).resize({ width: 900 }).toBuffer();
+    const ogLogo = await sharp(path.join(ROOT, 'src', 'assets', 'img', 'logo.svg'), { density: 300 }).resize({ width: 900 }).png().toBuffer();
     const ogMeta = await sharp(ogLogo).metadata();
     await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#F3F2EE' } })
       .composite([{ input: ogLogo, left: 150, top: Math.round((630 - ogMeta.height) / 2) - 20 },
@@ -520,7 +520,7 @@ async function main() {
     const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
     await renderPage({
       title: `${p.title}${town} | ${p.category} | TVIS`,
-      description: (p.description || `${p.category} project by TVIS Site Work and Construction${town}.`).slice(0, 155),
+      description: (p.description || `${p.category} project by TVIS Construction${town}.`).slice(0, 155),
       nav: 'projects',
       body_class: 'page-project',
       sitemap: p.title.startsWith('Sample') ? 'no' : '',

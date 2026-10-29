@@ -2,7 +2,7 @@
   "_readme": "Business details used on every page. Leave a value empty (\"\") and the site shows a yellow [PLACEHOLDER] until you fill it in. See README.md.",
   "launchMode": true,
   "_launchMode": "true once the site is public: blank optional details (licensed line, email, response time, project towns) are left out instead of showing a yellow [PLACEHOLDER]. Set false while building.",
-  "name": "TVIS Site Work and Construction",
+  "name": "TVIS Construction",
   "tagline": "From the Ground Up.",
   "phone": "423-618-3112",
   "phoneTakesTexts": false,
@@ -20,7 +20,7 @@
   "googleSiteVerification": "2jRRDxl0NHKcagbnaPNGg1jdLlrFf4lMYD4fOA2nKkA",
   "_googleSiteVerification": "the code from Google Search Console > Settings > Ownership verification > HTML tag (just the content value). Leave empty if you verify through DNS instead.",
   "domain": "tvisconstruction.com",
-  "formEndpoint": "",
+  "formEndpoint": "https://usebasin.com/f/4513058586c6",
   "tracking": {
     "googleAnalyticsId": "",
     "googleAdsId": "",

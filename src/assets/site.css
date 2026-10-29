@@ -1,4 +1,4 @@
-/* TVIS Site Work and Construction
+/* TVIS Construction
    White header with the full-colour logo, a dark photo-led opening, charcoal footer, olive only as the accent
    (buttons, bars, bullets). Barlow Condensed for headings and buttons, Source Sans 3 for everything else.
    Square flat buttons, no shadows, no gradients except the scrim that keeps text readable over a photo. */
@@ -117,7 +117,7 @@ p,li,dd,dt{max-width:68ch}
 .hdr{transition:box-shadow .2s ease}
 .hdr.is-scrolled{box-shadow:0 1px 0 var(--stone),0 12px 28px -14px rgba(35,43,46,.28)}
 .hdr-in{display:flex;align-items:center;gap:clamp(20px,2.4vw,36px);height:var(--hdr-h);padding:0 var(--gut);max-width:var(--max);margin:0 auto}
-.hdr-logo{display:block;height:88px;aspect-ratio:1619/746;flex:none}
+.hdr-logo{display:block;height:88px;aspect-ratio:1619/776;flex:none}
 .hdr-logo img{height:100%;width:auto}
 .nav{margin-left:auto}
 .nav-list{display:flex;gap:clamp(18px,2.2vw,32px);align-items:center}
