@@ -263,8 +263,8 @@ function projectDetail(p) {
     ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 70vw, 100vw')}</div>` : ''}
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
-      <a class="btn btn-primary" href="/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}">Get an estimate for a project like this</a>
-      <a class="bigphone" href="{{phone_href}}" data-track="call">{{phone}}</a>
+      <a class="btn btn-primary" href="/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}">Get an estimate for a job like this</a>
+      <a class="call-link" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Or call us</a>
     </div>
   </div>
 </section>`;

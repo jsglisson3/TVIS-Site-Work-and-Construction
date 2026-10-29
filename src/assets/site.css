@@ -318,7 +318,8 @@ body.menu-open{overflow:hidden}
 .socials{display:flex;gap:6px}
 .socials a{width:44px;height:44px;display:grid;place-items:center;color:#fff}
 .socials a:hover{color:var(--olive-light)}
-.socials svg{width:22px;height:22px}
+.socials svg{width:30px;height:30px;transition:transform .15s ease}
+.socials a:hover svg{transform:scale(1.08)}
 .ftr-legal{color:#E3E7E0;max-width:none}
 .ftr-landing .ftr-grid{grid-template-columns:1fr}
 
