@@ -2,7 +2,7 @@ Which of Joey's photos fills each spot (numbers and names from /mnt/project-file
 
 home-hero                      #96  IMG_8314   mini excavator, hillside lot, two-story home
 home-band                      #101 IMG_8425   concrete truck at the hillside driveway pour
-home-homeowner                 #114 2a621362   driveway with landscaped stone beds (confirm this is TVIS work)
+home-homeowner                 #114 2a621362   driveway with landscaped stone beds (Joey confirmed 2026-10-29: TVIS work)
 home-builder                   #113 1000035915 graded lot, silt fence, excavator
 home-svc-driveways             #93  IMG_8083   gravel drive to a new home
 home-svc-pads                  #121 IMG_6867   graded pad inside wood forms
@@ -28,3 +28,7 @@ pads-feature                   #33  IMG_0057   fresh pad in an open yard
 homeowners-drainage            #77  IMG_7069(1) rock swale beside block wall (sky cropped)
 homeowners-cleanup             #81  IMG_7246(1) clearing brush on a wooded lot
 builders-site-prep             #56  IMG_5304   footing trenches in a graded pad
+
+Added 2026-10-29 to match the six services on Joey's Facebook banner:
+home-svc-concrete              #106 IMG_8483   concrete driveway done on the hillside lot
+home-svc-demolition            #48  IMG_5197   cleared lot, debris gone (until a real demolition photo lands)

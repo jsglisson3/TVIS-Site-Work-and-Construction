@@ -2,7 +2,7 @@
 
 Marketing site for TVIS Site Work and Construction, an excavation and sitework company in Chattanooga, TN. Plain HTML, CSS and a little JavaScript, built by a small Node script and published to GitHub Pages by a GitHub Action on every push to `main`.
 
-Live at https://jsglisson3.github.io/TVIS-Site-Work-and-Construction/ until a custom domain is set (see below).
+Live at https://tvisconstruction.com/ once the DNS and the Pages custom domain are set (see below); until then at https://jsglisson3.github.io/TVIS-Site-Work-and-Construction/.
 
 ## Run it on your computer
 
@@ -19,7 +19,7 @@ Re-run `npm run dev` after changing anything. Press Ctrl+C to stop it.
 
 Push to `main` and the Action in `.github/workflows/deploy.yml` builds and publishes the site. One-time setup on GitHub (done): **Settings > Pages > Build and deployment > Source: GitHub Actions**. Each deploy shows up under the repo's **Actions** tab and takes about a minute.
 
-**Custom domain later:** put it in `site.config.json > domain` (for example `tvissitework.com`), push, then add it under Settings > Pages > Custom domain and point the domain's DNS at GitHub Pages. The build writes `CNAME`, the sitemap and canonical links from that one setting.
+**Custom domain:** put it in `site.config.json > domain` (for example `tvisconstruction.com`), push, then add it under Settings > Pages > Custom domain and point the domain's DNS at GitHub Pages. From that one setting the build drops the `/TVIS-Site-Work-and-Construction/` subpath, writes `CNAME`, the sitemap, `robots.txt`, canonical links and the og:url / og:image addresses Facebook needs.
 
 ## Fill in the business details
 

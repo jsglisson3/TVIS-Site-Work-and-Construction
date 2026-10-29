@@ -16,6 +16,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 const BASE = (process.env.BASE_PATH || '').replace(/\/$/, ''); // e.g. "/TVIS-Site-Work" before the custom domain is set
 const config = JSON.parse(await fs.readFile(path.join(ROOT, 'site.config.json'), 'utf8'));
+// "https://tvisconstruction.com" once site.config.json > domain is filled; empty until then
+const siteOrigin = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : '';
 const YEAR = new Date().getFullYear();
 
 export const CATEGORIES = ['Driveways', 'Shed & Garage Pads', 'Drainage', 'New Construction Sitework', 'Concrete', 'Property Cleanup', 'Home Construction'];
@@ -30,6 +32,8 @@ const tbd = label => `<span class="tbd">[${esc(label)}]</span>`;
 const digits = (config.phone || '').replace(/\D/g, '');
 const tel = digits ? `tel:+${digits.length === 10 ? '1' + digits : digits}` : '';
 const filled = k => typeof config[k] === 'string' && config[k].trim() !== '';
+// launch mode: a blank optional detail is left out rather than shown as a yellow [PLACEHOLDER]
+const LIVE = config.launchMode === true;
 const show = (k, label) => (filled(k) ? esc(config[k]) : tbd(label));
 const texts = config.phoneTakesTexts === true && digits !== '';
 const sms = texts ? tel.replace('tel:', 'sms:') : '';
@@ -41,7 +45,9 @@ const vars = {
   tagline: esc(config.tagline),
   phone: show('phone', 'PHONE'),
   phone_href: tel || '/estimate#contact',
-  email: filled('email') ? `<a href="mailto:${esc(config.email)}">${esc(config.email)}</a>` : tbd('EMAIL'),
+  email: filled('email') ? `<a href="mailto:${esc(config.email)}">${esc(config.email)}</a>` : (LIVE ? '' : tbd('EMAIL')),
+  email_footer: filled('email') ? `<span><a href="mailto:${esc(config.email)}">${esc(config.email)}</a></span>` : (LIVE ? '' : `<span>${tbd('EMAIL')}</span>`),
+  email_dl: filled('email') ? `<div><dt>Email</dt><dd><a href="mailto:${esc(config.email)}">${esc(config.email)}</a></dd></div>` : (LIVE ? '' : `<div><dt>Email</dt><dd>${tbd('EMAIL')}</dd></div>`),
   base: show('baseLocation', 'CITY, TN'),
   service_area: show('serviceArea', 'TOWNS AND COUNTIES'),
   service_towns: show('serviceTowns', 'TOWNS AND COUNTIES'),
@@ -49,15 +55,17 @@ const vars = {
   // hours are optional (Jeremy: not important); the line simply disappears while blank
   hours_footer: filled('hours') ? `<p>${esc(config.hours)}</p>` : '',
   hours_dl: filled('hours') ? `<div><dt>Hours</dt><dd>${esc(config.hours)}</dd></div>` : '',
-  licensed_inline: filled('licensedLine') ? esc(config.licensedLine) : tbd('LICENSED AND INSURED LINE'),
-  licensed: filled('licensedLine') ? `<p class="licensed">${esc(config.licensedLine)}</p>` : `<p class="licensed">${tbd('LICENSED AND INSURED LINE')}</p>`,
+  licensed_inline: filled('licensedLine') ? esc(config.licensedLine) : (LIVE ? '' : tbd('LICENSED AND INSURED LINE')),
+  licensed: filled('licensedLine') ? `<p class="licensed">${esc(config.licensedLine)}</p>` : (LIVE ? '' : `<p class="licensed">${tbd('LICENSED AND INSURED LINE')}</p>`),
   response_time: show('responseTime', '1 BUSINESS DAY'),
+  // "We'll get back to you within 1 business day." once a response time is promised; a plain line until then
+  response_line: filled('responseTime') ? `We'll get back to you within ${esc(config.responseTime)}.` : (LIVE ? `We'll be in touch soon.` : `We'll get back to you within ${tbd('1 BUSINESS DAY')}.`),
   facebook: config.facebook || '#facebook-url-needed',
   instagram: config.instagram || '#instagram-url-needed',
   gbp: config.googleBusinessProfile || '#google-business-profile-url-needed',
   form_endpoint: esc(config.formEndpoint || ''),
   // Shown above the form until site.config.json > formEndpoint is filled, so requests never vanish silently
-  form_notice: config.formEndpoint ? '' : `<p class="form-off" role="note"><b>This form isn't connected yet,</b> so requests can't be sent from it. Please call <span class="tbd">[PHONE]</span> for now. <small>(Site owner: add the Basin endpoint to site.config.json &gt; formEndpoint.)</small></p>`,
+  form_notice: config.formEndpoint ? '' : `<p class="form-off" role="note"><b>The request form is being set up.</b> For now, call ${tel ? `<a href="${tel}" data-track="call">${esc(config.phone)}</a>` : tbd('PHONE')} or message us on <a href="${esc(config.facebook || '#facebook-url-needed')}">Facebook</a> and we'll take it from there.${LIVE ? '' : ' <small>(Site owner: add the Basin endpoint to site.config.json &gt; formEndpoint.)</small>'}</p>`,
   talk,
   talk_who: texts || filled('ownerFirstName') ? `<p class="talk-who">${talk}</p>` : '',
   text_link: texts ? `<a class="text-link" href="${sms}" data-track="call">Text ${esc(config.phone)}</a>` : '',
@@ -201,7 +209,7 @@ async function loadProjects() {
       town: info.town || '',
       status,
       featured: /^y/i.test(info.featured || ''),
-      description: info.description || info.about || '',
+      description: (info.description || info.about || '').replace(/^\[CONFIRM\]\s*/i, m => (LIVE ? '' : m)),
       date: folder.slice(0, 7),
       photos,
     });
@@ -226,8 +234,8 @@ function baSlider(p, sizes, eager = false) {
   return one ? `<div class="ba ba-single">${imgTag(one, `${p.title}${town}`, { sizes })}</div>` : '';
 }
 
-const townHtml = p => (p.town ? (p.town.startsWith('[') ? tbd(p.town.replace(/[\[\]]/g, '')) : esc(p.town)) : '');
-const projectRow = p => `<span class="badge${p.status === 'In Progress' ? ' badge-live' : ''}">${p.status}</span> <span>${p.town ? townHtml(p) + ' · ' : ''}${esc(p.category)}</span>`;
+const townHtml = p => (p.town ? (p.town.startsWith('[') ? (LIVE ? '' : tbd(p.town.replace(/[\[\]]/g, ''))) : esc(p.town)) : '');
+const projectRow = p => `<span class="badge${p.status === 'In Progress' ? ' badge-live' : ''}">${p.status}</span> <span>${townHtml(p) ? townHtml(p) + ' · ' : ''}${esc(p.category)}</span>`;
 
 // Project type codes on the estimate form (keep in sync with data-type in src/partials/estimate-form.html)
 const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'Drainage': 'drainage', 'New Construction Sitework': 'siteprep', 'Concrete': 'concrete', 'Property Cleanup': 'cleanup', 'Home Construction': 'home' };
@@ -419,7 +427,11 @@ async function main() {
       title: esc(meta.title || config.name),
       description: esc(meta.description || ''),
       url_path: urlPath,
-      canonical: config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}${urlPath}` : '',
+      canonical: siteOrigin ? `${siteOrigin}${urlPath}` : '',
+      // once site.config.json has the domain, every page says where it lives, so Facebook and Google get the right address
+      canonical_tag: siteOrigin ? `<link rel="canonical" href="${siteOrigin}${urlPath}">` : '',
+      og_url_tag: siteOrigin ? `<meta property="og:url" content="${siteOrigin}${urlPath}">` : '',
+      og_image: `${siteOrigin}/assets/img/og-image.jpg`,
       robots: meta.noindex === 'yes' ? 'noindex, follow' : 'index, follow',
       body_class: meta.body_class || '',
       header: meta.layout === 'landing' ? 'header-landing' : 'header',
@@ -432,7 +444,7 @@ async function main() {
     };
     let html = layout.replace('{{content}}', body).replace('{{> header}}', `{{> ${pageCtx.header}}}`).replace('{{> footer}}', `{{> ${pageCtx.footer}}}`);
     html = await render(html, pageCtx);
-    html = html.replace(/\{\{nav_[\w]+\}\}/g, '').replace(/ ?\{\{canonical_tag\}\}/, '');
+    html = html.replace(/\{\{nav_[\w]+\}\}/g, '');
     html = withBase(html);
     const outFile = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     await fs.mkdir(path.dirname(path.join(DIST, outFile)), { recursive: true });

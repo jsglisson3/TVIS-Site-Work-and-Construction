@@ -11,10 +11,10 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 - [ ] `licensedLine`: the exact licensed and insured wording Joey can stand behind
 - [ ] `responseTime`: e.g. `1 business day` (shown on the thank-you)
 - [ ] `hours`: optional; stays hidden while blank
-- [ ] `facebook`, `instagram`, `googleBusinessProfile`: full URLs (the small marks in the header and footer link to them)
+- [ ] `instagram`, `googleBusinessProfile`: full URLs (`facebook` filled 2026-10-29) (the small marks in the header and footer link to them)
 - [x] `baseLocation`: Chattanooga, TN
 - [x] `serviceArea`: Chattanooga and the surrounding counties
-- [ ] `serviceTowns`: the towns and counties Joey actually serves (shown on the homepage under "Serving Chattanooga and surrounding communities"; stays a yellow placeholder until filled)
+- [x] `serviceTowns`: filled 2026-10-29 from Joey (shown on the homepage under "Serving Chattanooga and surrounding communities"; stays a yellow placeholder until filled)
 
 ## Estimate form
 
@@ -36,7 +36,7 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 ## Online
 
 - [x] GitHub: Settings > Pages > Source: **GitHub Actions** (done 2026-10-28), so every sync publishes
-- [ ] Domain, when bought: `site.config.json > domain`, then Settings > Pages > Custom domain, then DNS
+- [x] Domain: tvisconstruction.com is in `site.config.json`; still to do: Settings > Pages > Custom domain, then DNS
 - [ ] Tracking IDs in `site.config.json > tracking` once the Google and Meta accounts exist
 - [ ] Final run-through on a phone: tap every button and phone number, send one real-looking estimate
 
