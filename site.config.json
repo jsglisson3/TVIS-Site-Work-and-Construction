@@ -17,6 +17,8 @@
   "facebook": "https://www.facebook.com/profile.php?id=61595961032699",
   "instagram": "",
   "googleBusinessProfile": "",
+  "googleSiteVerification": "",
+  "_googleSiteVerification": "the code from Google Search Console > Settings > Ownership verification > HTML tag (just the content value). Leave empty if you verify through DNS instead.",
   "domain": "tvisconstruction.com",
   "formEndpoint": "",
   "tracking": {

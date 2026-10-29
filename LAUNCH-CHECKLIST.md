@@ -11,6 +11,7 @@ Everything the site is still waiting on. Each item is a yellow `[PLACEHOLDER]`, 
 - [ ] `licensedLine`: the exact licensed and insured wording Joey can stand behind
 - [ ] `responseTime`: e.g. `1 business day` (shown on the thank-you)
 - [ ] `hours`: optional; stays hidden while blank
+- [ ] `googleSiteVerification`: the HTML-tag code from Google Search Console (or verify by DNS and leave it empty), then submit https://tvisconstruction.com/sitemap.xml there
 - [ ] `instagram`, `googleBusinessProfile`: full URLs (`facebook` filled 2026-10-29) (the small marks in the header and footer link to them)
 - [x] `baseLocation`: Chattanooga, TN
 - [x] `serviceArea`: Chattanooga and the surrounding counties

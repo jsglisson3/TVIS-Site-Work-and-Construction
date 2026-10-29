@@ -9,18 +9,12 @@
         <li><a href="/homeowners"{{nav_homeowners}}>Homeowners</a></li>
         <li><a href="/builders"{{nav_builders}}>Builders &amp; Contractors</a></li>
         <li><a href="/projects"{{nav_projects}}>Projects</a></li>
-        <li class="has-sub">
-          <button class="sub-btn" type="button" aria-expanded="false" aria-controls="sub-more">More</button>
-          <ul class="sub" id="sub-more">
-            <li><a href="/more-services"{{nav_more_services}}>Miscellaneous Services</a></li>
-            <li><a href="/home-construction"{{nav_home_construction}}>Home Construction</a></li>
-          </ul>
-        </li>
+        <li><a href="/more-services"{{nav_more_services}}>More Services</a></li>
       </ul>
     </nav>
     <div class="hdr-social">
-      <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
-      <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
+      {{fb_icon}}
+      {{ig_icon}}
     </div>
     <a class="hdr-phone" href="{{phone_href}}" data-track="call">{{phone}}</a>
     <a class="btn hdr-cta" href="/estimate"{{nav_estimate}}>Get an Estimate</a>
@@ -34,14 +28,13 @@
       <li><a href="/homeowners">Homeowners</a></li>
       <li><a href="/builders">Builders &amp; Contractors</a></li>
       <li><a href="/projects">Projects</a></li>
-      <li><a href="/more-services">Miscellaneous Services</a></li>
-      <li><a href="/home-construction">Home Construction</a></li>
+      <li><a href="/more-services">More Services</a></li>
       <li><a href="/estimate">Get an Estimate</a></li>
     </ul>
     <div class="mmenu-foot">
       <div class="mmenu-social">
-        <a href="{{facebook}}" aria-label="{{name}} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>
-        <a href="{{instagram}}" aria-label="{{name}} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>
+        {{fb_icon}}
+        {{ig_icon}}
       </div>
     </div>
     <div class="dozer-spot" aria-hidden="true">{{> dozer}}</div>

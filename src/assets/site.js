@@ -181,6 +181,11 @@ if (/[?&]slots\b/.test(location.search)) {
   var empty = document.querySelector('[data-empty]');
   var status = document.querySelector('.filter-status');
   bar.hidden = false;
+  // a category with no project yet gets no button (the buttons list every category the site can show)
+  bar.querySelectorAll('button[data-filter]').forEach(function (b) {
+    var cat = b.getAttribute('data-filter');
+    if (cat !== 'all' && !cards.some(function (c) { return c.getAttribute('data-category') === cat; })) b.parentElement.hidden = true;
+  });
   function apply(cat, push) {
     var shown = 0;
     cards.forEach(function (c) { var on = cat === 'all' || c.getAttribute('data-category') === cat; c.hidden = !on; if (on) shown++; });

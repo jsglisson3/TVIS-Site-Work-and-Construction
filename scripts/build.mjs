@@ -63,6 +63,10 @@ const vars = {
   facebook: config.facebook || '#facebook-url-needed',
   instagram: config.instagram || '#instagram-url-needed',
   gbp: config.googleBusinessProfile || '#google-business-profile-url-needed',
+  // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
+  fb_icon: config.facebook || !LIVE ? `<a href="${config.facebook || '#facebook-url-needed'}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
+  ig_icon: config.instagram || !LIVE ? `<a href="${config.instagram || '#instagram-url-needed'}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : '',
+  gbp_icon: config.googleBusinessProfile || !LIVE ? `<a href="${config.googleBusinessProfile || '#google-business-profile-url-needed'}" aria-label="${esc(config.name)} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>` : '',
   form_endpoint: esc(config.formEndpoint || ''),
   // Shown above the form until site.config.json > formEndpoint is filled, so requests never vanish silently
   form_notice: config.formEndpoint ? '' : `<p class="form-off" role="note"><b>The request form is being set up.</b> For now, call ${tel ? `<a href="${tel}" data-track="call">${esc(config.phone)}</a>` : tbd('PHONE')} or message us on <a href="${esc(config.facebook || '#facebook-url-needed')}">Facebook</a> and we'll take it from there.${LIVE ? '' : ' <small>(Site owner: add the Basin endpoint to site.config.json &gt; formEndpoint.)</small>'}</p>`,
@@ -318,6 +322,15 @@ function frontMatter(src) {
   return [meta, src.slice(m[0].length)];
 }
 
+// Home > Projects > <project>: tells Google how the inner pages hang together
+function breadcrumbs(urlPath, title) {
+  if (!siteOrigin || urlPath === '/' ) return '';
+  const crumbs = [{ name: 'Home', item: siteOrigin + '/' }];
+  if (urlPath.startsWith('/project/')) crumbs.push({ name: 'Projects', item: siteOrigin + '/projects' });
+  crumbs.push({ name: title.split(' | ')[0], item: siteOrigin + urlPath });
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })) })}</script>`;
+}
+
 function localBusinessJsonLd() {
   const site = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : undefined;
   const data = {
@@ -325,15 +338,22 @@ function localBusinessJsonLd() {
     '@type': 'HomeAndConstructionBusiness',
     name: config.name,
     slogan: config.tagline,
-    description: 'Excavation, sitework, gravel driveways, shed and garage pads, and drainage for homeowners, builders and contractors in Chattanooga, TN and surrounding communities.',
+    description: 'Site prep and excavation, drainage and culverts, gravel and concrete driveways, pads for sheds and garages, concrete flat work and demolition for homeowners, builders and contractors in Chattanooga, TN and surrounding communities.',
     address: { '@type': 'PostalAddress', addressLocality: 'Chattanooga', addressRegion: 'TN', addressCountry: 'US' },
     areaServed: [{ '@type': 'City', name: 'Chattanooga, TN' }],
+    knowsAbout: ['Site preparation', 'Excavation', 'Drainage', 'Culverts', 'Gravel driveways', 'Concrete driveways', 'Shed and garage pads', 'Concrete flat work', 'Demolition'],
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Sitework services', itemListElement: [
+      ['Site Prep & Excavation', '/builders#site-prep'], ['Drainage & Culverts', '/homeowners#drainage'], ['Driveways & Gravel Work', '/homeowners#driveways'],
+      ['Concrete & Flat Work', '/builders#concrete'], ['Pads for Sheds & Garages', '/homeowners#pads'], ['Demolition & Removal', '/more-services'],
+    ].map(([n, u]) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: n, url: (site || '') + u } })) },
   };
   if (site) { data.url = site + '/'; data.logo = site + '/assets/img/logo-512.png'; data.image = site + '/assets/img/og-image.jpg'; }
   if (digits) data.telephone = tel.replace('tel:', '');
   if (filled('email')) data.email = config.email;
   if (filled('hours')) data.openingHours = config.hours; // free text until real hours are set; see README
-  if (filled('serviceArea')) data.areaServed = [{ '@type': 'City', name: 'Chattanooga, TN' }].concat(config.serviceArea.split(',').map(t => ({ '@type': 'Place', name: t.trim() })).filter(t => t.name && !/^chattanooga,? tn$/i.test(t.name)));
+  // the towns Joey listed; "Chattanooga and the surrounding counties" alone adds nothing Google can map
+  const towns = filled('serviceTowns') ? config.serviceTowns.split(/,\s*|\s+and\s+/) : [];
+  if (towns.length) data.areaServed = towns.map(t => t.trim()).filter(Boolean).map(t => ({ '@type': 'Place', name: t }));
   const same = [config.facebook, config.instagram, config.googleBusinessProfile].filter(Boolean);
   if (same.length) data.sameAs = same;
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
@@ -367,12 +387,25 @@ async function brandImages() {
   for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180], ['logo-512.png', 512]]) {
     await sharp(square).resize(size, size).png().toFile(path.join(out, name));
   }
-  const ogLogo = await sharp(logo).resize({ width: 900 }).toBuffer();
-  const ogMeta = await sharp(ogLogo).metadata();
-  await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#F3F2EE' } })
-    .composite([{ input: ogLogo, left: 150, top: Math.round((630 - ogMeta.height) / 2) - 20 },
-      { input: Buffer.from(`<svg width="1200" height="630"><rect x="0" y="606" width="1200" height="24" fill="#72852E"/></svg>`), left: 0, top: 0 }])
-    .jpeg({ quality: 82 }).toFile(path.join(out, 'og-image.jpg'));
+  // Share preview (Facebook, Messenger, texts): the home-page jobsite photo under a dark scrim with the
+  // white logo, or the logo on warm gray until photos/site/home-hero.jpg exists
+  const heroPhoto = path.join(ROOT, 'photos', 'site', 'home-hero.jpg');
+  const hasHero = await fs.access(heroPhoto).then(() => true, () => false);
+  if (hasHero) {
+    const photo = await sharp(heroPhoto).rotate().resize(1200, 630, { fit: 'cover', position: 'centre' }).toBuffer();
+    const ogLogo = await sharp(path.join(ROOT, 'src', 'assets', 'img', 'logo-reverse.svg'), { density: 300 }).resize({ width: 540 }).png().toBuffer();
+    const lm = await sharp(ogLogo).metadata();
+    const scrim = Buffer.from(`<svg width="1200" height="630"><defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#121618" stop-opacity=".9"/><stop offset=".55" stop-color="#121618" stop-opacity=".45"/><stop offset="1" stop-color="#121618" stop-opacity=".05"/></linearGradient></defs><rect width="1200" height="630" fill="url(#g)"/><rect x="0" y="606" width="1200" height="24" fill="#72852E"/></svg>`);
+    await sharp(photo).composite([{ input: scrim, left: 0, top: 0 }, { input: ogLogo, left: 64, top: 606 - 48 - lm.height }])
+      .jpeg({ quality: 84 }).toFile(path.join(out, 'og-image.jpg'));
+  } else {
+    const ogLogo = await sharp(logo).resize({ width: 900 }).toBuffer();
+    const ogMeta = await sharp(ogLogo).metadata();
+    await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#F3F2EE' } })
+      .composite([{ input: ogLogo, left: 150, top: Math.round((630 - ogMeta.height) / 2) - 20 },
+        { input: Buffer.from(`<svg width="1200" height="630"><rect x="0" y="606" width="1200" height="24" fill="#72852E"/></svg>`), left: 0, top: 0 }])
+      .jpeg({ quality: 82 }).toFile(path.join(out, 'og-image.jpg'));
+  }
 }
 
 // ---------- main ----------
@@ -436,7 +469,9 @@ async function main() {
       body_class: meta.body_class || '',
       header: meta.layout === 'landing' ? 'header-landing' : 'header',
       footer: meta.layout === 'landing' ? 'footer-landing' : 'footer',
-      structured_data: meta.schema === 'yes' ? ctx.local_business : '',
+      // the business card for Google on every page visitors can land on from search
+      structured_data: (meta.noindex !== 'yes' ? ctx.local_business : '') + breadcrumbs(urlPath, meta.title || config.name),
+      verification_meta: filled('googleSiteVerification') ? `<meta name="google-site-verification" content="${esc(config.googleSiteVerification)}">` : '',
       // estimate form defaults for pages without ?type= / ?who= in the link (e.g. an ad landing page)
       form_type: esc(meta.form_type || ''),
       form_who: esc(meta.form_who || ''),
@@ -459,7 +494,7 @@ async function main() {
   for (const p of projects) {
     const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
     await renderPage({
-      title: `${p.title}${town} | ${p.category} | TVIS Site Work and Construction`,
+      title: `${p.title}${town} | ${p.category} | TVIS`,
       description: (p.description || `${p.category} project by TVIS Site Work and Construction${town}.`).slice(0, 155),
       nav: 'projects',
       body_class: 'page-project',
