@@ -75,9 +75,24 @@
   });
 
   // ---- before / after sliders ----
+  // The range input is for keyboard and screen readers. Pointer drags are read on the box itself,
+  // so a thumb swiping up or down scrolls the page (touch-action: pan-y) and only sideways drags move the handle.
   document.querySelectorAll('[data-ba]').forEach(function (ba) {
     var r = ba.querySelector('.ba-range');
     function set() { ba.style.setProperty('--pos', r.value + '%'); }
+    function fromX(x) {
+      var box = ba.getBoundingClientRect();
+      r.value = Math.round(Math.max(0, Math.min(100, (x - box.left) / box.width * 100)));
+      set();
+    }
+    var dragging = false;
+    ba.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      dragging = true; fromX(e.clientX);
+      try { ba.setPointerCapture(e.pointerId); } catch (x) {}
+    });
+    ba.addEventListener('pointermove', function (e) { if (dragging) fromX(e.clientX); });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { ba.addEventListener(t, function () { dragging = false; }); });
     r.addEventListener('input', set);
     set();
   });
@@ -90,12 +105,23 @@
 //      because the opening already carries both buttons ----
 (function () {
   var hero = document.querySelector('.hero');
-  if (!hero || !('IntersectionObserver' in window)) return;
-  var wait = window.matchMedia('(max-width: 900px)');
-  new IntersectionObserver(function (entries) {
-    var visible = entries[0].isIntersecting;
-    document.body.classList.toggle('mbar-wait', visible && wait.matches);
-  }, { threshold: 0, rootMargin: '0px 0px -80px 0px' }).observe(hero);
+  if (!hero) return;
+  var phone = window.matchMedia('(max-width: 900px)');
+  var shown = false, ticking = false;
+  // Slides in once the opening's buttons have scrolled away, and only slides back out near the top,
+  // so a few pixels of scrolling back and forth never makes it flicker.
+  var act = hero.querySelector('.hero-act') || hero;
+  function update() {
+    ticking = false;
+    var below = window.innerHeight - act.getBoundingClientRect().bottom; // room under the opening's buttons
+    if (!phone.matches) shown = true;
+    else if (!shown && below > 240) shown = true;
+    else if (shown && below < 160) shown = false;
+    document.body.classList.toggle('mbar-wait', !shown);
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 })();
 
 // ---- ?slots shows the file name each empty photo spot wants (for adding photos, not for visitors) ----
@@ -141,7 +167,7 @@ if (/[?&]slots\b/.test(location.search)) {
       if (!e.isIntersecting) return;
       links.forEach(function (a) { a.classList.remove('on'); a.removeAttribute('aria-current'); });
       var a = byId[e.target.id];
-      if (a) { a.classList.add('on'); a.setAttribute('aria-current', 'location'); a.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }
+      if (a) { a.classList.add('on'); a.setAttribute('aria-current', 'location'); var bar = a.closest('ul'); if (bar && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'smooth' }); }
     });
   }, { rootMargin: '-40% 0px -55% 0px' });
   Object.keys(byId).forEach(function (id) { var s = document.getElementById(id); if (s) io.observe(s); });

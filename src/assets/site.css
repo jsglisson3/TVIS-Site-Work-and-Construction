@@ -40,6 +40,7 @@
 *,*::before,*::after{box-sizing:border-box}
 *{margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--hdr-h) + 24px);scroll-behavior:smooth}
+html:has(.jump){scroll-padding-top:calc(var(--hdr-h) + 76px)}
 [hidden]{display:none!important}
 body{font:400 var(--t-body)/1.5 var(--text);color:var(--ink);background:var(--paper);padding-bottom:var(--mbar-h);overflow-x:clip}
 img,svg{display:block;max-width:100%;height:auto}
@@ -95,7 +96,7 @@ p,li,dd,dt{max-width:68ch}
 .dgm{display:block}
 
 /* before / after: drag the handle; the drawn pair stands in until both photos exist */
-.ba{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--tint);--pos:50%;user-select:none;-webkit-user-select:none}
+.ba{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--tint);--pos:50%;user-select:none;-webkit-user-select:none;touch-action:pan-y;cursor:ew-resize}
 .ba-img{position:absolute;inset:0}
 .ba-img img,.ba-img .dgm{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .ba-after{clip-path:inset(0 0 0 var(--pos))}
@@ -103,7 +104,7 @@ p,li,dd,dt{max-width:68ch}
 .ba-handle::after{content:"";position:absolute;top:50%;left:50%;width:52px;height:52px;margin:-26px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23232B2E' stroke-width='2.6'%3E%3Cpath d='M9 6l-6 6 6 6M15 6l6 6-6 6'/%3E%3C/svg%3E") center/26px no-repeat}
 .ba-tag{position:absolute;bottom:14px;z-index:2;font:700 var(--t-small)/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;color:#fff;background:var(--charcoal);pointer-events:none}
 .ba-tag-b{left:14px}.ba-tag-a{right:14px;background:var(--olive-deep)}
-.ba-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize;touch-action:pan-y}
+.ba-range{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;pointer-events:none}
 .ba:has(.ba-range:focus-visible){outline:3px solid var(--olive);outline-offset:3px}
 .ba-single img{width:100%;height:100%;object-fit:cover}
 .ba .slot-note{position:absolute;left:14px;top:14px;z-index:3;max-width:60%}
@@ -333,8 +334,8 @@ body.menu-open{overflow:hidden}
 @media (min-width:901px){
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn)){align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn))>div:first-child{align-self:center}
-  .phero-pic:has(>.photo:not(.photo-drawn)){margin:calc(-1 * var(--phero-pad)) calc(-1 * (var(--gut) + max(0px, (100vw - var(--max)) / 2))) calc(-1 * var(--phero-pad)) 0}
-  .phero-pic>.photo:not(.photo-drawn){aspect-ratio:auto;height:100%;min-height:460px}
+  .phero-pic:has(>.photo:not(.photo-drawn)){margin:calc(-1 * var(--phero-pad)) calc(-1 * (var(--gut) + min(96px, max(0px, (100vw - var(--max)) / 2)))) calc(-1 * var(--phero-pad)) 0}
+  .phero-pic>.photo:not(.photo-drawn){aspect-ratio:auto;height:100%;min-height:460px;max-height:640px}
 }
 .hero-photo{display:block}
 .hero-photo .photo{aspect-ratio:21/9}
@@ -604,7 +605,7 @@ body.menu-open{overflow:hidden}
   .slip-total{margin:24px -20px 0;padding:14px 20px}
   .jump a{padding:16px 10px 16px 0;margin-right:8px}
   .sv h2,.lp-two h2{grid-column:1;order:-2;margin-bottom:20px}
-  .sv-media,.lp-two .sv-media{grid-column:1;grid-row:auto;order:-1;margin-bottom:24px}
+  .sv-media,.sv-flip .sv-media,.lp-two .sv-media{grid-column:1;grid-row:auto;order:-1;margin-bottom:24px}
   .sv .wrap > div:not(.sv-media) > :not(h2),.lp-two > div:not(.sv-media) > :not(h2){grid-column:1}
   .steps{grid-template-columns:1fr 1fr;gap:20px 16px}
   .phase-track{grid-template-columns:1fr;border-top:0;border-left:6px solid var(--olive)}
