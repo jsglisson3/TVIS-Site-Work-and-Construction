@@ -22,3 +22,9 @@ more-dirt-gravel               #135 Resized_202511   skid steer spreading dirt
 more-small-excavation          #136 Resized_202511   mini excavator on a graded lot
 lp-pads-hero                   #121 IMG_6867
 lp-pads-before/after           #124 / #127     forms on grass, then the poured slab
+
+Added in the final polish (single photos where no same-spot before/after pair exists yet):
+pads-feature                   #33  IMG_0057   fresh pad in an open yard
+homeowners-drainage            #77  IMG_7069(1) rock swale beside block wall (sky cropped)
+homeowners-cleanup             #81  IMG_7246(1) clearing brush on a wooded lot
+builders-site-prep             #56  IMG_5304   footing trenches in a graded pad
