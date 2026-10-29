@@ -289,7 +289,7 @@ body.menu-open{overflow:hidden}
 .ftr-ground.go .track-run{animation:track-run 1.6s linear both}
 @keyframes track-run{from{stroke-dashoffset:84}to{stroke-dashoffset:0}}
 .ftr .tbd{background:#5A5220;color:#FFF3A8}
-.ftr-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(28px,3.4vw,44px)}
+.ftr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(28px,3.4vw,44px)}
 .ftr-logo{display:block;width:min(280px,72vw)}
 .ftr-desc{margin-top:20px;max-width:34ch;color:#E3E7E0}
 .ftr .socials{margin:16px 0 0 -10px}
@@ -550,6 +550,12 @@ body.menu-open{overflow:hidden}
   .ftr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ftr-brand{grid-column:1/-1}
 }
+
+/* service pages */
+.svc-steps-h{margin-bottom:clamp(28px,3.5vw,48px)}
+.svc-related{margin-top:18px;font-size:var(--t-small)}
+.svc-related a{font-weight:700;color:var(--olive-deep);margin-right:14px}
+@media (min-width:901px){.page-service .area .wrap{grid-template-columns:1.1fr 1fr}}
 
 /* ---------- phones ---------- */
 @media (max-width:900px){

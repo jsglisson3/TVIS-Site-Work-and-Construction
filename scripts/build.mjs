@@ -322,6 +322,29 @@ function frontMatter(src) {
   return [meta, src.slice(m[0].length)];
 }
 
+// Service pages: the jobs in that category, or nothing (the section is left out until one exists)
+let projects = []; // filled in main() before pages render
+function relatedProjects(cats) {
+  if (!cats) return '';
+  const want = cats.split(',').map(c => c.trim());
+  const list = projects.filter(p => want.includes(p.categorySlug));
+  if (!list.length) return '';
+  return `<section class="sec svc-projects" aria-labelledby="svc-proj-h">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="svc-proj-h">Recent ${list.length === 1 ? 'job' : 'jobs'} like this</h2><a class="textlink" href="/projects">See all projects</a></div>
+    <div class="proj-grid">${list.slice(0, 3).map(p => projectCard(p)).join('\n')}</div>
+  </div>
+</section>`;
+}
+
+// Service card for Google: what the page offers, who offers it, where
+function serviceJsonLd(meta, urlPath) {
+  const data = { '@context': 'https://schema.org', '@type': 'Service', name: String(meta.title || '').split(' | ')[0].split(' in Chattanooga')[0], description: meta.description || '',
+    provider: { '@type': 'HomeAndConstructionBusiness', name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
+    areaServed: { '@type': 'City', name: 'Chattanooga, TN' }, url: siteOrigin ? siteOrigin + urlPath : undefined };
+  return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
+}
+
 // Home > Projects > <project>: tells Google how the inner pages hang together
 function breadcrumbs(urlPath, title) {
   if (!siteOrigin || urlPath === '/' ) return '';
@@ -437,7 +460,7 @@ async function main() {
   }
   await brandImages();
   await loadSitePhotos();
-  const projects = await loadProjects();
+  projects = await loadProjects();
   console.log(`  ${projects.length} project folder(s)`);
 
   await fs.writeFile(path.join(DIST, 'projects.json'), JSON.stringify(projects.map(p => ({ ...p, photos: Object.fromEntries(Object.entries(p.photos).map(([k, v]) => [k, v.map(x => x.src)])) })), null, 2));
@@ -470,9 +493,11 @@ async function main() {
       header: meta.layout === 'landing' ? 'header-landing' : 'header',
       footer: meta.layout === 'landing' ? 'footer-landing' : 'footer',
       // the business card for Google on every page visitors can land on from search
-      structured_data: (meta.noindex !== 'yes' ? ctx.local_business : '') + breadcrumbs(urlPath, meta.title || config.name),
+      structured_data: (meta.noindex !== 'yes' ? ctx.local_business : '') + breadcrumbs(urlPath, meta.title || config.name) + (meta.service === 'yes' ? serviceJsonLd(meta, urlPath) : ''),
       verification_meta: filled('googleSiteVerification') ? `<meta name="google-site-verification" content="${esc(config.googleSiteVerification)}">` : '',
       // estimate form defaults for pages without ?type= / ?who= in the link (e.g. an ad landing page)
+      // service pages: the real jobs in that category, and a Service card for Google
+      related_projects: relatedProjects(meta.projects),
       form_type: esc(meta.form_type || ''),
       form_who: esc(meta.form_who || ''),
       [`nav_${(meta.nav || 'none').replace(/-/g, '_')}`]: ' aria-current="page"',
