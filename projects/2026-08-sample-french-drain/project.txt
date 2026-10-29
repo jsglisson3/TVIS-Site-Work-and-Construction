@@ -1,6 +1,0 @@
-title: Sample: French drain along the house
-category: Drainage
-town: [TOWN]
-status: Completed
-featured: no
-description: Sample project. Standing water along the foundation, fixed with a French drain run to daylight.

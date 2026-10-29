@@ -1,0 +1,6 @@
+title: Hillside lot grading and concrete driveway
+category: Concrete
+town: [TOWN]
+status: Completed
+featured: yes
+description: [CONFIRM] Graded the slope in front of a new two-story home, then formed and poured the concrete driveway.

@@ -10,7 +10,7 @@ body_class: page-home
   <!-- Headline "Groundwork Done Right." is Jeremy's choice (2026-10-28); "From the Ground Up." stays the tagline (footer, config).
        Full-width jobsite photograph with a dark overlay. Drop photos/site/home-hero.jpg in and it replaces the drawing. -->
   <div class="hero-bg">
-    {{photo slot="home-hero" label="wide jobsite shot, excavator grading a residential lot, crew in frame" alt="TVIS crew grading a residential lot near Chattanooga" kind="Hero photo" draw="hero" eager}}
+    {{photo slot="home-hero" sizes="(max-width: 900px) 80vw, 100vw" label="wide jobsite shot, excavator grading a residential lot, crew in frame" alt="Mini excavator grading a hillside lot in front of a new two-story home" kind="Hero photo" draw="hero" eager}}
   </div>
   <div class="wrap hero-in">
     <h1 id="hero-h"><span>Groundwork</span><span>Done Right.</span></h1>
@@ -28,7 +28,7 @@ body_class: page-home
     <div class="sec-head"><h2 id="who-h">Who&rsquo;s the project for?</h2></div>
     <div class="who-grid">
       <a class="who-card" href="/homeowners">
-        {{photo slot="home-homeowner" label="homeowner driveway or backyard pad, finished" alt="Finished gravel driveway at a Chattanooga-area home" draw="driveway:after" sizes="(min-width: 900px) 600px, 100vw"}}
+        {{photo slot="home-homeowner" label="homeowner driveway or backyard pad, finished" alt="Finished driveway with landscaped stone beds beside a home" draw="driveway:after" sizes="(min-width: 900px) 600px, 100vw"}}
         <span class="who-body">
           <h3>I&rsquo;m a Homeowner</h3>
           <p>Driveways, shed and garage pads, drainage and yard cleanup.</p>
@@ -36,7 +36,7 @@ body_class: page-home
         </span>
       </a>
       <a class="who-card" href="/builders">
-        {{photo slot="home-builder" label="new-construction lot with pad cut and utilities trenched" alt="Graded new-construction lot with the building pad cut" draw="siteprep:after" sizes="(min-width: 900px) 600px, 100vw"}}
+        {{photo slot="home-builder" label="new-construction lot with pad cut and utilities trenched" alt="New-construction lot graded for the building pad, with silt fence and an excavator on site" draw="siteprep:after" sizes="(min-width: 900px) 600px, 100vw"}}
         <span class="who-body">
           <h3>I&rsquo;m a Builder or Contractor</h3>
           <p>Site prep, utilities, driveways and final grading for new homes.</p>
@@ -55,19 +55,19 @@ body_class: page-home
     </div>
     <div class="svc-grid">
       <a class="svc-card" href="/homeowners#driveways">
-        {{photo slot="home-svc-driveways" label="regraded gravel driveway with fresh stone" alt="Regraded gravel driveway with fresh crusher run" draw="driveway:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        {{photo slot="home-svc-driveways" label="regraded gravel driveway with fresh stone" alt="Gravel driveway leading to a newly finished home" draw="driveway:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
         <span class="svc-body"><h3>Gravel Driveways</h3><p>Repairs, resurfacing, new installations and culverts.</p><span class="svc-more">See driveway services</span></span>
       </a>
       <a class="svc-card" href="/homeowners#pads">
-        {{photo slot="home-svc-pads" label="compacted gravel pad, shed going up" alt="Compacted gravel pad for a backyard shed" draw="pad:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        {{photo slot="home-svc-pads" label="compacted gravel pad, shed going up" alt="Graded building pad set inside wood forms" draw="pad:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
         <span class="svc-body"><h3>Shed &amp; Garage Pads</h3><p>Site leveling, gravel bases and building pad preparation.</p><span class="svc-more">See pad services</span></span>
       </a>
       <a class="svc-card" href="/homeowners#drainage">
-        {{photo slot="home-svc-drainage" label="French drain trench with pipe and stone" alt="French drain trench with perforated pipe and stone" draw="drainage:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        {{photo slot="home-svc-drainage" label="French drain trench with pipe and stone" alt="Rock-lined drainage swale beside a block retaining wall" draw="drainage:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
         <span class="svc-body"><h3>Drainage Solutions</h3><p>French drains, downspout piping and yard drainage.</p><span class="svc-more">See drainage services</span></span>
       </a>
       <a class="svc-card" href="/builders#site-prep">
-        {{photo slot="home-svc-siteprep" label="excavator grading a new home lot" alt="Excavator grading a new home site" draw="siteprep:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
+        {{photo slot="home-svc-siteprep" label="excavator grading a new home lot" alt="Mini excavator grading the slope beside a new home" draw="siteprep:after" sizes="(min-width: 1180px) 300px, (min-width: 560px) 45vw, 100vw"}}
         <span class="svc-body"><h3>Site Preparation</h3><p>Excavation, grading, underground utilities and finish work.</p><span class="svc-more">See site prep</span></span>
       </a>
     </div>
@@ -87,6 +87,7 @@ body_class: page-home
 </section>
 
 <section class="sec band" aria-labelledby="band-h">
+  <div class="band-bg">{{photo slot="home-band" label="wide jobsite shot, concrete going in or a machine at work" alt="Concrete truck pouring a driveway on a hillside lot" sizes="100vw"}}</div>
   <div class="wrap band-in">
     <div>
       <h2 id="band-h">Small Jobs. Big Projects. Same Attention to Detail.</h2>

@@ -1,0 +1,24 @@
+Which of Joey's photos fills each spot (numbers and names from /mnt/project-files/tvis-photos/index.json)
+
+home-hero                      #96  IMG_8314   mini excavator, hillside lot, two-story home
+home-band                      #101 IMG_8425   concrete truck at the hillside driveway pour
+home-homeowner                 #114 2a621362   driveway with landscaped stone beds (confirm this is TVIS work)
+home-builder                   #113 1000035915 graded lot, silt fence, excavator
+home-svc-driveways             #93  IMG_8083   gravel drive to a new home
+home-svc-pads                  #121 IMG_6867   graded pad inside wood forms
+home-svc-drainage              #76  IMG_7069   rock swale beside block wall (cropped, sky removed)
+home-svc-siteprep              #98  IMG_8345   mini excavator grading beside a new home
+homeowners-hero                #119 823cc44f   driveway with landscaped beds
+homeowners-driveways-before    #100 IMG_8353   hillside lot before the driveway
+homeowners-driveways-after     #106 IMG_8483   same view, concrete driveway done
+pads-step-1..4                 #124, #121, #126, #132   forms set, graded pad, slab poured, building done
+builders-hero                  #101 IMG_8425
+builders-utilities             #109 1000035893 open trench, excavator behind
+builders-concrete-before/after #104 IMG_8429 / #107 IMG_8484
+builders-final-grading-b/a     #72  IMG_7043 / #91 IMG_8070(1)   same new home, rough lot then finished
+more-hero                      #80  IMG_7246   clearing a wooded lot
+more-cleanup                   #48  IMG_5197   cleared lot, big trees kept
+more-dirt-gravel               #135 Resized_202511   skid steer spreading dirt
+more-small-excavation          #136 Resized_202511   mini excavator on a graded lot
+lp-pads-hero                   #121 IMG_6867
+lp-pads-before/after           #124 / #127     forms on grass, then the poured slab

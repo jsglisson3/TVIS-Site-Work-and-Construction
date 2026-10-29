@@ -1,0 +1,6 @@
+title: Garage pad and building
+category: Shed & Garage Pads
+town: [TOWN]
+status: Completed
+featured: yes
+description: [CONFIRM] Pad laid out and formed in an open yard, slab poured, and the building framed and finished on it.

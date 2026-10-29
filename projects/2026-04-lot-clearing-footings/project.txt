@@ -1,0 +1,6 @@
+title: Lot clearing and footings for a new home
+category: New Construction Sitework
+town: [TOWN]
+status: Completed
+featured: no
+description: [CONFIRM] Wooded lot cleared and graded, footings dug and poured, ready for the home to be set.

@@ -20,7 +20,7 @@ const YEAR = new Date().getFullYear();
 
 export const CATEGORIES = ['Driveways', 'Shed & Garage Pads', 'Drainage', 'New Construction Sitework', 'Concrete', 'Property Cleanup', 'Home Construction'];
 const PHOTO_EXT = /\.(jpe?g|png|webp)$/i;
-const WIDTHS = [480, 960, 1600];
+const WIDTHS = [480, 720, 960, 1600];
 
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const slugify = s => String(s).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -89,7 +89,7 @@ async function processPhoto(src, outDir, baseName) {
     const dest = path.join(outDir, file);
     if (!(await newer(src, dest))) {
       // sharp drops EXIF (including GPS) unless .withMetadata() is called, so location data never ships
-      await sharp(src).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 74 }).toFile(dest);
+      await sharp(src).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 70 }).toFile(dest);
     }
     out.push({ file, w });
   }
@@ -210,13 +210,13 @@ async function loadProjects() {
   return projects;
 }
 
-function baSlider(p, sizes) {
+function baSlider(p, sizes, eager = false) {
   const b = p.photos.before[0], a = p.photos.after[0] || p.photos.progress.at(-1);
   const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
   if (b && a) {
     return `<div class="ba" data-ba>
-  <div class="ba-img ba-before">${imgTag(b, `Before: ${p.title}${town}`, { sizes })}</div>
-  <div class="ba-img ba-after">${imgTag(a, `After: ${p.title}${town}`, { sizes })}</div>
+  <div class="ba-img ba-before">${imgTag(b, `Before: ${p.title}${town}`, { sizes, eager })}</div>
+  <div class="ba-img ba-after">${imgTag(a, `After: ${p.title}${town}`, { sizes, eager })}</div>
   <span class="ba-tag ba-tag-b">Before</span><span class="ba-tag ba-tag-a">${p.photos.after[0] ? 'After' : 'Progress'}</span>
   <span class="ba-handle" aria-hidden="true"></span>
   <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare before and after photos of ${esc(p.title)}">
@@ -258,10 +258,10 @@ function projectDetail(p) {
 </section>`;
 }
 
-function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3' } = {}) {
+function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3', eager = false } = {}) {
   const live = p.status === 'In Progress';
   return `<article class="proj" data-category="${p.categorySlug}">
-${baSlider(p, sizes)}
+${baSlider(p, sizes, eager)}
 <div class="proj-meta">
   <${heading} class="proj-title"><a href="/project/${p.id}">${esc(p.title)}</a></${heading}>
   <p class="proj-row">${projectRow(p)}</p>
@@ -405,7 +405,7 @@ async function main() {
   const ctx = {
     ...vars,
     recent_projects: recent.length ? recent.map(p => projectCard(p)).join('\n') : '<p class="empty">Projects appear here once a job folder is added. See HOW-TO-ADD-A-PROJECT.md.</p>',
-    project_cards: projects.map(p => projectCard(p, { sizes: '(min-width: 900px) 33vw, 100vw', heading: 'h2' })).join('\n'),
+    project_cards: projects.map((p, i) => projectCard(p, { sizes: '(min-width: 900px) 33vw, 66vw', heading: 'h2', eager: i === 0 })).join('\n'),
     home_construction_cards: projects.filter(p => p.category === 'Home Construction').map(p => projectCard(p, { heading: 'h2' })).join('\n') || '<p class="empty">Home construction projects will appear here.</p>',
     tracking_head: trackingHead(),
     local_business: localBusinessJsonLd(),
