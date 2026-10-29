@@ -241,4 +241,5 @@ The business is now **TVIS Construction** (Jeremy). `site.config.json > name` dr
 
 ## Estimate form live (2026-10-29 04:25 UTC)
 
-`formEndpoint` = Basin form https://usebasin.com/f/4513058586c6 (account under tvisconstruction@gmail.com). The "form is being set up" notice disappears automatically. Do a real test submission with a photo after each change to the form.
+`formEndpoint` = Basin form https://usebasin.com/f/4513058586c6 (Basin account under tvisconstruction@gmail.com; notifications should go to info@tvisconstruction.com). The "form is being set up" notice disappears automatically. Do a real test submission with a photo after each change to the form.
+- 04:40 UTC: site email changed to **info@tvisconstruction.com** (Google Workspace on the domain, set up 2026-10-29). Only `site.config.json > email` changed.
