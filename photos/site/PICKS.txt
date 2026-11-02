@@ -39,7 +39,7 @@ homeowners-drainage            kept #77 (the swale); home-svc-drainage is now th
 
 Added 2026-11-02 (photo variety pass: each service page gets its own opening photo and a single panel instead of a borrowed slider):
 svc-concrete-hero              #15  IMG_8753   finished concrete drive up to a gray two-story home
-svc-concrete-panel             #33  IMG_0057   fresh slab, forms still on, cropped to 4:3 (2026-11-02 06:20: replaced #103, Joey said no crew members in photos)
+svc-concrete-panel             #103 IMG_8428   finisher edging the fresh pour, mixer truck behind (crew in photos OK, Jeremy 2026-11-02 06:26)
 svc-siteprep-hero              #1   IMG_4999   new home on a freshly graded lot, dozer behind
 svc-siteprep-panel             #138 IMG_4997   same day from the other side: two new homes on the graded lot
 svc-driveways-hero             #93  IMG_8083   gravel drive to a new home (moved here from home-svc-driveways)
