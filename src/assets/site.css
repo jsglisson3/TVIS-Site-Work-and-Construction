@@ -370,7 +370,8 @@ body.menu-open{overflow:hidden}
 @media (min-width:901px){
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn)){align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(32px,4.4vw,64px)}
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn))>div:first-child{align-self:center}
-  .phero-pic:has(>.photo:not(.photo-drawn)){margin:calc(-1 * var(--phero-pad)) calc(-1 * var(--bleed)) calc(-1 * var(--phero-pad)) 0;position:relative}
+  .phero-pic:has(>.photo:not(.photo-drawn)){margin:calc(-1 * var(--phero-pad)) calc(-1 * (var(--bleed) - var(--gut))) calc(-1 * var(--phero-pad)) 0;position:relative}
+  .phero-pic>.photo:not(.photo-drawn){-webkit-mask-image:linear-gradient(to right,#000 calc(100% - clamp(140px,11vw,220px)),transparent);mask-image:linear-gradient(to right,#000 calc(100% - clamp(140px,11vw,220px)),transparent)}
   .phero-pic>.photo:not(.photo-drawn){aspect-ratio:auto;height:100%;min-height:460px;max-height:640px}
 }
 .hero-photo{display:block}
