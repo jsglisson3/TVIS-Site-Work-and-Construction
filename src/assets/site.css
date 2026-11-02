@@ -962,3 +962,37 @@ body.menu-open{overflow:hidden}
 .who-go{align-self:start}
 /* photo framing: the utilities panel is a wide shot in a near-square frame; keep the excavator and the trench both in view */
 [data-slot="builders-utilities"] img{object-position:43% 50%}
+
+/* tablets (600 to 900px), refinement pass: use the width instead of stretching or leaving gaps */
+@media (min-width:600px) and (max-width:900px){
+  /* an odd last project card spans the row, photo left and words right, instead of leaving half the row empty */
+  .proj-grid:not(:has(> .proj[hidden])) > .proj:last-child:nth-child(odd){grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;align-items:center}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj:last-child:nth-child(odd) .proj-title{margin-top:0}
+  /* buttons size to their label on tablets, as on desktop; only phones run them full width */
+  .phero .hero-act{flex-direction:row;align-items:center;gap:12px 28px}
+  .phero .hero-act .btn,.cta-actions .btn,.pads-bottom .btn,.hc-cta .btn,.pd-cta .btn{width:auto}
+  .sv .btn,.lp-two .btn{justify-self:start}
+}
+/* section heads stack (heading, then its line) once they no longer fit side by side */
+@media (max-width:900px){
+  .sec-head{flex-direction:column;align-items:flex-start;gap:20px}
+}
+/* the pad list and its closing line: one 24px step when they stack (was 80px: the list's own margin plus the grid gap) */
+.pads-bottom .bul{margin-bottom:0}
+@media (max-width:900px){ .pads-bottom{gap:24px;margin-top:48px} }
+/* page openings: one height on every page at a given screen width (480 to 600px, 40% of the width), so the
+   photo no longer sets the band's height by its own shape; a longer heading still makes the band taller */
+@media (min-width:901px){
+  .phero-split:has(.phero-pic>.photo:not(.photo-drawn)){min-height:calc(clamp(480px,40vw,600px) - 2 * var(--phero-pad))}
+  .phero-pic>.photo:not(.photo-drawn){min-height:0;max-height:none}
+  .phero-pic>.photo:not(.photo-drawn)>img{position:absolute;inset:0}
+}
+/* Projects page: the newest project runs the full width when the count would leave one card alone on the last row
+   (the build marks it .proj-wide). Only with no filter on; a filtered grid goes back to plain cards. */
+@media (min-width:901px){
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:0 clamp(32px,5vw,72px);align-items:center;margin-bottom:8px}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-title{margin-top:0;font-size:clamp(28px,2.6vw,36px)}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-row,.proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-desc{font-size:var(--t-body)}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-desc{margin-top:16px;max-width:40ch}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-more{margin-top:12px}
+}

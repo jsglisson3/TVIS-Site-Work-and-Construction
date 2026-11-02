@@ -427,3 +427,21 @@ Jeremy asked for 30 minutes on structure, layout, sizing, spacing and images onl
 
 **Verified:** old vs new geometry on all 26 pages at 390 / 820 / 1440 (only the intended changes; phone and tablet heights moved by a few pixels from the list spacing), no sideways scroll, Lighthouse mobile home 92, drainage 99, homeowners 98, builders 92 (accessibility, best practices and SEO 100).
 
+## Visual refinement pass, part 2 (2026-11-02, 14:20 to 14:45 UTC)
+Jeremy's full brief (sections 3 to 7: images first, then cards, responsive and consistency) with the time limit lifted. Part 1 went live as 16f8803. Audited with a script that lists every visible photo on all 26 pages at 1440, 820 and 390 with its frame size, how much of the photo shows, the file the browser picked and whether that file has enough pixels for the frame.
+
+**Images:**
+- **Sharpness.** The two wide panoramas in tall side panels (Builders utilities, Homeowners drainage) were drawn at about 1.5x their file size on a standard 1440 screen (the frame crops the sides, so the photo is drawn much wider than the frame), and the page-opening photos at about 1.15x. Their `sizes` hints now ask for the width the photo is actually drawn at (see STYLE-GUIDE "Ask for enough pixels"), so the browser picks the 1600 or 960 file instead of the 960 or 720. Markup-only change in the page files.
+- **Page openings are one height.** The opening photo's own shape was setting the band height (`aspect-ratio:auto` with the image in flow), so openings ranged from 480 (drainage, a panorama) to 630px at 1440. Now the band is `clamp(480px, 40vw, 600px)` tall on desktop (576 at 1440, 512 at 1280, 600 at 1920) and the image is absolutely positioned to fill it. Homeowners and Builders stay a little taller because their headings are longer.
+- Checked and left alone: every other crop frames its subject; the portrait photos in 4:3 card frames (garage pad before, two More Services tiles, the landing page slider) keep their subject in the middle band. Small source files that will look soft on large tablets: the garage pad project's two after photos (696px wide originals).
+
+**Tablet (600 to 900px):** buttons size to their label instead of running 754px wide (page openings, CTA rows, project page CTA, panel sections); an odd last project card spans the row with the photo left and the words right (home Recent projects at 3 cards, the one-project row on service pages), instead of leaving half the row empty; `.sec-head` stacks heading then line with a 20px gap at 900px and under.
+
+**Projects page:** with 10 projects the 3-across grid left one card alone on the last row. When the count leaves one card over (4, 7, 10, 13...), the build now marks the newest project `.proj-wide` (`scripts/build.mjs`, `project_cards`) and on desktop it runs the full width at the top (slider 7/12, words 5/12, larger title, `sizes` 60vw), so every row below is full. With a filter on (any card `hidden`) it goes back to a plain card. No change to `projects/` or `project.txt`.
+
+**Phone:** the shed pad section's list to closing line gap was 80px (list margin plus grid gap); now 24px.
+
+**Cards:** compared padding, title size, photo-to-title and title-to-text gaps across who cards, service cards, project cards, More Services tiles, pad steps and the CTA card. Boxed cards (who, service) and open cards (projects, tiles, steps) are each consistent within their family; no change needed.
+
+**Verified:** old vs new geometry on all 26 pages at 390 / 820 / 1440 (only the intended changes), no sideways scroll on any page at 360, 390, 600, 820, 901, 1024, 1280, 1440 and 1920, axe clean (only "needs review" items over photos), Lighthouse mobile home 99, drainage 97, homeowners 98, builders 92, concrete 99, landing page 100 (SEO 69 by design, noindex).
+

@@ -293,9 +293,9 @@ function projectDescription(p) {
   return desc.slice(0, 157).replace(/\s+\S*$/, '') + '...';
 }
 
-function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3', eager = false } = {}) {
+function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3', eager = false, wide = false } = {}) {
   const live = p.status === 'In Progress';
-  return `<article class="proj" data-category="${p.categorySlug}">
+  return `<article class="proj${wide ? ' proj-wide' : ''}" data-category="${p.categorySlug}">
 ${baSlider(p, sizes, eager)}
 <div class="proj-meta">
   <${heading} class="proj-title"><a href="/project/${p.id}">${esc(p.title)}</a></${heading}>
@@ -562,7 +562,12 @@ async function main() {
   const ctx = {
     ...vars,
     recent_projects: recent.length ? recent.map(p => projectCard(p)).join('\n') : '<p class="empty">Projects appear here once a job folder is added. See HOW-TO-ADD-A-PROJECT.md.</p>',
-    project_cards: projects.map((p, i) => projectCard(p, { sizes: '(min-width: 900px) 33vw, 66vw', heading: 'h2', eager: i === 0 })).join('\n'),
+    // When the count leaves one card alone on the last desktop row (4, 7, 10...), the newest project runs the full
+    // width at the top instead (photo 7/12, words 5/12), so the grid below fills every row.
+    project_cards: projects.map((p, i) => {
+      const wide = i === 0 && projects.length > 3 && projects.length % 3 === 1;
+      return projectCard(p, { sizes: wide ? '(min-width: 900px) 60vw, 66vw' : '(min-width: 900px) 33vw, 66vw', heading: 'h2', eager: i === 0, wide });
+    }).join('\n'),
     home_construction_cards: projects.filter(p => p.category === 'Home Construction').map(p => projectCard(p, { heading: 'h2' })).join('\n') || '<p class="empty">Home construction projects will appear here.</p>',
     tracking_head: trackingHead(),
     // Only categories that have a job get a filter button, decided here rather than by site.js after the page
