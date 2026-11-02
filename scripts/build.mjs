@@ -92,6 +92,10 @@ async function newer(src, out) {
   return b.mtimeMs >= a.mtimeMs;
 }
 
+// Opening photos Jeremy judged soft on a desktop screen: their desktop-size files (960px and up) get a light
+// sharpen and higher quality. Phone sizes stay as they are, so phone page weight and Lighthouse don't move.
+const CRISP = new Set(['homeowners-hero', 'builders-hero', 'more-hero']);
+
 // Resize one photo to webp at several widths; returns {srcset, src, w, h}.
 async function processPhoto(src, outDir, baseName) {
   await fs.mkdir(outDir, { recursive: true });
@@ -106,7 +110,10 @@ async function processPhoto(src, outDir, baseName) {
     const dest = path.join(outDir, file);
     if (!(await newer(src, dest))) {
       // sharp drops EXIF (including GPS) unless .withMetadata() is called, so location data never ships
-      await sharp(src).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: 70 }).toFile(dest);
+      let img = sharp(src).rotate().resize({ width: w, withoutEnlargement: true });
+      const crisp = CRISP.has(baseName) && w >= 960;
+      if (crisp) img = img.sharpen({ sigma: 0.7, m1: 0.6, m2: 2 });
+      await img.webp({ quality: crisp ? 82 : 70 }).toFile(dest);
     }
     out.push({ file, w });
   }

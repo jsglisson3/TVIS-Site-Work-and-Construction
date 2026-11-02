@@ -586,3 +586,12 @@ Verified on the final build: html-validate (only style rules: trailing spaces, p
 Lighthouse mobile over HTTP/2 (the way GitHub Pages serves; a throwaway TLS server, since the repo's `serve.mjs` is HTTP/1.1): performance 96 to 100 on all 25 pages it can score (it refuses the 404, which is correct), accessibility and best practices 100, SEO 100 on the 22 indexable pages and 66 on the 3 hidden ones (expected for noindex). LCP 1.35 to 2.70 s, CLS 0 and TBT 0 everywhere. The HTTP/1.1 preview reads 3 to 8 points lower on photo-heavy pages (90 to 100), so use HTTP/2 numbers when comparing with PageSpeed Insights. The eager first gallery tile was A/B tested, 3 runs before and 3 after on each of the 5 affected pages over both protocols: neutral to slightly faster and steadier between runs, so it stays.
 
 Not testable from this container (Jeremy to check): Safari/iPhone, Firefox, a real Basin delivery, Enforce HTTPS, the www redirect, the DMARC record. The full list of manual items is in LAUNCH-CHECKLIST.md, rewritten in this pass.
+
+## Opening cards v3 and sharper opening photos (2026-11-02, late evening)
+
+Jeremy's feedback on the Homeowners, Builders and More Services openings: the "In this photo" card needed work (how it comes in, where it sits, the green box), the More Services photo looked blurry, and widths stay as they are.
+
+- **Card:** now sits square on the photo's bottom-left corner instead of floating and overhanging. No dead space: titles break by hand, so the box ends at the longest line. The arrow is a full-height olive tab on the right, arrow centred. It rises in once in 0.55s just after the photo (it used to fade in late, after 0.7s); off under reduced motion. Phones and tablets keep the strip under the photo, now with the same tab.
+- **Sharper photos:** `CRISP` in `scripts/build.mjs` gives the three opening photos' desktop files (960px and up) a light sharpen and webp quality 82 instead of 70. Phone files are unchanged, so phone weight and Lighthouse are unchanged. Widths and sizes are unchanged.
+- Homeowners photo framed a little lower (object-position 50% 90%) so more of the rock swale shows.
+- Checked: 390 / 820 / 1024 / 1440 / 1866 screenshots, no sideways scroll, console clean, Lighthouse mobile 92 / 100 / 100 / 100 on all three pages.

@@ -1058,27 +1058,35 @@ body.menu-open{overflow:hidden}
 .phero-eyebrow{display:flex;align-items:center;gap:12px;font:700 16px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--olive-deep);margin-bottom:clamp(16px,1.8vw,22px);animation:settle .9s var(--ease) both}
 .phero-eyebrow::before{content:"";width:26px;height:3px;background:var(--olive);flex:none}
 .phero-pic{position:relative}
-.phero-job{position:absolute;left:-28px;bottom:clamp(28px,3.2vw,48px);z-index:2;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto auto auto;gap:2px 18px;align-items:center;width:max-content;max-width:min(460px,calc(100% - 20px));padding:18px 22px 20px 24px;background:var(--paper);color:var(--charcoal);text-decoration:none;border-left:8px solid var(--olive);animation:settle .9s var(--ease) both;animation-delay:.7s}
+/* "In this photo" card, v3 (2026-11-02 evening): sits square on the photo's bottom-left corner, hugs its words
+   (titles break by hand with <br>, so the box ends where the longest line ends; no dead space), and the arrow lives in a full-height olive tab on the right with the arrow dead centre.
+   Comes in once, quickly, after the photo: a short rise from the photo's bottom edge. */
+.phero-job{position:absolute;left:0;bottom:0;z-index:2;display:grid;grid-template-columns:auto 64px;align-items:stretch;max-width:calc(100% - 24px);background:var(--paper);color:var(--charcoal);text-decoration:none;animation:jobIn .55s var(--ease) .35s both}
+.phero-job .job-text{display:block;padding:18px 24px 20px 24px}
 .phero-job small{display:block;font:700 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--olive-deep)}
-.phero-job strong{display:block;margin-top:8px;font:700 clamp(22px,1.7vw,26px)/1.05 var(--display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
-.page-homeowners .phero-pic>.photo:not(.photo-drawn)>img{object-position:50% 72%}
-@media (min-width:901px) and (max-width:1180px){
-  .phero-job{max-width:min(340px,calc(100% - 20px));padding:14px 16px 16px 18px;gap:2px 14px}
-  .phero-job strong{font-size:20px}
-  .phero-job .who-go{width:48px;height:48px}
-}
-.phero-job span{display:block;margin-top:6px;font-size:var(--t-small);color:var(--ink-soft)}
-.phero-job .see{display:block;margin-top:10px;font:700 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--olive-deep)}
-.phero-job .who-go{grid-row:1/5;align-self:center;width:56px;height:56px;display:grid;place-items:center;margin-top:0;color:#fff} /* restate what .phero-job span overrides: the square is a span too */
+.phero-job strong{display:block;margin-top:9px;font:700 clamp(22px,1.7vw,26px)/1.05 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.phero-job span.job-meta{display:block;margin-top:7px;font-size:var(--t-small);line-height:1.35;color:var(--ink-soft)}
+.phero-job span.see{display:block;margin-top:11px;font:700 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--olive-deep)}
+.phero-job .who-go{grid-column:2;grid-row:1;align-self:stretch;width:auto;height:auto;display:flex;align-items:center;justify-content:center;margin:0;background:var(--olive-deep);color:#fff}
+.phero-job .who-go svg{display:block;width:26px;height:26px}
 .phero-job:hover .who-go,.phero-job:focus-visible .who-go{background:var(--olive-deeper)}
 .phero-job:hover .who-go svg,.phero-job:focus-visible .who-go svg{transform:translateX(4px)}
+@keyframes jobIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.page-homeowners .phero-pic>.photo:not(.photo-drawn)>img{object-position:50% 90%}
+@media (min-width:901px) and (max-width:1180px){
+  .phero-job{grid-template-columns:auto 52px}
+  .phero-job .job-text{padding:14px 18px 16px}
+  .phero-job strong{font-size:20px}
+}
 .proj-head{display:block;margin-bottom:40px}
 .proj-head p{margin-top:clamp(20px,2.4vw,28px);max-width:56ch;font-size:clamp(19px,1.7vw,22px);line-height:1.5}
 @media (max-width:900px){
-  .phero-job{position:static;max-width:none;width:auto;padding:16px var(--gut) 18px calc(var(--gut) + 10px);gap:2px 14px;border-left-width:8px;animation:none}
-  .phero-job .who-go{width:48px;height:48px}
+  .phero-job{position:static;max-width:none;grid-template-columns:minmax(0,1fr) 56px;animation:none}
+  .phero-job .job-text{padding:16px 18px 18px var(--gut)}
   .phero-job strong{font-size:20px}
+  .phero-job strong br{display:none}
 }
+@media (prefers-reduced-motion:reduce){.phero-job{animation:none}}
 
 /* ---- Pre-launch polish (2026-11-02, evening) ---- */
 .crumb svg{width:16px;height:16px;transform:scaleX(-1);transition:transform var(--dur) var(--ease)}
