@@ -70,21 +70,24 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 ## 6. Components (reuse these, don't invent new ones)
 
 - **Header:** white, 4px olive stripe on top, hairline and soft shadow under it (a deeper shadow once scrolled). The full-colour logo is 88px tall on desktop (80 / 74 / 64 / 56px down the width tiers). Nav is Barlow uppercase 17px (16px under 1360px) with an olive underline that draws in on hover and focus and marks the current page; hover also turns the word olive. Then a divider, the Facebook mark, the phone with a small "Call us" label, and the olive "Get an Estimate" button, which lifts 1px on hover and presses flat on click. Its left and right edges line up with the content column at every width. On phones and tablets it shows the logo, "Call" and "Menu"; the menu slides down from under the bar and its links settle in one after another.
-- **Home hero:** full-bleed jobsite photo, on desktop 520 to 720px tall (88% of the screen under the header, never a full-screen wall) with a 56 to 78px headline, left-to-right dark scrim plus a light foot at the top (so the white header sits on the picture) and a deeper one at the bottom, white H1 with an olive bar, a subhead, a serving line on two lines, then "Request an Estimate" (olive) and "Call us" (white outline). On phones the photo sits on top (36% of the screen height) with the text on charcoal below.
+- **Home hero:** full-bleed jobsite photo, on desktop 520 to 700px tall (84% of the screen under the header, so the service strip and a peek of the next section fit the first screen) with a 56 to 78px headline. Above the headline a "where" line (`.hero-eyebrow`: a short olive dash, then "Excavation & Sitework · Chattanooga, TN" in Barlow 16px light olive, 14px on phones). Then the white H1 with its olive bar, one plain-sentence subhead ("Site prep, driveways, drainage, concrete and pads for homeowners and builders."), and "Get an Estimate" (olive) beside "Call us" (white outline). The scrim is left-to-right only (`.84 → .60 → .06 → 0`) with a faint foot at the top for the header edge and none at the bottom. On phones the photo sits on top (38% of the screen height) with the text on charcoal below and the two buttons side by side, both above the fold at 390x844.
+- **Service strip (`.svc-strip`):** a white row directly under the hero photo with all six services as links, each a Barlow 18px title over a 14px gray descriptor, hairlines between cells. 6 across from 1024px, 3 by 2 on tablets, and on phones wrapped 44px chips with titles only ("Shed Pads"). Hover and focus: the olive line draws in under the title, the title turns olive, the cell goes warm gray. Home page only.
 - **Page opening (`.phero`):** warm-gray band with H1, olive bar, one intro line, and optionally a photo that bleeds to the screen edge.
 - **Page titles:** one size everywhere except the home hero: 36 to 60px on desktop, 32 to 48px on phones (`--t-h1`), always with the 80 x 7 olive bar under it.
-- **Buttons:** `.btn-primary` (olive), `.btn-light` (white on dark), `.btn-outline` (white outline on dark), `.btn-ink` (charcoal). 54px tall minimum, square, Barlow uppercase. Text says exactly what happens ("Get an Estimate", "Send estimate request").
-- **Text links:** `.textlink` (olive, uppercase, 3px underline, arrow nudges on hover). Call links: `.call-link` with a phone icon, reading "Call us" or "Or call us".
-- **Who cards (Homeowner / Builder):** photo, olive rule, title, short line, olive arrow square.
-- **Service cards:** 4:3 photo, title, one line, "See … " link. Shown 3 across on desktop.
+- **Buttons:** `.btn-primary` (olive), `.btn-light` (white on dark), `.btn-outline` (white outline on dark), `.btn-ink` (charcoal). 54px tall minimum, square, Barlow uppercase. Every button lifts 1px on hover and presses flat; the outline button fills white with charcoal text. Text says exactly what happens, and **every estimate button says "Get an Estimate"** (the form submit says "Send estimate request"; the project page says "Get an Estimate for a job like this").
+- **Text links:** `.textlink` (olive, uppercase, 3px line that thickens to 5px on hover while the arrow nudges 4px). Call links: `.call-link` with a phone icon, reading "Call us" or "Or call us" (2px line thickens to 3px; the light version turns light olive on charcoal). Small links everywhere else (card titles, "See all photos", footer links, 404 links, related links) get the **draw-in line**: an olive (light olive on charcoal) line that grows from the left under the text on hover and focus, one line per text line. It is a solid-colour `background-image` sized from 0 to 100% wide, so it is not a visible gradient.
+- **Who cards (Homeowner / Builder):** photo, olive rule, title, short line, olive arrow square. Hover: border turns olive, the photo eases to 103% over 0.4s, the title line draws in, the arrow nudges.
+- **Service cards:** 4:3 photo, title, one line, "See … " link. Shown 3 across on desktop. Hover: the photo eases to 103%, the title turns olive and its line draws in; the "See …" line stays still.
 - **Before/after slider (`.ba`):** 4:3, white drag handle, "Before" tag in charcoal and "After" in olive. Thumb-scrolls freely on phones.
-- **Project card:** slider, title, "Completed" chip and category, one-line description, "See all photos".
+- **Project card:** slider, title, town and category (a chip only for a job in progress), one-line description, "See all photos". The slider means the card is not one link; the title and "See all photos" carry the draw-in line.
 - **Statement band:** charcoal with a darkened photo behind, big heading left, paragraph right.
 - **Service area + CTA card:** towns list on the left, white CTA card with an 8px olive top border on the right.
 - **How it works card:** four numbered charcoal squares joined by a pale-olive line, with the last step in olive. A charcoal result bar with a check mark sits at the bottom.
-- **Form:** white card on the warm band. Inputs 58px tall, 1.5px gray border that darkens on hover, olive glow on focus. "I'm a…" is a three-way segmented control (charcoal when chosen). "Add photos" is a tinted box with an olive camera square.
+- **Form:** white card on the warm band. Inputs 58px tall, 1.5px gray border that darkens on hover, olive glow on focus. "I'm a…" is a three-way segmented control whose charcoal highlight slides to the option you tap (stacked on narrow phones, it slides down). "Add photos" is a tinted box with an olive camera square.
 - **Footer:** charcoal, 8px olive ground line with the small dozer, white logo, then Contact, Services, Pages and Service area columns. Copyright says "TVIS Construction. From the Ground Up."
 - **Phone call bar:** fixed at the bottom on phones ("Call" and "Get an Estimate"). On the home page it appears once the hero buttons scroll away.
+- **Phone menu links:** a short olive bar slides in beside the link you press and the word shifts right and turns olive.
+- **How it works on the home page:** the same card as the service pages, on a tint band between the service cards and Recent projects, with the heading "Start with a few photos".
 
 ## 7. Photos
 
@@ -100,7 +103,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 ## 8. Motion
 
 - One planned moment per page: the hero settling in on load (on desktop the photo eases from 104.5% to 100% over 1.8s while the text settles in), and the dozer rolling into the footer once.
-- Small responses to the user's own actions are fine: the nav underline, a button lifting 1px, an arrow nudging 3px.
+- Small responses to the user's own actions are fine, and they all share one curve and length: `--ease: cubic-bezier(.2,.7,.2,1)` and `--dur: .25s` (photo zooms 0.4s). The vocabulary is fixed: a line draws in under text, a photo eases to 103%, a button lifts 1px, an arrow nudges 4px, a highlight slides. Don't add a new kind of hover; reuse one of these.
 - Everything respects `prefers-reduced-motion`.
 - No carousels, counters, parallax or fade-in-on-scroll sections.
 

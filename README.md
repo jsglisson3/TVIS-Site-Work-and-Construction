@@ -86,7 +86,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | `photos/site/` | Photos for fixed spots on the pages. |
 | `projects/` | One folder per job. Becomes the Projects gallery, each project's page and the homepage's Recent projects. |
 | `.github/workflows/deploy.yml` | Publishes the site on every push to `main`. |
-| `docs/` | `STYLE-GUIDE.md` (the locked look: colours, type, components, photos, motion, words), `HANDOFF.md` (the full brief, the design system and every decision), `ROADMAP.md` (the phases to launch and after), the early mockups in `design/`, and the research. |
+| `docs/` | `STYLE-GUIDE.md` (the locked look: colours, type, components, photos, motion, words), `HANDOFF.md` (the full brief, the design system and every decision), `ROADMAP.md` (the phases to launch and after), `NEXT-LEVEL-PLAN.md` (the 2026-11-02 research plan: hero concepts, local SEO, competitors and the prioritized roadmap; Concept C is built), the early mockups plus the Concept C mockups in `design/`, and the research. |
 
 `dist/` and `node_modules/` are generated; don't edit or commit them.
 
