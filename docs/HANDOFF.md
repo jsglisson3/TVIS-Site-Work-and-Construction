@@ -499,6 +499,17 @@ Jeremy sent screenshots of the live site after eb432df: the opening photos on Ho
 
 Live as acc72cd (deploy green, 16:11 UTC; the commit reused the previous message by mistake, the content is the opening-photo batch). Every inner-page photo now sits inside the content width; only the home hero and the statement band run to the screen edge, by design.
 
+## Openings as real jobs, Projects intro, shadow recut (2026-11-02, 17:45 UTC onward)
+
+Jeremy, 17:43: the openings on Homeowners, Builders & Contractors and More Services "have to be top notch, there is no option to be bad; if these sections don't look good nobody will ever scroll down". Then: the Projects intro "random text" floating beside the title, and the photographer's shadow in the Lot Clearing "before" photo.
+
+- **Audience line above the title** (`.phero-eyebrow`, the same device as the home hero's eyebrow, olive-deep on the warm band): "For homeowners", "For builders & contractors", "Smaller jobs & cleanup". It joins the title's settle animation.
+- **Proof card on the opening photo** (`.phero-job`, an `<a>` inside `.phero-pic` after the photo): white, 8px olive left edge, "In this photo" label, the project title in Barlow, the town and "See the photos", and the olive arrow square from the Who cards. It sits on the photo's lower-left corner, overhanging 28px into the 64px gap on desktop (left 16px on phones and tablets, where the photo runs edge to edge). Links: Homeowners → `/project/2026-06-harrison-drainage-yard` (the photo is that job's after-1), Builders → `/project/2026-04-lot-clearing-footings` (same Lone Oak site as the home statement band), More Services → `/projects` (its photo, #80 East Ridge, is not in a project yet, so the card says "See our projects"). Towns come from the project.txt files and the photo registry's GPS towns; never invent one. The card settles in 0.7s after the title. The band grows about 80px at 1440 because the text column is taller; the photo still fills it.
+- The service pages and the ad page keep their openings as they were (no card): add one only when the opening photo is a job that has a project page.
+- **Projects page:** `.proj-head` is a single column: title, olive bar, intro at the opening-intro size (19 to 22px, 56ch), 24px below the bar. It was a two-column grid with the intro bottom-aligned on the right.
+- **Lot Clearing before photo** (`projects/2026-04-lot-clearing-footings/before-1.jpg`, #48 IMG_5197): recut from the 2560x1920 original (left 300, top 0, 1773x1330 → 2400x1800) so the photographer's shadow at the bottom is out of the frame; crop only, no retouching. Registry row 48 updated.
+- Checks: overflow 0 at nine widths on all 26 pages, console/HTTP 0, keyboard pass, Lighthouse mobile 90+ on the five changed pages. Before/after: round four at the top of https://claude.ai/artifact/43U1L4gNUVpvi7G1vCsWK1.
+
 ## Final visual polish pass (2026-11-02, 16:12 UTC onward)
 
 Jeremy's brief: "FINAL WEBSITE VISUAL POLISH, THE LAST PASS": every image, spacing, borders, corners, shadows, cards,
