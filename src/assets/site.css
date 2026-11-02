@@ -251,6 +251,7 @@ body.menu-open{overflow:hidden}
 .band-bg .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
 .band:has(.band-bg .photo)::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)}
 .band:has(.band-bg .photo){padding:clamp(96px,11vw,168px) 0}
+@supports not selector(:has(a)){ .band-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)} }
 .band-in{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px clamp(40px,6vw,96px);align-items:end}
 .band h2{font-size:var(--t-h2);line-height:1}
 .band p{font-size:clamp(19px,1.6vw,22px);line-height:1.5;color:#E3E7E0;max-width:42ch}
@@ -267,7 +268,7 @@ body.menu-open{overflow:hidden}
 .cta-card{background:var(--paper);padding:clamp(28px,3.4vw,48px);border-top:8px solid var(--olive)}
 .cta-card h3{font-size:clamp(28px,3vw,40px);line-height:1}
 .cta-card p{margin-top:16px;max-width:36ch}
-.cta-card .btn{margin-top:32px}
+.cta-card>.btn{margin-top:32px}
 .cta-card .bigphone{display:block;margin-top:22px;font-size:clamp(34px,3.4vw,48px)}
 
 /* ---------- recent work ---------- */
@@ -461,7 +462,7 @@ body.menu-open{overflow:hidden}
 .call-link:hover{color:var(--olive-deep)}
 .call-link-light{color:#fff}
 .call-link-light svg{color:var(--olive-light,#A3B654)}
-.cta-card .call-link{margin-top:22px}
+.cta-card .cta-actions{margin-top:32px}
 .callout .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:32px 64px;align-items:center}
 .callout p{margin-top:20px;max-width:42ch}
 
@@ -483,7 +484,7 @@ body.menu-open{overflow:hidden}
 .filters button[aria-pressed="true"]{background:var(--charcoal);color:#fff}
 .filter-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .hc-cta,.pd-cta{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center;margin-top:56px}
-.crumb a{display:inline-block;padding:8px 0;margin:-8px 0;font:700 var(--t-small)/1 var(--display);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;color:var(--olive-deep)}
+.crumb a{display:inline-flex;align-items:center;gap:8px;padding:8px 0;margin:-8px 0;font:700 var(--t-small)/1 var(--display);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;color:var(--olive-deep)}
 .pd{padding-top:clamp(32px,4vw,56px);overflow:hidden}
 .pd-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:32px clamp(32px,4.4vw,64px);align-items:center;margin-top:24px} /* same split and gap as the page openings; long titles get a wider column */
 .pd-top:not(:has(.pd-ba)){grid-template-columns:1fr}
@@ -1068,7 +1069,7 @@ body.menu-open{overflow:hidden}
 }
 .phero-job span{display:block;margin-top:6px;font-size:var(--t-small);color:var(--ink-soft)}
 .phero-job .see{display:block;margin-top:10px;font:700 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--olive-deep)}
-.phero-job .who-go{grid-row:1/5;align-self:center;width:56px;height:56px}
+.phero-job .who-go{grid-row:1/5;align-self:center;width:56px;height:56px;display:grid;place-items:center;margin-top:0;color:#fff} /* restate what .phero-job span overrides: the square is a span too */
 .phero-job:hover .who-go,.phero-job:focus-visible .who-go{background:var(--olive-deeper)}
 .phero-job:hover .who-go svg,.phero-job:focus-visible .who-go svg{transform:translateX(4px)}
 .proj-head{display:block;margin-bottom:40px}
@@ -1078,3 +1079,15 @@ body.menu-open{overflow:hidden}
   .phero-job .who-go{width:48px;height:48px}
   .phero-job strong{font-size:20px}
 }
+
+/* ---- Pre-launch polish (2026-11-02, evening) ---- */
+.crumb svg{width:16px;height:16px;transform:scaleX(-1);transition:transform var(--dur) var(--ease)}
+.crumb a:hover svg,.crumb a:focus-visible svg{transform:scaleX(-1) translateX(4px)}
+@media (prefers-reduced-motion:reduce){.crumb a:hover svg,.crumb a:focus-visible svg{transform:scaleX(-1)}}
+.pd-head .proj-row a{color:inherit;text-decoration:underline;text-decoration-color:var(--olive);text-decoration-thickness:2px;text-underline-offset:4px}
+.pd-head .proj-row a:hover,.pd-head .proj-row a:focus-visible{color:var(--olive-deep)}
+.mmenu li:not(:last-child) a[aria-current="page"]{padding-left:30px;color:var(--olive-deep)}
+.mmenu li:not(:last-child) a[aria-current="page"]::before{transform:scaleX(1)}
+/* Keyboard focus never lands under the phone Call / Get an Estimate bar (WCAG 2.2, focus not obscured):
+   anything scrolled into view stops above the bar, the same way scroll-padding-top clears the header. */
+html{scroll-padding-bottom:calc(var(--mbar-h) + env(safe-area-inset-bottom,0px) + 16px)}

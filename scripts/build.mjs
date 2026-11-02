@@ -248,6 +248,8 @@ const townHtml = p => (p.town ? (p.town.startsWith('[') ? (LIVE ? '' : tbd(p.tow
 const projectRow = p => `${p.status === 'In Progress' ? '<span class="badge badge-live">In Progress</span> ' : ''}<span>${townHtml(p) ? townHtml(p) + ' · ' : ''}${esc(p.category)}</span>`;
 
 // Project type codes on the estimate form (keep in sync with data-type in src/partials/estimate-form.html)
+// The service page that covers each project category; the project page links its category there.
+const CATEGORY_PAGE = { 'Driveways': '/gravel-driveways', 'Shed & Garage Pads': '/shed-garage-pads', 'Drainage': '/drainage', 'New Construction Sitework': '/site-prep-excavation', 'Concrete': '/concrete', 'Property Cleanup': '/demolition-cleanup' };
 const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'Drainage': 'drainage', 'New Construction Sitework': 'siteprep', 'Concrete': 'concrete', 'Property Cleanup': 'cleanup', 'Home Construction': 'home' };
 
 // Body of the project detail page at /project/<folder>: every photo, grouped, plus the estimate button.
@@ -273,24 +275,28 @@ function projectDetail(p) {
     const small = full ? 'calc(100vw - 40px)' : n === 2 ? '(min-width: 601px) 46vw, calc(100vw - 40px)' : '46vw';
     return { cls: `pd-photo g-${d}${full ? ' t-full' : ''}`, sizes: `${DESK[d]}, ${small}` };
   };
+  // Without a before/after slider at the top, the first gallery photo is the biggest thing on the first screen,
+  // so it loads right away (not lazily) and first: Google measures how fast that photo appears.
+  const slider = p.photos.before.length && (p.photos.after.length || p.photos.progress.length);
+  let firstTile = !slider;
   const group = (kind, label) => {
     const list = p.photos[kind], lay = galleryLayout(list.length);
     return list.length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
-  <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: t.sizes })}</a>`; }).join('')}</div>
+  <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); const eager = firstTile; firstTile = false; return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: t.sizes, eager })}</a>`; }).join('')}</div>
 </section>` : '';
   };
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
   return `<section class="sec pd">
   <div class="wrap">
-    <p class="crumb"><a href="/projects">&larr; All projects</a></p>
+    <p class="crumb"><a href="/projects"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>All projects</a></p>
     <div class="pd-top">
     <header class="pd-head">
       <h1>${esc(p.title)}</h1>
-      <p class="proj-row">${projectRow(p)}</p>
+      <p class="proj-row">${CATEGORY_PAGE[p.category] ? projectRow(p).replace(`${esc(p.category)}</span>`, `<a href="${CATEGORY_PAGE[p.category]}">${esc(p.category)}</a></span>`) : projectRow(p)}</p>
       ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
     </header>
-    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) 690px, (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
+    ${slider ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) 690px, (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
     </div>
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
@@ -606,7 +612,7 @@ async function main() {
       url_path: urlPath,
       canonical: siteOrigin ? `${siteOrigin}${urlPath}` : '',
       // once site.config.json has the domain, every page says where it lives, so Facebook and Google get the right address
-      canonical_tag: siteOrigin ? `<link rel="canonical" href="${siteOrigin}${urlPath}">` : '',
+      canonical_tag: siteOrigin && meta.noindex !== 'yes' ? `<link rel="canonical" href="${siteOrigin}${urlPath}">` : '',
       og_url_tag: siteOrigin ? `<meta property="og:url" content="${siteOrigin}${urlPath}">` : '',
       og_image: `${siteOrigin}${(await sharePhotoFor(meta, body)) || '/assets/img/og-image.jpg'}`,
       robots: meta.noindex === 'yes' ? 'noindex, follow' : 'index, follow',
@@ -659,7 +665,7 @@ async function main() {
 
   const origin = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : '';
   if (origin) {
-    await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map(u => `  <url><loc>${origin}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
+    await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...sitemap].sort((a, b) => (b === '/') - (a === '/')).map(u => `  <url><loc>${origin}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
     await fs.writeFile(path.join(DIST, 'CNAME'), config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '') + '\n');
   }
   await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);

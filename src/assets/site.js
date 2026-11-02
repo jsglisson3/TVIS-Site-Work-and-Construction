@@ -46,8 +46,17 @@
   }
   if (menuBtn) menuBtn.addEventListener('click', function () { setMenu(menuBtn.getAttribute('aria-expanded') !== 'true'); });
   document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape') return;
-    if (menuBtn && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); }
+    var open = menuBtn && menuBtn.getAttribute('aria-expanded') === 'true';
+    if (!open) return;
+    if (e.key === 'Escape') { setMenu(false); menuBtn.focus(); return; }
+    // while the menu covers the page, Tab cycles through the Close button and the menu's own links
+    // instead of wandering into the hidden page underneath
+    if (e.key === 'Tab') {
+      var stops = [menuBtn].concat([].slice.call(menu.querySelectorAll('a[href], button')));
+      var i = stops.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); stops[stops.length - 1].focus(); }
+      else if (!e.shiftKey && (i === -1 || i === stops.length - 1)) { e.preventDefault(); stops[0].focus(); }
+    }
   });
   if (menu) menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
 
@@ -303,6 +312,13 @@ if (/[?&]slots\b/.test(location.search)) {
     }
     return !bad;
   }
+  // one field on its own (used while the visitor fixes it, so focus stays where they are typing)
+  function checkField(el) {
+    var bad = el.required && !el.value.trim();
+    if (el.type === 'tel' && !bad && el.value.trim()) bad = el.value.replace(/\D/g, '').length < 10;
+    if (el.type === 'email' && !bad && el.value.trim()) bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+    return setErr(el, bad);
+  }
   function validate() {
     var ok = true, first = null;
     form.querySelectorAll('[required]').forEach(function (el) {
@@ -316,7 +332,10 @@ if (/[?&]slots\b/.test(location.search)) {
     return ok;
   }
   form.querySelectorAll('[required], #f-email').forEach(function (el) {
-    el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') validate(); });
+    // once a field has been flagged, clear (or update) its own message as the visitor types; never move focus
+    var recheck = function () { if (el.getAttribute('aria-invalid') === 'true') checkField(el); };
+    el.addEventListener('input', recheck);
+    el.addEventListener('change', recheck);
   });
 
   function showThanks() {

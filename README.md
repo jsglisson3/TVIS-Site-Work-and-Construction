@@ -95,7 +95,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 `LAUNCH-CHECKLIST.md` has the full list. The short version:
 
 - Every page at phone width (390px) and desktop (1440px), no sideways scroll.
-- Lighthouse mobile 90+ on every page (last run 2026-10-28 after the rebuild: 97 to 100 on every page).
+- Lighthouse mobile 90+ on every page (last full run 2026-11-02, pre-launch review).
 - Send a test estimate with photos from a phone.
-- Tap every phone number and button on a phone.
-- Replace the three "Sample:" project folders with real jobs.
+- Tap every phone number and button on a phone (iPhone Safari and an Android).
+- Joey confirms the project write-ups (`[CONFIRM]` in each `project.txt`).

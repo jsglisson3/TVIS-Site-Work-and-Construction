@@ -2,7 +2,7 @@
 
 Read this first. It is the full brief plus every decision made so far, so a Claude Code session in this folder can continue without the earlier conversation. `docs/ROADMAP.md` has the phases from here to launch and after.
 
-Last updated 2026-10-28 (full site rebuild, requested by Jeremy after the first live deploy; reviewed by screenshot before it goes into his folder).
+Last updated 2026-11-02 (pre-launch review, the last section). The sections run in date order, so the newest decisions are at the bottom; the Status list below is from the 2026-10-28 rebuild.
 
 ## Status
 
@@ -563,3 +563,26 @@ Inspector notes kept as they are, on purpose: the home hero eyebrow line and the
 no video; the header hairline and the card borders are in the style guide; the Builders and Homeowners titles run
 three lines at 60px (unified title size, Jeremy's call) because the content width can't hold "Sitework Solutions for
 Builders & Contractors" in two.
+
+## Pre-launch review (2026-11-02, 19:30 UTC onward)
+
+Jeremy's brief: a complete pre-launch review in 8 phases (audit, frontend polish, mobile, SEO, performance, accessibility to WCAG 2.2 AA, conversion, final QA), with no redesign, no removed content, nothing invented and nothing called fixed without a test. Baseline: GitHub `fdbcc52` ("Undo cap and fade"; the cap and fade on the opening photos stays out). Full report (Claude Doc): https://claude.ai/artifact/LoWKwVcbKxkX67BPwhw8ct
+
+Fixed, each tested:
+- **Estimate form:** after a failed send, typing in any field re-ran the whole check, which moved focus to the first empty field, so a visitor could not type their phone number. site.js now has `checkField(el)`: a flagged field re-checks only itself on `input` and `change`, and never moves focus. `validate()` (on send) still focuses the first problem.
+- **Opening proof card arrow** (Homeowners, Builders, More Services): `.phero-job span{display:block;margin-top:6px;color:var(--ink-soft)}` also hit the arrow square (a span), so the arrow was dark and sat at the top. `.phero-job .who-go` restates `display:grid;place-items:center;margin-top:0;color:#fff`.
+- **Phone menu:** Tab now cycles Close and the menu links only while it is open (it used to walk into the hidden page); Escape still closes. The menu links carry `{{nav_*}}`, so the current page gets `aria-current` and shows the pressed state (olive bar in, word shifted).
+- **Project page crumb:** the `&larr;` came from a fallback font and was tiny. Now the site's `#i-arrow` icon flipped with `scaleX(-1)`, nudging 4px on hover (off under reduced motion).
+- **Home "Ready to get the groundwork done?" card:** button and "Or call us" are wrapped in `.cta-actions` (32px above); they had no gap.
+- **SEO:** `CATEGORY_PAGE` in build.mjs links each project's category line to its service page. `canonical_tag` is left off `noindex` pages. The sitemap lists `/` first.
+- **Speed:** project pages without a before/after slider (5 of 10) lazy-loaded their biggest first-screen photo. The first gallery tile is now `eager` (fetchpriority high) when there is no slider.
+- **Keyboard focus on phones** (WCAG 2.2, 2.4.11 focus not obscured): tabbing scrolled each link just into view at the bottom edge, under the fixed Call / Get an Estimate bar, so the focused link was hidden. `html{scroll-padding-bottom:calc(var(--mbar-h) + env(safe-area-inset-bottom,0px) + 16px)}` stops it above the bar (`--mbar-h` is 0 on desktop). Checked with a script that tabs through 6 pages at 390 and 1440, forwards and backwards: every stop fully visible.
+- **Statement band:** a `@supports not selector(:has(a))` fallback puts the same dark overlay on `.band-bg::after` for Safari before 15.4 and Firefox before 121. Checked by simulation in Chromium; it stays off where `:has()` works.
+- **Copy read-through** (every visible string on the site, alt text and labels included): the Projects intro said "Drag the handle on any photo" and its description "Drag each photo", but only 5 of the 10 jobs have a before/after slider; now "any before-and-after photo" and "Drag the sliders". Site Prep's "Send the address and plans… We look it over" now says "them". Nothing else changed in the wording.
+- Tried and reverted: a dot between the two "Related:" links on service pages. Their 32ch measure always stacks them, so the dot dangled.
+
+Verified on the final build: html-validate (only style rules: trailing spaces, phone hyphens, lowercase doctype, one inline style; the phone number never wraps, checked at 7 widths); 26 pages at 10 widths with 0 overflow, console errors, failed requests or broken images; axe 0 violations at 390 and 1440; text over photos measured pixel by pixel (`cc.mjs`: hide the text, screenshot only the glyph boxes, compare the text colour with every background pixel): 535 text spots pass at the 10th-percentile pixel, lowest 4.91:1; form tests 12/12; keyboard: focus ring on every stop, nothing hidden under the header or call bar. Repo and published photos carry no EXIF or GPS. No secrets in the repo.
+
+Lighthouse mobile over HTTP/2 (the way GitHub Pages serves; a throwaway TLS server, since the repo's `serve.mjs` is HTTP/1.1): performance 96 to 100 on all 25 pages it can score (it refuses the 404, which is correct), accessibility and best practices 100, SEO 100 on the 22 indexable pages and 66 on the 3 hidden ones (expected for noindex). LCP 1.35 to 2.70 s, CLS 0 and TBT 0 everywhere. The HTTP/1.1 preview reads 3 to 8 points lower on photo-heavy pages (90 to 100), so use HTTP/2 numbers when comparing with PageSpeed Insights. The eager first gallery tile was A/B tested, 3 runs before and 3 after on each of the 5 affected pages over both protocols: neutral to slightly faster and steadier between runs, so it stays.
+
+Not testable from this container (Jeremy to check): Safari/iPhone, Firefox, a real Basin delivery, Enforce HTTPS, the www redirect, the DMARC record. The full list of manual items is in LAUNCH-CHECKLIST.md, rewritten in this pass.
