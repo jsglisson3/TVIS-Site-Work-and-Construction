@@ -604,3 +604,12 @@ Jeremy asked whether the floating card was really the best placement. Five optio
 - The hand line breaks in the card titles are gone (the bar has room for one-line titles). "See the N photos" stays in the link text for screen readers only.
 - Entrance: the bar rises out of the photo's bottom edge (clip reveal, 0.6s after 0.35s); none under reduced motion.
 - Checked: 390 / 600 / 820 / 1024 / 1440 / 1866, no sideways scroll, console clean, keyboard pass (focus ring drawn inside the bar), Lighthouse mobile 92 / 100 / 100 / 100 on all three pages.
+
+## Opening photo endings (2026-11-02, late)
+
+Jeremy liked the caption bar but wanted the three opening photos (Homeowners, Builders & Contractors, More Services) to stop running off the right of the screen, with no fade or blur. Five hard-edged endings were mocked on real screenshots. He picked option 2 and asked to keep option 1 ready.
+
+- On desktop (901px and up) the photo stops one page margin (`--gut`) short of the screen edge, and a solid 12px olive bar runs down its right edge. Block at the end of the page-opening rules in `src/assets/site.css`, scoped to those three pages; the service pages are unchanged.
+- To switch to option 1 (same stop, no bar), set `--photo-end-bar` to `0px` in that block. Nothing else changes.
+- Phones and tablets are unchanged: the photo runs edge to edge under the text.
+- Checked: 390 / 820 / 901 / 1024 / 1180 / 1440 / 1750 / 1866, no sideways scroll, console clean, Lighthouse mobile 91 to 93 with 100 for accessibility, best practices and SEO.
