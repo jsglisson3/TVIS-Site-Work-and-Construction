@@ -59,7 +59,7 @@ const vars = {
   licensed: filled('licensedLine') ? `<p class="licensed">${esc(config.licensedLine)}</p>` : (LIVE ? '' : `<p class="licensed">${tbd('LICENSED AND INSURED LINE')}</p>`),
   response_time: show('responseTime', '1 BUSINESS DAY'),
   // "We'll get back to you within 1 business day." once a response time is promised; a plain line until then
-  response_line: filled('responseTime') ? `We'll get back to you within ${esc(config.responseTime)}.` : (LIVE ? `We'll be in touch soon.` : `We'll get back to you within ${tbd('1 BUSINESS DAY')}.`),
+  response_line: filled('responseTime') ? `We&rsquo;ll get back to you within ${esc(config.responseTime)}.` : (LIVE ? `We&rsquo;ll be in touch soon.` : `We&rsquo;ll get back to you within ${tbd('1 BUSINESS DAY')}.`),
   facebook: config.facebook || '#facebook-url-needed',
   instagram: config.instagram || '#instagram-url-needed',
   gbp: config.googleBusinessProfile || '#google-business-profile-url-needed',
@@ -332,7 +332,7 @@ function relatedProjects(cats) {
   return `<section class="sec svc-projects" aria-labelledby="svc-proj-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="svc-proj-h">Recent ${list.length === 1 ? 'job' : 'jobs'} like this</h2><a class="textlink" href="/projects">See all projects</a></div>
-    <div class="proj-grid">${list.slice(0, 3).map(p => projectCard(p)).join('\n')}</div>
+    <div class="proj-grid${list.length === 1 ? ' proj-grid-one' : ''}">${list.slice(0, 3).map(p => projectCard(p, list.length === 1 ? { sizes: '(min-width: 900px) 60vw, 84vw' } : {})).join('\n')}</div>
   </div>
 </section>`;
 }
@@ -519,7 +519,7 @@ async function main() {
   for (const p of projects) {
     const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
     await renderPage({
-      title: `${p.title}${town} | ${p.category} | TVIS`,
+      title: `${p.title}${town} | ${p.category} | TVIS`.length <= 66 ? `${p.title}${town} | ${p.category} | TVIS` : `${p.title}${town} | TVIS Construction`,
       description: (p.description || `${p.category} project by TVIS Construction${town}.`).slice(0, 155),
       nav: 'projects',
       body_class: 'page-project',

@@ -5,7 +5,7 @@
   {{form_notice}}
   <form class="est-form" action="{{form_endpoint}}" method="post" enctype="multipart/form-data" novalidate>
     <fieldset class="f f-who">
-      <legend class="f-l">I'm a...</legend>
+      <legend class="f-l">I&rsquo;m a&hellip;</legend>
       <div class="who-opts">
         <label><input type="radio" name="I am a" value="Homeowner" data-who="homeowner" checked><span>Homeowner</span></label>
         <label><input type="radio" name="I am a" value="Builder or contractor" data-who="builder"><span>Builder or Contractor</span></label>
@@ -27,7 +27,7 @@
         <option data-type="home">Home construction or renovation</option>
         <option data-type="other">Other</option>
       </select>
-      <p class="f-err" hidden>Pick the closest match. "Other" is fine.</p>
+      <p class="f-err" hidden>Pick the closest match. &ldquo;Other&rdquo; is fine.</p>
     </div>
 
     <div class="f-row">
@@ -47,11 +47,11 @@
       <div class="f">
         <label class="f-l" for="f-email">Email <span class="opt">optional</span></label>
         <input id="f-email" name="email" type="email" autocomplete="email">
-        <p class="f-err" hidden>That email doesn't look right.</p>
+        <p class="f-err" hidden>That email doesn&rsquo;t look right.</p>
       </div>
       <div class="f">
         <label class="f-l" for="f-address">Project address or town</label>
-        <input id="f-address" name="Project address or town" type="text" autocomplete="street-address" required>
+        <input id="f-address" name="Project address or town" type="text" autocomplete="address-line1" required>
         <p class="f-err" hidden>Add the address, or at least the town.</p>
       </div>
     </div>

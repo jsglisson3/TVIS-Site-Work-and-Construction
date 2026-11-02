@@ -113,6 +113,9 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - The round badge (built by `scripts/build.mjs`) is for the browser-tab icon, the phone home-screen icon and Google.
 - Never stretch, recolour or add effects to the logo.
 
+- **Tap targets.** Anything clickable that is not a link inside a sentence is at least 24px tall on desktop and 44px on phones. Pad the link, don't change the look (the footer links, "See all photos" and the "← All projects" crumb are done this way).
+- **One related job on a service page** uses the whole row: slider on the left two thirds, title and text on the right (`proj-grid-one`). Two or three jobs use the normal three-card grid; tablets show two across.
+
 ## 11. Quality bar before calling anything done
 
 - Screenshot phone (390px) and desktop (1440px), look at them and fix what you see.

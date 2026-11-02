@@ -48,7 +48,6 @@
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     if (menuBtn && menuBtn.getAttribute('aria-expanded') === 'true') { setMenu(false); menuBtn.focus(); }
-    document.querySelectorAll('.has-sub.open').forEach(function (li) { li.classList.remove('open'); li.querySelector('.sub-btn').setAttribute('aria-expanded', 'false'); });
   });
   if (menu) menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
 
@@ -59,20 +58,6 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
-
-  // ---- More Services dropdown (click / tap / keyboard) ----
-  document.querySelectorAll('.sub-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var li = btn.parentElement, open = !li.classList.contains('open');
-      li.classList.toggle('open', open);
-      btn.setAttribute('aria-expanded', String(open));
-    });
-  });
-  document.addEventListener('click', function (e) {
-    document.querySelectorAll('.has-sub.open').forEach(function (li) {
-      if (!li.contains(e.target)) { li.classList.remove('open'); li.querySelector('.sub-btn').setAttribute('aria-expanded', 'false'); }
-    });
-  });
 
   // ---- before / after sliders ----
   // The range input is for keyboard and screen readers. Pointer drags are read on the box itself,
@@ -162,13 +147,13 @@ if (/[?&]slots\b/.test(location.search)) {
   if (!links.length || !('IntersectionObserver' in window)) return;
   var byId = {};
   links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var seen = {};
   var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      links.forEach(function (a) { a.classList.remove('on'); a.removeAttribute('aria-current'); });
-      var a = byId[e.target.id];
-      if (a) { a.classList.add('on'); a.setAttribute('aria-current', 'location'); var bar = a.closest('ul'); if (bar && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'smooth' }); }
-    });
+    entries.forEach(function (e) { seen[e.target.id] = e.isIntersecting; });
+    var cur = Object.keys(byId).filter(function (id) { return seen[id]; })[0];
+    links.forEach(function (a) { a.classList.remove('on'); a.removeAttribute('aria-current'); });
+    var a = cur && byId[cur];
+    if (a) { a.classList.add('on'); a.setAttribute('aria-current', 'location'); var bar = a.closest('ul'); if (bar && bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'smooth' }); }
   }, { rootMargin: '-40% 0px -55% 0px' });
   Object.keys(byId).forEach(function (id) { var s = document.getElementById(id); if (s) io.observe(s); });
 })();
