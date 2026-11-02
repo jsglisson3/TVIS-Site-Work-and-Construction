@@ -285,6 +285,14 @@ function projectDetail(p) {
 </section>`;
 }
 
+function projectDescription(p) {
+  const town = p.town && !p.town.startsWith('[') ? ` ${p.town}, TN.` : '';
+  const desc = (p.description || `${p.category} job by TVIS Construction.`).trim().replace(/([^.!?])$/, '$1.');
+  const photos = p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? ' See the before and after photos.' : ' See every photo from the job.';
+  for (const d of [desc + town + photos, desc + photos, desc + town, desc]) if (d.length <= 160) return d;
+  return desc.slice(0, 157).replace(/\s+\S*$/, '') + '...';
+}
+
 function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3', eager = false } = {}) {
   const live = p.status === 'In Progress';
   return `<article class="proj" data-category="${p.categorySlug}">
@@ -354,19 +362,28 @@ function relatedProjects(cats) {
 
 // Service card for Google: what the page offers, who offers it, where
 function serviceJsonLd(meta, urlPath) {
-  const data = { '@context': 'https://schema.org', '@type': 'Service', name: String(meta.title || '').split(' | ')[0].split(' in Chattanooga')[0], description: meta.description || '',
+  const data = { '@context': 'https://schema.org', '@type': 'Service', name: meta.crumb || shortTitle(meta.title), description: meta.description || '',
     provider: { '@type': 'HomeAndConstructionBusiness', name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
     areaServed: { '@type': 'City', name: 'Chattanooga, TN' }, url: siteOrigin ? siteOrigin + urlPath : undefined };
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
 }
 
+// A page's short name for Google (breadcrumbs, Service card): the crumb: line in its front matter, else the title without the town and brand
+const shortTitle = t => String(t || '').split(' | ')[0].split(/ in Chattanooga|, Chattanooga/)[0];
+
 // Home > Projects > <project>: tells Google how the inner pages hang together
-function breadcrumbs(urlPath, title) {
+function breadcrumbs(urlPath, title, crumb) {
   if (!siteOrigin || urlPath === '/' ) return '';
   const crumbs = [{ name: 'Home', item: siteOrigin + '/' }];
   if (urlPath.startsWith('/project/')) crumbs.push({ name: 'Projects', item: siteOrigin + '/projects' });
-  crumbs.push({ name: title.split(' | ')[0], item: siteOrigin + urlPath });
+  crumbs.push({ name: crumb || shortTitle(title), item: siteOrigin + urlPath });
   return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })) })}</script>`;
+}
+
+// The site's name for Google, so results say "TVIS Construction" above the address instead of the bare domain
+function websiteJsonLd() {
+  if (!siteOrigin) return '';
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.name, alternateName: 'TVIS', url: siteOrigin + '/' })}</script>`;
 }
 
 function localBusinessJsonLd() {
@@ -381,8 +398,8 @@ function localBusinessJsonLd() {
     areaServed: [{ '@type': 'City', name: 'Chattanooga, TN' }],
     knowsAbout: ['Site preparation', 'Excavation', 'Drainage', 'Culverts', 'Gravel driveways', 'Concrete driveways', 'Shed and garage pads', 'Concrete flat work', 'Demolition'],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Sitework services', itemListElement: [
-      ['Site Prep & Excavation', '/builders#site-prep'], ['Drainage & Culverts', '/homeowners#drainage'], ['Driveways & Gravel Work', '/homeowners#driveways'],
-      ['Concrete & Flat Work', '/builders#concrete'], ['Pads for Sheds & Garages', '/homeowners#pads'], ['Demolition & Removal', '/more-services'],
+      ['Site Prep & Excavation', '/site-prep-excavation'], ['Drainage & Culverts', '/drainage'], ['Driveways & Gravel Work', '/gravel-driveways'],
+      ['Concrete & Flat Work', '/concrete'], ['Pads for Sheds & Garages', '/shed-garage-pads'], ['Demolition & Removal', '/demolition-cleanup'],
     ].map(([n, u]) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: n, url: (site || '') + u } })) },
   };
   if (site) { data.url = site + '/'; data.logo = site + '/assets/img/logo-512.png'; data.image = site + '/assets/img/og-image.jpg'; }
@@ -458,7 +475,7 @@ async function brandImages() {
   // Google asks for a square icon in multiples of 48px; favicon.ico at the site root covers older browsers.
   const mark = Buffer.from(stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'assets', 'img', 'favicon.svg'), 'utf8')));
   const icon = size => sharp(mark, { density: 72 * size / 512 * 4 }).resize(size, size).png().toBuffer();
-  for (const [name, size] of [['favicon-48.png', 48], ['favicon-96.png', 96], ['favicon-192.png', 192], ['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
+  for (const [name, size] of [['favicon-48.png', 48], ['favicon-96.png', 96], ['favicon-192.png', 192], ['favicon-512.png', 512], ['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
     await fs.writeFile(path.join(out, name), await icon(size));
   }
   const icoSizes = [16, 32, 48], pngs = await Promise.all(icoSizes.map(icon));
@@ -471,6 +488,9 @@ async function brandImages() {
     head.writeUInt32LE(png.length, e + 8); head.writeUInt32LE(offset, e + 12); offset += png.length;
   });
   await fs.writeFile(path.join(DIST, 'favicon.ico'), Buffer.concat([head, ...pngs]));
+  // Android home-screen shortcut: name and icon
+  await fs.writeFile(path.join(DIST, 'site.webmanifest'), JSON.stringify({ name: config.name, short_name: 'TVIS', start_url: '/', display: 'browser', background_color: '#FFFFFF', theme_color: '#FFFFFF',
+    icons: [{ src: '/assets/img/favicon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/assets/img/favicon-512.png', sizes: '512x512', type: 'image/png' }] }, null, 1));
   // Share preview (Facebook, Messenger, texts): the home-page jobsite photo under a dark scrim with the
   // white logo, or the logo on warm gray until photos/site/home-hero.jpg exists
   const heroPhoto = path.join(ROOT, 'photos', 'site', 'home-hero.jpg');
@@ -553,7 +573,7 @@ async function main() {
       header: meta.layout === 'landing' ? 'header-landing' : 'header',
       footer: meta.layout === 'landing' ? 'footer-landing' : 'footer',
       // the business card for Google on every page visitors can land on from search
-      structured_data: (meta.noindex !== 'yes' ? ctx.local_business : '') + breadcrumbs(urlPath, meta.title || config.name) + (meta.service === 'yes' ? serviceJsonLd(meta, urlPath) : ''),
+      structured_data: (urlPath === '/' ? websiteJsonLd() : '') + (meta.noindex !== 'yes' ? ctx.local_business : '') + breadcrumbs(urlPath, meta.title || config.name, meta.crumb) + (meta.service === 'yes' ? serviceJsonLd(meta, urlPath) : ''),
       verification_meta: filled('googleSiteVerification') ? `<meta name="google-site-verification" content="${esc(config.googleSiteVerification)}">` : '',
       // estimate form defaults for pages without ?type= / ?who= in the link (e.g. an ad landing page)
       // service pages: the real jobs in that category, and a Service card for Google
@@ -565,6 +585,8 @@ async function main() {
     let html = layout.replace('{{content}}', body).replace('{{> header}}', `{{> ${pageCtx.header}}}`).replace('{{> footer}}', `{{> ${pageCtx.footer}}}`);
     html = await render(html, pageCtx);
     html = html.replace(/\{\{nav_[\w]+\}\}/g, '');
+    // After launch, a placeholder typed straight into a page (like the Home Construction intro) is left out instead of shown
+    if (LIVE) html = html.replace(/<p>\s*<span class="tbd[^"]*">\[[^\]]*\]<\/span>\s*<\/p>\s*/g, '');
     html = withBase(html);
     const outFile = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     await fs.mkdir(path.dirname(path.join(DIST, outFile)), { recursive: true });
@@ -579,8 +601,11 @@ async function main() {
   for (const p of projects) {
     const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
     await renderPage({
-      title: `${p.title}${town} | ${p.category} | TVIS`.length <= 66 ? `${p.title}${town} | ${p.category} | TVIS` : `${p.title}${town} | TVIS Construction`,
-      description: (p.description || `${p.category} project by TVIS Construction${town}.`).slice(0, 155),
+      // Titles Google can show whole (about 60 characters): the job and its town when they fit, else the job alone
+      title: [town && `${p.title}${town} | TVIS`, town && `${p.title}, ${p.town} | TVIS`, `${p.title} | TVIS Construction`, `${p.title} | TVIS`].filter(Boolean).find(t => t.length <= 60) || p.title,
+      crumb: p.title,
+      // Joey's write-up, then where and what the visitor will see; kept under about 160 characters
+      description: projectDescription(p),
       nav: 'projects',
       body_class: 'page-project',
       sitemap: p.title.startsWith('Sample') ? 'no' : '',
