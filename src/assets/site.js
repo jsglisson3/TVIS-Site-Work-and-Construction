@@ -193,6 +193,7 @@ if (/[?&]slots\b/.test(location.search)) {
   var box = document.querySelector('[data-estimate]');
   if (!box) return;
   var form = box.querySelector('form');
+  form.noValidate = true; // the inline messages below replace the browser's own bubbles (kept for visitors without JavaScript)
   var typeSel = form.querySelector('#f-type');
   var whoRadios = [].slice.call(form.querySelectorAll('input[name="I am a"]'));
   var fileInput = form.querySelector('input[type=file]');
@@ -294,7 +295,12 @@ if (/[?&]slots\b/.test(location.search)) {
   function setErr(el, bad) {
     var err = el.closest('.f').querySelector('.f-err');
     el.setAttribute('aria-invalid', bad ? 'true' : 'false');
-    if (err) err.hidden = !bad;
+    if (err) {
+      err.hidden = !bad;
+      // tie the message to its field, so a screen reader reads it out when the field gets focus
+      if (!err.id) err.id = el.id + '-err';
+      if (bad) el.setAttribute('aria-describedby', err.id); else el.removeAttribute('aria-describedby');
+    }
     return !bad;
   }
   function validate() {

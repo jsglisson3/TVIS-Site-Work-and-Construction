@@ -241,7 +241,7 @@ The business is now **TVIS Construction** (Jeremy). `site.config.json > name` dr
 
 ## Estimate form live (2026-10-29 04:25 UTC)
 
-`formEndpoint` = Basin form https://usebasin.com/f/4513058586c6 (Basin account under tvisconstruction@gmail.com; notifications should go to info@tvisconstruction.com). The "form is being set up" notice disappears automatically. Do a real test submission with a photo after each change to the form.
+`formEndpoint` = Basin form https://usebasin.com/f/4513058586c6 (the Basin login is kept out of this public repo; notifications go to info@tvisconstruction.com). The "form is being set up" notice disappears automatically. Do a real test submission with a photo after each change to the form.
 - 04:40 UTC: site email changed to **info@tvisconstruction.com** (Google Workspace on the domain, set up 2026-10-29). Only `site.config.json > email` changed.
 
 ## Final polish (2026-10-29 04:55 UTC)
@@ -445,3 +445,45 @@ Jeremy's full brief (sections 3 to 7: images first, then cards, responsive and c
 
 **Verified:** old vs new geometry on all 26 pages at 390 / 820 / 1440 (only the intended changes), no sideways scroll on any page at 360, 390, 600, 820, 901, 1024, 1280, 1440 and 1920, axe clean (only "needs review" items over photos), Lighthouse mobile home 99, drainage 97, homeowners 98, builders 92, concrete 99, landing page 100 (SEO 69 by design, noindex).
 
+## Service page photo alignment (2026-11-02, 14:40 to 15:00 UTC)
+
+Jeremy said the image spacing on the service pages felt wrong: the opening photo and the "What we do" photo stacked in the right column with a 16px gap, both running to the screen edge, so the second photo didn't line up with anything in its own section.
+
+- Desktop only (901px and up), on the six service pages and `/lp/shed-garage-pads`: the "What we do" photo now sits inside the content width. Its left edge matches the opening photo's left edge, its top is level with the heading and its bottom is level with the button. The text column is a flex column, so the button takes `margin-top:auto` and meets the photo's bottom edge when the list is short (the photo keeps a 340px minimum height). CSS block at the end of `src/assets/site.css`.
+- `sizes` for these photos is now `(min-width: 1440px) 600px, (min-width: 900px) 48vw, 100vw` (the photo is about 570px wide on desktop), including the ad page's before/after block.
+- Phones and tablets unchanged. Compared with the live build (df331d3) on 10 pages at 1440, 820 and 390: only these seven desktop sections changed. No sideways scroll at nine widths. Lighthouse mobile: Home 92, Drainage 97, Site Prep 99, ad page 100.
+- STYLE-GUIDE.md: new rule "Never stack two photos in one column".
+- Still open: Jeremy (14:46) wants a full image-spacing and layout review of every page on the live site, after the backend audit. The Demolition "What we do" photo (`more-cleanup`) shows the photographer's shadow; swap it in a photo batch.
+
+## Backend audit and launch readiness (2026-11-02, 14:55 to 15:20 UTC)
+
+Full report (Claude Doc): https://claude.ai/artifact/V2BthtRzqADnCFmaQLXXwh. Checkpoint copy of the site before the audit: `/tmp/claude-0/tvis-pre-audit` (container only).
+
+Code changes, all tested (they ship with the photo alignment above, one commit):
+- Project pages: the before/after slider asks for `96vw` on phones so it picks the same file as the gallery photo below it (each photo downloads once). Four project pages went from 78-84 to 90-92 on Lighthouse mobile.
+- Photo `sizes`: home service cards `(min-width: 1180px) 400px, (min-width: 600px) 45vw, calc(100vw - 40px)` (two columns start at 600, not 560); home Homeowners/Builders cards `(min-width: 900px) 600px, (min-width: 600px) 72vw, 100vw` (wide panoramas cropped to 4:3 need the extra pixels); project cards default `(min-width: 900px) 33vw, (min-width: 600px) 45vw, calc(100vw - 40px)`; Projects page cards use `80vw` on phones (was 66vw, soft on phones). Home page weight 1,313 KB to 909 KB.
+- Estimate form: `novalidate` removed from the HTML and set by site.js instead, so the browser enforces required fields when JavaScript is off (the live site sent blank requests then). Error messages are tied to their fields with `aria-describedby` while showing.
+- `head.html`: `<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'; upgrade-insecure-requests">`. Scripts are deliberately not restricted (the tracking tags load from Google and Meta).
+- `site.css`: `.sv,.pads{overflow:hidden}` split from the `:has()` rule, because a browser without `:has()` drops the whole selector list.
+- `docs/HANDOFF.md`: Basin login email removed (the repo is public).
+
+Found and handed to Jeremy (see the report): DMARC record has a placeholder `rua=mailto:you@tvisconstruction.com` (set it to `v=DMARC1; p=none`); Basin free plan is 50 submissions a month, 100 MB, 30-day retention, no server-side honeypot, no custom redirect, but Allowed Domains is free (add tvisconstruction.com); Workspace billing by 2026-11-11; GitHub Pages "Enforce HTTPS" not readable from here; GA4 not installed (hooks ready: `generate_lead`, `phone_call_click`); deploy workflow actions target Node 20 (deprecated, still runs on Node 24).
+
+Results: Lighthouse mobile 90+ on all 26 pages, accessibility and best practices 100 everywhere, SEO 100 on the 22 indexable pages; axe 0 violations; keyboard checks pass; 0 broken links; form tests pass with and without JavaScript. Not testable here: Safari/Firefox, a real Basin submission, live HTTPS and www redirect.
+
+
+## Image layout review (2026-11-02, 15:25 to 16:10 UTC)
+
+Jeremy (15:23): "do an entire site review and focus entirely on images and their sizing and how they fit on each page .. this has to be perfect". Every photo on all 26 pages was measured at 390, 820, 1440 and 1866px (its edges against the content edges, the space around it, what sits beside it, how much of the photo the frame keeps, and whether the file is sharp enough), then looked at in screenshots. Checkpoint copy before these changes: `/tmp/claude-0/tvis-pre-images` (container only).
+
+Found and fixed:
+- **Homeowners and Builders, desktop:** the section photos ran top to bottom of their band and out to the screen edge. Neighbouring photos met corner to corner, the photo edges jumped between two lines down the page, and the wide drainage and utilities shots kept under half their width. Now they sit inside the content width like the service pages: top level with the heading, bottom level with the button, never shorter than 5:3, sides alternating, edges on the same lines as the opening photo. The shed-pad picture on Homeowners no longer sticks to the top of its band or stops short of the screen edge; it lines up with its heading.
+- **Phones and tablets, Homeowners shed-pad section:** now heading, photo, then words, like the other sections (it was heading, words, photo).
+- **Project pages:** the before/after slider ran past the content edge (to the screen edge at 1440, and stopping 177px short of it on wide monitors). It now ends on the content edge.
+- **Project galleries:** five photos left an empty cell at the bottom right on desktop (2025-08 East Brainerd). The build now gives every photo a tile (`galleryLayout` in scripts/build.mjs) so no count leaves a gap, and asks for a file the size of that tile. On tablets two photos now sit side by side instead of stacking at full width (the 696px garage pad photos were soft stretched across a tablet).
+- **Service pages with two related jobs** (Concrete, Gravel Driveways): two cards in a three-column grid left a third of the row empty. They now fill it, half each (`proj-grid-two`).
+- **`sizes`:** Homeowners and Builders section photos `(min-width: 1440px) 680px, (min-width: 900px) 60vw, 100vw`, the two panoramas `(min-width: 1440px) 1000px, (min-width: 900px) 90vw, 150vw`, the shed-pad picture `(min-width: 1440px) 600px, (min-width: 900px) 46vw, 100vw`, the project slider `(min-width: 1440px) 690px, (min-width: 900px) 52vw, 96vw`.
+
+Checked and left alone: the page openings, home hero and statement band (locked), the home page, Projects page, More Services, the estimate page, the service pages' "What we do" photos (fixed in the batch before). Every other crop keeps its subject. The two garage pad "After" photos are only 696px wide, so they stay a little soft on phones; a larger copy from Joey would fix it. The hillside driveway's two "Before" photos are near duplicates; worth swapping one in the next photo batch.
+
+Results: compared with the build before this batch on all 26 pages at 1866, 1440, 820 and 390: only the sections above changed. No sideways scroll at nine widths. Lighthouse mobile 90+ on all 26 pages (Home 92, Homeowners 92, Builders 92, Concrete 99, East Brainerd project 97, lowest 90 on the Feb 2026 lot clearing project, same as before), accessibility and best practices 100. Before/after page: https://claude.ai/artifact/43U1L4gNUVpvi7G1vCsWK1. Ships in one commit with the two sections above ("Image layout and audit fixes"), because Jeremy's PC was offline and none of it had been copied yet.

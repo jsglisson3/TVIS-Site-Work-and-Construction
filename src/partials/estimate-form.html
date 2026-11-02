@@ -1,9 +1,10 @@
-<!-- Estimate form. Posts to Basin (site.config.json > formEndpoint) as multipart, so it works without JavaScript too.
+<!-- Estimate form. Posts to Basin (site.config.json > formEndpoint) as multipart, so it works without JavaScript too
+     (then the browser checks the required fields itself; site.js switches that off and shows its own messages).
      With JavaScript (site.js): prefill from ?type= / ?who=, photo previews, photos shrunk to ~1600px before upload,
      spam checks, ad source fields, and the thank-you state. Field names are what shows in the emails. -->
 <div class="est" data-estimate data-type="{{form_type}}" data-who="{{form_who}}">
   {{form_notice}}
-  <form class="est-form" action="{{form_endpoint}}" method="post" enctype="multipart/form-data" novalidate>
+  <form class="est-form" action="{{form_endpoint}}" method="post" enctype="multipart/form-data">
     <fieldset class="f f-who">
       <legend class="f-l">I&rsquo;m a&hellip;</legend>
       <div class="who-opts">

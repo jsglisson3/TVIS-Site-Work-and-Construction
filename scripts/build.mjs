@@ -251,19 +251,35 @@ const projectRow = p => `${p.status === 'In Progress' ? '<span class="badge badg
 const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'Drainage': 'drainage', 'New Construction Sitework': 'siteprep', 'Concrete': 'concrete', 'Property Cleanup': 'cleanup', 'Home Construction': 'home' };
 
 // Body of the project detail page at /project/<folder>: every photo, grouped, plus the estimate button.
+// The slider asks for 96vw on phones (it is drawn at 100vw): on most phones that picks the same file as the gallery
+// photo of the same job below it, so each photo downloads once instead of twice at two sizes.
 function projectDetail(p) {
   const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
-  // Matches the .pd-grid rules in site.css: one photo across the row; two photos side by side (stacked on phones);
-  // four photos two across; three or more lead with the first photo across two columns.
-  const gallerySizes = (n, i) => n === 1 ? '(min-width: 900px) 92vw, calc(100vw - 40px)'
-    : n === 2 ? '(min-width: 900px) 45vw, calc(100vw - 40px)'
-    : n === 4 ? '(min-width: 900px) 45vw, 50vw'
-    : i === 0 ? '(min-width: 900px) 61vw, calc(100vw - 40px)'
-    : '(min-width: 900px) 33vw, 50vw';
-  const group = (kind, label) => p.photos[kind].length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
+  // Gallery tiles, matched by the .pd-grid rules in site.css. Every row is full: no photo count leaves an empty cell.
+  // Desktop (six-column grid): 1 photo runs the full width at 16:9; 2 or 4 sit two across; 3 or more lead with a big
+  // photo (two thirds wide, two rows tall) beside two thirds, then the rest go three across, finishing with pairs
+  // when a row of three would leave a gap. Tablets and phones (two columns): an odd count leads with one full-width
+  // photo; 2 or 4 sit two across; 6 or more open and close with a full-width photo. Two photos stack on phones only.
+  // Each tile asks for a file as wide as it is drawn (content width 1208px from 1440px up).
+  const galleryLayout = n => {
+    if (n < 2) return n ? ['full'] : [];
+    if (n === 2 || n === 4) return Array(n).fill('half');
+    const rest = n - 3, tail = rest % 3 === 1 ? ['half', 'half', 'half', 'half'] : rest % 3 === 2 ? ['half', 'half'] : [];
+    return ['lead', 'third', 'third', ...Array(rest - tail.length).fill('third'), ...tail];
+  };
+  const DESK = { full: '(min-width: 1440px) 1210px, (min-width: 900px) 92vw', lead: '(min-width: 1440px) 800px, (min-width: 900px) 62vw', half: '(min-width: 1440px) 600px, (min-width: 900px) 46vw', third: '(min-width: 1440px) 400px, (min-width: 900px) 31vw' };
+  const tile = (n, i, d) => {
+    const full = n === 1 || (n % 2 === 1 && i === 0) || (n % 2 === 0 && n >= 6 && (i === 0 || i === n - 1));
+    const small = full ? 'calc(100vw - 40px)' : n === 2 ? '(min-width: 601px) 46vw, calc(100vw - 40px)' : '46vw';
+    return { cls: `pd-photo g-${d}${full ? ' t-full' : ''}`, sizes: `${DESK[d]}, ${small}` };
+  };
+  const group = (kind, label) => {
+    const list = p.photos[kind], lay = galleryLayout(list.length);
+    return list.length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
-  <div class="pd-grid">${p.photos[kind].map((ph, i) => `<a class="pd-photo" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: gallerySizes(p.photos[kind].length, i) })}</a>`).join('')}</div>
+  <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: t.sizes })}</a>`; }).join('')}</div>
 </section>` : '';
+  };
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
   return `<section class="sec pd">
   <div class="wrap">
@@ -274,7 +290,7 @@ function projectDetail(p) {
       <p class="proj-row">${projectRow(p)}</p>
       ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
     </header>
-    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 60vw, 100vw', true)}</div>` : ''}
+    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) 690px, (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
     </div>
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
@@ -293,7 +309,8 @@ function projectDescription(p) {
   return desc.slice(0, 157).replace(/\s+\S*$/, '') + '...';
 }
 
-function projectCard(p, { sizes = '(min-width: 900px) 33vw, 84vw', heading = 'h3', eager = false, wide = false } = {}) {
+// sizes: one column under 600px (the card is the screen width less the gutters), two columns to 900px, three above
+function projectCard(p, { sizes = '(min-width: 900px) 33vw, (min-width: 600px) 45vw, calc(100vw - 40px)', heading = 'h3', eager = false, wide = false } = {}) {
   const live = p.status === 'In Progress';
   return `<article class="proj${wide ? ' proj-wide' : ''}" data-category="${p.categorySlug}">
 ${baSlider(p, sizes, eager)}
@@ -355,7 +372,7 @@ function relatedProjects(cats) {
   return `<section class="sec svc-projects" aria-labelledby="svc-proj-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="svc-proj-h">Recent ${list.length === 1 ? 'job' : 'jobs'} like this</h2><a class="textlink" href="/projects">See all projects</a></div>
-    <div class="proj-grid${list.length === 1 ? ' proj-grid-one' : ''}">${list.slice(0, 3).map(p => projectCard(p, list.length === 1 ? { sizes: '(min-width: 900px) 60vw, 84vw' } : {})).join('\n')}</div>
+    <div class="proj-grid${list.length === 1 ? ' proj-grid-one' : list.length === 2 ? ' proj-grid-two' : ''}">${list.slice(0, 3).map(p => projectCard(p, list.length === 1 ? { sizes: '(min-width: 900px) 60vw, (min-width: 600px) 45vw, calc(100vw - 40px)' } : list.length === 2 ? { sizes: '(min-width: 1440px) 600px, (min-width: 600px) 46vw, calc(100vw - 40px)' } : {})).join('\n')}</div>
   </div>
 </section>`;
 }
@@ -564,9 +581,11 @@ async function main() {
     recent_projects: recent.length ? recent.map(p => projectCard(p)).join('\n') : '<p class="empty">Projects appear here once a job folder is added. See HOW-TO-ADD-A-PROJECT.md.</p>',
     // When the count leaves one card alone on the last desktop row (4, 7, 10...), the newest project runs the full
     // width at the top instead (photo 7/12, words 5/12), so the grid below fills every row.
+    // Projects page: ten cards load at once on a phone, so phones ask for 80vw (the card is drawn at about 90vw):
+    // sharper than the 66vw it used to ask for, without sending 3x phones the next file size up for every card
     project_cards: projects.map((p, i) => {
       const wide = i === 0 && projects.length > 3 && projects.length % 3 === 1;
-      return projectCard(p, { sizes: wide ? '(min-width: 900px) 60vw, 66vw' : '(min-width: 900px) 33vw, 66vw', heading: 'h2', eager: i === 0, wide });
+      return projectCard(p, { sizes: wide ? '(min-width: 900px) 60vw, (min-width: 600px) 45vw, 80vw' : '(min-width: 900px) 33vw, (min-width: 600px) 45vw, 80vw', heading: 'h2', eager: i === 0, wide });
     }).join('\n'),
     home_construction_cards: projects.filter(p => p.category === 'Home Construction').map(p => projectCard(p, { heading: 'h2' })).join('\n') || '<p class="empty">Home construction projects will appear here.</p>',
     tracking_head: trackingHead(),

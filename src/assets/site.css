@@ -395,7 +395,8 @@ body.menu-open{overflow:hidden}
 .sv-flip .sv-media{grid-column:2}
 .sv-intro{max-width:44ch}
 @media (min-width:901px){
-  .sv,.pads,.sec:has(>.lp-two){overflow:hidden}
+  .sv,.pads{overflow:hidden}
+  .sec:has(>.lp-two){overflow:hidden} /* own rule: a browser without :has() drops the whole list */
   .sv h2{grid-column:2}
   .sv-flip h2{grid-column:1}
   .sv-media{grid-row:1/span 9;align-self:stretch;margin:calc(-1 * var(--sec)) 0 calc(-1 * var(--sec)) calc(-1 * var(--bleed))}
@@ -486,14 +487,15 @@ body.menu-open{overflow:hidden}
 .pd-top:not(:has(.pd-ba)){grid-template-columns:1fr}
 .pd-head{max-width:900px}
 .pd-desc{margin-top:18px;max-width:60ch}
-.pd-ba{margin-right:calc(-1 * var(--bleed-capped))}
 .pd-group{margin-top:56px}
 .pd-group h2{font-size:var(--t-h3);margin-bottom:18px}
-.pd-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.pd-grid > :only-child{grid-column:1/-1;aspect-ratio:16/9}
-.pd-grid > :first-child:nth-last-child(n+3){grid-column:span 2;grid-row:span 2}
-.pd-grid:has(> :nth-child(2):last-child),.pd-grid:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
-.pd-grid:has(> :nth-child(4):last-child) > :first-child{grid-column:auto;grid-row:auto}
+/* gallery tiles: the build gives each photo its tile (g-full, g-lead, g-half, g-third; t-full on tablets and phones)
+   so every row is full whatever the photo count. Desktop runs a six-column grid. */
+.pd-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.pd-grid > .g-full{grid-column:1/-1;aspect-ratio:16/9}
+.pd-grid > .g-lead{grid-column:span 4;grid-row:span 2}
+.pd-grid > .g-half{grid-column:span 3}
+.pd-grid > .g-third{grid-column:span 2}
 .pd-photo{display:block;aspect-ratio:4/3;background:var(--tint);overflow:hidden}
 .pd-photo img{width:100%;height:100%;object-fit:cover}
 
@@ -721,9 +723,8 @@ body.menu-open{overflow:hidden}
   .cta-actions .btn,.pads-bottom .btn{width:100%}
   .filters{margin-bottom:28px}
   .pd-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .pd-grid > :first-child:nth-last-child(n+3){grid-column:span 2;grid-row:auto}
-  .pd-grid:has(> :nth-child(2):last-child) > *{grid-column:span 2}
-  .pd-grid:has(> :nth-child(even):nth-child(n+6):last-child) > :last-child{grid-column:span 2}
+  .pd-grid > .g-lead,.pd-grid > .g-half,.pd-grid > .g-third{grid-column:auto;grid-row:auto}
+  .pd-grid > .t-full{grid-column:1/-1}
   .hc-cta .btn,.pd-cta .btn{width:100%}
   .f-row{grid-template-columns:1fr}
   .est-side{gap:40px}
@@ -995,4 +996,54 @@ body.menu-open{overflow:hidden}
   .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-row,.proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-desc{font-size:var(--t-body)}
   .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-desc{margin-top:16px;max-width:40ch}
   .proj-grid:not(:has(> .proj[hidden])) > .proj-wide .proj-more{margin-top:12px}
+}
+
+/* ---------- Service pages and the ad page: "What we do" photo lines up with its text (2026-11-02, 15:00 UTC) ----------
+   Desktop only. The photo used to run to the screen edge, top to bottom of its band, with only a 16px gap under the
+   opening photo. Now it sits inside the content width, its top level with the heading and its bottom level with the
+   button, so a full section of space separates it from the opening photo. When the list is short the photo keeps a
+   5:3 minimum and the button moves down to meet its bottom edge. Phones and tablets are unchanged. */
+@media (min-width:901px){
+  .lp-two{align-items:stretch}
+  .lp-two > div:not(.sv-media){display:flex;flex-direction:column;align-items:flex-start;grid-column:1;grid-row:1;min-width:0}
+  .lp-two > div:not(.sv-media) > *{max-width:100%}
+  .lp-two > div:not(.sv-media) > .btn:last-child{margin-top:auto}
+  .lp-two .sv-media{grid-column:2;grid-row:1;align-self:stretch;margin:0;position:relative;min-height:340px}
+  .lp-two .sv-media>.photo,.lp-two .sv-media>.ba{position:absolute;inset:0;height:auto;min-height:0;aspect-ratio:auto}
+}
+
+/* ---------- Image layout review (2026-11-02, 15:40 UTC) ----------
+   Homeowners and Builders: on desktop the section photos used to run top to bottom of their band and out to the
+   screen edge, so neighbouring photos met corner to corner, wide shots were cut to half their width, and the photo
+   edges jumped between two lines down the page. Now they sit inside the content width like the service pages:
+   the photo's top is level with the heading and its bottom level with the button, never shorter than 5:3, sides
+   alternating. The shed-pad picture on Homeowners and the project page slider also stop at the content edge. */
+@media (min-width:901px){
+  .sv .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(32px,5vw,80px);align-items:stretch}
+  .sv .wrap > div:not(.sv-media){display:flex;flex-direction:column;align-items:flex-start;grid-column:2;grid-row:1;min-width:0}
+  .sv-flip .wrap > div:not(.sv-media){grid-column:1}
+  .sv .wrap > div:not(.sv-media) > *{max-width:100%}
+  .sv .wrap > div:not(.sv-media) > .btn:last-child{margin-top:auto}
+  .sv .sv-media,.sv-flip .sv-media{grid-column:1;grid-row:1;align-self:stretch;margin:0;position:relative}
+  .sv-flip .sv-media{grid-column:2}
+  .sv .sv-media::before{content:"";display:block;padding-top:60%}
+  .sv .sv-media>.photo,.sv .sv-media>.ba{position:absolute;inset:0;height:auto;min-height:0;aspect-ratio:auto}
+  .pads-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(32px,5vw,80px);align-items:start}
+  .pads-pic{margin:0}
+  .pads-bottom{column-gap:clamp(32px,5vw,80px)} /* its second column starts on the same line as the photo above */
+  .pd-ba{margin-right:0}
+  /* two related jobs on a service page fill the row, half each, instead of leaving a third of it empty */
+  .proj-grid-two{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* phones and tablets: the shed-pad section reads heading, photo, then words, like every other section on the page */
+@media (max-width:900px){
+  .pads-top{row-gap:0}
+  .pads-top > div:first-child{display:contents}
+  .pads-top h2{order:-2;margin-bottom:20px}
+  .pads-pic{order:-1;margin:0 calc(-1 * var(--gut)) 24px}
+  .pads-top p{margin-top:0}
+}
+/* phones: two gallery photos stack full width (tablets keep them side by side) */
+@media (max-width:600px){
+  .pd-grid:has(> :nth-child(2):last-child) > *{grid-column:1/-1}
 }
