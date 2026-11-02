@@ -1,0 +1,6 @@
+title: Wooded lot cleared and graded
+category: Property Cleanup
+town: [TOWN]
+status: Completed
+featured: no
+description: [CONFIRM] Brush, small trees and stumps cleared off a wooded lot and piled up, then the ground graded smooth with the bigger trees left standing.

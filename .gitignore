@@ -2,3 +2,10 @@ node_modules/
 dist/
 .DS_Store
 Thumbs.db
+
+# Photo downloads stay out of the repo (GitHub refuses files over 100 MB, and raw phone
+# photos and videos bloat it). Only the picked, resized photos in photos/site and projects/ go in.
+*.zip
+/TVIS-*/
+*.mov
+*.MOV

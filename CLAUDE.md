@@ -15,12 +15,12 @@ Marketing site for an excavation and sitework company in Chattanooga, TN. Its on
 
 - Use the brief's copy as written. Never invent reviews, testimonials, license numbers, years in business, project counts, awards, prices, response times or service towns. Missing details stay as visible `[PLACEHOLDERS]` driven by `site.config.json`.
 - Never use photos from other companies. A photo spot with no photo shows a drawn cross-section from `scripts/diagrams.mjs` (the homepage hero uses the dark `heroScene()`); never a gray box, and never a drawing presented as a photo. Add `?slots` to a page URL to see the empty spots.
-- Stay inside the design system in HANDOFF.md:
+- **The look is locked: follow `docs/STYLE-GUIDE.md`** (approved live style as of 2026-11-02). Build new work from its colours, type, components and photo rules; don't restyle existing pages. In short:
   - light pages on white and warm gray; olive is an accent only (buttons, bars, bullets), never a full-screen slab; Jeremy likes the green but it must not overpower everything
   - the dark fields are the hero, the statement band and the footer; the header is white with the full-colour logo, big and crisp
   - the hero headline is "Groundwork / Done Right." (Jeremy's choice); "From the Ground Up." stays as the tagline in the footer and config
   - the colours and type sizes listed there, headlines in two lines or fewer at every width
-  - square flat buttons, no shadows at rest, no gradients beyond the photo scrim
+  - square corners and flat buttons; soft shadows only on the header, the form and sidebar cards and their primary buttons (Jeremy asked for them); no gradients beyond the photo scrim
   - no carousels, counters, icon-card grids or tiny letter-spaced labels
 - Motion is limited to one planned moment per page (the hero settle on the homepage, the pad build-up on `/homeowners`, the footer dozer), and it must respect `prefers-reduced-motion`.
 - Every page must work at 390px and 1440px with no sideways scroll.

@@ -235,7 +235,7 @@ function baSlider(p, sizes, eager = false) {
 </div>`;
   }
   const one = a || b;
-  return one ? `<div class="ba ba-single">${imgTag(one, `${p.title}${town}`, { sizes })}</div>` : '';
+  return one ? `<div class="ba ba-single">${imgTag(one, `${p.title}${town}`, { sizes, eager })}</div>` : '';
 }
 
 const townHtml = p => (p.town ? (p.town.startsWith('[') ? (LIVE ? '' : tbd(p.town.replace(/[\[\]]/g, ''))) : esc(p.town)) : '');
@@ -249,7 +249,7 @@ function projectDetail(p) {
   const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
   const group = (kind, label) => p.photos[kind].length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
-  <div class="pd-grid">${p.photos[kind].map((ph, i) => `<a class="pd-photo" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: '(min-width: 900px) 33vw, 100vw' })}</a>`).join('')}</div>
+  <div class="pd-grid">${p.photos[kind].map((ph, i) => `<a class="pd-photo" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: p.photos[kind].length === 1 ? '(min-width: 900px) 66vw, calc(100vw - 40px)' : '(min-width: 900px) 33vw, 50vw' })}</a>`).join('')}</div>
 </section>` : '';
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
   return `<section class="sec pd">
@@ -260,7 +260,7 @@ function projectDetail(p) {
       <p class="proj-row">${projectRow(p)}</p>
       ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
     </header>
-    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 70vw, 100vw')}</div>` : ''}
+    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 70vw, calc(100vw - 40px)', true)}</div>` : ''}
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
       <a class="btn btn-primary" href="/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}">Get an estimate for a job like this</a>

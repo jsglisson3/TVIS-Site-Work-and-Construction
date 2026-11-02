@@ -6,13 +6,13 @@ home-homeowner                 #114 2a621362   driveway with landscaped stone be
 home-builder                   #113 1000035915 graded lot, silt fence, excavator
 home-svc-driveways             #93  IMG_8083   gravel drive to a new home
 home-svc-pads                  #121 IMG_6867   graded pad inside wood forms
-home-svc-drainage              #76  IMG_7069   rock swale beside block wall (cropped, sky removed)
+home-svc-drainage              #176 IMG_5473   mini excavator over a drainage trench with pipe (2026-11-02, 2nd batch)
 home-svc-siteprep              #98  IMG_8345   mini excavator grading beside a new home
-homeowners-hero                #119 823cc44f   driveway with landscaped beds
+homeowners-hero                #185 IMG_7070   finished lawn, paved drive, stone drain bed (2026-11-02)
 homeowners-driveways-before    #100 IMG_8353   hillside lot before the driveway
 homeowners-driveways-after     #106 IMG_8483   same view, concrete driveway done
 pads-step-1..4                 #124, #121, #126, #132   forms set, graded pad, slab poured, building done
-builders-hero                  #101 IMG_8425
+builders-hero                  #167 IMG_5203   footings poured on a cleared new-home lot (2026-11-02)
 builders-utilities             #109 1000035893 open trench, excavator behind
 builders-concrete-before/after #104 IMG_8429 / #107 IMG_8484
 builders-final-grading-b/a     #72  IMG_7043 / #91 IMG_8070(1)   same new home, rough lot then finished
@@ -20,15 +20,19 @@ more-hero                      #80  IMG_7246   clearing a wooded lot
 more-cleanup                   #48  IMG_5197   cleared lot, big trees kept
 more-dirt-gravel               #135 Resized_202511   skid steer spreading dirt
 more-small-excavation          #136 Resized_202511   mini excavator on a graded lot
-lp-pads-hero                   #121 IMG_6867
+lp-pads-hero                   #159 116BADD9   finished building on its slab, covered porch (2026-11-02)
 lp-pads-before/after           #124 / #127     forms on grass, then the poured slab
 
 Added in the final polish (single photos where no same-spot before/after pair exists yet):
-pads-feature                   #33  IMG_0057   fresh pad in an open yard
+pads-feature                   #158 B551ACFE   same building wide, fresh gravel, tall pines (2026-11-02)
 homeowners-drainage            #77  IMG_7069(1) rock swale beside block wall (sky cropped)
-homeowners-cleanup             #81  IMG_7246(1) clearing brush on a wooded lot
+homeowners-cleanup             #163 IMG_4599   lot cleared and graded, Mar 2026 (2026-11-02)
 builders-site-prep             #56  IMG_5304   footing trenches in a graded pad
 
 Added 2026-10-29 to match the six services on Joey's Facebook banner:
-home-svc-concrete              #106 IMG_8483   concrete driveway done on the hillside lot
-home-svc-demolition            #48  IMG_5197   cleared lot, debris gone (until a real demolition photo lands)
+home-svc-concrete              #156 IMG_5393   slab poured, walls framed on it (2026-11-02)
+home-svc-demolition            #188 IMG_7245   mini excavator pushing through heavy brush (2026-11-02; no real teardown photo yet)
+
+Added 2026-11-02 from the second batch (numbers #138-#195 are in /mnt/project-files/tvis-photos-2/index.json):
+more-demolition                #161 IMG_4281   excavator beside a debris pile on a lot being cleared (also the Demolition & Cleanup page photo)
+homeowners-drainage            kept #77 (the swale); home-svc-drainage is now the trench, so the swale no longer repeats
