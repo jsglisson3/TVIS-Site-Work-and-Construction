@@ -496,3 +496,57 @@ Jeremy sent screenshots of the live site after eb432df: the opening photos on Ho
 - `sizes` on the ten opening photos: `(min-width: 1440px) 620px, (min-width: 900px) 48vw, 80vw`; the Drainage opening (a panorama cropped to 4:3) `(min-width: 1440px) 820px, (min-width: 900px) 64vw, 120vw`.
 - Compared with eb432df on 13 pages at 1866, 1440, 820 and 390: only the opening photo box moved; no sideways scroll. STYLE-GUIDE.md "Page opening" rule updated.
 - Jeremy (16:00): the images must be "flawless across the entire website"; after this he wants to move on to backend work, more features and individual page reviews.
+
+Live as acc72cd (deploy green, 16:11 UTC; the commit reused the previous message by mistake, the content is the opening-photo batch). Every inner-page photo now sits inside the content width; only the home hero and the statement band run to the screen edge, by design.
+
+## Final visual polish pass (2026-11-02, 16:12 UTC onward)
+
+Jeremy's brief: "FINAL WEBSITE VISUAL POLISH, THE LAST PASS": every image, spacing, borders, corners, shadows, cards,
+buttons, header and footer, at desktop, tablet and phone; quality over quantity, no redesign, no new effects, no
+dependencies. His first note after the openings moved inside the page (16:14): "these used to bleed off the page but
+now it just looks so small", so the top of every page came first. Checked with the design inspector from the
+tasteskill (`inspect.mjs`, 1866 / 1440 / 820 / 390) and the site's own geometry and spacing scripts.
+
+What changed (all in `src/assets/site.css` unless noted):
+
+1. **Page openings** (Homeowners, Builders, More Services, the six service pages, the ad page): the photo now fills the
+   full height of the band, top to bottom, with its right edge on the content edge. The photo column is wider than the
+   text column (1 : 1.12, 64px gap) so the photo leads and every title that fits in two lines still does. About
+   604 x 600px at 1440 and 1866, 474 x 480 at 1024. `sizes` on all ten openings now `(min-width: 1440px) 860px,
+   (min-width: 900px) 64vw, 80vw` so the photo is sharp at 1x (it was being upscaled). The 16:00 override block was
+   folded into the main opening rules (one place, no superseded rule left behind).
+2. **Drainage opening photo:** the panorama (`homeowners-drainage`) kept only 48% of itself in the near-square frame.
+   New `photos/site/svc-drainage-hero.jpg`: a 4:3 cut of the same swale photo (IMG_7069, house, lawn, rock channel,
+   block wall). The panorama still runs on the Homeowners drainage section, where it fits.
+3. **Project pages:** the title and before/after slider use the same split and gap as the openings (1 : 1.2, 64px),
+   so long titles run three lines instead of four beside a 624px slider.
+4. **Builders on tablets:** the opening's button and "Call us" sit in one row like every other page (the phone-only
+   column rule was winning on tablets through specificity).
+5. **Header button and send button keep their glow and lift.** The pass briefly flattened them for consistency, then
+   put them back: Jeremy asked for the snazzy header with its drop shadow on 2026-10-29 and likes the small lifts.
+   Shadows are byte-for-byte what was live.
+6. **Spacing on the 24 / 32 rhythm:** the Shed pad section button (24 to 32px above), the home contact card button
+   (26 to 32), the 404 and thanks page title-to-text gap (18 / 20 to 24).
+7. **Cleared-lot photo recut:** `photos/site/more-cleanup.jpg` (More Services list and the Demolition page panel) had
+   the photographer's shadow across the foreground; the same photo is now cut from the left and bottom so the shadow is
+   out of the frame (trunk, cleared ground, pines kept).
+8. **Hillside driveway project:** `before-2.jpg` was a near duplicate of `before-1.jpg` (same spot, seconds apart), so
+   the Before group showed the same picture twice. Removed; the Before group is now one full-width photo. Registry #99
+   is back in reserve.
+9. **Sharper on real phones:** on phones the opening photo and the project-card sliders run the full width, but
+   their `sizes` said 80vw, so a 3x phone (390px, 1170 device pixels) was handed the 960px file. Now 92vw / 90vw: a
+   3x phone gets the 1200px file; Lighthouse's test phone (412px at 1.75x) still gets the 720px file, so the scores
+   hold (Builders 91, Projects 91, Homeowners 91). Tablets (601 to 900px) get 100vw for the openings, so a 2x iPad
+   loads the 1600px file instead of 1200. (The geometry script's "sharpness" column reads `naturalWidth`, which
+   Chrome scales by `sizes`, so it under-reports whenever `sizes` is smaller than the box; check `currentSrc`.)
+10. **Phone service chips:** the "All our services" strip on service pages and the home strip use filled chips on
+   phones, the same chips as the Projects filters, instead of 1.5px outlined boxes; the page you are on is dark.
+
+Unresolved, needs Joey: the two finished photos of the garage pad project (`projects/2025-10-garage-pad/after-1.jpg`,
+`after-2.jpg`) exist only as 696px Facebook downloads, so they are soft on phones and in the big gallery tile. Ask for
+the full-size originals from his phone and drop them in; nothing else to do.
+
+Inspector notes kept as they are, on purpose: the home hero eyebrow line and the warm-gray palette are the brand;
+no video; the header hairline and the card borders are in the style guide; the Builders and Homeowners titles run
+three lines at 60px (unified title size, Jeremy's call) because the content width can't hold "Sitework Solutions for
+Builders & Contractors" in two.

@@ -585,7 +585,7 @@ async function main() {
     // sharper than the 66vw it used to ask for, without sending 3x phones the next file size up for every card
     project_cards: projects.map((p, i) => {
       const wide = i === 0 && projects.length > 3 && projects.length % 3 === 1;
-      return projectCard(p, { sizes: wide ? '(min-width: 900px) 60vw, (min-width: 600px) 45vw, 80vw' : '(min-width: 900px) 33vw, (min-width: 600px) 45vw, 80vw', heading: 'h2', eager: i === 0, wide });
+      return projectCard(p, { sizes: wide ? '(min-width: 900px) 60vw, (min-width: 600px) 45vw, 90vw' : '(min-width: 900px) 33vw, (min-width: 600px) 45vw, 90vw', heading: 'h2', eager: i === 0, wide });
     }).join('\n'),
     home_construction_cards: projects.filter(p => p.category === 'Home Construction').map(p => projectCard(p, { heading: 'h2' })).join('\n') || '<p class="empty">Home construction projects will appear here.</p>',
     tracking_head: trackingHead(),

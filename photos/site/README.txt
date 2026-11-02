@@ -15,6 +15,7 @@ Homepage
   home-svc-driveways.jpg            regraded gravel driveway with fresh stone
   home-svc-pads.jpg                 compacted gravel pad, shed going up
   home-svc-drainage.jpg             French drain trench with pipe and stone
+  svc-drainage-hero.jpg             rock swale and block wall, 4:3 (Drainage page opening)
   home-svc-siteprep.jpg             excavator grading a new home lot
   (the homepage's Recent projects come from the projects/ folder, not from here)
 

@@ -17,7 +17,7 @@ builders-utilities             #109 1000035893 open trench, excavator behind
 builders-concrete-before/after #104 IMG_8429 / #107 IMG_8484
 builders-final-grading-b/a     #72  IMG_7043 / #91 IMG_8070(1)   same new home, rough lot then finished
 more-hero                      #80  IMG_7246   clearing a wooded lot
-more-cleanup                   #48  IMG_5197   cleared lot, big trees kept
+more-cleanup                   #48  IMG_5197   cleared lot, big trees kept (recut 2026-11-02: left and bottom trimmed so the photographer's shadow is out of the frame)
 more-dirt-gravel               #135 Resized_202511   skid steer spreading dirt
 more-small-excavation          #136 Resized_202511   mini excavator on a graded lot
 lp-pads-hero                   #159 116BADD9   finished building on its slab, covered porch (2026-11-02)
@@ -48,3 +48,5 @@ svc-pads-panel                 #128 Resized_20250816_095517   walls going up on 
 Project folders added the same day: 2026-06-harrison-drainage-yard (#185, #76, #78, #114, #119, #117), 2025-02-chattanooga-concrete-driveway (#9, #15, #10, #11, #138),
 2025-05-backyard-grading (#30, #28, #25, #151, #152, #153, #23), 2025-08-east-brainerd-two-new-homes (#154, #34, #35, #36, #37).
 2026-04-lot-clearing-footings gained #61 and #62 (after) and its progress-2/3 are now #166 and #169 (the old #56/#58 were a different site); 2026-09-new-home-final-grading gained #94.
+
+svc-drainage-hero              #76  IMG_7069    the same swale as homeowners-drainage, cut 4:3 (house, lawn, rock channel, wall) for the Drainage page opening, which is now nearly square (2026-11-02, final polish)
