@@ -411,3 +411,19 @@ Concept C went live as "Concept C Hero" (7a7853b). Jeremy then spotted that the 
 **Checked:** old vs new geometry and full-page screenshots for all 26 pages at 390, 820 and 1440; stacked photo edges on all six service pages and the landing page at 1280 and 1649; axe on /, /drainage, /concrete, /lp/shed-garage-pads and /estimate; Lighthouse mobile (see the next lines); no sideways scroll.
 
 **Lighthouse mobile after this batch (local):** home 92, drainage 99, concrete 99, homeowners 92, builders 92, estimate 100, projects 99, more services 99, all with accessibility, best practices and SEO at 100. The shed-pad landing page scores 100 / 100 / 100 with SEO 69, which is expected: it is `noindex` on purpose.
+
+## Visual refinement pass (2026-11-02, 14:00 to 14:30 UTC)
+Jeremy asked for 30 minutes on structure, layout, sizing, spacing and images only: no features, no architecture changes, header and hero untouched. Every page was captured full length at 390 / 820 / 1440, every section's padding and heading-to-text gaps were measured, every button's size was listed, and every photo's crop was measured (how much of the photo shows in its frame).
+
+**What changed (all in the "Visual refinement pass" block at the end of `site.css`, plus two class changes on the home page):**
+- **One spacing rhythm.** Heading to first text was anything from 16 to 48px depending on the section; it is now 24px everywhere (`.sv h2` and `.lp-two h2` margin, `.near p`, `.area p`, `.callout p`), text to list 24px and list to button 32px (`.bul{margin:24px 0 32px}`), the landing form lead 20px.
+- **Buttons size to their label on desktop.** In the panel sections (`.sv`, `.lp-two`: Homeowners, Builders, every service page's "What we do", the landing page) the text column uses `display:contents`, so the button became a grid item and stretched to 568px. `justify-self:start` from 901px puts it back to 175px like every other button. Phones keep the full-width button.
+- **Home page backgrounds alternate:** the How it works band is now white (was olive tint right after the warm-gray service cards, two near-identical beiges touching) and Recent projects is warm gray (`sec-warm`), so the page runs white, warm, white, warm, dark band, warm.
+- **The one-project row on service pages** ("Recent job like this", `.proj-grid-one`): photo 7/12 and words 5/12 (was 2/3 and 1/3), title 28 to 36px, place line and description at body size. The words now balance the photo instead of floating beside it.
+- **Who cards:** both arrow squares sit level with the top of their title (`.who-go{align-self:start}`); before, the two-line Builder title pushed its arrow lower than the Homeowner one.
+- **Photo framing:** the Builders utilities panel (a wide shot in a near-square frame) is positioned at 43% so the excavator, the worker and the trench are all in view (it was cutting the excavator off).
+
+**Checked and left alone:** section padding (already one value, `--sec`), the hero, header, footer and service strip, every other photo crop (the tightest are the wide panoramas in tall side panels, which still frame their subject), the 3/3/3/1 project grid (the filters make a layout trick for the last card unreliable). One photo to swap when a new batch comes in: the More Services "Brush & Lot Cleanup" tile shows the photographer's shadow, and it cannot be cropped out.
+
+**Verified:** old vs new geometry on all 26 pages at 390 / 820 / 1440 (only the intended changes; phone and tablet heights moved by a few pixels from the list spacing), no sideways scroll, Lighthouse mobile home 92, drainage 99, homeowners 98, builders 92 (accessibility, best practices and SEO 100).
+

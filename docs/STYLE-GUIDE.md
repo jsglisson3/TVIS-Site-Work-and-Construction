@@ -54,6 +54,9 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 
 - Content width 1320px max (`--max`), side gutter clamp(20px, 4vw, 56px) (`--gut`).
 - Section padding clamp(64px, 7vw, 104px) top and bottom (`--sec`).
+- **Vertical rhythm inside a section:** a section heading (h2) sits 24px above its first line of text (20px on narrow screens), text sits 24px above a list, and text or a list sits 32px above a button. Cards keep their own smaller steps (title to text 8 to 16px). Don't add one-off margins; reuse these.
+- **Backgrounds alternate:** never put two different light backgrounds (warm gray and olive tint) directly next to each other. The home page runs white, warm, white, warm, dark band, warm.
+- **Buttons size to their label** on desktop, everywhere. Only on phones (under 900px) do buttons in a text column run full width.
 - Header bar 116px on desktop (1360px up), 108px at 1181 to 1359px, 100px at 1024 to 1180px, 88px on tablets and small laptops (600 to 1023px), 76px on phones; plus the 4px olive stripe and the 1px hairline (`--hdr-h`, `--hdr-edge`). The header is fixed and the body carries a matching top padding, so nothing under it moves when the bar changes. From 1024px up it settles to an 84px bar with a 62px logo once the page has scrolled past 140px and grows back above 48px.
 - Breakpoints: 1360px (Facebook mark joins the header), 1181px (phone number joins), 1024px (menu button becomes the real nav and the estimate button), 900px (everything stacks to one column, except that tablets from 600 to 900px keep the home audience cards, the More Services list and the footer link groups two across), 600px (phone header), 560px (small phones).
 - Every page must work at 390px and 1440px with no sideways scroll.
@@ -87,7 +90,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - **Footer:** charcoal, 8px olive ground line with the small dozer, white logo, then Contact, Services, Pages and Service area columns. Copyright says "TVIS Construction. From the Ground Up."
 - **Phone call bar:** fixed at the bottom on phones ("Call" and "Get an Estimate"). On the home page it appears once the hero buttons scroll away.
 - **Phone menu links:** a short olive bar slides in beside the link you press and the word shifts right and turns olive.
-- **How it works on the home page:** the same card as the service pages, on a tint band between the service cards and Recent projects, with the heading "Start with a few photos".
+- **How it works on the home page:** the same card as the service pages, on a white band between the service cards (warm) and Recent projects (warm), with the heading "Start with a few photos".
 
 ## 7. Photos
 

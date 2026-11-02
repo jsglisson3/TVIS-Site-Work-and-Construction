@@ -939,3 +939,26 @@ body.menu-open{overflow:hidden}
   .lp-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(32px,5vw,80px)}
   .lp-two .sv-media{margin-top:calc(16px - var(--sec))}
 }
+
+/* ---------- Visual refinement pass (2026-11-02, 14:00 UTC) ----------
+   One spacing rhythm: section heading to its first line of text 24px, text to a list 24px, list or text to a button 32px.
+   Buttons size to their label on desktop everywhere (they used to stretch across the text column in panel sections). */
+.near p,.area p,.callout p{margin-top:24px}
+.near p.towns{margin-top:12px}
+.bul{margin:24px 0 32px}
+.lp-form .lead{margin:20px 0 36px}
+@media (min-width:901px){
+  .sv h2{margin-bottom:clamp(20px,1.8vw,24px)}
+  .lp-two h2{margin-bottom:clamp(20px,1.8vw,24px)}
+  .sv .btn,.lp-two .btn{justify-self:start}
+  /* the one-project row on service pages: photo 7/12, words 5/12 at a size that balances the photo */
+  .proj-grid-one .proj{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:0 clamp(32px,5vw,72px)}
+  .proj-grid-one .proj-title{font-size:clamp(28px,2.6vw,36px)}
+  .proj-grid-one .proj-row,.proj-grid-one .proj-desc{font-size:var(--t-body)}
+  .proj-grid-one .proj-desc{margin-top:16px;max-width:40ch}
+  .proj-grid-one .proj-more{margin-top:12px}
+}
+/* who cards: both arrows sit level with the top of their title, whatever the title's length */
+.who-go{align-self:start}
+/* photo framing: the utilities panel is a wide shot in a near-square frame; keep the excavator and the trench both in view */
+[data-slot="builders-utilities"] img{object-position:43% 50%}
