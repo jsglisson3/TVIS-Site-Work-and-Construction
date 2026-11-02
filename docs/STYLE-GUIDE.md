@@ -120,6 +120,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - **Page endings.** The closing band is heading and one sentence on the left, "Get an estimate" and "Or call us" side by side on the right, centred. Never stack the two actions on desktop.
 - **Project pages** open with the title beside the before/after slider (title left, slider right, bleeding to the edge). A gallery group with one photo spans the row at 16:9.
 - **Font stand-ins.** `--display` and `--text` carry metric-matched fallback faces second in the stack; keep them when changing fonts (re-measure `size-adjust` if the webfont changes).
+- **Estimate page opening.** The estimate page has no photo opening: its title, intro and call link sit at the top of the form column, with the contact card and "How it works" level with the title on desktop. Keep that layout; do not add a hero photo or band above the form.
 - **One related job on a service page** uses the whole row: slider on the left two thirds, title and text on the right (`proj-grid-one`). Two or three jobs use the normal three-card grid; tablets show two across.
 
 ## 11. Quality bar before calling anything done

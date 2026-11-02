@@ -5,20 +5,19 @@ nav: estimate
 body_class: page-estimate
 schema: yes
 ---
-<section class="phero">
-  <div class="wrap">
-    <h1>Request a Project Estimate</h1>
-    <p>Tell us about your project and we&rsquo;ll discuss the next steps.</p>
-    <div class="hero-act">
-      <a class="hero-call" href="{{phone_href}}" data-track="call">Prefer to talk? Call us</a>
-    </div>
-  </div>
-</section>
-
 <section class="sec est-page">
   <div class="wrap est-grid">
-    <div class="est-main">
-      {{> estimate-form}}
+    <div class="est-col">
+      <div class="est-intro">
+        <h1>Request a Project Estimate</h1>
+        <p>Tell us about your project and we&rsquo;ll discuss the next steps.</p>
+        <div class="hero-act">
+          <a class="hero-call" href="{{phone_href}}" data-track="call">Prefer to talk? Call us</a>
+        </div>
+      </div>
+      <div class="est-main">
+        {{> estimate-form}}
+      </div>
     </div>
 
     <aside class="est-side" id="contact" aria-label="Contact TVIS">
