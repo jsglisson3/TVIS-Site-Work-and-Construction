@@ -237,7 +237,10 @@ body.menu-open{overflow:hidden}
 .near-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px clamp(40px,6vw,96px);align-items:center}
 .near h2{font-size:clamp(32px,3.8vw,54px)}
 .near p{margin-top:22px;max-width:44ch}
-.near .towns{margin-top:12px;font-weight:700}
+.near p.towns{margin-top:12px;font-weight:700}
+.near ul.towns{list-style:none;margin:20px 0 0;padding:0;max-width:640px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(6,auto);grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 20px;font-weight:600}
+.near ul.towns li{position:relative;padding-left:22px}
+.near ul.towns li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;background:var(--olive)}
 .cta-card{background:var(--paper);padding:clamp(28px,3.4vw,48px);border-top:8px solid var(--olive)}
 .cta-card h3{font-size:clamp(28px,3vw,40px);line-height:1}
 .cta-card p{margin-top:16px;max-width:36ch}
@@ -675,8 +678,6 @@ body.menu-open{overflow:hidden}
   .pd-grid:has(> :nth-child(even):nth-child(n+6):last-child) > :last-child{grid-column:span 2}
   .hc-cta .btn,.pd-cta .btn{width:100%}
   .f-row{grid-template-columns:1fr}
-  .who-opts{grid-template-columns:1fr;gap:8px}
-  .who-opts span{justify-content:flex-start;padding:8px 18px}
   .est-side{gap:40px}
 }
 
@@ -684,6 +685,9 @@ body.menu-open{overflow:hidden}
   .proj-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 20px}
 }
 @media (max-width:560px){
+  .near ul.towns{grid-template-rows:repeat(8,auto);grid-template-columns:repeat(2,minmax(0,1fr))}
+  .who-opts{grid-template-columns:1fr;gap:8px}
+  .who-opts span{justify-content:flex-start;padding:8px 18px}
   .svc-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){

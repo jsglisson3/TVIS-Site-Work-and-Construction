@@ -51,6 +51,10 @@ const vars = {
   base: show('baseLocation', 'CITY, TN'),
   service_area: show('serviceArea', 'TOWNS AND COUNTIES'),
   service_towns: show('serviceTowns', 'TOWNS AND COUNTIES'),
+  // the same towns as a list (one item per town or county); the yellow placeholder stays a paragraph until Joey fills them in
+  service_towns_block: filled('serviceTowns')
+    ? `<ul class="towns">${config.serviceTowns.split(/,\s*|\s+and\s+/).map(t => t.trim()).filter(Boolean).map(t => `<li>${esc(t)}</li>`).join('')}</ul>`
+    : `<p class="towns">${show('serviceTowns', 'TOWNS AND COUNTIES')}</p>`,
   hours: show('hours', 'HOURS'),
   // hours are optional (Jeremy: not important); the line simply disappears while blank
   hours_footer: filled('hours') ? `<p>${esc(config.hours)}</p>` : '',
@@ -505,6 +509,10 @@ async function main() {
     project_cards: projects.map((p, i) => projectCard(p, { sizes: '(min-width: 900px) 33vw, 66vw', heading: 'h2', eager: i === 0 })).join('\n'),
     home_construction_cards: projects.filter(p => p.category === 'Home Construction').map(p => projectCard(p, { heading: 'h2' })).join('\n') || '<p class="empty">Home construction projects will appear here.</p>',
     tracking_head: trackingHead(),
+    // Only categories that have a job get a filter button, decided here rather than by site.js after the page
+    // has painted (hiding buttons later made the row shrink and the grid jump: a layout shift Google measures).
+    project_filters: ['<li><button type="button" data-filter="all" aria-pressed="true">All</button></li>']
+      .concat(CATEGORIES.filter(c => projects.some(p => p.category === c)).map(c => `<li><button type="button" data-filter="${slugify(c)}" aria-pressed="false">${esc(c)}</button></li>`)).join('\n      '),
     local_business: localBusinessJsonLd(),
   };
 
