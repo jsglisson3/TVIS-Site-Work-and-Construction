@@ -755,3 +755,25 @@ body.menu-open{overflow:hidden}
   .jump-long{display:none}
   .jump-short{display:inline}
 }
+
+/* Final touches (2026-11-02, 06:00 UTC) */
+/* Google mark next to Facebook: a plain mark until the Google profile link exists in site.config.json */
+.hdr-social .soc-soon,.mmenu-social .soc-soon,.socials .soc-soon{width:44px;height:44px;display:grid;place-items:center;cursor:default}
+/* Hero, desktop and laptop: a calmer headline and a shorter field, same layout and photo */
+@media (min-width:901px){
+  .hero{min-height:clamp(520px,calc(88svh - var(--hdr-h) - var(--hdr-edge)),720px)}
+  .hero-bg .photo>img{object-position:50% 55%}
+  .hero h1{font-size:clamp(56px,5.2vw,78px)}
+  .hero h1::after{width:80px;height:7px;margin-top:clamp(18px,2vw,26px)}
+  .hero-sub{margin-top:clamp(18px,2vw,26px);font-size:clamp(19px,1.55vw,23px)}
+  .hero-act{margin-top:clamp(24px,2.6vw,36px)}
+  .hero-in{padding-top:clamp(48px,6.5vh,80px);padding-bottom:clamp(48px,8vh,96px)}
+}
+/* Header with Facebook and Google side by side (1360px up): a little tighter so it stays inside the content column */
+@media (min-width:1360px){
+  .hdr-in{gap:clamp(18px,1.45vw,22px)}
+  .nav-list{gap:clamp(14px,1.3vw,19px)}
+  .hdr-social{gap:0;padding-left:14px}
+  .hdr-social a,.hdr-social .soc-soon{width:40px;height:40px}
+  .hdr-social svg{width:26px;height:26px}
+}

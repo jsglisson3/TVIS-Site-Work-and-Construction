@@ -1,6 +1,6 @@
 <!-- Site header: white, with the full-colour logo. Phone menu opens full screen with the phone number first. -->
 <header class="hdr" data-hdr>
-  <div class="hdr-in">
+  <div class="hdr-in" data-nosnippet>
     <a class="hdr-logo" href="/" aria-label="{{name}}, home">
       <img class="logo-ink" src="/assets/img/logo.svg" alt="" width="1619" height="776" decoding="async">
     </a>
@@ -14,14 +14,15 @@
     </nav>
     <div class="hdr-social">
       {{fb_icon}}
+      {{gbp_icon}}
       {{ig_icon}}
     </div>
-    <a class="hdr-phone" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg><span><small>Call us</small>{{phone}}</span></a>
+    <a class="hdr-phone" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg><span><small>Call us</small> {{phone}}</span></a>
     <a class="btn hdr-cta" href="/estimate"{{nav_estimate}}>Get an Estimate</a>
     <a class="hdr-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mmenu"><span class="menu-bars" aria-hidden="true"></span><span class="menu-label">Menu</span></button>
   </div>
-  <div class="mmenu" id="mmenu" hidden>
+  <div class="mmenu" id="mmenu" data-nosnippet hidden>
     <a class="mmenu-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>{{talk}} {{phone}}</a>
     <ul>
       <li><a href="/">Home</a></li>
@@ -34,6 +35,7 @@
     <div class="mmenu-foot">
       <div class="mmenu-social">
         {{fb_icon}}
+        {{gbp_icon}}
         {{ig_icon}}
       </div>
     </div>

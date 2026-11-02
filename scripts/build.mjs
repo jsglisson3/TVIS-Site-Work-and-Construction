@@ -70,7 +70,8 @@ const vars = {
   // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
   fb_icon: config.facebook || !LIVE ? `<a href="${config.facebook || '#facebook-url-needed'}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
   ig_icon: config.instagram || !LIVE ? `<a href="${config.instagram || '#instagram-url-needed'}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : '',
-  gbp_icon: config.googleBusinessProfile || !LIVE ? `<a href="${config.googleBusinessProfile || '#google-business-profile-url-needed'}" aria-label="${esc(config.name)} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>` : '',
+  // Google: a plain mark (not a link) until site.config.json > googleBusinessProfile is filled, then a link
+  gbp_icon: config.googleBusinessProfile ? `<a href="${esc(config.googleBusinessProfile)}" aria-label="${esc(config.name)} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Google, coming soon" title="Google profile coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></span>`,
   form_endpoint: esc(config.formEndpoint || ''),
   // Shown above the form until site.config.json > formEndpoint is filled, so requests never vanish silently
   form_notice: config.formEndpoint ? '' : `<p class="form-off" role="note"><b>The request form is being set up.</b> For now, call ${tel ? `<a href="${tel}" data-track="call">${esc(config.phone)}</a>` : tbd('PHONE')} or message us on <a href="${esc(config.facebook || '#facebook-url-needed')}">Facebook</a> and we'll take it from there.${LIVE ? '' : ' <small>(Site owner: add the Basin endpoint to site.config.json &gt; formEndpoint.)</small>'}</p>`,
@@ -243,7 +244,8 @@ function baSlider(p, sizes, eager = false) {
 }
 
 const townHtml = p => (p.town ? (p.town.startsWith('[') ? (LIVE ? '' : tbd(p.town.replace(/[\[\]]/g, ''))) : esc(p.town)) : '');
-const projectRow = p => `<span class="badge${p.status === 'In Progress' ? ' badge-live' : ''}">${p.status}</span> <span>${townHtml(p) ? townHtml(p) + ' · ' : ''}${esc(p.category)}</span>`;
+// Only a job that is still underway gets a chip; finished jobs just read "Town · Service".
+const projectRow = p => `${p.status === 'In Progress' ? '<span class="badge badge-live">In Progress</span> ' : ''}<span>${townHtml(p) ? townHtml(p) + ' · ' : ''}${esc(p.category)}</span>`;
 
 // Project type codes on the estimate form (keep in sync with data-type in src/partials/estimate-form.html)
 const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'Drainage': 'drainage', 'New Construction Sitework': 'siteprep', 'Concrete': 'concrete', 'Property Cleanup': 'cleanup', 'Home Construction': 'home' };
@@ -448,10 +450,27 @@ async function brandImages() {
   const inner = logoSvg.replace(/<svg[^>]*>/, '<svg x="90" y="275" width="820" height="393" viewBox="79 97 1619 776" preserveAspectRatio="xMidYMid meet">');
   const badgeSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="488" fill="#FFFFFF"/><circle cx="500" cy="500" r="478" fill="none" stroke="#72852E" stroke-width="22"/><circle cx="500" cy="500" r="461" fill="none" stroke="#232B2E" stroke-width="12"/>${inner}</svg>`;
   await fs.writeFile(path.join(out, 'logo-badge.svg'), badgeSvg);
+  // The round badge stays the logo Google can show for the business (structured data).
   const square = await sharp(Buffer.from(badgeSvg), { density: 144 }).resize(1024, 1024).png().toBuffer();
-  for (const [name, size] of [['favicon-32.png', 32], ['apple-touch-icon.png', 180], ['logo-512.png', 512]]) {
-    await sharp(square).resize(size, size).png().toFile(path.join(out, name));
+  await sharp(square).resize(512, 512).png().toFile(path.join(out, 'logo-512.png'));
+  // Browser tab, Google results and phone home screens use the square TVIS mark in src/assets/img/favicon.svg:
+  // white TVIS (Barlow Condensed 800, as outlines) over an olive bar on charcoal, readable down to 16px.
+  // Google asks for a square icon in multiples of 48px; favicon.ico at the site root covers older browsers.
+  const mark = Buffer.from(stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'assets', 'img', 'favicon.svg'), 'utf8')));
+  const icon = size => sharp(mark, { density: 72 * size / 512 * 4 }).resize(size, size).png().toBuffer();
+  for (const [name, size] of [['favicon-48.png', 48], ['favicon-96.png', 96], ['favicon-192.png', 192], ['favicon-32.png', 32], ['apple-touch-icon.png', 180]]) {
+    await fs.writeFile(path.join(out, name), await icon(size));
   }
+  const icoSizes = [16, 32, 48], pngs = await Promise.all(icoSizes.map(icon));
+  const head = Buffer.alloc(6 + 16 * pngs.length);
+  head.writeUInt16LE(0, 0); head.writeUInt16LE(1, 2); head.writeUInt16LE(pngs.length, 4);
+  let offset = head.length;
+  pngs.forEach((png, i) => {
+    const e = 6 + 16 * i;
+    head.writeUInt8(icoSizes[i], e); head.writeUInt8(icoSizes[i], e + 1); head.writeUInt16LE(1, e + 4); head.writeUInt16LE(32, e + 6);
+    head.writeUInt32LE(png.length, e + 8); head.writeUInt32LE(offset, e + 12); offset += png.length;
+  });
+  await fs.writeFile(path.join(DIST, 'favicon.ico'), Buffer.concat([head, ...pngs]));
   // Share preview (Facebook, Messenger, texts): the home-page jobsite photo under a dark scrim with the
   // white logo, or the logo on warm gray until photos/site/home-hero.jpg exists
   const heroPhoto = path.join(ROOT, 'photos', 'site', 'home-hero.jpg');

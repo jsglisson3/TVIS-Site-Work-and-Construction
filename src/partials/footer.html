@@ -1,14 +1,14 @@
 <!-- Footer: charcoal. The dozer rolls along the ground line once, the one motion moment down here. -->
 <footer class="ftr">
   <div class="ftr-ground" data-ground aria-hidden="true">{{> dozer}}</div>
-  <div class="wrap ftr-grid">
+  <div class="wrap ftr-grid" data-nosnippet>
     <div class="ftr-brand">
       <a class="ftr-logo" href="/" aria-label="{{name}}, home"><img src="/assets/img/logo-reverse.svg" alt="" width="1619" height="776" decoding="async"></a>
       <p class="ftr-desc">Excavation, sitework, driveways and drainage for homeowners, builders and contractors.</p>
       <div class="socials">
         {{fb_icon}}
-        {{ig_icon}}
         {{gbp_icon}}
+        {{ig_icon}}
       </div>
     </div>
     <div>
@@ -50,12 +50,12 @@
       </div>
     </div>
   </div>
-  <div class="wrap ftr-bottom">
+  <div class="wrap ftr-bottom" data-nosnippet>
     <p class="ftr-legal">&copy; <span data-year>{{year}}</span> {{name}}. {{tagline}}</p>
     <a class="ftr-top" href="#top">Back to top <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M12 20V5M5 12l7-7 7 7"/></svg></a>
   </div>
 </footer>
-<nav class="mbar" aria-label="Quick contact">
+<nav class="mbar" aria-label="Quick contact" data-nosnippet>
   <a class="mbar-call" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call</a>
   {{mbar_text}}
   <a class="mbar-est" href="/estimate">Get an Estimate</a>
