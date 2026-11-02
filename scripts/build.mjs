@@ -22,7 +22,7 @@ const YEAR = new Date().getFullYear();
 
 export const CATEGORIES = ['Driveways', 'Shed & Garage Pads', 'Drainage', 'New Construction Sitework', 'Concrete', 'Property Cleanup', 'Home Construction'];
 const PHOTO_EXT = /\.(jpe?g|png|webp)$/i;
-const WIDTHS = [480, 720, 960, 1600];
+const WIDTHS = [480, 720, 960, 1200, 1600];
 
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const slugify = s => String(s).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -360,11 +360,28 @@ function relatedProjects(cats) {
 </section>`;
 }
 
+// The service area for Google, typed so each name maps to a real place: towns and cities as City, Chattanooga
+// neighbourhoods and communities as Place, counties and regions as AdministrativeArea. Names come from
+// site.config.json > serviceTowns; a town not listed here still goes out, as a plain Place.
+const AREA_TYPES = {
+  'Chattanooga': ['City', 'Chattanooga, TN'], 'Downtown': ['Place', 'Downtown Chattanooga, TN'], 'St. Elmo': ['Place', 'St. Elmo, Chattanooga, TN'],
+  'Red Bank': ['City', 'Red Bank, TN'], 'Signal Mountain': ['City', 'Signal Mountain, TN'], 'Hixson': ['Place', 'Hixson, TN'],
+  'Soddy-Daisy': ['City', 'Soddy-Daisy, TN'], 'Highway 58': ['Place', 'Highway 58, Chattanooga, TN'], 'Brainerd': ['Place', 'Brainerd, Chattanooga, TN'],
+  'East Brainerd': ['Place', 'East Brainerd, TN'], 'East Ridge': ['City', 'East Ridge, TN'], 'Ooltewah': ['Place', 'Ooltewah, TN'],
+  'Cleveland': ['City', 'Cleveland, TN'], 'Jasper': ['City', 'Jasper, TN'], 'Sequatchie County': ['AdministrativeArea', 'Sequatchie County, TN'],
+  'North Georgia': ['AdministrativeArea', 'North Georgia'],
+};
+function areaServed() {
+  const towns = filled('serviceTowns') ? config.serviceTowns.split(/,\s*|\s+and\s+/).map(t => t.trim()).filter(Boolean) : [];
+  if (!towns.length) return [{ '@type': 'City', name: 'Chattanooga, TN' }];
+  return towns.map(t => { const [type, name] = AREA_TYPES[t] || ['Place', t]; return { '@type': type, name }; });
+}
+
 // Service card for Google: what the page offers, who offers it, where
 function serviceJsonLd(meta, urlPath) {
   const data = { '@context': 'https://schema.org', '@type': 'Service', name: meta.crumb || shortTitle(meta.title), description: meta.description || '',
     provider: { '@type': 'HomeAndConstructionBusiness', name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
-    areaServed: { '@type': 'City', name: 'Chattanooga, TN' }, url: siteOrigin ? siteOrigin + urlPath : undefined };
+    areaServed: areaServed(), url: siteOrigin ? siteOrigin + urlPath : undefined };
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
 }
 
@@ -408,7 +425,7 @@ function localBusinessJsonLd() {
   if (filled('hours')) data.openingHours = config.hours; // free text until real hours are set; see README
   // the towns Joey listed; "Chattanooga and the surrounding counties" alone adds nothing Google can map
   const towns = filled('serviceTowns') ? config.serviceTowns.split(/,\s*|\s+and\s+/) : [];
-  if (towns.length) data.areaServed = towns.map(t => t.trim()).filter(Boolean).map(t => ({ '@type': 'Place', name: t }));
+  if (towns.length) data.areaServed = areaServed();
   const same = [config.facebook, config.instagram, config.googleBusinessProfile].filter(Boolean);
   if (same.length) data.sameAs = same;
   return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
@@ -585,6 +602,8 @@ async function main() {
     let html = layout.replace('{{content}}', body).replace('{{> header}}', `{{> ${pageCtx.header}}}`).replace('{{> footer}}', `{{> ${pageCtx.footer}}}`);
     html = await render(html, pageCtx);
     html = html.replace(/\{\{nav_[\w]+\}\}/g, '');
+    // the service strip marks the page you are on (service pages carry it at the foot)
+    html = html.replace(/(<nav class="svc-strip"[\s\S]*?<\/nav>)/, m => m.replace(`<a href="${urlPath}">`, `<a href="${urlPath}" aria-current="page">`));
     // After launch, a placeholder typed straight into a page (like the Home Construction intro) is left out instead of shown
     if (LIVE) html = html.replace(/<p>\s*<span class="tbd[^"]*">\[[^\]]*\]<\/span>\s*<\/p>\s*/g, '');
     html = withBase(html);
@@ -619,7 +638,7 @@ async function main() {
     await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap.map(u => `  <url><loc>${origin}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
     await fs.writeFile(path.join(DIST, 'CNAME'), config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '') + '\n');
   }
-  await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /lp/\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
+  await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
   await fs.writeFile(path.join(DIST, '.nojekyll'), '');
   console.log(`Built in ${((Date.now() - t0) / 1000).toFixed(1)}s → dist/`);
 }

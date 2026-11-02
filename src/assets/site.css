@@ -36,7 +36,8 @@
   --gut:clamp(20px,4vw,56px);
   --max:1320px;
   --sec:clamp(64px,7vw,104px);
-  --bleed:calc(var(--gut) + min(96px, max(0px, (100vw - var(--max)) / 2)));
+  --bleed:calc(var(--gut) + max(0px, (100vw - var(--max)) / 2)); /* to the screen edge at every width, so panel photos never stop short */
+  --bleed-capped:calc(var(--gut) + min(96px, max(0px, (100vw - var(--max)) / 2)));
   --hdr-h:116px;
   --hdr-edge:5px; /* the olive stripe and the hairline under the header bar */
   --mbar-h:0px;
@@ -401,7 +402,7 @@ body.menu-open{overflow:hidden}
   .sv-flip .sv-media{margin-left:0;margin-right:calc(-1 * var(--bleed))}
   .sv-media>.photo,.sv-media>.ba{aspect-ratio:auto;height:100%;min-height:440px}
   .pads-top{align-items:start}
-  .pads-pic{margin:calc(-1 * var(--sec)) calc(-1 * var(--bleed)) 0 0}
+  .pads-pic{margin:calc(-1 * var(--sec)) calc(-1 * var(--bleed-capped)) 0 0}
 }
 .sv .phases-note{margin-top:-16px;margin-bottom:28px}
 .bul{margin:28px 0 36px;display:grid;gap:12px}
@@ -485,7 +486,7 @@ body.menu-open{overflow:hidden}
 .pd-top:not(:has(.pd-ba)){grid-template-columns:1fr}
 .pd-head{max-width:900px}
 .pd-desc{margin-top:18px;max-width:60ch}
-.pd-ba{margin-right:calc(-1 * var(--bleed))}
+.pd-ba{margin-right:calc(-1 * var(--bleed-capped))}
 .pd-group{margin-top:56px}
 .pd-group h2{font-size:var(--t-h3);margin-bottom:18px}
 .pd-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -805,14 +806,14 @@ body.menu-open{overflow:hidden}
   .hero-eyebrow::before{width:20px}
   .hero .hero-bg{height:clamp(240px,38svh,460px)}
   .hero .hero-in{padding-top:28px;padding-bottom:30px}
-  .hero-act{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
-  .hero-act .btn{width:auto;min-height:54px;padding:0 10px;font-size:16px;letter-spacing:.04em}
+  .hero .hero-act{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+  .hero .hero-act .btn{width:auto;min-height:54px;padding:0 10px;font-size:16px;letter-spacing:.04em}
 }
 @media (min-width:600px) and (max-width:900px){
-  .hero-act{max-width:440px}
+  .hero .hero-act{max-width:440px}
 }
 @media (max-width:359px){
-  .hero-act{grid-template-columns:1fr}
+  .hero .hero-act{grid-template-columns:1fr}
 }
 
 /* Service strip: the six services in one line under the photo (3 by 2 on tablets, chips on phones) */
@@ -854,14 +855,16 @@ body.menu-open{overflow:hidden}
 /* ---- One hover language, site-wide. Same curve and length everywhere (--ease, --dur); off under prefers-reduced-motion ---- */
 /* 1. An olive line draws in from the left under card titles and small links (one line per text line) */
 .who-body h3 span,.svc-body h3 span,.proj-title a,.proj-more,.svc-more,.svc-go,.svc-related a,.nf-links a,.ftr-list a,.ftr-bottom a,.est-alt a{background-image:linear-gradient(var(--olive),var(--olive));background-size:0 3px;background-repeat:no-repeat;background-position:0 100%;transition:background-size var(--dur) var(--ease),color var(--dur) var(--ease);-webkit-box-decoration-break:clone;box-decoration-break:clone;text-decoration:none}
-.proj-more,.svc-more,.svc-go,.svc-related a,.ftr-list a,.ftr-bottom a,.est-alt a{background-size:0 2px;padding-bottom:3px}
+.proj-more,.svc-more,.svc-go,.svc-related a,.ftr-list a,.ftr-bottom a,.est-alt a{background-size:0 2px}
+.proj-more{background-position:0 calc(100% - 8px)}
+.ftr-list a{background-position:0 calc(100% - 1px)}
+.est-alt a{background-position:0 calc(100% - 7px)}
 .who-card:hover .who-body h3 span,.who-card:focus-visible .who-body h3 span,.svc-card:hover .svc-body h3 span,.svc-card:focus-visible .svc-body h3 span,.proj-title a:hover,.proj-title a:focus-visible,.svc-list a:hover .svc-go,.svc-list a:focus-visible .svc-go{background-size:100% 3px}
 .proj-more:hover,.proj-more:focus-visible,.svc-related a:hover,.svc-related a:focus-visible,.nf-links a:hover,.nf-links a:focus-visible,.est-alt a:hover,.est-alt a:focus-visible{background-size:100% 2px}
-.who-body h3 span,.svc-body h3 span{padding-bottom:3px}
 .svc-card:hover .svc-more{text-decoration:none}
 .svc-card .svc-more{color:var(--olive-deep)}
 .proj-title a:hover,.ftr-list a:hover,.ftr-bottom a:hover,.nf-links a:hover{text-decoration:none}
-.nf-links a{background-size:0 3px;padding-bottom:2px}
+.nf-links a{background-size:0 3px}
 .nf-links a:hover,.nf-links a:focus-visible{background-size:100% 3px}
 /* on charcoal the line is light olive */
 .ftr-list a,.ftr-bottom a{background-image:linear-gradient(var(--olive-light),var(--olive-light));transition:background-size var(--dur) var(--ease),color var(--dur) var(--ease)}
@@ -916,3 +919,23 @@ body.menu-open{overflow:hidden}
 /* 7. Header social marks and the nav keep their own hover; the nav line already uses this curve */
 .hdr-social svg,.mmenu-social svg,.socials svg{transition:transform var(--dur) var(--ease)}
 .hdr-phone,.ftr-phone,.jump a,.nav-list a{transition:color var(--dur) var(--ease)}
+
+/* Service pages: the six-service strip at the foot of the page, the current service marked (2026-11-02, 13:40 UTC) */
+.svc-nav{border-top:1px solid var(--stone);padding-top:clamp(28px,3vw,40px)}
+.svc-nav-h{font:700 17px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.svc-nav .svc-strip{border-bottom:0}
+.svc-nav .svc-strip .wrap{padding-bottom:clamp(28px,3vw,40px)}
+.svc-strip a[aria-current]{background:var(--tint)}
+.svc-strip a[aria-current] b{color:var(--olive-deep)}
+.svc-strip a[aria-current] b::after{transform:scaleX(1)}
+@media (max-width:600px){
+  .svc-nav-h{margin-bottom:0}
+  .svc-strip a[aria-current]{border-color:var(--olive)}
+}
+
+/* Service pages and the ad page: the photo beside "What we do" uses the same column as the opening photo above it,
+   so their left and right edges line up, and a 16px white gap separates the two (2026-11-02, 13:50 UTC) */
+@media (min-width:901px){
+  .lp-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(32px,5vw,80px)}
+  .lp-two .sv-media{margin-top:calc(16px - var(--sec))}
+}

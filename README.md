@@ -67,7 +67,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 
 ## Ad landing pages
 
-`src/pages/lp-shed-garage-pads.html` is the template: logo and phone only, no menu, benefit bullets, a before/after, what happens next, and the form on the page. To make one for another campaign, copy the file, then change the front matter (`path`, `title`, `description`, `form_type`), the headline and bullets, and the photo slot names. Match the headline to the ad's wording. Landing pages are `noindex` and `/lp/` is blocked in `robots.txt`, so only people who click the ad see them. Link to them with UTM tags, e.g. `/lp/shed-garage-pads?utm_source=facebook&utm_campaign=pads-fall`.
+`src/pages/lp-shed-garage-pads.html` is the template: logo and phone only, no menu, benefit bullets, a before/after, what happens next, and the form on the page. To make one for another campaign, copy the file, then change the front matter (`path`, `title`, `description`, `form_type`), the headline and bullets, and the photo slot names. Match the headline to the ad's wording. Landing pages are `noindex` (and left out of the sitemap), so Google keeps them out of search and only people who click the ad see them. They are deliberately not blocked in `robots.txt`: a blocked page can't be read, so Google would never see the `noindex`. Link to them with UTM tags, e.g. `/lp/shed-garage-pads?utm_source=facebook&utm_campaign=pads-fall`.
 
 ## Where things live
 
@@ -75,7 +75,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | --- | --- |
 | `site.config.json` | Business details. The only place the phone number, email and so on are written. |
 | `src/pages/` | One file per page. The block between the `---` lines sets the title, search description and options. |
-| `src/partials/` | Pieces shared by pages: `layout`, `head`, `header` / `footer` (and the `-landing` versions for ad pages), the estimate form, `next-steps` (the "what happens next" slip), `dozer` (the footer machine), `icons`. |
+| `src/partials/` | Pieces shared by pages: `layout`, `head`, `header` / `footer` (and the `-landing` versions for ad pages), the estimate form, `next-steps` (the "what happens next" slip), `service-strip` (the six-service row under the home hero and at the foot of each service page), `dozer` (the footer machine), `icons`. |
 | `src/assets/` | `site.css`, `site.js`, the fonts, and `img/` with the logo as SVG (`logo.svg` full colour for the white header, `logo-reverse.svg` for the dark footer) plus `favicon.svg` (the square TVIS mark the build turns into the browser-tab, Google and home-screen icons) and `logo-clean.png`. |
 | `scripts/build.mjs` | The build: assembles pages, resizes photos, writes `dist/`, `sitemap.xml`, `robots.txt`, the favicon and social preview image. It also strips the content-credential metadata that file transfers sometimes add to the SVG logos and inline drawings, so the published site stays small, and it adds a content hash to the `site.css` and `site.js` links (`?v=...`) so a browser never pairs new pages with an old stylesheet after a deploy. |
 | `scripts/diagrams.mjs` | The drawn cross-sections (driveway, pad, drainage, cleanup, site prep, utilities, concrete, final grade, plus the dark `heroScene()` for the homepage hero) used wherever a photo is missing, and the `{{diagram}}` token behind the animated pad section. |

@@ -365,7 +365,7 @@ Jeremy picked Concept C from `docs/NEXT-LEVEL-PLAN.md` ("C is great, keep buildi
 - The subhead is now one plain sentence from the plan: "Site prep, driveways, drainage, concrete and pads for homeowners and builders." The old two lines ("Professional Sitework, Driveways, Drainage & Property Improvements." and the serving line) are gone from the hero; the serving line still lives in the service-area section. **Flag for Jeremy:** this is a wording change, easy to put back if Joey prefers the old lines.
 - Lighter scrim on desktop: left-to-right `.84 → .60 (34%) → .06 (62%) → 0`, a faint foot at the top only (`.22`), and no dark foot at the bottom, so the photo reads brighter and the strip sits directly on it. Hero height is now `clamp(520px, 84svh minus the header, 700px)` so the hero and the strip fit the first screen with the next section peeking: checked at 1024x768, 1280x800, 1366x768, 1440x900, 1536x864, 1920x1080 and 2560x1440.
 - Buttons read "Get an Estimate" and "Call us". On phones they sit side by side (two columns) and both are above the fold at 390x844 (bottom edge about 755px). On tablets held upright (600 to 900px) the pair is capped at 440px wide instead of stretching across the screen.
-- The hero image `sizes` is `100vw` at every width (it was `80vw` on phones, which under-picked the source).
+- ~~The hero image `sizes` is `100vw` at every width.~~ Put back to `(max-width: 900px) 80vw, 100vw` in the next batch: `100vw` made phones load the 960px photo and dropped the home page's Lighthouse mobile score to 82.
 
 **Service strip (`nav.svc-strip`):** the six services in one white row directly under the photo, each a link to its service page with a one-line descriptor (Site Prep: clearing, grading, pads; Drainage: French drains, culverts; Driveways: gravel repair & new; Concrete: drives, pads & slabs; Shed & Garage Pads: gravel or concrete; Demolition: haul-off & cleanup). 6 across from 1024px (titles 17px and "Shed Pads" from 1024 to 1180 so nothing wraps), 3 by 2 from 601 to 1023px, and wrapped 44px chips (titles only, "Shed Pads") on phones: two rows of three at 390px. Hover and focus: the olive line draws in under the title, the title turns olive and the cell goes warm gray.
 
@@ -389,3 +389,25 @@ Jeremy picked Concept C from `docs/NEXT-LEVEL-PLAN.md` ("C is great, keep buildi
 **Not changed, on purpose:** the header, footer and phone menu layout; the project card (the slider inside it means the whole card cannot be one link, so the title and "See all photos" carry the hover); the hidden reviews section's placeholder Google link (`#google-business-profile-url-needed`, invisible until reviews exist and `googleBusinessProfile` is filled in).
 
 **Docs:** `docs/NEXT-LEVEL-PLAN.md` is the overnight plan (with two Concept C mockups in `docs/design/`); `docs/STYLE-GUIDE.md` has the hero, strip, hover and label rules.
+
+## Service page photos and full site check (2026-11-02, 13:30 to 14:10 UTC)
+Concept C went live as "Concept C Hero" (7a7853b). Jeremy then spotted that the two stacked photos at the top of every service page (the opening photo and the "What we do" photo) were different widths and touched each other ("look at how jumbled these pics are", "looks that way from all of them") and asked for a complete site check ("new hero is good but this went backwards on some stuff"). Every page was compared with the version before Concept C (88f40b0) and with the live version, at desktop, tablet and phone.
+
+**Stacked photos on service pages (and the shed-pad landing page):** the opening is a 1fr / 1fr grid but `.lp-two` was 1fr / 1.15fr, so the "What we do" photo started further left than the photo above it. This was already the case before Concept C. Now `.lp-two` is `minmax(0,1fr) minmax(0,1fr)` with the same column gap as the opening, from 901px up, so both photos share their left and right edges at every desktop width, with a 16px white gap between them (`.lp-two .sv-media{margin-top:calc(16px - var(--sec))}`).
+
+**Panels reach the screen edge:** `--bleed` now runs to the screen edge at every width (it stopped up to 96px short on screens wider than about 1500px, which left a white strip beside the photos on Jeremy's monitor). The two places where a photo should stop short keep the old value as `--bleed-capped`: the project page slider (`.pd-ba`) and the Homeowners shed-pad picture (`.pads-pic`).
+
+**Slips from Concept C, found by the comparison and fixed:**
+- The phone and tablet two-button hero rule was written for `.hero-act`, which the service pages use too, so on phones their full-width "Get an Estimate" button shrank to half width beside "Call us". The rule is now `.hero .hero-act` (home hero only); service pages are back to the full-width button with "Call us" under it.
+- The draw-in underline rule changed the padding of "See all photos" and the footer links (the "See all photos" link went from 42 to 33px tall). The padding is back as it was; the line is placed with `background-position` instead.
+- The home hero image `sizes` change (see above): back to `(max-width: 900px) 80vw, 100vw`. Lighthouse mobile on the home page is back to 92 (82 with `100vw`; the version before Concept C scored 97 locally).
+
+**Extras in the same batch:**
+- **All our services at the foot of each service page:** the home page service strip moved into `src/partials/service-strip.html` and is reused under an "All our services" heading at the end of the six service pages. The build marks the current page's cell with `aria-current="page"` (tinted, olive title, line drawn).
+- **Image widths** are now 480 / 720 / 960 / 1200 / 1600 (1200 added), so large phones and small laptops get a closer size.
+- **Search data:** `areaServed` in the business and service JSON-LD now uses typed places (City, Place or AdministrativeArea with ", TN" names) instead of bare strings, from the same town list in `site.config.json`.
+- **robots.txt** no longer blocks `/lp/`. The landing pages carry `noindex`, and Google can only see that tag if it is allowed to fetch the page; a robots block could leave the URL listed without a description.
+
+**Checked:** old vs new geometry and full-page screenshots for all 26 pages at 390, 820 and 1440; stacked photo edges on all six service pages and the landing page at 1280 and 1649; axe on /, /drainage, /concrete, /lp/shed-garage-pads and /estimate; Lighthouse mobile (see the next lines); no sideways scroll.
+
+**Lighthouse mobile after this batch (local):** home 92, drainage 99, concrete 99, homeowners 92, builders 92, estimate 100, projects 99, more services 99, all with accessibility, best practices and SEO at 100. The shed-pad landing page scores 100 / 100 / 100 with SEO 69, which is expected: it is `noindex` on purpose.
