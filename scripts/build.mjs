@@ -137,7 +137,7 @@ const slotNote = (slot, label) => `<span class="slot-note" hidden>photos/site/${
 function photoBlock(attrs) {
   const { slot, label = '', alt = label, sizes = '100vw', eager, kind = 'Photo', draw } = attrs;
   const p = sitePhotos[slot];
-  if (p) return `<div class="photo">${imgTag(p, alt, { sizes, eager: eager !== undefined })}</div>`;
+  if (p) return `<div class="photo" data-slot="${esc(slot)}">${imgTag(p, alt, { sizes, eager: eager !== undefined })}</div>`;
   if (draw === 'hero') return `<div class="photo photo-drawn photo-hero">${heroScene()}${slotNote(slot, label)}</div>`;
   if (draw) { const [name, state] = draw.split(':'); return `<div class="photo photo-drawn">${diagram(name, state || 'after')}${slotNote(slot, label)}</div>`; }
   // no photo and no drawing: the spot disappears from the page until the file exists
@@ -199,7 +199,7 @@ async function loadProjects() {
       const kind = (f.match(/^(before|progress|after)/i) || [])[1]?.toLowerCase();
       if (!kind) { console.warn(`  ! ${folder}/${f}: name must start with before-, progress- or after-`); continue; }
       const p = await processPhoto(path.join(pdir, f), path.join(DIST, 'gallery', folder), f.replace(PHOTO_EXT, '').toLowerCase());
-      photos[kind].push(p);
+      photos[kind].push({ ...p, file: path.join(pdir, f) });
     }
     let category = CATEGORIES.find(c => c.toLowerCase() === (info.category || '').toLowerCase());
     if (!category) { console.warn(`  ! ${folder}: category "${info.category}" is not one of: ${CATEGORIES.join(', ')}`); category = 'Property Cleanup'; }
@@ -247,20 +247,29 @@ const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'D
 // Body of the project detail page at /project/<folder>: every photo, grouped, plus the estimate button.
 function projectDetail(p) {
   const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
+  // Matches the .pd-grid rules in site.css: one photo across the row; two photos side by side (stacked on phones);
+  // four photos two across; three or more lead with the first photo across two columns.
+  const gallerySizes = (n, i) => n === 1 ? '(min-width: 900px) 92vw, calc(100vw - 40px)'
+    : n === 2 ? '(min-width: 900px) 45vw, calc(100vw - 40px)'
+    : n === 4 ? '(min-width: 900px) 45vw, 50vw'
+    : i === 0 ? '(min-width: 900px) 61vw, calc(100vw - 40px)'
+    : '(min-width: 900px) 33vw, 50vw';
   const group = (kind, label) => p.photos[kind].length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
-  <div class="pd-grid">${p.photos[kind].map((ph, i) => `<a class="pd-photo" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: p.photos[kind].length === 1 ? '(min-width: 900px) 66vw, calc(100vw - 40px)' : '(min-width: 900px) 33vw, 50vw' })}</a>`).join('')}</div>
+  <div class="pd-grid">${p.photos[kind].map((ph, i) => `<a class="pd-photo" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: gallerySizes(p.photos[kind].length, i) })}</a>`).join('')}</div>
 </section>` : '';
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
   return `<section class="sec pd">
   <div class="wrap">
     <p class="crumb"><a href="/projects">&larr; All projects</a></p>
+    <div class="pd-top">
     <header class="pd-head">
       <h1>${esc(p.title)}</h1>
       <p class="proj-row">${projectRow(p)}</p>
       ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
     </header>
-    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 70vw, calc(100vw - 40px)', true)}</div>` : ''}
+    ${p.photos.before.length && (p.photos.after.length || p.photos.progress.length) ? `<div class="pd-ba">${baSlider(p, '(min-width: 900px) 60vw, 100vw', true)}</div>` : ''}
+    </div>
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
       <a class="btn btn-primary" href="/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}">Get an estimate for a job like this</a>
@@ -397,6 +406,35 @@ function trackingHead() {
 }
 
 // ---------- favicon + social image ----------
+// A 1200x630 share preview (Facebook, Messenger, texts): the photo under a dark scrim with the white logo.
+async function shareImage(srcPhoto, outFile) {
+  const photo = await sharp(srcPhoto).rotate().resize(1200, 630, { fit: 'cover', position: 'centre' }).toBuffer();
+  const ogLogo = await sharp(path.join(ROOT, 'src', 'assets', 'img', 'logo-reverse.svg'), { density: 300 }).resize({ width: 540 }).png().toBuffer();
+  const lm = await sharp(ogLogo).metadata();
+  const scrim = Buffer.from(`<svg width="1200" height="630"><defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#121618" stop-opacity=".9"/><stop offset=".55" stop-color="#121618" stop-opacity=".45"/><stop offset="1" stop-color="#121618" stop-opacity=".05"/></linearGradient></defs><rect width="1200" height="630" fill="url(#g)"/><rect x="0" y="606" width="1200" height="24" fill="#72852E"/></svg>`);
+  await fs.mkdir(path.dirname(outFile), { recursive: true });
+  await sharp(photo).composite([{ input: scrim, left: 0, top: 0 }, { input: ogLogo, left: 64, top: 606 - 48 - lm.height }])
+    .jpeg({ quality: 84 }).toFile(outFile);
+}
+
+// Each page shares with its own hero photo: the slot named in `og_photo:` in the front matter, else the
+// photo in the page's opening section, else (project pages) the job's finished photo. Pages without a
+// photo keep the default og-image.jpg. Built into dist/img/og/ (kept between builds, like the resized photos).
+async function sharePhotoFor(meta, body) {
+  let src = meta.og_src;
+  if (!src) {
+    const slot = meta.og_photo || (body.match(/class="phero-pic">\s*\{\{(?:photo|ba) slot="([^"]+)"/) || [])[1];
+    if (!slot) return '';
+    const f = existsSync(path.join(ROOT, 'photos', 'site')) ? (await fs.readdir(path.join(ROOT, 'photos', 'site'))).find(x => PHOTO_EXT.test(x) && x.replace(PHOTO_EXT, '') === slot) : null;
+    if (!f) return '';
+    src = path.join(ROOT, 'photos', 'site', f);
+  }
+  const name = slugify(path.basename(src).replace(PHOTO_EXT, '')) + '.jpg';
+  const outFile = path.join(DIST, 'img', 'og', meta.og_src ? slugify(path.basename(path.dirname(src))) + '-' + name : name);
+  if (!(await newer(src, outFile))) await shareImage(src, outFile);
+  return '/' + path.relative(DIST, outFile).split(path.sep).join('/');
+}
+
 async function brandImages() {
   const out = path.join(DIST, 'assets', 'img');
   await fs.mkdir(out, { recursive: true });
@@ -415,12 +453,7 @@ async function brandImages() {
   const heroPhoto = path.join(ROOT, 'photos', 'site', 'home-hero.jpg');
   const hasHero = await fs.access(heroPhoto).then(() => true, () => false);
   if (hasHero) {
-    const photo = await sharp(heroPhoto).rotate().resize(1200, 630, { fit: 'cover', position: 'centre' }).toBuffer();
-    const ogLogo = await sharp(path.join(ROOT, 'src', 'assets', 'img', 'logo-reverse.svg'), { density: 300 }).resize({ width: 540 }).png().toBuffer();
-    const lm = await sharp(ogLogo).metadata();
-    const scrim = Buffer.from(`<svg width="1200" height="630"><defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#121618" stop-opacity=".9"/><stop offset=".55" stop-color="#121618" stop-opacity=".45"/><stop offset="1" stop-color="#121618" stop-opacity=".05"/></linearGradient></defs><rect width="1200" height="630" fill="url(#g)"/><rect x="0" y="606" width="1200" height="24" fill="#72852E"/></svg>`);
-    await sharp(photo).composite([{ input: scrim, left: 0, top: 0 }, { input: ogLogo, left: 64, top: 606 - 48 - lm.height }])
-      .jpeg({ quality: 84 }).toFile(path.join(out, 'og-image.jpg'));
+    await shareImage(heroPhoto, path.join(out, 'og-image.jpg'));
   } else {
     const ogLogo = await sharp(path.join(ROOT, 'src', 'assets', 'img', 'logo.svg'), { density: 300 }).resize({ width: 900 }).png().toBuffer();
     const ogMeta = await sharp(ogLogo).metadata();
@@ -487,7 +520,7 @@ async function main() {
       // once site.config.json has the domain, every page says where it lives, so Facebook and Google get the right address
       canonical_tag: siteOrigin ? `<link rel="canonical" href="${siteOrigin}${urlPath}">` : '',
       og_url_tag: siteOrigin ? `<meta property="og:url" content="${siteOrigin}${urlPath}">` : '',
-      og_image: `${siteOrigin}/assets/img/og-image.jpg`,
+      og_image: `${siteOrigin}${(await sharePhotoFor(meta, body)) || '/assets/img/og-image.jpg'}`,
       robots: meta.noindex === 'yes' ? 'noindex, follow' : 'index, follow',
       body_class: meta.body_class || '',
       header: meta.layout === 'landing' ? 'header-landing' : 'header',
@@ -525,6 +558,7 @@ async function main() {
       body_class: 'page-project',
       sitemap: p.title.startsWith('Sample') ? 'no' : '',
       noindex: p.title.startsWith('Sample') ? 'yes' : '',
+      og_src: (p.photos.after[0] || p.photos.progress.at(-1) || p.photos.before[0])?.file,
     }, projectDetail(p), `/project/${p.id}`);
   }
 

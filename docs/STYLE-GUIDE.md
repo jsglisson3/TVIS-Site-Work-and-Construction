@@ -92,6 +92,9 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - Pick bright, level, in-focus shots that show finished work or equipment working. Before/after pairs should be taken from about the same spot.
 - Photos live in `photos/site/` (named by slot, e.g. `home-svc-concrete.jpg`) and `projects/<date-slug>/` (before-*, progress-*, after-*). The build resizes them. Record picks in `photos/site/PICKS.txt`.
 - No filters or colour grading. The only treatment is the dark scrim for text.
+- **Section photos are panels, not pictures in boxes.** On desktop a section photo (`.sv-media`, `.pads-pic`, `.lp-two .sv-media`) runs the full height of its section and bleeds to the near screen edge (`--bleed`), with the heading in the text column beside it. On phones it runs edge to edge above the text. Don't put a section photo inside the content column with padding around it; that is the "bolted on" look.
+- **Project galleries lead with one photo.** The first photo in `.pd-grid` is the feature (two columns, two rows) when there are three or more; two or four photos use equal tiles in two columns. Put the best finished shot first in `project.txt`.
+- A crop that cuts a subject is fixed per slot with `.photo[data-slot="…"]>img{object-position:…}` in site.css, never by editing the photo.
 
 ## 8. Motion
 
@@ -114,6 +117,9 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - Never stretch, recolour or add effects to the logo.
 
 - **Tap targets.** Anything clickable that is not a link inside a sentence is at least 24px tall on desktop and 44px on phones. Pad the link, don't change the look (the footer links, "See all photos" and the "← All projects" crumb are done this way).
+- **Page endings.** The closing band is heading and one sentence on the left, "Get an estimate" and "Or call us" side by side on the right, centred. Never stack the two actions on desktop.
+- **Project pages** open with the title beside the before/after slider (title left, slider right, bleeding to the edge). A gallery group with one photo spans the row at 16:9.
+- **Font stand-ins.** `--display` and `--text` carry metric-matched fallback faces second in the stack; keep them when changing fonts (re-measure `size-adjust` if the webfont changes).
 - **One related job on a service page** uses the whole row: slider on the left two thirds, title and text on the right (`proj-grid-one`). Two or three jobs use the normal three-card grid; tablets show two across.
 
 ## 11. Quality bar before calling anything done
