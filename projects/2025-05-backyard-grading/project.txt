@@ -1,0 +1,6 @@
+title: Backyard grading at a new home
+category: New Construction Sitework
+town:
+status: Completed
+featured: no
+description: [CONFIRM] Backyard behind a new home cleared and graded smooth, with a crushed-stone base spread inside silt fence.

@@ -54,7 +54,15 @@
   // ---- header: a soft shadow once the page scrolls under it ----
   var hdr = document.querySelector('.hdr');
   if (hdr) {
-    var onScroll = function () { hdr.classList.toggle('is-scrolled', window.scrollY > 8); };
+    // on wide screens the header also settles to a slimmer bar after a real scroll (and only grows back near the top,
+    // so a few pixels of scrolling back and forth never makes it flicker)
+    var compact = false;
+    var onScroll = function () {
+      var y = window.scrollY;
+      hdr.classList.toggle('is-scrolled', y > 8);
+      if (!compact && y > 140) compact = true; else if (compact && y < 48) compact = false;
+      document.documentElement.classList.toggle('hdr-compact', compact);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }

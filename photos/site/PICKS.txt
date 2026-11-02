@@ -1,17 +1,17 @@
 Which of Joey's photos fills each spot (numbers and names from /mnt/project-files/tvis-photos/index.json)
 
 home-hero                      #96  IMG_8314   mini excavator, hillside lot, two-story home
-home-band                      #101 IMG_8425   concrete truck at the hillside driveway pour
+home-band                      #164 IMG_5196   wide cleared lot with poured footings (2026-11-02 variety pass; was #101)
 home-homeowner                 #114 2a621362   driveway with landscaped stone beds (Joey confirmed 2026-10-29: TVIS work)
 home-builder                   #113 1000035915 graded lot, silt fence, excavator
-home-svc-driveways             #93  IMG_8083   gravel drive to a new home
+home-svc-driveways             #36  IMG_1175   fresh gravel up to a new blue home (2026-11-02; #93 moved to svc-driveways-hero)
 home-svc-pads                  #121 IMG_6867   graded pad inside wood forms
 home-svc-drainage              #176 IMG_5473   mini excavator over a drainage trench with pipe (2026-11-02, 2nd batch)
-home-svc-siteprep              #98  IMG_8345   mini excavator grading beside a new home
+home-svc-siteprep              #151 IMG_0134   skid steer grading a backyard beside a new home (2026-11-02; was #98)
 homeowners-hero                #185 IMG_7070   finished lawn, paved drive, stone drain bed (2026-11-02)
 homeowners-driveways-before    #100 IMG_8353   hillside lot before the driveway
 homeowners-driveways-after     #106 IMG_8483   same view, concrete driveway done
-pads-step-1..4                 #124, #121, #126, #132   forms set, graded pad, slab poured, building done
+pads-step-1..4                 #122, #121, #153, #134   forms set, graded pad, crushed-stone base, building done (2026-11-02; were #124, #121, #126, #132)
 builders-hero                  #167 IMG_5203   footings poured on a cleared new-home lot (2026-11-02)
 builders-utilities             #109 1000035893 open trench, excavator behind
 builders-concrete-before/after #104 IMG_8429 / #107 IMG_8484
@@ -36,3 +36,15 @@ home-svc-demolition            #188 IMG_7245   mini excavator pushing through he
 Added 2026-11-02 from the second batch (numbers #138-#195 are in /mnt/project-files/tvis-photos-2/index.json):
 more-demolition                #161 IMG_4281   excavator beside a debris pile on a lot being cleared (also the Demolition & Cleanup page photo)
 homeowners-drainage            kept #77 (the swale); home-svc-drainage is now the trench, so the swale no longer repeats
+
+Added 2026-11-02 (photo variety pass: each service page gets its own opening photo and a single panel instead of a borrowed slider):
+svc-concrete-hero              #15  IMG_8753   finished concrete drive up to a gray two-story home
+svc-concrete-panel             #103 IMG_8428   finisher edging the fresh pour, mixer truck behind [CONFIRM with Joey the worker is fine to show]
+svc-siteprep-hero              #1   IMG_4999   new home on a freshly graded lot, dozer behind
+svc-siteprep-panel             #138 IMG_4997   same day from the other side: two new homes on the graded lot
+svc-driveways-hero             #93  IMG_8083   gravel drive to a new home (moved here from home-svc-driveways)
+svc-driveways-panel            #177 IMG_5478   culvert under a new gravel entrance, cropped to the lower left (SUV out)
+svc-pads-panel                 #128 Resized_20250816_095517   walls going up on the new slab
+Project folders added the same day: 2026-06-harrison-drainage-yard (#185, #76, #78, #114, #119, #117), 2025-02-chattanooga-concrete-driveway (#9, #15, #10, #11, #138),
+2025-05-backyard-grading (#30, #28, #25, #151, #152, #153, #23), 2025-08-east-brainerd-two-new-homes (#154, #34, #35, #36, #37).
+2026-04-lot-clearing-footings gained #61 and #62 (after) and its progress-2/3 are now #166 and #169 (the old #56/#58 were a different site); 2026-09-new-home-final-grading gained #94.

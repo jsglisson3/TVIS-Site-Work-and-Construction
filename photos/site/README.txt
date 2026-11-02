@@ -60,3 +60,12 @@ slider once both exist; until then the drawing stays.
 and removes GPS location data. Skip photos that show house numbers, license
 plates or faces. Wide, level shots in daylight work best; the hero photo is
 cropped to a wide frame, so keep the machine or the work near the middle.
+
+Service pages (added 2026-11-02 so no page shows the same photo twice)
+  svc-concrete-hero.jpg             finished concrete driveway at a new home (Concrete page opening)
+  svc-concrete-panel.jpg            crew finishing a fresh pour (Concrete page, replaces the borrowed slider)
+  svc-siteprep-hero.jpg             new home on a freshly graded lot (Site Prep page opening)
+  svc-siteprep-panel.jpg            two new homes on a graded lot (Site Prep page panel)
+  svc-driveways-hero.jpg            gravel drive to a new home (Gravel Driveways page opening)
+  svc-driveways-panel.jpg           culvert pipe under a new gravel entrance (Gravel Driveways page panel)
+  svc-pads-panel.jpg                walls going up on the new slab (Shed & Garage Pads page panel)

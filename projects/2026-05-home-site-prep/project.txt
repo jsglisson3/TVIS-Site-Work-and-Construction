@@ -1,6 +1,6 @@
 title: Home site cleared and graded
 category: New Construction Sitework
-town: [TOWN]
+town: Sequatchie County
 status: Completed
 featured: no
 description: [CONFIRM] Wooded lot cleared and graded so a manufactured home could be set on it.

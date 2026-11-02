@@ -1,0 +1,6 @@
+title: Yard drainage and rock-lined swale
+category: Drainage
+town: Harrison
+status: Completed
+featured: yes
+description: [CONFIRM] Rock-lined swale and stone drain bed along the block wall, with the yard graded so water runs away from the house.

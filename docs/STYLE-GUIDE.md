@@ -54,8 +54,8 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 
 - Content width 1320px max (`--max`), side gutter clamp(20px, 4vw, 56px) (`--gut`).
 - Section padding clamp(64px, 7vw, 104px) top and bottom (`--sec`).
-- Header height 108px desktop, 72px on phones.
-- Breakpoints: 1180px (nav collapses to the menu button), 900px (everything stacks to one column), 560px (small phones).
+- Header bar 116px on desktop (1360px up), 108px at 1181 to 1359px, 100px at 1024 to 1180px, 88px on tablets and small laptops (600 to 1023px), 76px on phones; plus the 4px olive stripe and the 1px hairline (`--hdr-h`, `--hdr-edge`). The header is fixed and the body carries a matching top padding, so nothing under it moves when the bar changes. From 1024px up it settles to an 84px bar with a 62px logo once the page has scrolled past 140px and grows back above 48px.
+- Breakpoints: 1360px (Facebook mark joins the header), 1181px (phone number joins), 1024px (menu button becomes the real nav and the estimate button), 900px (everything stacks to one column, except that tablets from 600 to 900px keep the home audience cards, the More Services list and the footer link groups two across), 600px (phone header), 560px (small phones).
 - Every page must work at 390px and 1440px with no sideways scroll.
 - Content is left-aligned. Centre text only inside buttons.
 
@@ -65,12 +65,12 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - Hairlines: 1px `--stone`. Card accent: 4px `--olive` top border (8px on the big CTA card).
 - **Shadows are allowed, but only in these places.** Jeremy asked for them on 2026-10-29. The standard soft shadow is:
   `0 1px 3px rgba(35,43,46,.08), 0 18px 40px -20px rgba(35,43,46,.35)`
-  Use it on: the sticky header, the estimate form card, the Talk to TVIS card, the How it works card. Primary buttons in the header and the form send button get a small olive shadow and lift 1px on hover. Don't put shadows on photos, plain sections or text.
+  Use it on: the fixed header, the estimate form card, the Talk to TVIS card, the How it works card. Primary buttons in the header and the form send button get a small olive shadow and lift 1px on hover. Don't put shadows on photos, plain sections or text.
 
 ## 6. Components (reuse these, don't invent new ones)
 
-- **Header:** white, 4px olive stripe on top, hairline and soft shadow under it. The full-colour logo is 92px tall on desktop and 56px on phones. Nav is Barlow uppercase 17px with an olive underline that draws in on hover and marks the current page. Then a divider, the Facebook mark, the phone with a small "Call us" label, and the olive "Get an Estimate" button. On phones it shows the logo, "Call" and "Menu".
-- **Home hero:** full-bleed jobsite photo, left-to-right dark scrim, white H1 with an olive bar, a subhead, a serving line, then "Request an Estimate" (olive) and "Call us" (white outline). On phones the photo sits on top with the text on charcoal below.
+- **Header:** white, 4px olive stripe on top, hairline and soft shadow under it (a deeper shadow once scrolled). The full-colour logo is 88px tall on desktop (80 / 74 / 64 / 56px down the width tiers). Nav is Barlow uppercase 17px (16px under 1360px) with an olive underline that draws in on hover and focus and marks the current page; hover also turns the word olive. Then a divider, the Facebook mark, the phone with a small "Call us" label, and the olive "Get an Estimate" button, which lifts 1px on hover and presses flat on click. Its left and right edges line up with the content column at every width. On phones and tablets it shows the logo, "Call" and "Menu"; the menu slides down from under the bar and its links settle in one after another.
+- **Home hero:** full-bleed jobsite photo that fills to the fold under the header, left-to-right dark scrim plus a light foot at the top (so the white header sits on the picture) and a deeper one at the bottom, white H1 with an olive bar, a subhead, a serving line on two lines, then "Request an Estimate" (olive) and "Call us" (white outline). On phones the photo sits on top (36% of the screen height) with the text on charcoal below.
 - **Page opening (`.phero`):** warm-gray band with H1, olive bar, one intro line, and optionally a photo that bleeds to the screen edge.
 - **Buttons:** `.btn-primary` (olive), `.btn-light` (white on dark), `.btn-outline` (white outline on dark), `.btn-ink` (charcoal). 54px tall minimum, square, Barlow uppercase. Text says exactly what happens ("Get an Estimate", "Send estimate request").
 - **Text links:** `.textlink` (olive, uppercase, 3px underline, arrow nudges on hover). Call links: `.call-link` with a phone icon, reading "Call us" or "Or call us".
@@ -98,7 +98,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 
 ## 8. Motion
 
-- One planned moment per page: the hero text settling in on load, and the dozer rolling into the footer once.
+- One planned moment per page: the hero settling in on load (on desktop the photo eases from 104.5% to 100% over 1.8s while the text settles in), and the dozer rolling into the footer once.
 - Small responses to the user's own actions are fine: the nav underline, a button lifting 1px, an arrow nudging 3px.
 - Everything respects `prefers-reduced-motion`.
 - No carousels, counters, parallax or fade-in-on-scroll sections.

@@ -1,6 +1,6 @@
 title: Final grading and gravel drive for a new home
 category: New Construction Sitework
-town: [TOWN]
+town: Sequatchie County
 status: Completed
 featured: yes
 description: [CONFIRM] Rough lot around a newly set home taken to final grade, with a gravel drive put in.
