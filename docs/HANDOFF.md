@@ -487,3 +487,12 @@ Found and fixed:
 Checked and left alone: the page openings, home hero and statement band (locked), the home page, Projects page, More Services, the estimate page, the service pages' "What we do" photos (fixed in the batch before). Every other crop keeps its subject. The two garage pad "After" photos are only 696px wide, so they stay a little soft on phones; a larger copy from Joey would fix it. The hillside driveway's two "Before" photos are near duplicates; worth swapping one in the next photo batch.
 
 Results: compared with the build before this batch on all 26 pages at 1866, 1440, 820 and 390: only the sections above changed. No sideways scroll at nine widths. Lighthouse mobile 90+ on all 26 pages (Home 92, Homeowners 92, Builders 92, Concrete 99, East Brainerd project 97, lowest 90 on the Feb 2026 lot clearing project, same as before), accessibility and best practices 100. Before/after page: https://claude.ai/artifact/43U1L4gNUVpvi7G1vCsWK1. Ships in one commit with the two sections above ("Image layout and audit fixes"), because Jeremy's PC was offline and none of it had been copied yet.
+
+## Page opening photos (2026-11-02, 15:57 to 16:08 UTC)
+
+Jeremy sent screenshots of the live site after eb432df: the opening photos on Homeowners, Builders and More Services "bleed off the page" and are "too wide" (he also sent the Builders section photos, but those were his browser's cached copy; the live page already had the contained photos). He wants the openings framed like the drainage and cleanup sections, which he said look great.
+
+- Desktop (901px and up), all ten inner pages with an opening photo: `.phero-pic` loses its negative margins (one rule at the end of site.css), so the photo fills the right half of the content width with the band's padding above and below it, and the text is centred beside it. About 568 x 403px at 1440 and 1866 (564 x 424), 418 x 365 at 960; the band keeps its fixed height. Phones and tablets unchanged.
+- `sizes` on the ten opening photos: `(min-width: 1440px) 620px, (min-width: 900px) 48vw, 80vw`; the Drainage opening (a panorama cropped to 4:3) `(min-width: 1440px) 820px, (min-width: 900px) 64vw, 120vw`.
+- Compared with eb432df on 13 pages at 1866, 1440, 820 and 390: only the opening photo box moved; no sideways scroll. STYLE-GUIDE.md "Page opening" rule updated.
+- Jeremy (16:00): the images must be "flawless across the entire website"; after this he wants to move on to backend work, more features and individual page reviews.

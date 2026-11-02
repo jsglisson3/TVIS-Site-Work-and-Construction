@@ -1047,3 +1047,12 @@ body.menu-open{overflow:hidden}
 @media (max-width:600px){
   .pd-grid:has(> :nth-child(2):last-child) > *{grid-column:1/-1}
 }
+
+/* ---------- Page openings: the photo sits inside the page width (2026-11-02, 16:00 UTC) ----------
+   Jeremy: the opening photos on Homeowners, Builders and More Services "bleed off the page" and are "too wide".
+   On desktop the opening photo no longer runs to the screen edge or to the top and bottom of the band. It fills
+   the right half of the content width, with the band's own padding above and below, and the text sits centred
+   beside it, so it is framed like the section photos further down the page. Phones and tablets are unchanged. */
+@media (min-width:901px){
+  .phero-pic:has(>.photo:not(.photo-drawn)){margin:0;position:relative}
+}
