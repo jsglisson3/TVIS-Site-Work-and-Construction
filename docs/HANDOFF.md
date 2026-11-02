@@ -595,3 +595,12 @@ Jeremy's feedback on the Homeowners, Builders and More Services openings: the "I
 - **Sharper photos:** `CRISP` in `scripts/build.mjs` gives the three opening photos' desktop files (960px and up) a light sharpen and webp quality 82 instead of 70. Phone files are unchanged, so phone weight and Lighthouse are unchanged. Widths and sizes are unchanged.
 - Homeowners photo framed a little lower (object-position 50% 90%) so more of the rock swale shows.
 - Checked: 390 / 820 / 1024 / 1440 / 1866 screenshots, no sideways scroll, console clean, Lighthouse mobile 92 / 100 / 100 / 100 on all three pages.
+
+## Opening caption bar (2026-11-02, late)
+
+Jeremy asked whether the floating card was really the best placement. Five options were mocked on real screenshots (bottom-right card, charcoal caption bar, job line under the buttons, small corner tag, job filmstrip) and he picked the caption bar.
+
+- `.phero-job` on Homeowners, Builders & Contractors and More Services is now a charcoal bar across the foot of the opening photo: label and town/month on the first line, the job title on the second, olive arrow tab at the right. Same height on all three pages (about 80px at 1440). On phones and tablets the same bar sits under the photo.
+- The hand line breaks in the card titles are gone (the bar has room for one-line titles). "See the N photos" stays in the link text for screen readers only.
+- Entrance: the bar rises out of the photo's bottom edge (clip reveal, 0.6s after 0.35s); none under reduced motion.
+- Checked: 390 / 600 / 820 / 1024 / 1440 / 1866, no sideways scroll, console clean, keyboard pass (focus ring drawn inside the bar), Lighthouse mobile 92 / 100 / 100 / 100 on all three pages.
