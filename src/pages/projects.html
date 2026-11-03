@@ -5,7 +5,7 @@ crumb: Projects
 nav: projects
 body_class: page-projects
 ---
-<section class="sec proj-page" aria-labelledby="projects-h">
+<section class="sec sec-tint proj-open" aria-labelledby="projects-h">
   <div class="wrap">
     <div class="proj-head">
       <h1 id="projects-h">Projects</h1>
@@ -15,6 +15,11 @@ body_class: page-projects
       {{project_filters}}
     </ul>
     <script>document.querySelector("[data-filters]").hidden=false</script>
+  </div>
+</section>
+
+<section class="sec proj-page proj-list" aria-label="Project list">
+  <div class="wrap">
     <p class="filter-status" role="status" aria-live="polite"></p>
     <div class="proj-grid proj-all">
 {{project_cards}}
