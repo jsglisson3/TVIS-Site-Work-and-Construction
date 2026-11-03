@@ -35,9 +35,9 @@
   --t-statement:clamp(64px,12vw,170px);
   --gut:clamp(20px,4vw,56px);
   --max:1320px;
-  --sec:clamp(56px,6vw,84px); /* space above and below every section; 44px on phones */
+  --sec:clamp(56px,4.5vw,64px); /* space above and below every section; 44px on phones */
   --open-pad:clamp(40px,4.5vw,56px); /* page openings and page tops: the space above and below a page title band */
-  --gap-head:clamp(28px,3.4vw,48px); /* a section head (heading, line, link) to the content under it */
+  --gap-head:clamp(28px,2.8vw,40px); /* a section head (heading, line, link) to the content under it */
   --gap-intro:24px; /* a heading, or its olive bar, to its first line of text */
   --bleed:calc(var(--gut) + max(0px, (100vw - var(--max)) / 2)); /* to the screen edge at every width, so panel photos never stop short */
   --bleed-capped:calc(var(--gut) + min(96px, max(0px, (100vw - var(--max)) / 2)));
@@ -239,7 +239,7 @@ body.menu-open{overflow:hidden}
 .svcs{background:var(--warm)}
 .svc-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.6vw,24px)}
 .svc-card{display:flex;flex-direction:column;background:var(--paper);color:inherit;text-decoration:none}
-.svc-card .photo,.svc-list .photo{aspect-ratio:4/3}
+.svc-card .photo{aspect-ratio:16/10} .svc-list .photo{aspect-ratio:4/3} /* home service cards share the audience cards' shape */
 .svc-body{display:flex;flex-direction:column;gap:10px;flex:1;padding:22px 22px 26px}
 .svc-body p{font-size:var(--t-small);line-height:1.5}
 .svc-more{margin-top:auto;padding-top:10px;font:700 var(--t-small)/1.1 var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--olive-deep)}
@@ -252,7 +252,7 @@ body.menu-open{overflow:hidden}
 .band-bg .photo{position:absolute;inset:0;aspect-ratio:auto;background:none}
 .band-bg .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
 .band:has(.band-bg .photo)::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)}
-.band:has(.band-bg .photo){padding:clamp(72px,8vw,120px) 0}
+.band:has(.band-bg .photo){padding:clamp(72px,6.5vw,92px) 0}
 @supports not selector(:has(a)){ .band-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)} }
 .band-in{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px clamp(40px,6vw,96px);align-items:end}
 .band h2{font-size:var(--t-h2);line-height:1}
@@ -324,7 +324,7 @@ body.menu-open{overflow:hidden}
 .ftr-ground.go .track-run{animation:track-run 1.6s linear both}
 @keyframes track-run{from{stroke-dashoffset:84}to{stroke-dashoffset:0}}
 .ftr .tbd{background:#5A5220;color:#FFF3A8}
-.ftr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(28px,3.4vw,44px)}
+.ftr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,4vw,52px);padding-bottom:clamp(28px,3.4vw,44px)}
 .ftr-logo{display:block;width:min(280px,72vw)}
 .ftr-desc{margin-top:20px;max-width:34ch;color:#E3E7E0}
 .ftr .socials{margin:16px 0 0 -10px}
@@ -486,7 +486,7 @@ body.menu-open{overflow:hidden}
 .filter-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .hc-cta,.pd-cta{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:center;margin-top:56px}
 .crumb a{display:inline-flex;align-items:center;gap:8px;padding:8px 0;margin:-8px 0;font:700 var(--t-small)/1 var(--display);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;color:var(--olive-deep)}
-.pd{padding-top:clamp(32px,4vw,56px);overflow:hidden}
+.pd{padding-top:clamp(32px,3vw,44px);overflow:hidden}
 .pd-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:32px clamp(32px,4.4vw,64px);align-items:center;margin-top:24px} /* same split and gap as the page openings; long titles get a wider column */
 .pd-top:not(:has(.pd-ba)){grid-template-columns:1fr}
 .pd-head{max-width:900px}
@@ -1371,4 +1371,9 @@ p{text-wrap:pretty}
    The statement band on the home page is 120px tall at the top and bottom instead of 168. Buttons are one size
    everywhere (54px; the hero pair was 56). "Serving Chattanooga" uses the normal h2 size (it was 54px, the token is 52).
    Section intros on Homeowners (the pad section) match the other section intros. No new rules below; the values
-   changed in place. ---------- */
+   changed in place.
+   Second step the same night (Jeremy: phones now "incredible", desktop "still feels super long", wants 5 to 10% more): desktop
+   values only. --sec 64 (was 84), --gap-head 40 (was 48), the band 92 (was 120), footer top 52 (was 64), project page gallery
+   groups and closing buttons 40px apart (were 56), and the home service card photos 16:10 like the audience cards
+   (were 4:3). Phones keep every value from the first step. ---------- */
+@media (min-width:901px){ .pd-group,.hc-cta,.pd-cta{margin-top:40px} }
