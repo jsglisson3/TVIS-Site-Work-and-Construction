@@ -58,3 +58,8 @@ home-svc-pads, pads-step-2, projects/2025-10-garage-pad/progress-1   IMG_6867.he
 home-svc-concrete              IMG_8183   new concrete driveway up to two new homes (was IMG_5393, walls framed on a slab)
 builders-concrete-before       IMG_8425   pour underway, mixer truck, crew from behind (was IMG_8429, photographer's shadow on the wet pour)
 homeowners-cleanup             IMG_5661   cleared and graded lot on a bright day (was IMG_4599, flat gray light)
+
+2026-11-03 afternoon (metadata audit):
+homeowners pads-step-3 alt text fixed (it said "concrete slab poured", the photo is IMG_0163, a crushed-stone entrance); now matches the Pads page.
+projects/2025-10-garage-pad: IMG_6867 taken out (probably a different pad job; Joey to confirm), old progress-2/3 renumbered to progress-1/2.
+projects/2026-09-new-home-final-grading: after-3 (IMG_8090) taken out (probably a different house; Joey to confirm). Gravel Driveways card now says "See the 5 photos".

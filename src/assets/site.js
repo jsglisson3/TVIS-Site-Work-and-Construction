@@ -407,3 +407,94 @@ if (/[?&]slots\b/.test(location.search)) {
 
 // ---- /thanks (Basin's redirect for browsers without JavaScript): count the lead here instead ----
 if (document.body.classList.contains('page-thanks') && window.tvisTrack) window.tvisTrack('lead', { via: 'redirect' });
+
+// ---- project pages: tap a gallery photo to see it full screen; swipe, arrow keys or the buttons move through the job ----
+// Without JavaScript the tile is still a plain link to the big photo, so nothing is lost.
+(function () {
+  var tiles = [].slice.call(document.querySelectorAll('.pd-photo'));
+  if (!tiles.length || typeof HTMLDialogElement !== 'function') return;
+  var dlg = document.createElement('dialog');
+  dlg.className = 'lb';
+  dlg.setAttribute('aria-label', 'Photo viewer');
+  dlg.innerHTML = '<figure class="lb-fig"><img class="lb-img" alt=""><figcaption class="lb-cap"><span class="lb-n" aria-live="polite"></span></figcaption></figure>' +
+    '<button class="lb-btn lb-prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></button>' +
+    '<button class="lb-btn lb-next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></button>' +
+    '<button class="lb-btn lb-close" type="button" aria-label="Close photo viewer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.6" d="M6 6l12 12M18 6L6 18"/></svg></button>';
+  document.body.appendChild(dlg);
+  var img = dlg.querySelector('.lb-img'), num = dlg.querySelector('.lb-n'), at = 0, from = null;
+  var many = tiles.length > 1;
+  if (!many) dlg.classList.add('lb-one');
+
+  function show(i, dir) {
+    at = (i + tiles.length) % tiles.length;
+    var src = tiles[at].querySelector('img');
+    img.classList.remove('lb-in', 'lb-l', 'lb-r'); void img.offsetWidth;
+    img.removeAttribute('srcset');
+    img.src = tiles[at].getAttribute('href');
+    if (src) { img.srcset = src.getAttribute('srcset') || ''; img.sizes = '100vw'; img.alt = src.alt; }
+    img.classList.add('lb-in', dir < 0 ? 'lb-l' : dir > 0 ? 'lb-r' : 'lb-c');
+    num.textContent = many ? (at + 1) + ' / ' + tiles.length : '';
+    // warm up the neighbours so the next swipe is instant
+    [1, -1].forEach(function (d) { var t = tiles[(at + d + tiles.length) % tiles.length]; if (t) new Image().src = t.getAttribute('href'); });
+  }
+  function close() { dlg.classList.add('lb-out'); setTimeout(function () { dlg.close(); }, 180); }
+
+  tiles.forEach(function (t, i) {
+    t.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; // a new tab still gets the plain photo
+      e.preventDefault();
+      from = t;
+      dlg.classList.remove('lb-out');
+      show(i, 0);
+      dlg.showModal();
+      document.documentElement.classList.add('lb-open');
+    });
+  });
+  dlg.addEventListener('close', function () {
+    document.documentElement.classList.remove('lb-open');
+    dlg.classList.remove('lb-out');
+    if (from) from.focus({ preventScroll: true });
+  });
+  dlg.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
+  dlg.querySelector('.lb-prev').addEventListener('click', function () { show(at - 1, -1); });
+  dlg.querySelector('.lb-next').addEventListener('click', function () { show(at + 1, 1); });
+  dlg.querySelector('.lb-close').addEventListener('click', close);
+  dlg.addEventListener('keydown', function (e) {
+    if (!many) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1, -1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1, 1); }
+  });
+  // a tap on the dark backdrop (not the photo or a button) closes; a sideways swipe moves through the photos
+  var sx = null, sy = 0, moved = false;
+  dlg.addEventListener('pointerdown', function (e) { sx = e.clientX; sy = e.clientY; moved = false; });
+  dlg.addEventListener('pointerup', function (e) {
+    if (sx === null) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+    if (many && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { moved = true; show(at + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); }
+  });
+  dlg.addEventListener('click', function (e) {
+    if (moved) { moved = false; return; }
+    if (e.target === dlg || e.target.classList.contains('lb-fig')) close();
+  });
+})();
+
+// ---- email addresses: a tap also copies the address, with a small "Copied" note ----
+// The mail app still opens where there is one; on a computer without one, the copy is what the visitor gets.
+(function () {
+  if (!navigator.clipboard || !window.isSecureContext) return;
+  [].forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
+    var note = document.createElement('span');
+    note.className = 'copied';
+    note.setAttribute('role', 'status');
+    a.insertAdjacentElement('afterend', note);
+    var timer;
+    a.addEventListener('click', function () {
+      navigator.clipboard.writeText(a.getAttribute('href').replace(/^mailto:/, '').split('?')[0]).then(function () {
+        note.textContent = 'Copied';
+        note.classList.remove('on'); void note.offsetWidth; note.classList.add('on');
+        clearTimeout(timer);
+        timer = setTimeout(function () { note.classList.remove('on'); note.textContent = ''; }, 1800);
+      }).catch(function () {});
+    });
+  });
+})();

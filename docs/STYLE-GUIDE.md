@@ -128,6 +128,9 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - The header's reading line (the bottom edge filling olive as the page is read) is the one piece of scroll-driven motion on the site. It is not a fade-in and never hides content.
 - Everything respects `prefers-reduced-motion`.
 - No carousels, counters, parallax or fade-in-on-scroll sections.
+- Page to page (2026-11-03): the site opts into cross-document view transitions (`@view-transition{navigation:auto}` at the end of site.css). The header and the phone contact bar are named (`view-transition-name: hdr` / `mbar`) and switch at once; only the page under them cross-fades (old out .18s, new in .32s with a 6px rise). Off under `prefers-reduced-motion`; browsers without it just load the page.
+- The project photo viewer (`.lb`, a `<dialog>` built by site.js on project pages): charcoal backdrop, the photo on the olive edge, square buttons; a new photo pops or slides in from the side it came from (.28s, `--ease`). Swipe, arrow keys, Esc, the close button or a tap on the backdrop.
+- Highlighted text is pale olive (`::selection`, olive-light on charcoal). An email link also copies the address: a small uppercase "Copied" note fades in beside it for 1.8s (`.copied`).
 
 ## 9. Words
 
