@@ -1437,3 +1437,25 @@ html.nav-js .nav-mark{display:block;position:absolute;bottom:4px;height:3px;back
   .hdr::before{content:"";position:absolute;inset:0;z-index:0;background:url(/assets/img/contour.svg) 50% 45%/1600px 400px no-repeat;opacity:.75;-webkit-mask:linear-gradient(90deg,transparent 25%,#000 36%,#000 64%,transparent 76%);mask:linear-gradient(90deg,transparent 25%,#000 36%,#000 64%,transparent 76%);pointer-events:none}
   .hdr-in{position:relative;z-index:1}
 }
+
+/* Framed section photos everywhere (Jeremy, 2026-11-03: the Builders panel "on ALL photos when it makes sense").
+   Same recipe as the .sv sections above: an offset tint panel carrying the contour map sits behind the photo, pushed
+   away from the words, and the photo gets the 6px olive edge. Applied to the service pages' "What we do" photo and the
+   landing page's (.lp-two, photo on the right), the Homeowners pad photo (.pads-pic, right) and the single "Recent job
+   like this" row on the service pages (.proj-grid-one, photo on the left; the panel is a grid-placed ::before because
+   the slider clips its overflow). Cards, galleries, grids of sliders and the page openings keep their own treatment.
+   Desktop only, like the Builders sections. */
+@media (min-width:901px){
+  .lp-two .sv-media,.pads-pic{isolation:isolate;margin-bottom:20px}
+  .pads-pic{position:relative;margin:0 0 20px}
+  .lp-two .sv-media::after,.pads-pic::after{content:"";position:absolute;top:20px;left:20px;right:-20px;bottom:-20px;z-index:-1;
+    background:var(--tint) url(/assets/img/contour.svg) 50% 50%/1600px 400px no-repeat}
+  .sec-tint .lp-two .sv-media::after,.sec-tint .pads-pic::after{background-color:var(--paper)}
+  .lp-two .sv-media>.photo,.lp-two .sv-media>.ba,.pads-pic>.photo{border-bottom:6px solid var(--olive)}
+  .proj-grid-one .proj{isolation:isolate;margin-bottom:20px}
+  .proj-grid-one .proj>.ba{grid-column:1;grid-row:1;border-bottom:6px solid var(--olive)}
+  .proj-grid-one .proj>.proj-meta{grid-column:2;grid-row:1}
+  .proj-grid-one .proj::before{content:"";grid-column:1;grid-row:1;align-self:stretch;justify-self:stretch;position:relative;z-index:-1;margin:20px 20px -20px -20px;
+    background:var(--tint) url(/assets/img/contour.svg) 50% 50%/1600px 400px no-repeat}
+  .sec-tint .proj-grid-one .proj::before{background-color:var(--paper)}
+}
