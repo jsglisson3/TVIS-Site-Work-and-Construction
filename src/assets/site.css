@@ -35,7 +35,10 @@
   --t-statement:clamp(64px,12vw,170px);
   --gut:clamp(20px,4vw,56px);
   --max:1320px;
-  --sec:clamp(64px,7vw,104px);
+  --sec:clamp(56px,6vw,84px); /* space above and below every section; 44px on phones */
+  --open-pad:clamp(40px,4.5vw,56px); /* page openings and page tops: the space above and below a page title band */
+  --gap-head:clamp(28px,3.4vw,48px); /* a section head (heading, line, link) to the content under it */
+  --gap-intro:24px; /* a heading, or its olive bar, to its first line of text */
   --bleed:calc(var(--gut) + max(0px, (100vw - var(--max)) / 2)); /* to the screen edge at every width, so panel photos never stop short */
   --bleed-capped:calc(var(--gut) + min(96px, max(0px, (100vw - var(--max)) / 2)));
   --hdr-h:116px;
@@ -204,7 +207,6 @@ body.menu-open{overflow:hidden}
 .hero-sub{margin-top:clamp(22px,2.6vw,32px);font:600 clamp(20px,1.9vw,26px)/1.3 var(--text);max-width:32ch}
 .hero-line{margin-top:14px;font-size:var(--t-body);max-width:52ch;color:#E3E7E0}
 .hero-act{display:flex;flex-wrap:wrap;gap:14px 16px;align-items:center;margin-top:clamp(28px,3.4vw,44px)}
-.hero-act .btn{min-height:56px;padding:0 32px}
 .hero-call{font:700 var(--t-body)/1 var(--display);letter-spacing:.05em;text-transform:uppercase;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:7px;white-space:nowrap;padding:12px 0}
 .hero-call .tbd{font-size:.85em}
 /* the one planned entrance: the headline and the lines under it settle into place once */
@@ -216,7 +218,7 @@ body.menu-open{overflow:hidden}
 @keyframes settle{from{opacity:0;transform:translateY(.3em)}to{opacity:1;transform:none}}
 
 /* ---------- home: who the project is for ---------- */
-.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 48px;flex-wrap:wrap;margin-bottom:clamp(28px,3.6vw,48px)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 48px;flex-wrap:wrap;margin-bottom:var(--gap-head)}
 .sec-head p{max-width:44ch}
 .who-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
 .who-card{display:flex;flex-direction:column;background:var(--paper);color:inherit;text-decoration:none;border:2px solid var(--stone);transition:border-color .15s}
@@ -250,7 +252,7 @@ body.menu-open{overflow:hidden}
 .band-bg .photo{position:absolute;inset:0;aspect-ratio:auto;background:none}
 .band-bg .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
 .band:has(.band-bg .photo)::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)}
-.band:has(.band-bg .photo){padding:clamp(96px,11vw,168px) 0}
+.band:has(.band-bg .photo){padding:clamp(72px,8vw,120px) 0}
 @supports not selector(:has(a)){ .band-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,22,24,.76) 0%,rgba(18,22,24,.48) 50%,rgba(18,22,24,.76) 100%)} }
 .band-in{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px clamp(40px,6vw,96px);align-items:end}
 .band h2{font-size:var(--t-h2);line-height:1}
@@ -259,7 +261,6 @@ body.menu-open{overflow:hidden}
 /* ---------- home: where we work, and the last ask ---------- */
 .near{background:var(--warm)}
 .near-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px clamp(40px,6vw,96px);align-items:center}
-.near h2{font-size:clamp(32px,3.8vw,54px)}
 .near p{margin-top:22px;max-width:44ch}
 .near p.towns{margin-top:12px;font-weight:700}
 .near ul.towns{list-style:none;margin:20px 0 0;padding:0;max-width:640px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(6,auto);grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 20px;font-weight:600}
@@ -356,10 +357,10 @@ body.menu-open{overflow:hidden}
 
 
 /* ---------- inner page opening ---------- */
-.phero{background:var(--warm);padding:clamp(48px,6vw,88px) 0}
+.phero{background:var(--warm)}
 .phero h1,.est-intro h1{font-size:clamp(36px,4.2vw,60px);max-width:none}
 .phero h1::after,.est-intro h1::after{content:"";display:block;width:88px;height:8px;background:var(--olive);margin-top:clamp(18px,2.2vw,28px)}
-.phero p,.est-intro p{margin-top:clamp(20px,2.4vw,28px);font-size:clamp(19px,1.7vw,22px);line-height:1.5;max-width:56ch}
+.phero p,.est-intro p{margin-top:var(--gap-intro);font-size:clamp(19px,1.7vw,22px);line-height:1.5;max-width:56ch}
 .phero .hero-act,.est-intro .hero-act{margin-top:32px}
 .phero-split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,5vw,80px);align-items:center}
 .phero-pic .photo{aspect-ratio:4/3}
@@ -367,7 +368,7 @@ body.menu-open{overflow:hidden}
 /* a real photo fills the right side of the page heading: the full height of the band, top to bottom, with its
    right edge on the content edge (never the screen edge). The photo column is a little wider than the text column,
    and the gap a little tighter, so the photo reads as the big thing while every title still fits in two lines. */
-.phero{--phero-pad:clamp(40px,4.5vw,56px);padding:var(--phero-pad) 0;overflow:hidden}
+.phero{--phero-pad:var(--open-pad);padding:var(--phero-pad) 0;overflow:hidden}
 @media (min-width:901px){
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn)){align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:clamp(32px,4.4vw,64px)}
   .phero-split:has(.phero-pic>.photo:not(.photo-drawn))>div:first-child{align-self:center}
@@ -415,8 +416,8 @@ body.menu-open{overflow:hidden}
 .fine{font-size:var(--t-small);color:var(--ink-soft);margin:-16px 0 28px}
 
 /* the shed pad, layer by layer */
-.pads-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:center;margin-bottom:64px}
-.pads-top p{margin-top:24px;max-width:44ch}
+.pads-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:center;margin-bottom:var(--gap-head)}
+.pads-top .sv-intro{margin-top:var(--gap-intro)}
 .xsec{background:var(--paper);padding:0 0 12px}
 .xsec .dgm{aspect-ratio:4/3}
 .xsec figcaption{padding:16px 20px 4px}
@@ -441,7 +442,7 @@ body.menu-open{overflow:hidden}
 .pads-bottom p{margin-bottom:32px;max-width:40ch} /* 32px before a button, like everywhere else */
 
 /* builders: the phases, one contractor */
-.phases-head{display:grid;grid-template-columns:1.5fr 1fr;gap:24px 56px;align-items:end;margin-bottom:48px}
+.phases-head{display:grid;grid-template-columns:1.5fr 1fr;gap:24px 56px;align-items:end;margin-bottom:var(--gap-head)}
 .phases-head p{max-width:44ch}
 .phase-track{display:grid;grid-template-columns:repeat(4,1fr);border-top:6px solid var(--olive)}
 .phase-track a{display:flex;flex-direction:column;gap:10px;height:100%;padding:28px 24px 0 0;text-decoration:none}
@@ -475,7 +476,7 @@ body.menu-open{overflow:hidden}
 .svc-list a:hover h2{color:var(--olive-deep)}
 
 /* projects page, filters, project detail */
-.proj-page,.hc{padding-top:clamp(40px,6vw,88px)}
+.proj-page,.hc{padding-top:var(--open-pad)}
 .proj-head{display:grid;grid-template-columns:1fr 1fr;gap:16px 56px;align-items:end;margin-bottom:40px}
 .proj-head p{max-width:46ch}
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 36px}
@@ -504,8 +505,8 @@ body.menu-open{overflow:hidden}
 
 
 /* ---------- estimate page and the form ---------- */
-.est-page{padding-top:clamp(48px,6vw,88px);background:var(--warm)}
-.est-intro{margin-bottom:clamp(32px,4vw,56px)}
+.est-page{padding-top:var(--open-pad);background:var(--warm)}
+.est-intro{margin-bottom:var(--gap-head)}
 .est-main{background:#fff;border:1px solid var(--stone);padding:clamp(22px,3vw,40px);box-shadow:0 1px 3px rgba(35,43,46,.08),0 18px 40px -20px rgba(35,43,46,.35)}
 .est-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px clamp(40px,5vw,80px);align-items:start}
 .est{background:var(--paper)}
@@ -601,8 +602,8 @@ body.menu-open{overflow:hidden}
   .lp-two .sv-media{grid-row:1/span 9;align-self:stretch;margin:calc(-1 * var(--sec)) calc(-1 * var(--bleed)) calc(-1 * var(--sec)) 0}
 }
 .lp-form .lp-form-in{max-width:760px}
-.lp-form .lead{margin:16px 0 36px}
-.nf{padding-top:clamp(56px,8vw,120px);min-height:70vh}
+.lp-form .lead{margin:var(--gap-intro) 0 36px}
+.nf{padding-top:var(--open-pad);min-height:70vh}
 .nf-code{font:800 var(--t-statement)/.85 var(--display);color:var(--ink);letter-spacing:.005em}
 .nf h1{margin-top:16px}
 .nf .lead{margin-top:24px;max-width:46ch}
@@ -610,7 +611,7 @@ body.menu-open{overflow:hidden}
 .nf-links a{font:700 var(--t-h3)/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em;text-decoration:none;color:var(--olive-deep)}
 .nf-links a:hover{text-decoration:underline}
 .nf-phone{font-weight:700}
-.thanks-page{padding-top:clamp(40px,6vw,88px)}
+.thanks-page{padding-top:var(--open-pad)}
 .thanks-page .thanks{max-width:none}
 .thanks-page .thanks p{max-width:60ch}
 .thanks-page .thanks-h{font-size:var(--t-h2)}
@@ -656,7 +657,7 @@ body.menu-open{overflow:hidden}
 
 /* ---------- phones ---------- */
 @media (max-width:900px){
-  :root{--sec:52px;--hdr-h:76px;--mbar-h:64px;--t-h1:clamp(32px,9vw,48px);--t-h2:clamp(27px,7.4vw,36px);--t-h3:24px;--t-statement:clamp(60px,20vw,120px)}
+  :root{--sec:44px;--hdr-h:76px;--mbar-h:64px;--t-h1:clamp(32px,9vw,48px);--t-h2:clamp(27px,7.4vw,36px);--t-h3:24px;--t-statement:clamp(60px,20vw,120px)}
   .hero{min-height:0;align-items:flex-end}
   .hero h1{font-size:clamp(40px,12vw,58px)}
   .hero::after,.hero:has(.photo-drawn)::after{background:linear-gradient(0deg,rgba(18,22,24,.92) 0%,rgba(18,22,24,.72) 52%,rgba(18,22,24,.25) 100%)}
@@ -690,7 +691,6 @@ body.menu-open{overflow:hidden}
   .phero .hero-act,.est-intro .hero-act{margin-top:28px}
   .phero .hero-act .btn{width:100%}
   .phero .hero-call,.est-intro .hero-call{align-self:flex-start}
-  .est-page{padding-top:40px}
   .est-intro{margin-bottom:28px}
   .page-builders .phero .hero-act{flex-direction:column}
   .hdr-in{gap:16px}
@@ -912,7 +912,7 @@ body.menu-open{overflow:hidden}
 .near p,.area p,.callout p{margin-top:24px}
 .near p.towns{margin-top:12px}
 .bul{margin:24px 0 32px}
-.lp-form .lead{margin:20px 0 36px}
+.lp-form .lead{margin:var(--gap-intro) 0 36px}
 @media (min-width:901px){
   .sv h2{margin-bottom:clamp(20px,1.8vw,24px)}
   .lp-two h2{margin-bottom:clamp(20px,1.8vw,24px)}
@@ -1008,7 +1008,7 @@ body.menu-open{overflow:hidden}
   .pads-top > div:first-child{display:contents}
   .pads-top h2{order:-2;margin-bottom:20px}
   .pads-pic{order:-1;margin:0 calc(-1 * var(--gut)) 24px}
-  .pads-top p{margin-top:0}
+  .pads-top .sv-intro{margin-top:0}
 }
 /* phones: two gallery photos stack full width (tablets keep them side by side) */
 @media (max-width:600px){
@@ -1080,7 +1080,7 @@ html{scroll-padding-bottom:calc(var(--mbar-h) + env(safe-area-inset-bottom,0px) 
 
 /* ---------- Grade A pass (2026-11-03) ---------- */
 /* 3. Home, "The work we do most": the intro line sits under its heading, like every other section head */
-.svcs .sec-head{flex-direction:column;align-items:flex-start;gap:20px}
+.svcs .sec-head{flex-direction:column;align-items:flex-start;gap:var(--gap-intro)}
 .svcs .sec-head p{max-width:60ch;font-size:clamp(18px,1.5vw,20px);line-height:1.5}
 /* 4. Home, "Start with a few photos": a wider, slightly larger paragraph, centred against the How it works card */
 .page-home .how-text p{max-width:46ch;font-size:clamp(18px,1.5vw,20px);line-height:1.55}
@@ -1144,11 +1144,11 @@ html{scroll-padding-bottom:calc(var(--mbar-h) + env(safe-area-inset-bottom,0px) 
 /* 6. Project pages open like the main pages: the warm band, the title with its olive bar, the place and the words,
    the estimate button, and the before/after slider framed by the band on the right (an even --gut of warm gray
    above, beside and below it, like the Homeowners, Builders and More Services openings) */
-.pd-open{--phero-pad:clamp(40px,4.5vw,56px);background:var(--warm);padding:var(--phero-pad) 0}
+.pd-open{--phero-pad:var(--open-pad);background:var(--warm);padding:var(--phero-pad) 0}
 .pd-open .pd-top{margin-top:0}
 .pd-open .crumb{margin-bottom:clamp(18px,2vw,24px)}
 .pd-open h1{font-size:clamp(34px,3.8vw,54px)}
-.pd-open .proj-row{margin-top:clamp(18px,2vw,22px);font-size:var(--t-body)}
+.pd-open .proj-row{margin-top:var(--gap-intro);font-size:var(--t-body)}
 .pd-open .pd-desc{margin-top:14px;font-size:clamp(18px,1.5vw,20px);line-height:1.5;max-width:52ch}
 .pd-open .hero-act{margin-top:32px}
 .pd > .wrap > .pd-group:first-child{margin-top:0}
@@ -1318,7 +1318,7 @@ p{text-wrap:pretty}
    picture reads as a placed print instead of a loose rectangle. Columns a hair closer. */
 .sv-eyebrow{display:flex;align-items:center;gap:12px;margin:0 0 14px;font:700 15px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--olive-deep)}
 .sv-eyebrow::before{content:"";width:28px;height:4px;background:var(--olive)}
-.sv .sv-intro{font-size:clamp(18px,1.5vw,20px);line-height:1.5;max-width:46ch}
+.sv-intro{font-size:clamp(18px,1.5vw,20px);line-height:1.5;max-width:46ch}
 .sv .bul{gap:10px}
 .sv .bul li{padding-left:26px}
 .sv .bul li::before{top:.55em;width:10px;height:10px}
@@ -1362,3 +1362,13 @@ p{text-wrap:pretty}
 .pads-bottom .pads-ask p{margin-bottom:24px;max-width:none;font-size:clamp(17px,1.4vw,19px);line-height:1.5}
 @media (min-width:901px){.pads-bottom{align-items:start;gap:clamp(40px,5vw,72px)}}
 @media (max-width:900px){.sv-eyebrow{order:-3;margin-bottom:10px}} /* phones: keyword line, heading, photo, words */
+
+/* ---------- Spacing, sizing and scaling pass (2026-11-03) ----------
+   Jeremy: too much scrolling for no reason. Four shared tokens now carry the page rhythm (see :root): --sec for the space
+   around every section (84px on a big screen, was 104; 44px on phones, was 52), --open-pad for page openings and the
+   tops of pages without a band (Estimate, Home Construction, Thanks, 404 used 88 to 120px; all 56 now, like the title
+   bands), --gap-head for a section head to its content, --gap-intro (24px) for a title or heading to its first line.
+   The statement band on the home page is 120px tall at the top and bottom instead of 168. Buttons are one size
+   everywhere (54px; the hero pair was 56). "Serving Chattanooga" uses the normal h2 size (it was 54px, the token is 52).
+   Section intros on Homeowners (the pad section) match the other section intros. No new rules below; the values
+   changed in place. ---------- */

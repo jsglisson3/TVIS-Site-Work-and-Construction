@@ -1,9 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Security: GitHub Pages can't send custom headers, so the safe parts of a content security policy go here.
-     No <base> tag hijacks, no plugins, and any http:// file is fetched over https. Scripts are not restricted
-     (the tracking tags in site.config.json load from Google and Meta). -->
-<meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'; upgrade-insecure-requests">
+<!-- Security: GitHub Pages can't send custom headers, so the content security policy goes here. The build fills it in
+     (scripts/build.mjs > contentSecurityPolicy): only this site's files, the build's own inline snippets by hash,
+     the form to Basin, and Google/Meta only once their tracking IDs are set. Keep this tag near the top of <head>. -->
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
 <meta name="robots" content="{{robots}}">

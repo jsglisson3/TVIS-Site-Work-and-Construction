@@ -375,4 +375,9 @@ if (/[?&]slots\b/.test(location.search)) {
 })();
 
 // ---- /thanks (Basin's redirect for browsers without JavaScript): count the lead here instead ----
-if (document.body.classList.contains('page-thanks') && window.tvisTrack) window.tvisTrack('lead', { via: 'redirect' });
+// counted once per visit, so a reload or a bookmarked /thanks never adds a second lead
+if (document.body.classList.contains('page-thanks') && window.tvisTrack) {
+  var counted = false;
+  try { counted = sessionStorage.getItem('tvis_lead') === '1'; sessionStorage.setItem('tvis_lead', '1'); } catch (e) {}
+  if (!counted) window.tvisTrack('lead', { via: 'redirect' });
+}

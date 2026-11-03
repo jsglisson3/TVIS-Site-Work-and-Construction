@@ -53,8 +53,15 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 ## 4. Layout and spacing
 
 - Content width 1320px max (`--max`), side gutter clamp(20px, 4vw, 56px) (`--gut`).
-- Section padding clamp(64px, 7vw, 104px) top and bottom (`--sec`).
-- **Vertical rhythm inside a section:** a section heading (h2) sits 24px above its first line of text (20px on narrow screens), text sits 24px above a list, and text or a list sits 32px above a button. Cards keep their own smaller steps (title to text 8 to 16px). Don't add one-off margins; reuse these.
+- **Four spacing tokens carry the page rhythm** (set in `:root`, 2026-11-03 spacing pass). Use them; don't add one-off clamps.
+  - `--sec` clamp(56px, 6vw, 84px): the space above and below every section (44px on phones). It was 104px on a big screen and 52px on phones until 2026-11-03, when Jeremy said the pages took too much scrolling for no reason.
+  - `--open-pad` clamp(40px, 4.5vw, 56px): the space above and below a page opening band (`.phero`, `.pd-open`) and the top of a page without one (Estimate, Home Construction, Thanks, 404). Every page title now sits the same distance under the header.
+  - `--gap-head` clamp(28px, 3.4vw, 48px): a section head (heading, intro line, "See all" link) to the content under it (`.sec-head`, `.phases-head`, `.est-intro`, `.pads-top`).
+  - `--gap-intro` 24px: a title or heading (or the olive bar under it) to its first line of text, on every page type.
+- **Vertical rhythm inside a section:** a section heading (h2) sits 24px above its first line of text, text sits 24px above a list, and text or a list sits 32px above a button. Cards keep their own smaller steps (title to text 8 to 16px). Don't add one-off margins; reuse these.
+- The statement band on the home page is clamp(72px, 8vw, 120px) tall above and below its words (was up to 168px).
+- **One button size everywhere:** 54px tall, 28px side padding (`.btn`). The home hero pair used to be 56px. The only taller button is the form's "Send estimate request" (64px), the one primary action on the Estimate page.
+- **Section intros are one style:** `.sv-intro` (18 to 20px, line-height 1.5, 46ch) on Homeowners, Builders and the pad section; the home "Work we do most" intro matches it.
 - **Backgrounds alternate:** never put two different light backgrounds (warm gray and olive tint) directly next to each other. The home page runs white, warm, white, warm, dark band, warm.
 - **Buttons size to their label** on desktop and tablets, everywhere. Only on phones (under 600px) do buttons in a text column run full width.
 - **Grids never leave a card alone on a row:** on tablets an odd last project card spans the row, photo left and words right; on the desktop Projects page, when the count leaves one card over, the newest project runs the full width at the top.
