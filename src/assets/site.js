@@ -164,7 +164,13 @@ if (/[?&]slots\b/.test(location.search)) {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   g.classList.add('armed');
   var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) { g.classList.add('go'); io.disconnect(); } });
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        // two frames after the armed state has painted, so the roll never starts from a state the phone hasn't drawn yet
+        requestAnimationFrame(function () { requestAnimationFrame(function () { g.classList.add('go'); }); });
+        io.disconnect();
+      }
+    });
   }, { threshold: 0.6 });
   io.observe(g);
 })();

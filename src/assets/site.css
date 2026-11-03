@@ -320,17 +320,22 @@ body.menu-open{overflow:hidden}
 .ftr-list a,.ftr-list p,.ftr-bottom{color:#E3E7E0}
 .ftr-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:4px}
 .dozer{position:absolute;right:var(--gut);bottom:-4px;width:150px;height:auto;overflow:visible;will-change:transform}
-.dozer-spot{--dz:var(--olive);--dz-dark:var(--ink);display:flex;align-items:flex-end;gap:0;margin-bottom:28px}
-.dozer-spot .dozer{position:static;width:min(220px,46vw)}
-.dozer-spot::after{content:"";flex:1;height:6px;background:var(--olive);margin-bottom:0}
-.mmenu .dozer-spot{margin:auto 0 0;padding-top:28px}
+/* The parked dozer (phone menu, 404, Thanks): it stands on a ground line that runs the full width under it, tracks on
+   the line, a settled heap in front, like the footer once the roll has ended. --dzw is its width; the margin puts the
+   track bottom (7 of the 120 viewBox units above the drawing's edge) exactly on the line. Jeremy (2026-11-03): static
+   is fine in the menu, just a little smaller, and the line must not float off to the side. */
+.dozer-spot{--dz:var(--olive);--dz-dark:var(--ink);--dzw:min(220px,46vw);position:relative;display:block;margin-bottom:28px}
+.dozer-spot .dozer{position:relative;inset:auto;z-index:1;display:block;width:var(--dzw);margin-bottom:calc(6px - var(--dzw) * 7 / 260)}
+.dozer-spot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--olive)}
+.dozer-spot .dz-dirt{opacity:.88}.dozer-spot .pile{transform:scale(1.2)}
+.mmenu .dozer-spot{--dzw:100px;margin:auto 0 0;padding-top:28px}
 .thanks .dozer-spot{--dz:var(--olive-light);--dz-dark:var(--charcoal)}
 .thanks .dozer-spot::after{background:var(--olive-light)}
-.mmenu .dozer-spot .dozer{width:120px}
 /* The footer roll. 5.24s; every delay below is a share of it, written out because custom properties do not reach into the inline SVG in Chrome.
    (2026-11-03: 1.6s, then 3.4, 4.6, 4.85 and 5.24s as Jeremy asked for slower each time.) */
 .ftr-ground.armed .dozer{transform:translateX(-45vw);opacity:0}
-.ftr-ground.go .dozer{transform:none;opacity:1;transition:transform 6s cubic-bezier(.3,.5,.25,1),opacity 1.2s}
+.ftr-ground.go .dozer{transform:none;opacity:1;animation:dozer-roll 6s cubic-bezier(.3,.5,.25,1) both}
+@keyframes dozer-roll{from{transform:translateX(-45vw);opacity:0}20%{opacity:1}to{transform:none;opacity:1}}
 .ftr-ground.go .track-run{animation:track-run 6s cubic-bezier(.3,.5,.25,1) both}
 @keyframes track-run{from{stroke-dashoffset:234}to{stroke-dashoffset:0}}
 .puff{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
