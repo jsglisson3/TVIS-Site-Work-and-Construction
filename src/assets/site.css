@@ -1576,3 +1576,16 @@ html.lb-open{overflow:hidden}
     -webkit-mask:linear-gradient(90deg,#000 0,#000 calc(50% - 860px),transparent calc(50% - 720px),transparent calc(50% + 720px),#000 calc(50% + 860px),#000 100%);
     mask:linear-gradient(90deg,#000 0,#000 calc(50% - 860px),transparent calc(50% - 720px),transparent calc(50% + 720px),#000 calc(50% + 860px),#000 100%)}
 }
+
+/* Home hero, balanced edges (2026-11-03, Jeremy: "make the right side kind of match the left side", "subtle is key").
+   The left scrim darkens the trees behind the headline, which left the right edge (bright sky through the pines, pale
+   gravel) reading far brighter. A softer mirror of the scrim comes in from the right edge (.50 fading to nothing by a
+   third of the way in) with a gentle lift-off at the top right corner for the sky. The house and the excavator's body
+   stay clear; only the edge of the arm and bucket sit in the last of the shade. Desktop only: on phones the photo
+   sits above the text with no scrim. */
+@media (min-width:901px){
+  .hero::after{background:
+    radial-gradient(70% 80% at 100% 0%,rgba(16,20,22,.32) 0%,rgba(16,20,22,.12) 45%,rgba(16,20,22,0) 75%),
+    linear-gradient(270deg,rgba(16,20,22,.5) 0%,rgba(16,20,22,.34) 7%,rgba(16,20,22,.17) 16%,rgba(16,20,22,.05) 26%,rgba(16,20,22,0) 34%),
+    linear-gradient(90deg,rgba(16,20,22,.84) 0%,rgba(16,20,22,.6) 34%,rgba(16,20,22,.06) 62%,rgba(16,20,22,0) 100%)}
+}

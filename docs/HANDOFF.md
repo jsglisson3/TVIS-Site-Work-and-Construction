@@ -727,3 +727,11 @@ Jeremy: "any other quick wins across the site? these are awesome", "do all of th
 - **Side contours** (`body::before`, 1600px and up): contour.svg fixed, `cover`, opacity .42, masked so it fades out 140px before the content edge; `body{position:relative;z-index:0}` keeps it under everything, so sections with a colour or a photo cover it and only white sections show it. Checked at 1920 and 2560.
 - **Not added:** the phone menu already staggers its links in (`.mmenu li` settle, 40ms apart), so suggestion 4 of round two was already on the site.
 - Checks: Chromium at 1440, 1920, 2560, iPad 810 and phone 390 (touch): openings, Next job, Share (clipboard), glide (50% to 6% and back, class removed), form restore and Start over, console clean. Build clean. Files: scripts/build.mjs, src/assets/site.css, src/assets/site.js, docs.
+
+## Home hero, balanced edges (2026-11-03, 17:00 UTC)
+
+Jeremy sent a screenshot of the desktop home hero: "can you make the right side of this picture kind of match the left side", "it just seems way brighter or am i crazy?", "subtle is key". He was right: with the left scrim behind the headline, the right edge measured about 2.6 times as bright as the left (mean luminance 65 vs 25 at 1900px wide; the top right sky 89).
+
+- **Right edge shade** (last block of site.css, desktop 901px and up): `.hero::after` now stacks a soft mirror of the left scrim from the right edge (`.50 → .34 → .17 → .05 → 0` over the last 34%) and a radial shade at the top right corner (`.32 → .12 → 0`) over the unchanged left scrim. Right edge now 42, top right 59; the house and the excavator body are untouched (the arm and bucket sit in the last of the shade). The photo, its grade and its crop are unchanged. Phones have no scrim, so nothing changes there.
+- Checks: Chromium at 1280, 1440, 1900 and 2560; screenshots /mnt/project-files/tvis-site/shots/hero-right-*.png. Build clean. Files: src/assets/site.css, docs/STYLE-GUIDE.md, docs/HANDOFF.md.
+
