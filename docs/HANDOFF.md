@@ -630,3 +630,14 @@ Jeremy: "almost a B, we need to get to a grade A". The plan with mockups ranked 
 8. **Project cards:** each row's lines start level (CSS subgrid), even when one title wraps.
 - **Instagram:** the colour Instagram mark sits beside Facebook and Google in the header, menu, footer and estimate card. No account yet, so it is a plain mark; put the profile address in `site.config.json` > `instagram` and it becomes a link.
 
+## Service strip, floating bar (2026-11-03)
+
+Jeremy asked for "some cool shadow texture" on the six service buttons under the home hero. Four options were mocked up; he picked option 4 ("make it look spectacular!! and professional"). Rules are in docs/STYLE-GUIDE.md under Service strip.
+
+- One white bar with a 6px olive top edge and a deep soft shadow. On the home page it floats up over the bottom of the hero photo and rises in as the last beat of the hero's load-in (still with reduced motion).
+- Texture: faint topographic contour lines, the lines on a grading plan, in `src/assets/img/contour.svg` (made for TVIS, no outside art).
+- Each service has a line icon in an olive square. The six icons are symbols in `src/partials/icons.html` (`s-prep`, `s-drain`, `s-drive`, `s-conc`, `s-pad`, `s-demo`).
+- Hover and keyboard focus: warm gray cell, darker square, olive title with its line drawn in, a small arrow at the top right.
+- Tablets show 3 by 2; phones show two columns of chips with their icon squares.
+- At the foot of the six service pages the same bar sits under "All our services" (not lifted), with the page you are on marked.
+
