@@ -17,7 +17,7 @@ The running record of every photo in the master library, where each one is used 
 
 ## Done in the 2026-11-03 review (Jeremy approved all four)
 
-1. **Shed pad photo cleaned up.** `home-svc-pads` (homepage), `pads-step-2` (Homeowners and Shed & Garage Pads pages) now use the clean `IMG_6867.heic` (it was also in `projects/2025-10-garage-pad` until the afternoon audit took it out as probably a different job). The `IMG_6867.jpg` copy in Drive has red pen marks drawn on it and must never be used. The clean file is only 1024x768; ask Joey for the full-size original if he still has it.
+1. **Shed pad photo cleaned up.** `home-svc-pads` (homepage), `pads-step-2` (Homeowners and Shed & Garage Pads pages) now use the clean `IMG_6867.heic` (also `projects/2025-10-garage-pad/progress-1.jpg`). The `IMG_6867.jpg` copy in Drive has red pen marks drawn on it and must never be used. The clean file is only 1024x768; ask Joey for the full-size original if he still has it.
 2. **Homepage Concrete card** is now `IMG_8183` (new concrete driveway up to two new homes). It also opens the Chattanooga concrete driveway project, which is fine.
 3. **Builders concrete slider, before** is now `IMG_8425` (pour underway, mixer truck, crew from behind). `IMG_8429` had the photographer's shadow across the wet pour.
 4. **Homeowners cleanup** is now `IMG_5661` (cleared, graded lot on a bright day). It also appears in the Home site prep project.
@@ -110,8 +110,9 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | 2025-10-garage-pad/after-1.jpg | Resized_20251023_153410.jpg | 0.93 |
 | 2025-10-garage-pad/after-2.jpg | Resized_20251023_153542.jpg | 0.88 |
 | 2025-10-garage-pad/before-1.jpg | Resized_20250711_121118.jpg | 0.93 |
-| 2025-10-garage-pad/progress-1.jpg | Resized_20250811_145314.jpeg | 0.86 |
-| 2025-10-garage-pad/progress-2.jpg | Resized_20250816_095534.jpg | 0.90 |
+| 2025-10-garage-pad/progress-1.jpg | IMG_6867.heic | 0.82 |
+| 2025-10-garage-pad/progress-2.jpg | Resized_20250811_145314.jpeg | 0.86 |
+| 2025-10-garage-pad/progress-3.jpg | Resized_20250816_095534.jpg | 0.90 |
 | 2026-02-lot-clearing/after-1.jpg | IMG_4599.HEIC | 0.84 |
 | 2026-02-lot-clearing/before-1.jpg | IMG_4214.HEIC | 0.71 |
 | 2026-02-lot-clearing/progress-1.jpg | IMG_4281.HEIC | 0.87 |
@@ -134,6 +135,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | 2026-06-harrison-drainage-yard/after-6.jpg | 71c10fbf-d7c8-49ee-ad4e-93104386ce15.jpg | 0.83 |
 | 2026-09-new-home-final-grading/after-1.jpg | IMG_8070.PNG | 0.83 |
 | 2026-09-new-home-final-grading/after-2.jpg | IMG_8083.HEIC | 0.90 |
+| 2026-09-new-home-final-grading/after-3.jpg | IMG_8090.PNG | 0.96 |
 | 2026-09-new-home-final-grading/before-1.jpg | IMG_7043.HEIC | 0.86 |
 | 2026-09-new-home-final-grading/before-2.jpg | IMG_7044.HEIC | 0.92 |
 | 2026-09-new-home-final-grading/progress-1.jpg | IMG_7045.HEIC | 0.86 |
@@ -277,7 +279,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_5895.HEIC | Not usable | Interior (framing) | Framing interior, distorted |  | Not usable. 4032x3024 |
 | IMG_5898.HEIC | Not usable | Interior (framing) | Framing interior |  | Not usable. 4032x3024 |
 | IMG_5899.HEIC | Not usable | Interior (framing) | Framing interior |  | Not usable. 4032x3024 |
-| IMG_6867.heic | Used | Pads | Graded pad inside wood forms | spot `home-svc-pads` (Home); spot `pads-step-2` (homeowners, svc-shed-garage-pads) | Held out of the garage pad project 2026-11-03: probably a different pad job; Joey to confirm. Strong and clean, but small file. 1024x768 |
+| IMG_6867.heic | Used | Pads | Graded pad inside wood forms | spot `home-svc-pads` (Home); spot `pads-step-2` (homeowners, svc-shed-garage-pads); project `2025-10-garage-pad/progress-1.jpg` | Strong and clean, but small file. 1024x768 |
 | IMG_6867.jpg | Weak | Pads | Same as IMG_6867.heic with red pen markup drawn on |  | Markup; never use, the .heic is the clean one. 2193x1645 |
 | IMG_6894.heic | Available | Pads/forms | Forms on grass in a backyard |  | Portrait. 4284x5712 portrait |
 | IMG_7039.HEIC | Weak | Final grade | New home, graded dirt, trash bag |  | Debris in foreground. 4032x3024 |
@@ -323,7 +325,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8080.HEIC | Weak | Final grade | Graded slope, home far back |  | Weak, portrait. 3024x4032 portrait |
 | IMG_8083.HEIC | Used | Driveway (gravel) | Gravel drive to new home | spot `svc-driveways-hero` (svc-gravel-driveways); project `2026-09-new-home-final-grading/after-2.jpg` | Good. 4032x3024 |
 | IMG_8086.MOV | Video |  |  |  |  |
-| IMG_8090.PNG | Weak | Site prep | Cleared dirt pad below wooded bank, small house |  | Held back 2026-11-03: probably not the same job as 2026-09-new-home-final-grading; Joey to confirm. Good. 1252x885 |
+| IMG_8090.PNG | Used | Site prep | Cleared dirt pad below wooded bank, small house | project `2026-09-new-home-final-grading/after-3.jpg` | Good. 1252x885 |
 | IMG_8183.HEIC | Used | Concrete | New concrete driveway up to two new homes | spot `home-svc-concrete` (Home); project `2025-02-chattanooga-concrete-driveway/after-1.jpg` | Strong. 4032x3024 |
 | IMG_8184.HEIC | Used | Concrete | Concrete drive, homes, rough slope | project `2025-02-chattanooga-concrete-driveway/after-3.jpg` | OK. 4032x3024 |
 | IMG_8185.HEIC | Used | Concrete | Concrete drive, homes, plastic on slope | project `2025-02-chattanooga-concrete-driveway/after-4.jpg` | OK. 4032x3024 |
@@ -371,11 +373,11 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | Resized_20250711_121118 (1).jpg | Duplicate |  |  |  | Copy of Resized_20250711_121118.jpg |
 | Resized_20250711_121118.jpg | Used | Pads | Forms on grass | spot `lp-pads-before` (Shed pad ad page (before/after slider)); project `2025-10-garage-pad/before-1.jpg` | Good. 1452x1936 portrait |
 | Resized_20250811_145314 (1).jpeg | Duplicate |  |  |  | Copy of Resized_20250811_145314.jpeg |
-| Resized_20250811_145314.jpeg | Used | Pads/concrete | Poured slab beyond graded dirt | spot `lp-pads-after` (Shed pad ad page (before/after slider)); project `2025-10-garage-pad/progress-1.jpg` | OK, portrait. 1500x2000 portrait |
+| Resized_20250811_145314.jpeg | Used | Pads/concrete | Poured slab beyond graded dirt | spot `lp-pads-after` (Shed pad ad page (before/after slider)); project `2025-10-garage-pad/progress-2.jpg` | OK, portrait. 1500x2000 portrait |
 | Resized_20250816_095517 (1).jpg | Duplicate |  |  |  | Copy of Resized_20250816_095517.jpg |
 | Resized_20250816_095517.jpg | Used | Pads | Walls going up on the new slab | spot `svc-pads-panel` (svc-shed-garage-pads) | OK. 1457x1093 |
 | Resized_20250816_095534 (1).jpg | Duplicate |  |  |  | Copy of Resized_20250816_095534.jpg |
-| Resized_20250816_095534.jpg | Used | Pads | Framing on slab, lumber | project `2025-10-garage-pad/progress-2.jpg` | OK. 2000x1500 |
+| Resized_20250816_095534.jpg | Used | Pads | Framing on slab, lumber | project `2025-10-garage-pad/progress-3.jpg` | OK. 2000x1500 |
 | Resized_20251023_153410.jpg | Used | Pads | Finished dark building front, porch | project `2025-10-garage-pad/after-1.jpg` | Good. 696x522 |
 | Resized_20251023_153422.jpg | Available | Pads | Building side and breezeway |  | OK. 410x308 |
 | Resized_20251023_153542.jpg | Used | Pads | Building rear, lawn | spot `pads-step-4` (homeowners, svc-shed-garage-pads); project `2025-10-garage-pad/after-2.jpg` | Good. 696x522 |
@@ -388,4 +390,4 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 - Shipped images: all 508 files in `dist/` carry no EXIF, XMP or IPTC (no GPS, no camera data).
 - Each project's month matches its photos' capture dates. Towns came from GPS in the originals during the 2026-11-02 review; the Drive copies no longer carry GPS, so towns can't be re-checked from the files.
 - Fixed the same day with Jeremy's go-ahead: the Homeowners `pads-step-3` alt text described a concrete slab, but the photo is a gravel entrance; it now matches the Pads page wording.
-- Held back until Joey confirms they belong to the job (originals stay in Drive; to restore, export the original back into the project folder): `IMG_6867` was `2025-10-garage-pad/progress-1` (fenced lot with houses behind, different phone; the rest of that job is an open lakeside yard), and `IMG_8090` was `2026-09-new-home-final-grading/after-3` (a smaller older house, not the new home in the other photos). The garage pad's old progress-2/3 are now progress-1/2.
+- Re-checked the same afternoon and put back: `IMG_6867` (garage pad progress-1) and `IMG_8090` (final grading after-3). Their capture dates fit the jobs (IMG_6867 is 9 Aug 2025, two days before that slab was poured; IMG_8090 is the day after the other final-grading photos), and the earlier review placed them using GPS, which the Drive copies no longer carry. Joey can still confirm.
