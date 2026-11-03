@@ -1558,7 +1558,7 @@ html.lb-open{overflow:hidden}
 
 /* Desktop: resting the pointer on a project card glides the before/after handle across to the finished photo, and
    back on leave (site.js adds .ba-glide for the glide only, so a drag stays on the pointer) */
-@property --pos{syntax:"<percentage>";inherits:false;initial-value:50%}
+@property --pos{syntax:"<percentage>";inherits:true;initial-value:50%}
 .ba-glide{transition:--pos .8s var(--ease)}
 
 /* The estimate form kept what the visitor typed earlier (site.js) */

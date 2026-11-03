@@ -112,14 +112,30 @@
       r.value = Math.round(Math.max(0, Math.min(100, (x - box.left) / box.width * 100)));
       set();
     }
-    var dragging = false;
+    // A mouse moves the handle at once. A finger waits to see which way it goes: sideways drags the handle, up or down
+    // is left to the page, so scrolling past a slider never makes it jump. A tap still moves the handle there.
+    var dragging = false, waiting = false, sx = 0, sy = 0;
     ba.addEventListener('pointerdown', function (e) {
       if (e.button) return;
+      if (e.pointerType === 'touch') { waiting = true; sx = e.clientX; sy = e.clientY; return; }
       dragging = true; fromX(e.clientX);
       try { ba.setPointerCapture(e.pointerId); } catch (x) {}
     });
-    ba.addEventListener('pointermove', function (e) { if (dragging) fromX(e.clientX); });
-    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { ba.addEventListener(t, function () { dragging = false; }); });
+    ba.addEventListener('pointermove', function (e) {
+      if (waiting) {
+        var dx = Math.abs(e.clientX - sx), dy = Math.abs(e.clientY - sy);
+        if (dx < 6 && dy < 6) return;
+        waiting = false;
+        if (dx <= dy) return; // a scroll: the browser takes it from here
+        dragging = true;
+        try { ba.setPointerCapture(e.pointerId); } catch (x) {}
+      }
+      if (dragging) fromX(e.clientX);
+    });
+    ba.addEventListener('pointerup', function (e) { if (waiting) fromX(e.clientX); waiting = dragging = false; });
+    ba.addEventListener('pointercancel', function () { waiting = dragging = false; });
+    // (only the box's own capture: a finger's capture passing from the photo to the box must not end the drag)
+    ba.addEventListener('lostpointercapture', function (e) { if (e.target === ba) waiting = dragging = false; });
     r.addEventListener('input', set);
     set();
     // desktop: resting the pointer on a project card glides the handle across to the finished photo, and back on
@@ -129,7 +145,11 @@
       var home = null, taken = false, back;
       card.addEventListener('mouseenter', function () { if (taken) return; home = r.value; clearTimeout(back); ba.classList.add('ba-glide'); r.value = 6; set(); });
       card.addEventListener('mouseleave', function () { if (taken || home === null) return; r.value = home; set(); back = setTimeout(function () { ba.classList.remove('ba-glide'); }, 850); });
-      ba.addEventListener('pointerdown', function () { taken = true; clearTimeout(back); ba.classList.remove('ba-glide'); }, true);
+      ba.addEventListener('pointerdown', function () {
+        taken = true; clearTimeout(back); ba.classList.remove('ba-glide');
+        // stop a glide that is still under way, or the handle keeps gliding instead of following the drag
+        if (ba.getAnimations) ba.getAnimations().forEach(function (a) { a.cancel(); });
+      }, true);
     }
   });
 
