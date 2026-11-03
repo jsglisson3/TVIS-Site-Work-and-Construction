@@ -641,3 +641,16 @@ Jeremy asked for "some cool shadow texture" on the six service buttons under the
 - Tablets show 3 by 2; phones show two columns of chips with their icon squares.
 - At the foot of the six service pages the same bar sits under "All our services" (not lifted), with the page you are on marked.
 
+## Home first screen, grade A pass (2026-11-03, later the same night)
+
+Jeremy gave the new strip "a solid B": "the logos can be sharper, spacing can be a little better", then asked for every opening photo to follow the Builders edging. Rules are in docs/STYLE-GUIDE.md.
+
+- **Icons, take three (Jeremy: "is this really the best icons you can do?"):** the thin line drawings were replaced by solid silhouettes in the style of the excavator in the logo: excavator digging a mound, culvert headwall with water running out, gravel drive up to a house, mixer truck, garage with a roll-up door on its slab, dozer pushing broken concrete. Drawn on a 72-unit grid (straight edges snapped to 2 units) and shown at 36px in a 56px olive square (32px on phones), so edges land on whole pixels. Generator: scratchpad icons3/make2.py.
+- **Roomier cells:** 24px padding, 19px titles, 15px descriptors. "Shed Pads" below 1300px, and smaller descriptors on narrow laptops, so nothing wraps.
+- **Real contour map:** `src/assets/img/contour.svg` is now generated from a smooth height field, with every fifth line heavier like a grading plan. It is shown at its own size so the lines stay hairline thin.
+- **Hover and current page:** a darker olive segment draws across the top edge above the cell.
+- **Header fit:** since the Instagram mark went in, the 1360px-up header ran 10 to 15px past the content column, so Get an Estimate stuck out past the edge of everything under it. The gap between header groups is now 18px there, and the button lines up again at every width.
+- **Every opening photo framed:** the framed ending (even margin above, right and below) now applies on the six service pages and the ad page too, like Builders. Concrete, Demolition & Cleanup, Drainage and Gravel Driveways also got the charcoal "In this photo" caption bar, because their photos come from real projects. Site Prep, Shed & Garage Pads and the ad page have no matching project page, so they show the framed photo only.
+- **No lone last words:** paragraphs use `text-wrap: pretty`.
+- **Home rhythm:** the space under the Homeowner/Builder cards is a hair tighter (the Who section's bottom padding is 70% of the usual section space, about 72px instead of 104px on a big screen), at Jeremy's suggestion.
+
