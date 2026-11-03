@@ -46,6 +46,8 @@ Everything that changes from business to business lives in `site.config.json`. E
 - **Fixed spots on the pages:** drop photos into `photos/site/`, named after the spot. `photos/site/README.txt` lists every spot and the shot it wants. A spot with no photo yet stays hidden (no gray box on the public site); where a picture is needed to explain the work, a drawn cross-section stands in until the photo lands. To see every empty spot and its file name, add `?slots` to any page address, e.g. `http://localhost:8080/homeowners?slots`. The build resizes photos and strips GPS data.
 - **Projects gallery:** one folder per job in `projects/`. See `HOW-TO-ADD-A-PROJECT.md`. The three `Sample:` folders hold drawn pictures, not photos; delete them once real jobs exist.
 
+- **Master library:** all originals live in Google Drive at `G:\My Drive\TVIS\Images` (read-only; never rename, move or delete there). `PHOTOGRAPHY-INDEX.md` lists every one, where it is used, and what is unused.
+
 Never use another company's photos.
 
 ## The estimate form (Basin)
@@ -84,6 +86,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | `scripts/rename-logo.py` | One-off that changed the logo's bottom line to "CONSTRUCTION" after the 2026 rename to TVIS Construction. If `trace-logo.py` is ever rerun, run this afterwards on both SVGs. |
 | `scripts/serve.mjs` | The local preview server. |
 | `photos/site/` | Photos for fixed spots on the pages. |
+| `PHOTOGRAPHY-INDEX.md` | Every photo in the Drive master library (`G:\My Drive\TVIS\Images`), where each is used on the site, and what is still available. Updated on every photo review. |
 | `projects/` | One folder per job. Becomes the Projects gallery, each project's page and the homepage's Recent projects. |
 | `.github/workflows/deploy.yml` | Publishes the site on every push to `main`. |
 | `docs/` | `STYLE-GUIDE.md` (the locked look: colours, type, components, photos, motion, words), `HANDOFF.md` (the full brief, the design system and every decision), `ROADMAP.md` (the phases to launch and after), `NEXT-LEVEL-PLAN.md` (the 2026-11-02 research plan: hero concepts, local SEO, competitors and the prioritized roadmap; Concept C is built), the early mockups plus the Concept C mockups in `design/`, and the research. |
