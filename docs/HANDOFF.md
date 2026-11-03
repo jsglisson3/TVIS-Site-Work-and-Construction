@@ -614,3 +614,4 @@ Jeremy liked the caption bar but wanted the three opening photos (Homeowners, Bu
 - Phones and tablets are unchanged: the photo runs edge to edge under the text.
 - Checked: 390 / 820 / 901 / 1024 / 1180 / 1440 / 1750 / 1866, no sideways scroll, console clean, Lighthouse mobile 91 to 93 with 100 for accessibility, best practices and SEO.
 - 2026-11-03: Jeremy saw option 2 live and switched to option 1, the clean stop with no olive bar (`--photo-end-bar:0px`). Everything else in this section is unchanged.
+- 2026-11-03: the plain stop looked cut off to Jeremy ("make it just super naturally end"). Three natural endings were mocked (in line with the header, framed by the band, both). He picked B: on desktop the photo sits in from the top, right and bottom of the band by the same page margin (`--gut`). The olive bar setting is gone. Checked 390 to 1866, no sideways scroll, console clean, Lighthouse mobile 90+.

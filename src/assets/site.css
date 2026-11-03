@@ -1084,13 +1084,13 @@ body.menu-open{overflow:hidden}
   .phero-job{grid-template-columns:minmax(0,1fr) 54px}
   .phero-job .job-text{padding:13px 18px 14px;gap:7px 10px}
 }
-/* Opening photo ending (2026-11-03, Jeremy's choice: option 1 of five, clean stop; he tried option 2's olive bar first): on Homeowners, Builders & Contractors and More Services
-   the photo no longer runs off the screen. On desktop it stops one page margin short of the screen edge, hard and square
-   (never a fade), with warm gray beyond.
-   --photo-end-bar draws an olive bar down the photo's right edge (option 2); 0px = no bar. Phones and tablets are unchanged. */
+/* Opening photo ending (2026-11-03, Jeremy's choice B, after trying the screen-edge photo, an olive edge bar and a plain stop):
+   on Homeowners, Builders & Contractors and More Services the desktop photo is framed by the warm-gray band. It sits in
+   from the top, right and bottom by the same page margin (--gut), so it reads as a placed, finished picture rather than
+   one cut off at the screen edge. Hard, square edges; never a fade, blur or mask. Phones and tablets are unchanged
+   (photo edge to edge under the text). */
 @media (min-width:901px){
-  :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn)){--photo-end-bar:0px;margin-right:calc(var(--gut) - var(--bleed))}
-  :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn))::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:var(--photo-end-bar);background:var(--olive)}
+  :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn)){margin:calc(var(--gut) - var(--phero-pad)) calc(var(--gut) - var(--bleed)) calc(var(--gut) - var(--phero-pad)) 0}
 }
 .proj-head{display:block;margin-bottom:40px}
 .proj-head p{margin-top:clamp(20px,2.4vw,28px);max-width:56ch;font-size:clamp(19px,1.7vw,22px);line-height:1.5}
