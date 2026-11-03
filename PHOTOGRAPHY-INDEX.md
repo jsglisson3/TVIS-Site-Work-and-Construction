@@ -4,7 +4,7 @@ The running record of every photo in the master library, where each one is used 
 
 - **Master library:** `G:\My Drive\TVIS\Images` (Google Drive for Desktop). Joey adds new job photos there. It is read-only for the website work: never delete, rename, move, overwrite or reorganize anything in it. Website copies live in `photos/site/` and `projects/`.
 - **Last full review:** 2026-11-03. 230 files: 173 unique photos (all looked at), 43 " (1)" duplicates Drive created, 14 videos (not reviewed yet).
-- **Status of the 173:** 75 used on the site, 45 available, 20 weak, 33 not usable for this site (house interiors, framing, decks and other trades, phone screenshots, site-walk reference shots).
+- **Status of the 173:** 74 used on the site, 45 available, 21 weak (one of them the scribbled-on pad photo), 33 not usable for this site (house interiors, framing, decks and other trades, phone screenshots, site-walk reference shots).
 - **Older copy:** `TVIS-20261102T004909Z-1-001/` in this folder is a 2026-11-02 download of the same library. It is git-ignored and not the source of truth.
 
 ## How to run the next review
@@ -15,22 +15,24 @@ The running record of every photo in the master library, where each one is used 
 4. Compare it with the photo in the spot it would fill (tables below). Recommend swaps to Jeremy; change site images only after he approves.
 5. When a site photo changes, update its row here and the note in `photos/site/PICKS.txt`.
 
-## Recommendations from the 2026-11-03 review (waiting for Jeremy's approval)
+## Done in the 2026-11-03 review (Jeremy approved all four)
 
-1. **Fix: red markup on the shed pad photo.** `home-svc-pads` (homepage), `pads-step-2` (Homeowners and Shed & Garage Pads pages) and `projects/2025-10-garage-pad/progress-1.jpg` all use `IMG_6867.jpg`, which has red pen scribbles drawn on the right side. Drive also has the clean `IMG_6867.heic`, same shot. It is only 1024x768, which is fine for these spots; ask Joey for the full-size original if he has it.
-2. **Homepage concrete card:** swap `home-svc-concrete` from `IMG_5393` (tall shot of walls framed on a slab) to `IMG_8183` (new concrete driveway up to two new homes, wide and bright). It says "concrete" at a glance. Today it only appears in a project.
-3. **Builders concrete slider, before:** `IMG_8429` has the photographer's shadow across the fresh pour. `IMG_8425` (same job, pour underway, mixer truck, crew from behind) is cleaner.
-4. **Homeowners cleanup photo:** `IMG_4599` is flat and gray. `IMG_5661` (cleared, graded lot on a bright day) reads better at phone size.
-5. **Ask Joey about the stamped concrete patio** (`IMG_5062`, `IMG_5074`). If TVIS poured it, it is a good second Concrete project or the Concrete page panel.
-6. **Cleanup before/after is half there.** `IMG_8985`, `IMG_8986`, `IMG_8988`, `IMG_8993` are overgrown yards around one house. With "after" shots of the same views from Joey, that becomes a real cleanup project and slider.
-7. **Still missing from the library:** a real teardown (Demolition still uses land clearing), drainage before/after (standing water, then dry yard), and a shed sitting on a finished gravel pad. Worth asking Joey to shoot these on upcoming jobs.
-8. **Keep on the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
+1. **Shed pad photo cleaned up.** `home-svc-pads` (homepage), `pads-step-2` (Homeowners and Shed & Garage Pads pages) and `projects/2025-10-garage-pad/progress-1.jpg` now use the clean `IMG_6867.heic`. The `IMG_6867.jpg` copy in Drive has red pen marks drawn on it and must never be used. The clean file is only 1024x768; ask Joey for the full-size original if he still has it.
+2. **Homepage Concrete card** is now `IMG_8183` (new concrete driveway up to two new homes). It also opens the Chattanooga concrete driveway project, which is fine.
+3. **Builders concrete slider, before** is now `IMG_8425` (pour underway, mixer truck, crew from behind). `IMG_8429` had the photographer's shadow across the wet pour.
+4. **Homeowners cleanup** is now `IMG_5661` (cleared, graded lot on a bright day). It also appears in the Home site prep project.
+
+## Still open
+
+- **Ask Joey about the stamped concrete patio** (`IMG_5062`, `IMG_5074`). If TVIS poured it, it is a good second Concrete project or the Concrete page panel.
+- **Cleanup before/after is half there.** `IMG_8985`, `IMG_8986`, `IMG_8988`, `IMG_8993` are overgrown yards around one house. With "after" shots of the same views from Joey, that becomes a real cleanup project and slider.
+- **Still missing from the library:** a real teardown (Demolition still uses land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
+- **On the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
 
 ## Notes on repeats
 
-- On the pages, each photo appears once, except `IMG_7069` (rock swale), which is used on Homeowners and on the Drainage page in two different crops, and `IMG_6867.jpg` (see recommendation 1).
+- On the pages, each photo appears once, except `IMG_7069` (rock swale), which is used on Homeowners and on the Drainage page in two different crops, and `IMG_6867.heic` (the pad in forms), which is the homepage pad card and step 2 of the pad sequence.
 - Many page photos also appear in their own project's gallery (for example the hillside driveway photos). That is expected: the project page is the full story of the job.
-- `pads-step-3` uses `IMG_0163`, a gravel construction entrance, standing in for "crushed stone base". Replace it when Joey has a real compacted-gravel pad photo.
 
 ## Where each site photo comes from
 
@@ -41,7 +43,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | Spot | Page | Drive original | Match |
 |---|---|---|---|
 | builders-concrete-after | Builders (before/after slider) | IMG_8484.HEIC | 0.93 |
-| builders-concrete-before | Builders (before/after slider) | IMG_8429.HEIC | 0.88 |
+| builders-concrete-before | Builders (before/after slider) | IMG_8425.HEIC | 0.88 |
 | builders-final-grading-after | Builders (before/after slider) | IMG_8070.PNG | 0.83 |
 | builders-final-grading-before | Builders (before/after slider) | IMG_7043.HEIC | 0.86 |
 | builders-hero | builders | IMG_5203.HEIC | 0.80 |
@@ -51,13 +53,13 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | home-builder | Home | 1000035915.jpg | 0.80 |
 | home-hero | Home | IMG_8314.HEIC | 0.90 |
 | home-homeowner | Home | 2a621362-1b11-4c47-b72c-b73ae168889e.jpg | 0.91 |
-| home-svc-concrete | Home | IMG_5393.heic | 0.85 |
+| home-svc-concrete | Home | IMG_8183.HEIC | 0.85 |
 | home-svc-demolition | Home | IMG_7245.HEIC | 0.82 |
 | home-svc-drainage | Home, svc-drainage | IMG_5473.HEIC | 0.86 |
 | home-svc-driveways | Home | IMG_1175.HEIC | 0.89 |
-| home-svc-pads | Home | IMG_6867.jpg | 0.82 |
+| home-svc-pads | Home | IMG_6867.heic | 0.82 |
 | home-svc-siteprep | Home | IMG_0134.HEIC | 0.91 |
-| homeowners-cleanup | homeowners | IMG_4599.HEIC | 0.86 |
+| homeowners-cleanup | homeowners | IMG_5661.HEIC | 0.86 |
 | homeowners-drainage | homeowners | IMG_7069.HEIC | 0.92 |
 | homeowners-driveways-after | Homeowners (before/after slider) | IMG_8483.HEIC | 0.90 |
 | homeowners-driveways-before | Homeowners (before/after slider) | IMG_8353.HEIC | 0.89 |
@@ -72,7 +74,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | more-small-excavation | more-services | Resized_20251104_165127.jpeg | 0.91 |
 | pads-feature | homeowners, svc-shed-garage-pads | B551ACFE-430D-43BD-A530-05A8C01A5D5F.HEIC | 0.86 |
 | pads-step-1 | homeowners, svc-shed-garage-pads | Resized_20250711_121100.jpg | 0.85 |
-| pads-step-2 | homeowners, svc-shed-garage-pads | IMG_6867.jpg | 0.82 |
+| pads-step-2 | homeowners, svc-shed-garage-pads | IMG_6867.heic | 0.82 |
 | pads-step-3 | homeowners, svc-shed-garage-pads | IMG_0163.HEIC | 0.95 |
 | pads-step-4 | homeowners, svc-shed-garage-pads | Resized_20251023_153542.jpg | 0.88 |
 | svc-concrete-hero | svc-concrete | IMG_8753.HEIC | 0.89 |
@@ -108,7 +110,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | 2025-10-garage-pad/after-1.jpg | Resized_20251023_153410.jpg | 0.93 |
 | 2025-10-garage-pad/after-2.jpg | Resized_20251023_153542.jpg | 0.88 |
 | 2025-10-garage-pad/before-1.jpg | Resized_20250711_121118.jpg | 0.93 |
-| 2025-10-garage-pad/progress-1.jpg | IMG_6867.jpg | 0.82 |
+| 2025-10-garage-pad/progress-1.jpg | IMG_6867.heic | 0.82 |
 | 2025-10-garage-pad/progress-2.jpg | Resized_20250811_145314.jpeg | 0.86 |
 | 2025-10-garage-pad/progress-3.jpg | Resized_20250816_095534.jpg | 0.90 |
 | 2026-02-lot-clearing/after-1.jpg | IMG_4599.HEIC | 0.84 |
@@ -208,7 +210,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_4282 (1).HEIC | Duplicate |  |  |  | Copy of IMG_4282.HEIC |
 | IMG_4282.HEIC | Used | Clearing | Cleared lot, smoke, wide | project `2026-02-lot-clearing/progress-2.jpg` | Good. 4032x3024 |
 | IMG_4599 (1).HEIC | Duplicate |  |  |  | Copy of IMG_4599.HEIC |
-| IMG_4599.HEIC | Used | Clearing | Lot cleared and graded | spot `homeowners-cleanup` (homeowners); project `2026-02-lot-clearing/after-1.jpg` | OK, dull light. 4032x3024 |
+| IMG_4599.HEIC | Used | Clearing | Lot cleared and graded | project `2026-02-lot-clearing/after-1.jpg` | OK, dull light; replaced on Homeowners 2026-11-03. 4032x3024 |
 | IMG_4603.HEIC | Available | Concrete | Polished slab inside framed building |  | Good slab shot; interior. 3024x4032 portrait |
 | IMG_4604.HEIC | Available | Concrete | Slab inside framing |  | Near-duplicate set. 3024x4032 portrait |
 | IMG_4606.HEIC | Available | Concrete | Slab inside framing |  | Near-duplicate set. 3024x4032 portrait |
@@ -261,12 +263,12 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_5333.HEIC | Used | Pads/footings | Modular home unit beside new footing pad | project `2026-04-lot-clearing-footings/after-2.jpg` | OK, unusual. 4032x3024 |
 | IMG_5334.HEIC | Used | Pads/footings | Modular units on footings | project `2026-04-lot-clearing-footings/after-3.jpg` | OK. 4032x3024 |
 | IMG_5337.HEIC | Used | Pads/footings | Modular home set on foundation | project `2026-04-lot-clearing-footings/after-1.jpg` | OK. 4032x3024 |
-| IMG_5393.heic | Used | Concrete | Slab poured, walls framed on it | spot `home-svc-concrete` (Home) | Good, portrait. 4284x5712 portrait |
+| IMG_5393.heic | Available | Concrete | Slab poured, walls framed on it |  | Good, portrait; was the homepage concrete card until 2026-11-03. 4284x5712 portrait |
 | IMG_5473.HEIC | Used | Drainage | Mini excavator digging drainage trench in yard | spot `home-svc-drainage` (Home, svc-drainage) | Good, portrait. 3024x4032 portrait |
 | IMG_5478.HEIC | Used | Driveway/culvert | Culvert under new gravel entrance; SUV | spot `svc-driveways-panel` (svc-gravel-driveways) | SUV in frame (cropped on site). 4032x3024 |
 | IMG_5479.HEIC | Weak | Site prep | Silt fence, materials, truck |  | Messy. 4032x3024 |
 | IMG_5660.HEIC | Weak | Clearing | Cleared strip in woods |  | Weak, portrait. 3024x4032 portrait |
-| IMG_5661.HEIC | Used | Clearing/grading | Graded lot, mobile home behind | project `2026-05-home-site-prep/progress-1.jpg` | Good, wide. 4032x3024 |
+| IMG_5661.HEIC | Used | Clearing/grading | Graded lot, mobile home behind | spot `homeowners-cleanup` (homeowners); project `2026-05-home-site-prep/progress-1.jpg` | Good, wide. 4032x3024 |
 | IMG_5662.HEIC | Used | Clearing/grading | Graded lot beside mobile home | project `2026-05-home-site-prep/progress-2.jpg` | Good. 4032x3024 |
 | IMG_5663.HEIC | Used | Clearing/grading | Graded lot, mobile home, car | project `2026-05-home-site-prep/progress-3.jpg` | OK. 4032x3024 |
 | IMG_5665.HEIC | Not usable | Reference | Arm pointing, site walk |  | Not usable. 3024x4032 portrait |
@@ -277,8 +279,8 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_5895.HEIC | Not usable | Interior (framing) | Framing interior, distorted |  | Not usable. 4032x3024 |
 | IMG_5898.HEIC | Not usable | Interior (framing) | Framing interior |  | Not usable. 4032x3024 |
 | IMG_5899.HEIC | Not usable | Interior (framing) | Framing interior |  | Not usable. 4032x3024 |
-| IMG_6867.heic | Available | Pads | Graded pad inside wood forms |  | Strong and clean, but small file. 1024x768 |
-| IMG_6867.jpg | Used | Pads | Same as IMG_6867.heic with red markup drawn on | spot `home-svc-pads` (Home); spot `pads-step-2` (homeowners, svc-shed-garage-pads); project `2025-10-garage-pad/progress-1.jpg` | Markup; use the HEIC. 2193x1645 |
+| IMG_6867.heic | Used | Pads | Graded pad inside wood forms | spot `home-svc-pads` (Home); spot `pads-step-2` (homeowners, svc-shed-garage-pads); project `2025-10-garage-pad/progress-1.jpg` | Strong and clean, but small file. 1024x768 |
+| IMG_6867.jpg | Weak | Pads | Same as IMG_6867.heic with red pen markup drawn on |  | Markup; never use, the .heic is the clean one. 2193x1645 |
 | IMG_6894.heic | Available | Pads/forms | Forms on grass in a backyard |  | Portrait. 4284x5712 portrait |
 | IMG_7039.HEIC | Weak | Final grade | New home, graded dirt, trash bag |  | Debris in foreground. 4032x3024 |
 | IMG_7040.HEIC | Available | Final grade | Home side, gravel |  | OK. 4032x3024 |
@@ -324,7 +326,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8083.HEIC | Used | Driveway (gravel) | Gravel drive to new home | spot `svc-driveways-hero` (svc-gravel-driveways); project `2026-09-new-home-final-grading/after-2.jpg` | Good. 4032x3024 |
 | IMG_8086.MOV | Video |  |  |  |  |
 | IMG_8090.PNG | Used | Site prep | Cleared dirt pad below wooded bank, small house | project `2026-09-new-home-final-grading/after-3.jpg` | Good. 1252x885 |
-| IMG_8183.HEIC | Used | Concrete | New concrete driveway up to two new homes | project `2025-02-chattanooga-concrete-driveway/after-1.jpg` | Strong. 4032x3024 |
+| IMG_8183.HEIC | Used | Concrete | New concrete driveway up to two new homes | spot `home-svc-concrete` (Home); project `2025-02-chattanooga-concrete-driveway/after-1.jpg` | Strong. 4032x3024 |
 | IMG_8184.HEIC | Used | Concrete | Concrete drive, homes, rough slope | project `2025-02-chattanooga-concrete-driveway/after-3.jpg` | OK. 4032x3024 |
 | IMG_8185.HEIC | Used | Concrete | Concrete drive, homes, plastic on slope | project `2025-02-chattanooga-concrete-driveway/after-4.jpg` | OK. 4032x3024 |
 | IMG_8216.HEIC | Weak | Other | Tall house rear with stairs, low angle |  | Weak. 4032x3024 |
@@ -337,10 +339,10 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8345.HEIC | Used | Site prep | Hillside lot, excavator, long shadow, road | project `2026-10-hillside-driveway/progress-2.jpg` | Shadow. 4032x3024 |
 | IMG_8352.HEIC | Available | Driveway (before) | Hillside lot before the driveway |  | Good. 4032x3024 |
 | IMG_8353.HEIC | Used | Driveway (before) | Same, tighter | spot `homeowners-driveways-before` (Homeowners (before/after slider)); project `2026-10-hillside-driveway/before-1.jpg` | Good. 4032x3024 |
-| IMG_8425.HEIC | Used | Concrete | Fresh pour, mixer truck, crew | project `2026-10-hillside-driveway/progress-3.jpg` | Good. 4032x3024 |
+| IMG_8425.HEIC | Used | Concrete | Fresh pour, mixer truck, crew | spot `builders-concrete-before` (Builders (before/after slider)); project `2026-10-hillside-driveway/progress-3.jpg` | Good. 4032x3024 |
 | IMG_8427.HEIC | Weak | Concrete | Fresh pour, crew member facing camera |  | Face visible; avoid. 4032x3024 |
 | IMG_8428.HEIC | Used | Concrete | Finisher edging fresh pour, mixer truck | spot `svc-concrete-panel` (svc-concrete) | Strong. 4032x3024 |
-| IMG_8429.HEIC | Used | Concrete | Fresh pour, photographer shadow | spot `builders-concrete-before` (Builders (before/after slider)); project `2026-10-hillside-driveway/progress-4.jpg` | Shadow. 4032x3024 |
+| IMG_8429.HEIC | Used | Concrete | Fresh pour, photographer shadow | project `2026-10-hillside-driveway/progress-4.jpg` | Shadow; replaced on Builders 2026-11-03. 4032x3024 |
 | IMG_8482.HEIC | Used | Concrete | Finished drive to hillside home | project `2026-10-hillside-driveway/after-2.jpg` | Good. 4032x3024 |
 | IMG_8483.HEIC | Used | Concrete | Finished drive, curve, tall pines | spot `homeowners-driveways-after` (Homeowners (before/after slider)); project `2026-10-hillside-driveway/after-1.jpg` | Strong. 4032x3024 |
 | IMG_8484.HEIC | Used | Concrete | Finished drive close | spot `builders-concrete-after` (Builders (before/after slider)); project `2026-10-hillside-driveway/after-3.jpg` | Good. 4032x3024 |
