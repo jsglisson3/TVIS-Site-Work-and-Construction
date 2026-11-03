@@ -1118,3 +1118,106 @@ body.menu-open{overflow:hidden}
 /* Keyboard focus never lands under the phone Call / Get an Estimate bar (WCAG 2.2, focus not obscured):
    anything scrolled into view stops above the bar, the same way scroll-padding-top clears the header. */
 html{scroll-padding-bottom:calc(var(--mbar-h) + env(safe-area-inset-bottom,0px) + 16px)}
+
+/* ---------- Grade A pass (2026-11-03) ---------- */
+/* 3. Home, "The work we do most": the intro line sits under its heading, like every other section head */
+.svcs .sec-head{flex-direction:column;align-items:flex-start;gap:20px}
+.svcs .sec-head p{max-width:60ch;font-size:clamp(18px,1.5vw,20px);line-height:1.5}
+/* 4. Home, "Start with a few photos": a wider, slightly larger paragraph, centred against the How it works card */
+.page-home .how-text p{max-width:46ch;font-size:clamp(18px,1.5vw,20px);line-height:1.55}
+.how .wrap{align-items:center}
+/* 5. One card style for everything you click: a white card, a photo on top, a 6px olive edge under the photo,
+   the words padded inside. On white sections the card has a 1px stone border that turns olive on hover. */
+.who-card{border-width:1px}
+.svc-card .photo{border-bottom:6px solid var(--olive)}
+.svc-list a{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--stone);border-top:1px solid var(--stone);padding:0 0 clamp(22px,2.4vw,30px);transition:border-color var(--dur) var(--ease)}
+.svc-list a:hover,.svc-list a:focus-visible{border-color:var(--olive)}
+.svc-list .photo{margin-bottom:0;border-bottom:6px solid var(--olive)}
+.svc-list a>:not(.photo){margin-left:clamp(20px,2.4vw,30px);margin-right:clamp(20px,2.4vw,30px)}
+.svc-list a>h2{margin-top:clamp(20px,2.2vw,26px)}
+.svc-list .svc-go{align-self:flex-start;margin-top:auto;padding-top:16px}
+/* 2. The closing ask on every page that has one: a charcoal band with an olive top edge, like the footer and the
+   caption bars. Homeowners, Builders, More Services, Projects and the six service pages. */
+.sec.area,.sec.callout{background:var(--charcoal);color:#fff;border-top:6px solid var(--olive)}
+.sec.area h2,.sec.callout h2{color:#fff}
+.sec.area p,.sec.callout p{color:#D3D6D1}
+.sec.area .call-link,.sec.callout .call-link{color:#fff}
+.sec.area .call-link svg,.sec.callout .call-link svg{color:var(--olive-light)}
+.sec.area .call-link:hover,.sec.area .call-link:focus-visible,.sec.callout .call-link:hover,.sec.callout .call-link:focus-visible{color:var(--olive-light)}
+.sec.area :focus-visible,.sec.callout :focus-visible{outline-color:#fff}
+@media (min-width:901px){
+  .sec.area .wrap,.sec.callout .wrap,.page-service .sec.area .wrap{grid-template-columns:minmax(0,1.3fr) auto;gap:32px clamp(48px,5vw,80px)}
+  .sec.area .cta-actions,.sec.callout .cta-actions{justify-content:flex-end}
+  .sec.area p,.sec.callout p{max-width:52ch}
+}
+/* 7. The statement band: the photo a little brighter and the shade lighter in the middle, words still on dark */
+.band:has(.band-bg .photo)::after{background:linear-gradient(90deg,rgba(18,22,24,.74) 0%,rgba(18,22,24,.36) 46%,rgba(18,22,24,.7) 66%,rgba(18,22,24,.74) 100%)}
+.band-bg .photo>img{filter:brightness(1.16) saturate(1.08)}
+/* 8. Project cards: in a row of cards each line (photo, title, place, words, link) starts at the same height,
+   even when one title runs to two lines. Each card shares its row's five lines (CSS subgrid). */
+@media (min-width:600px){
+  .proj-grid:not(.proj-grid-one){row-gap:0}
+  .proj-grid:not(.proj-grid-one) > .proj{display:grid;grid-template-rows:subgrid;grid-row:span 5;row-gap:0;align-content:start;margin-bottom:40px}
+  .proj-grid:not(.proj-grid-one) > .proj > .proj-meta{display:contents}
+  .proj-grid:not(.proj-grid-one) > .proj .proj-more{justify-self:start;align-self:start}
+}
+@media (min-width:600px) and (max-width:900px){
+  .proj-grid:not(:has(> .proj[hidden])) > .proj:last-child:nth-child(odd){grid-row:auto;grid-template-rows:none}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj:last-child:nth-child(odd) > .proj-meta{display:block}
+}
+@media (min-width:901px){
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide{grid-row:auto;grid-template-rows:none;margin-bottom:48px}
+  .proj-grid:not(:has(> .proj[hidden])) > .proj-wide > .proj-meta{display:block}
+}
+/* 1. Phones: the six home service cards become compact rows (small photo beside the name and one line), about
+   950px of scrolling instead of 2,500. The whole row is the link; the arrow says so. */
+@media (max-width:560px){
+  .svc-grid{gap:10px}
+  .svc-card{display:grid;grid-template-columns:116px minmax(0,1fr) 28px;align-items:stretch}
+  .svc-card .photo{aspect-ratio:auto;height:100%;min-height:104px;border-bottom:0}
+  .svc-card .photo>img{height:100%;object-fit:cover}
+  .svc-body{padding:14px 4px 14px 16px;gap:5px;justify-content:center}
+  .svc-body h3{font-size:20px;line-height:1.05}
+  .svc-body p{font-size:15px;line-height:1.4}
+  .svc-more{display:none}
+  .svc-card::after{content:"";align-self:center;justify-self:center;width:9px;height:9px;margin-right:6px;border-top:3px solid var(--olive-deep);border-right:3px solid var(--olive-deep);transform:rotate(45deg)}
+}
+/* 6. Project pages open like the main pages: the warm band, the title with its olive bar, the place and the words,
+   the estimate button, and the before/after slider framed by the band on the right (an even --gut of warm gray
+   above, beside and below it, like the Homeowners, Builders and More Services openings) */
+.pd-open{--phero-pad:clamp(40px,4.5vw,56px);background:var(--warm);padding:var(--phero-pad) 0}
+.pd-open .pd-top{margin-top:0}
+.pd-open .crumb{margin-bottom:clamp(18px,2vw,24px)}
+.pd-open h1{font-size:clamp(34px,3.8vw,54px)}
+.pd-open .proj-row{margin-top:clamp(18px,2vw,22px);font-size:var(--t-body)}
+.pd-open .pd-desc{margin-top:14px;font-size:clamp(18px,1.5vw,20px);line-height:1.5;max-width:52ch}
+.pd-open .hero-act{margin-top:32px}
+.pd > .wrap > .pd-group:first-child{margin-top:0}
+@media (min-width:901px){
+  .pd-open-ba .pd-top{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)}
+  .pd-open .pd-ba{margin:calc(var(--gut) - var(--phero-pad)) calc(var(--gut) - var(--bleed)) calc(var(--gut) - var(--phero-pad)) 0}
+}
+@media (max-width:900px){
+  .pd-open .pd-top{gap:32px}
+  .pd-open .pd-ba{margin:0 calc(-1 * var(--gut)) calc(-1 * var(--phero-pad))}
+  .pd-open .hero-act{margin-top:28px}
+}
+@media (max-width:600px){
+  .pd-open .hero-act .btn{width:100%}
+}
+.pd-open .hero-act{gap:14px 28px}
+/* a project without a before/after pair: the title on the left, its words and the button on the right, so the band
+   uses its width instead of leaving the right half empty (the photos start straight below) */
+@media (min-width:901px){
+  .pd-open:not(.pd-open-ba) .pd-head{max-width:none;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"crumb ." "title words" "row words";column-gap:clamp(40px,5vw,80px);align-items:end}
+  .pd-open:not(.pd-open-ba) .crumb{grid-area:crumb}
+  .pd-open:not(.pd-open-ba) h1{grid-area:title}
+  .pd-open:not(.pd-open-ba) .proj-row{grid-area:row}
+  .pd-open:not(.pd-open-ba) .pd-words{grid-area:words;align-self:end}
+  .pd-open:not(.pd-open-ba) .pd-desc{margin-top:0}
+}
+/* phones: the photos come straight after the words (the call bar at the foot of the screen and the button under the
+   photos still ask for the estimate) */
+@media (max-width:600px){ .pd-open .hero-act{display:none} }
+/* phones and tablets: the words run across the whole photo, so the brighter photo gets an even shade */
+@media (max-width:900px){ .band:has(.band-bg .photo)::after{background:rgba(18,22,24,.62)} }

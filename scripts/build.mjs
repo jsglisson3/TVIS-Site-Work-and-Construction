@@ -70,7 +70,8 @@ const vars = {
   gbp: config.googleBusinessProfile || '#google-business-profile-url-needed',
   // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
   fb_icon: config.facebook || !LIVE ? `<a href="${config.facebook || '#facebook-url-needed'}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
-  ig_icon: config.instagram || !LIVE ? `<a href="${config.instagram || '#instagram-url-needed'}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : '',
+  // Instagram: a plain mark (not a link) until site.config.json > instagram is filled, then a link, the same as Google
+  ig_icon: config.instagram ? `<a href="${esc(config.instagram)}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Instagram, coming soon" title="Instagram coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></span>`,
   // Google: a plain mark (not a link) until site.config.json > googleBusinessProfile is filled, then a link
   gbp_icon: config.googleBusinessProfile ? `<a href="${esc(config.googleBusinessProfile)}" aria-label="${esc(config.name)} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Google, coming soon" title="Google profile coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></span>`,
   form_endpoint: esc(config.formEndpoint || ''),
@@ -298,20 +299,27 @@ function projectDetail(p) {
 </section>` : '';
   };
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
-  return `<section class="sec pd">
-  <div class="wrap">
-    <p class="crumb"><a href="/projects"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>All projects</a></p>
-    <div class="pd-top">
+  const estimate = `/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}`;
+  // The opening: the same warm band as the main pages, with the before/after slider framed on the right (desktop)
+  return `<section class="pd-open${slider ? ' pd-open-ba' : ''}">
+  <div class="wrap pd-top">
     <header class="pd-head">
+      <p class="crumb"><a href="/projects"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>All projects</a></p>
       <h1>${esc(p.title)}</h1>
       <p class="proj-row">${CATEGORY_PAGE[p.category] ? projectRow(p).replace(`${esc(p.category)}</span>`, `<a href="${CATEGORY_PAGE[p.category]}">${esc(p.category)}</a></span>`) : projectRow(p)}</p>
-      ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
+      <div class="pd-words">
+        ${p.description ? `<p class="pd-desc">${esc(p.description)}</p>` : ''}
+        <div class="hero-act"><a class="btn btn-primary" href="${estimate}">Get an Estimate</a><a class="hero-call" href="{{phone_href}}" data-track="call">Call us</a></div>
+      </div>
     </header>
-    ${slider ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) 690px, (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
-    </div>
+    ${slider ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) calc(50vw - 36px), (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
+  </div>
+</section>
+<section class="sec pd">
+  <div class="wrap">
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
     <div class="pd-cta">
-      <a class="btn btn-primary" href="/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}">Get an Estimate for a job like this</a>
+      <a class="btn btn-primary" href="${estimate}">Get an Estimate for a job like this</a>
       <a class="call-link" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Or call us</a>
     </div>
   </div>

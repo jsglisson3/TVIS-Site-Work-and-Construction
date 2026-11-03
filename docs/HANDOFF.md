@@ -219,7 +219,7 @@ Domain confirmed: tvisconstruction.com (set in site.config.json 2026-10-29 01:21
 - `launchMode: true` in site.config.json: blank optional details (licence line, project towns, `[CONFIRM]` prefixes, empty social icons) are left out instead of showing a yellow placeholder. Set it to false while building so the placeholders come back.
 - Home Construction page is built but unlisted (noindex, out of the sitemap, nav and footer) until Joey writes its intro and a home-construction project exists. The "More" dropdown became a plain "More Services" link.
 - Projects page filter buttons only appear for categories that have a project.
-- Social icons show only when their URL is filled (Facebook is; Instagram and Google Business are not yet).
+- Social icons: Facebook links to the page. Google and Instagram show as plain marks (not links, "coming soon" for screen readers) until `googleBusinessProfile` / `instagram` are filled in site.config.json; then they become links and join the schema `sameAs` on their own. Order everywhere: Facebook, Google, Instagram.
 - Shorter page titles. Form notice (until the Basin endpoint is in) tells visitors to call or message on Facebook.
 
 ## SEO pass (2026-10-29 02:40 UTC)
@@ -615,3 +615,18 @@ Jeremy liked the caption bar but wanted the three opening photos (Homeowners, Bu
 - Checked: 390 / 820 / 901 / 1024 / 1180 / 1440 / 1750 / 1866, no sideways scroll, console clean, Lighthouse mobile 91 to 93 with 100 for accessibility, best practices and SEO.
 - 2026-11-03: Jeremy saw option 2 live and switched to option 1, the clean stop with no olive bar (`--photo-end-bar:0px`). Everything else in this section is unchanged.
 - 2026-11-03: the plain stop looked cut off to Jeremy ("make it just super naturally end"). Three natural endings were mocked (in line with the header, framed by the band, both). He picked B: on desktop the photo sits in from the top, right and bottom of the band by the same page margin (`--gut`). The olive bar setting is gone. Checked 390 to 1866, no sideways scroll, console clean, Lighthouse mobile 90+.
+
+## Grade A pass (2026-11-03)
+
+Jeremy: "almost a B, we need to get to a grade A". The plan with mockups ranked eight fixes; he asked for all eight plus the Instagram logo. Rules are in docs/STYLE-GUIDE.md.
+
+1. **Phones, home page:** the six service cards are compact rows at 560px and under (116px photo, title, one line, olive chevron). The section went from about 2,520px to 1,040px. The card photos ask for `116px` on phones.
+2. **Closing estimate band:** charcoal with a 6px olive top edge on Homeowners, Builders, More Services, Projects and the six service pages (`.sec.area`, `.sec.callout`).
+3. **Home, "The work we do most":** the intro line sits under the heading.
+4. **Home, "Start with a few photos":** wider (46ch), slightly larger text, centred against the How it works card.
+5. **One card style:** white card, photo, 6px olive edge, padded words; 1px stone border on white sections. Who cards, home service cards and the More Services list.
+6. **Project pages open like the main pages:** warm band, title, place, description, Get an Estimate + Call us; the before/after slider framed on the right. Built in `projectDetail()` in scripts/build.mjs (`.pd-open`). Without a slider the words and button sit on the right.
+7. **Statement band:** photo brighter, shade lighter in the middle; even shade on phones and tablets.
+8. **Project cards:** each row's lines start level (CSS subgrid), even when one title wraps.
+- **Instagram:** the colour Instagram mark sits beside Facebook and Google in the header, menu, footer and estimate card. No account yet, so it is a plain mark; put the profile address in `site.config.json` > `instagram` and it becomes a link.
+
