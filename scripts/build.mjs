@@ -6,6 +6,7 @@
 // - Site photos dropped into photos/site/ replace the labeled placeholder blocks.
 import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -206,11 +207,14 @@ async function loadProjects() {
     if (!existsSync(txtFile)) { console.warn(`  ! ${folder}: no project.txt, skipped`); continue; }
     const info = parseProjectTxt(await fs.readFile(txtFile, 'utf8'));
     const files = (await fs.readdir(pdir)).filter(f => PHOTO_EXT.test(f)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    // Built photo files are named after the job and town (yard-drainage-and-rock-lined-swale-harrison-after-1-960.webp),
+    // so the file name tells Google what the photo shows. The photos in the project folder keep their simple names.
+    const photoName = slugify(`${info.title || folder} ${info.town && !info.town.startsWith('[') ? info.town : ''}`);
     const photos = { before: [], progress: [], after: [] };
     for (const f of files) {
       const kind = (f.match(/^(before|progress|after)/i) || [])[1]?.toLowerCase();
       if (!kind) { console.warn(`  ! ${folder}/${f}: name must start with before-, progress- or after-`); continue; }
-      const p = await processPhoto(path.join(pdir, f), path.join(DIST, 'gallery', folder), f.replace(PHOTO_EXT, '').toLowerCase());
+      const p = await processPhoto(path.join(pdir, f), path.join(DIST, 'gallery', folder), `${photoName}-${f.replace(PHOTO_EXT, '').toLowerCase()}`);
       photos[kind].push({ ...p, file: path.join(pdir, f) });
     }
     let category = CATEGORIES.find(c => c.toLowerCase() === (info.category || '').toLowerCase());
@@ -236,7 +240,7 @@ async function loadProjects() {
 
 function baSlider(p, sizes, eager = false) {
   const b = p.photos.before[0], a = p.photos.after[0] || p.photos.progress.at(-1);
-  const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
+  const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
   if (b && a) {
     return `<div class="ba" data-ba>
   <div class="ba-img ba-before">${imgTag(b, `Before: ${p.title}${town}`, { sizes, eager })}</div>
@@ -263,7 +267,7 @@ const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'D
 // The slider asks for 96vw on phones (it is drawn at 100vw): on most phones that picks the same file as the gallery
 // photo of the same job below it, so each photo downloads once instead of twice at two sizes.
 function projectDetail(p) {
-  const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}` : '';
+  const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
   // Gallery tiles, matched by the .pd-grid rules in site.css. Every row is full: no photo count leaves an empty cell.
   // Desktop (six-column grid): 1 photo runs the full width at 16:9; 2 or 4 sit two across; 3 or more lead with a big
   // photo (two thirds wide, two rows tall) beside two thirds, then the rest go three across, finishing with pairs
@@ -290,7 +294,7 @@ function projectDetail(p) {
     const list = p.photos[kind], lay = galleryLayout(list.length);
     return list.length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
-  <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); const eager = firstTile; firstTile = false; return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${label} photo ${i + 1}: ${p.title}${town}`, { sizes: t.sizes, eager })}</a>`; }).join('')}</div>
+  <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); const eager = firstTile; firstTile = false; return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${p.title}${town}, ${label.toLowerCase()} (photo ${i + 1} of ${list.length})`, { sizes: t.sizes, eager })}</a>`; }).join('')}</div>
 </section>` : '';
   };
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
@@ -554,6 +558,23 @@ async function brandImages() {
   }
 }
 
+// The date a page's own content last changed, from git history (YYYY-MM-DD), for <lastmod> in the sitemap.
+// Only the page's source counts (its file in src/pages, or its project folder), not the shared header and footer,
+// because Google trusts lastmod only when it marks a real change. Without full git history (a shallow clone) the
+// dates would all be the same day, so lastmod is left out instead.
+let gitHistory = null;
+function lastChanged(paths) {
+  if (gitHistory === null) {
+    try { gitHistory = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: ROOT, encoding: 'utf8' }).trim() === 'false'; }
+    catch { gitHistory = false; }
+  }
+  if (!gitHistory || !paths.length) return '';
+  try {
+    // uncommitted local edits are left out: the date is the last commit that touched these files
+    return execFileSync('git', ['log', '-1', '--format=%cs', '--', ...paths], { cwd: ROOT, encoding: 'utf8' }).trim();
+  } catch { return ''; }
+}
+
 // ---------- main ----------
 async function copyDir(from, to) {
   await fs.mkdir(to, { recursive: true });
@@ -611,7 +632,8 @@ async function main() {
 
   const layout = await readPartial('layout');
   const sitemap = [];
-  async function renderPage(meta, body, urlPath) {
+  const lastmods = {};
+  async function renderPage(meta, body, urlPath, sources = []) {
     const pageCtx = {
       ...ctx,
       title: esc(meta.title || config.name),
@@ -647,18 +669,26 @@ async function main() {
     const outFile = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     await fs.mkdir(path.dirname(path.join(DIST, outFile)), { recursive: true });
     await fs.writeFile(path.join(DIST, outFile), versionAssets(html));
-    if (meta.noindex !== 'yes' && meta.sitemap !== 'no') sitemap.push(urlPath);
+    if (meta.noindex !== 'yes' && meta.sitemap !== 'no') {
+      sitemap.push(urlPath);
+      // Pages that list projects also change when a project is added or edited
+      const lists = [];
+      if (/\{\{\s*(recent_projects|project_cards)\s*\}\}/.test(body)) lists.push('projects');
+      if (meta.projects) { const want = meta.projects.split(',').map(c => c.trim()); lists.push(...projects.filter(p => want.includes(p.categorySlug)).map(p => `projects/${p.id}`)); }
+      lastmods[urlPath] = lastChanged([...sources, ...lists]);
+    }
     console.log(`  page ${urlPath}`);
   }
   for (const f of (await fs.readdir(path.join(ROOT, 'src', 'pages'))).filter(f => f.endsWith('.html'))) {
     const [meta, body] = frontMatter(stripCredentials(await fs.readFile(path.join(ROOT, 'src', 'pages', f), 'utf8')));
-    await renderPage(meta, body, meta.path || '/' + f.replace(/\.html$/, '').replace(/^index$/, ''));
+    await renderPage(meta, body, meta.path || '/' + f.replace(/\.html$/, '').replace(/^index$/, ''), [`src/pages/${f}`]);
   }
   for (const p of projects) {
     const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
     await renderPage({
       // Titles Google can show whole (about 60 characters): the job and its town when they fit, else the job alone
-      title: [town && `${p.title}${town} | TVIS`, town && `${p.title}, ${p.town} | TVIS`, `${p.title} | TVIS Construction`, `${p.title} | TVIS`].filter(Boolean).find(t => t.length <= 60) || p.title,
+      // (Google shows the site name "TVIS Construction" above every result anyway, so the town wins over the brand)
+      title: [town && `${p.title}${town} | TVIS`, town && `${p.title}, ${p.town} | TVIS`, town && `${p.title}${town}`, town && `${p.title}, ${p.town}, TN`, town && `${p.title}, ${p.town}`, `${p.title} | TVIS Construction`, `${p.title} | TVIS`].filter(Boolean).find(t => t.length <= 60) || p.title,
       crumb: p.title,
       // Joey's write-up, then where and what the visitor will see; kept under about 160 characters
       description: projectDescription(p),
@@ -667,12 +697,12 @@ async function main() {
       sitemap: p.title.startsWith('Sample') ? 'no' : '',
       noindex: p.title.startsWith('Sample') ? 'yes' : '',
       og_src: (p.photos.after[0] || p.photos.progress.at(-1) || p.photos.before[0])?.file,
-    }, projectDetail(p), `/project/${p.id}`);
+    }, projectDetail(p), `/project/${p.id}`, [`projects/${p.id}`]);
   }
 
   const origin = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : '';
   if (origin) {
-    await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...sitemap].sort((a, b) => (b === '/') - (a === '/')).map(u => `  <url><loc>${origin}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
+    await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...sitemap].sort((a, b) => (b === '/') - (a === '/')).map(u => `  <url><loc>${origin}${u}</loc>${lastmods[u] ? `<lastmod>${lastmods[u]}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`);
     await fs.writeFile(path.join(DIST, 'CNAME'), config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '') + '\n');
   }
   await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
