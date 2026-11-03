@@ -293,7 +293,11 @@ const CATEGORY_TYPE = { 'Driveways': 'driveway', 'Shed & Garage Pads': 'pad', 'D
 // Body of the project detail page at /project/<folder>: every photo, grouped, plus the estimate button.
 // The slider asks for 96vw on phones (it is drawn at 100vw): on most phones that picks the same file as the gallery
 // photo of the same job below it, so each photo downloads once instead of twice at two sizes.
-function projectDetail(p) {
+// A project with no before photo: true opens the page with the job's best photo on the right (where the slider would
+// sit); false keeps the band to words only (title left, write-up and buttons right, lined up; the .pd-open rules).
+// Jeremy picked the words-only band (2026-11-03) over the photo, so this stays false.
+const PROJECT_OPEN_PHOTO = false;
+function projectDetail(p, next) {
   const town = p.town && !p.town.startsWith('[') ? ` in ${p.town}, TN` : '';
   // Gallery tiles, matched by the .pd-grid rules in site.css. Every row is full: no photo count leaves an empty cell.
   // Desktop (six-column grid): 1 photo runs the full width at 16:9; 2 or 4 sit two across; 3 or more lead with a big
@@ -316,9 +320,14 @@ function projectDetail(p) {
   // Without a before/after slider at the top, the first gallery photo is the biggest thing on the first screen,
   // so it loads right away (not lazily) and first: Google measures how fast that photo appears.
   const slider = p.photos.before.length && (p.photos.after.length || p.photos.progress.length);
-  let firstTile = !slider;
+  // No before photo to pair up: the job's best photo (the same one its card shows) opens the page on the right, where
+  // the slider would sit, so every project page opens the same way: title on the left, the job on the right. That
+  // photo leaves its group below (no repeat) but stays first in the photo viewer.
+  const hero = slider || !PROJECT_OPEN_PHOTO ? null : (p.photos.after[0] || p.photos.progress.at(-1) || p.photos.before[0] || null);
+  const heroLabel = hero ? (p.photos.after[0] === hero ? 'after' : p.photos.before[0] === hero ? 'before' : 'in progress') : '';
+  let firstTile = !slider && !hero;
   const group = (kind, label) => {
-    const list = p.photos[kind], lay = galleryLayout(list.length);
+    const list = p.photos[kind].filter(ph => ph !== hero), lay = galleryLayout(list.length);
     return list.length ? `<section class="pd-group" aria-labelledby="pd-${kind}">
   <h2 id="pd-${kind}">${label}</h2>
   <div class="pd-grid">${list.map((ph, i) => { const t = tile(list.length, i, lay[i]); const eager = firstTile; firstTile = false; return `<a class="${t.cls}" href="${ph.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(ph, `${p.title}${town}, ${label.toLowerCase()} (photo ${i + 1} of ${list.length})`, { sizes: t.sizes, eager })}</a>`; }).join('')}</div>
@@ -327,7 +336,15 @@ function projectDetail(p) {
   const who = p.category === 'New Construction Sitework' ? '&amp;who=builder' : '';
   const estimate = `/estimate?type=${CATEGORY_TYPE[p.category] || 'other'}${who}`;
   // The opening: the same warm band as the main pages, with the before/after slider framed on the right (desktop)
-  return `<section class="pd-open${slider ? ' pd-open-ba' : ''}">
+  const openingPhoto = slider ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) calc(50vw - 36px), (min-width: 900px) 52vw, 96vw', true)}</div>`
+    : hero ? `<div class="pd-ba"><div class="ba ba-single"><a class="pd-photo" href="${hero.srcset.split(', ').at(-1).split(' ')[0]}">${imgTag(hero, `${p.title}${town}, ${heroLabel}`, { sizes: '(min-width: 1440px) calc(50vw - 36px), (min-width: 900px) 52vw, 96vw', eager: true })}</a></div></div>` : '';
+  const nextPhoto = next && (next.photos.after[0] || next.photos.progress.at(-1) || next.photos.before[0]);
+  const nextJob = next && next.id !== p.id ? `<a class="pd-next" href="/project/${next.id}">
+        ${nextPhoto ? `<span class="pd-next-pic">${imgTag(nextPhoto, '', { sizes: '140px' })}</span>` : ''}
+        <span class="pd-next-text"><span class="pd-next-k">Next job</span><span class="pd-next-t">${esc(next.title)}</span><span class="pd-next-row">${townHtml(next) ? townHtml(next) + ' · ' : ''}${esc(next.category)}</span></span>
+        <svg class="pd-next-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>` : '';
+  return `<section class="pd-open${openingPhoto ? ' pd-open-ba' : ''}">
   <div class="wrap pd-top">
     <header class="pd-head">
       <p class="crumb"><a href="/projects"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>All projects</a></p>
@@ -338,7 +355,7 @@ function projectDetail(p) {
         <div class="hero-act"><a class="btn btn-primary" href="${estimate}">Get an Estimate</a><a class="hero-call" href="{{phone_href}}" data-track="call">Call us</a></div>
       </div>
     </header>
-    ${slider ? `<div class="pd-ba">${baSlider(p, '(min-width: 1440px) calc(50vw - 36px), (min-width: 900px) 52vw, 96vw', true)}</div>` : ''}
+    ${openingPhoto}
   </div>
 </section>
 <section class="sec pd">
@@ -347,6 +364,10 @@ function projectDetail(p) {
     <div class="pd-cta">
       <a class="btn btn-primary" href="${estimate}">Get an Estimate for a job like this</a>
       <a class="call-link" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Or call us</a>
+    </div>
+    <div class="pd-more">
+      ${nextJob}
+      <span class="pd-share-wrap"><button class="pd-share" type="button" data-share hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v7h14v-7"/></svg>Share this job</button></span>
     </div>
   </div>
 </section>`;
@@ -761,7 +782,7 @@ async function main() {
       sitemap: p.title.startsWith('Sample') ? 'no' : '',
       noindex: p.title.startsWith('Sample') ? 'yes' : '',
       og_src: (p.photos.after[0] || p.photos.progress.at(-1) || p.photos.before[0])?.file,
-    }, projectDetail(p), `/project/${p.id}`, [`projects/${p.id}`]);
+    }, projectDetail(p, projects[(projects.indexOf(p) + 1) % projects.length]), `/project/${p.id}`, [`projects/${p.id}`]);
   }
 
   const origin = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : '';

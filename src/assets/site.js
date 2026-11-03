@@ -122,6 +122,15 @@
     ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { ba.addEventListener(t, function () { dragging = false; }); });
     r.addEventListener('input', set);
     set();
+    // desktop: resting the pointer on a project card glides the handle across to the finished photo, and back on
+    // leave (.ba-glide carries the transition). Once the visitor drags it themselves, their position is kept.
+    var card = ba.closest('.proj');
+    if (card && ba.querySelector('.ba-after') && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      var home = null, taken = false, back;
+      card.addEventListener('mouseenter', function () { if (taken) return; home = r.value; clearTimeout(back); ba.classList.add('ba-glide'); r.value = 6; set(); });
+      card.addEventListener('mouseleave', function () { if (taken || home === null) return; r.value = home; set(); back = setTimeout(function () { ba.classList.remove('ba-glide'); }, 850); });
+      ba.addEventListener('pointerdown', function () { taken = true; clearTimeout(back); ba.classList.remove('ba-glide'); }, true);
+    }
   });
 
   // ---- current year in the footer ----
@@ -259,6 +268,37 @@ if (/[?&]slots\b/.test(location.search)) {
   if (type) { var opt = typeSel.querySelector('option[data-type="' + type.replace(/[^a-z]/g, '') + '"]'); if (opt) opt.selected = true; }
   if (who) whoRadios.forEach(function (r) { if (r.getAttribute('data-who') === who.replace(/[^a-z]/g, '')) r.checked = true; });
 
+  // ---- remembers a half-finished request on this device for a week, so a call or a closed tab doesn't mean retyping
+  var DRAFT = 'tvis_estimate_draft', saveTimer;
+  var draftFields = [].filter.call(form.elements, function (el) { return el.name && !el.hasAttribute('data-src') && el.name !== '_gotcha' && el.type !== 'file' && el.type !== 'hidden' && el.type !== 'submit'; });
+  function saveDraft() {
+    var d = { t: Date.now(), v: {} };
+    draftFields.forEach(function (el) { if (el.type === 'radio') { if (el.checked) d.v[el.name] = el.value; } else if (el.value) d.v[el.name] = el.value; });
+    try { localStorage.setItem(DRAFT, JSON.stringify(d)); } catch (e) {}
+  }
+  function clearDraft() { try { localStorage.removeItem(DRAFT); } catch (e) {} }
+  form.addEventListener('input', function () { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 300); });
+  form.addEventListener('change', saveDraft);
+  (function restoreDraft() {
+    var d = null;
+    try { d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch (e) {}
+    if (!d || !d.v || Date.now() - d.t > 7 * 864e5) { if (d) clearDraft(); return; }
+    var typed = false;
+    draftFields.forEach(function (el) {
+      var v = d.v[el.name]; if (v === undefined) return;
+      if (el.type === 'radio') { if (!q.get('who')) el.checked = el.value === v; return; } // a button that said who they are wins
+      if (el === typeSel && q.get('type')) return;                                          // and so does one that named the job
+      el.value = v;
+      if (el.tagName === 'TEXTAREA' || /^(text|tel|email)$/.test(el.type)) typed = true;
+    });
+    if (!typed) return;
+    var note = document.createElement('p');
+    note.className = 'draft-note'; note.setAttribute('role', 'status');
+    note.innerHTML = '<span>We kept what you typed earlier.</span><button type="button">Start over</button>';
+    note.querySelector('button').addEventListener('click', function () { clearDraft(); location.reload(); });
+    form.insertAdjacentElement('afterbegin', note);
+  })();
+
   // ---- hidden source fields, from what site.js remembered on the first page
   var src = {};
   try { src = JSON.parse(sessionStorage.getItem('tvis_src') || '{}'); } catch (e) {}
@@ -370,6 +410,7 @@ if (/[?&]slots\b/.test(location.search)) {
   });
 
   function showThanks() {
+    clearDraft();
     form.hidden = true;
     var notice = box.querySelector('.form-off'); if (notice) notice.hidden = true;
     thanks.hidden = false;
@@ -478,23 +519,32 @@ if (document.body.classList.contains('page-thanks') && window.tvisTrack) window.
   });
 })();
 
-// ---- email addresses: a tap also copies the address, with a small "Copied" note ----
-// The mail app still opens where there is one; on a computer without one, the copy is what the visitor gets.
+// ---- "Copied" notes: an email link also copies the address; the Share button on a project page opens the phone's
+//      share sheet, or copies the page's link on a computer. The mail app still opens where there is one. ----
 (function () {
-  if (!navigator.clipboard || !window.isSecureContext) return;
-  [].forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
-    var note = document.createElement('span');
-    note.className = 'copied';
-    note.setAttribute('role', 'status');
-    a.insertAdjacentElement('afterend', note);
-    var timer;
+  var canCopy = !!(navigator.clipboard && window.isSecureContext);
+  function noteAfter(el, before) { var n = document.createElement('span'); n.className = 'copied'; n.setAttribute('role', 'status'); el.insertAdjacentElement(before ? 'beforebegin' : 'afterend', n); return n; }
+  function flash(note, text) {
+    note.textContent = text;
+    note.classList.remove('on'); void note.offsetWidth; note.classList.add('on');
+    clearTimeout(note.timer);
+    note.timer = setTimeout(function () { note.classList.remove('on'); note.textContent = ''; }, 1800);
+  }
+  if (canCopy) [].forEach.call(document.querySelectorAll('a[href^="mailto:"]'), function (a) {
+    var note = noteAfter(a);
     a.addEventListener('click', function () {
-      navigator.clipboard.writeText(a.getAttribute('href').replace(/^mailto:/, '').split('?')[0]).then(function () {
-        note.textContent = 'Copied';
-        note.classList.remove('on'); void note.offsetWidth; note.classList.add('on');
-        clearTimeout(timer);
-        timer = setTimeout(function () { note.classList.remove('on'); note.textContent = ''; }, 1800);
-      }).catch(function () {});
+      navigator.clipboard.writeText(a.getAttribute('href').replace(/^mailto:/, '').split('?')[0]).then(function () { flash(note, 'Copied'); }).catch(function () {});
     });
+  });
+  var share = document.querySelector('[data-share]');
+  if (!share) return;
+  var url = location.origin + location.pathname;
+  var sheet = !!navigator.share && window.matchMedia('(pointer:coarse)').matches;
+  if (!sheet && !canCopy) return;
+  share.hidden = false;
+  var snote = noteAfter(share, true); // before the button, so it never runs past the page edge
+  share.addEventListener('click', function () {
+    if (sheet) { navigator.share({ title: document.title, url: url }).catch(function () {}); return; }
+    navigator.clipboard.writeText(url).then(function () { flash(snote, 'Link copied'); }).catch(function () {});
   });
 })();

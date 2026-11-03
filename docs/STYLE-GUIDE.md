@@ -121,6 +121,8 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - **Project galleries never leave an empty cell.** The build (`galleryLayout` in scripts/build.mjs) gives each photo its tile. Desktop: one photo runs the full width at 16:9; two or four sit two across; three or more lead with the first photo (two thirds wide, two rows tall) beside two smaller ones, and the rest go three across, finishing with pairs when a row of three would leave a gap. Tablets and phones: an odd count leads with one full-width photo; two or four sit two across (two stack on phones); six or more open and close with a full-width photo. Put the best finished shot first in `project.txt`.
 - A crop that cuts a subject is fixed per slot with `.photo[data-slot="…"]>img{object-position:…}` in site.css, never by editing the photo.
 
+Project pages open with the title, bar, town and service, the write-up and the two buttons on the left. A job with a before photo gets its before/after slider on the right; a job without one puts the write-up and buttons in a right column lined up with the top of the title behind a hairline (Jeremy's pick C, 2026-11-03, over a photo on the right or one block on the left), and the photos start straight under the band. Every project page ends with a Next job link and a Share button (`.pd-more`).
+
 ## 8. Motion
 
 - One planned moment per page: the hero settling in on load (on desktop the photo eases from 104.5% to 100% over 1.8s while the text settles in), and the dozer rolling into the footer once (6s, an easy roll; Jeremy asked for slower six times on 2026-11-03).
@@ -131,6 +133,8 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - Page to page (2026-11-03): the site opts into cross-document view transitions (`@view-transition{navigation:auto}` at the end of site.css). The header and the phone contact bar are named (`view-transition-name: hdr` / `mbar`) and switch at once; only the page under them cross-fades (old out .18s, new in .32s with a 6px rise). Off under `prefers-reduced-motion`; browsers without it just load the page.
 - The project photo viewer (`.lb`, a `<dialog>` built by site.js on project pages): charcoal backdrop, the photo on the olive edge, square buttons; a new photo pops or slides in from the side it came from (.28s, `--ease`). Swipe, arrow keys, Esc, the close button or a tap on the backdrop.
 - Highlighted text is pale olive (`::selection`, olive-light on charcoal). An email link also copies the address: a small uppercase "Copied" note fades in beside it for 1.8s (`.copied`).
+- Project cards on desktop: resting the pointer on a card glides the before/after handle to the finished photo (`--pos` 50% to 6% over .8s, `.ba-glide`) and back on leave; once the visitor drags it, their position is kept.
+- Wide screens (1600px and up): the header's contour map sits under the page in the margins either side (`body::before`, fixed, `cover`, opacity .42, masked out 140px before the content edge). Only white sections show it; keep it barely there.
 
 ## 9. Words
 
