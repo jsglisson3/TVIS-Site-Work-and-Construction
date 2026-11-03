@@ -1377,3 +1377,25 @@ p{text-wrap:pretty}
    groups and closing buttons 40px apart (were 56), and the home service card photos 16:10 like the audience cards
    (were 4:3). Phones keep every value from the first step. ---------- */
 @media (min-width:901px){ .pd-group,.hc-cta,.pd-cta{margin-top:40px} }
+
+/* ---- Header touches and hero touches (2026-11-03, after the spacing pass). Jeremy asked for "cool UI/UX elements...
+   not too busy" on the header and a 5-10% better hero with the same photo. Each piece is independent:
+   B one olive marker on a hairline under the menu that slides to the hovered link and home to the current page
+   (site.js; without JS the old per-link underline stays), C the header's bottom edge fills olive as the page is read
+   (--read from site.js), D faint contour lines behind the menu. Jeremy picked B, C and D; A (a keyword stack beside the
+   logo, wide screens only) was offered and not taken.
+   Hero: the photo is graded at build time (GRADE in build.mjs). ---- */
+/* B: the ground line and the one marker (the per-link underline stays for browsers without JS) */
+html.nav-js .nav-list a::after{display:none}
+.nav{position:relative}
+.nav-mark{display:none}
+html.nav-js .nav::before{content:"";position:absolute;left:0;right:0;bottom:5px;height:1px;background:var(--stone)}
+html.nav-js .nav-mark{display:block;position:absolute;bottom:4px;height:3px;background:var(--olive);left:var(--mx,0px);width:var(--mw,0px);opacity:var(--mo,0);transition:left .32s var(--ease),width .32s var(--ease),opacity .2s ease;pointer-events:none}
+@media (prefers-reduced-motion:reduce){html.nav-js .nav-mark{transition:none}}
+/* C: the reading line on the header's bottom edge */
+.hdr::after{content:"";position:absolute;left:0;bottom:-1px;height:3px;width:var(--read,0%);background:var(--olive-deep);pointer-events:none}
+/* D: contour whisper behind the menu, desktop only */
+@media (min-width:1024px){
+  .hdr::before{content:"";position:absolute;inset:0;z-index:0;background:url(/assets/img/contour.svg) 50% 45%/1600px 400px no-repeat;opacity:.75;-webkit-mask:linear-gradient(90deg,transparent 25%,#000 36%,#000 64%,transparent 76%);mask:linear-gradient(90deg,transparent 25%,#000 36%,#000 64%,transparent 76%);pointer-events:none}
+  .hdr-in{position:relative;z-index:1}
+}

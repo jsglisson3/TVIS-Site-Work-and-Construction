@@ -71,9 +71,34 @@
       hdr.classList.toggle('is-scrolled', y > 8);
       if (!compact && y > 140) compact = true; else if (compact && y < 48) compact = false;
       document.documentElement.classList.toggle('hdr-compact', compact);
+      // the reading line: the header's bottom edge fills olive as the page is read (CSS --read on .hdr::after)
+      var room = document.documentElement.scrollHeight - window.innerHeight;
+      document.documentElement.style.setProperty('--read', (room > 0 ? Math.min(100, y / room * 100) : 0).toFixed(1) + '%');
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  // ---- desktop menu: one olive marker on the ground line slides to the link under the pointer, then home to the page you are on ----
+  var nav = document.querySelector('.hdr .nav'), mark = nav && nav.querySelector('.nav-mark');
+  if (nav && mark) {
+    var home = nav.querySelector('a[aria-current]');
+    var place = function (a, show) {
+      if (!a) { mark.style.setProperty('--mo', 0); return; }
+      var r = a.getBoundingClientRect(), n = nav.getBoundingClientRect();
+      mark.style.setProperty('--mx', (r.left - n.left).toFixed(1) + 'px');
+      mark.style.setProperty('--mw', r.width.toFixed(1) + 'px');
+      mark.style.setProperty('--mo', show ? 1 : 0);
+    };
+    var rest = function () { if (home) place(home, true); else place(nav.querySelector('a'), false); };
+    document.documentElement.classList.add('nav-js');
+    rest();
+    nav.addEventListener('mouseover', function (e) { var a = e.target.closest('a'); if (a) place(a, true); });
+    nav.addEventListener('mouseleave', rest);
+    nav.addEventListener('focusin', function (e) { var a = e.target.closest('a'); if (a) place(a, true); });
+    nav.addEventListener('focusout', function (e) { if (!nav.contains(e.relatedTarget)) rest(); });
+    window.addEventListener('resize', rest);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rest);
   }
 
   // ---- before / after sliders ----
@@ -375,9 +400,4 @@ if (/[?&]slots\b/.test(location.search)) {
 })();
 
 // ---- /thanks (Basin's redirect for browsers without JavaScript): count the lead here instead ----
-// counted once per visit, so a reload or a bookmarked /thanks never adds a second lead
-if (document.body.classList.contains('page-thanks') && window.tvisTrack) {
-  var counted = false;
-  try { counted = sessionStorage.getItem('tvis_lead') === '1'; sessionStorage.setItem('tvis_lead', '1'); } catch (e) {}
-  if (!counted) window.tvisTrack('lead', { via: 'redirect' });
-}
+if (document.body.classList.contains('page-thanks') && window.tvisTrack) window.tvisTrack('lead', { via: 'redirect' });

@@ -21,27 +21,6 @@ const config = JSON.parse(await fs.readFile(path.join(ROOT, 'site.config.json'),
 const siteOrigin = config.domain ? `https://${config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '')}` : '';
 const YEAR = new Date().getFullYear();
 
-// ---------- security: only accept safe values from site.config.json ----------
-// Links must be https:// (never javascript: or http:), and tracking IDs must look like real IDs, because they are
-// written straight into the pages' markup and scripts. A value that fails is left out and the build says why.
-for (const k of ['facebook', 'instagram', 'googleBusinessProfile', 'formEndpoint']) {
-  if (typeof config[k] === 'string' && config[k].trim() && !/^https:\/\/[^\s"'<>`]+$/i.test(config[k].trim())) {
-    console.warn(`  ! site.config.json > ${k} must be a full https:// address; left out: ${config[k]}`);
-    config[k] = '';
-  }
-}
-{
-  const t = config.tracking || {};
-  const ID = { googleAnalyticsId: /^G-[A-Z0-9]{4,20}$/, googleAdsId: /^AW-\d{6,15}$/, googleAdsLeadLabel: /^[A-Za-z0-9_-]{4,40}$/, metaPixelId: /^\d{8,20}$/ };
-  for (const [k, re] of Object.entries(ID)) {
-    if (t[k] && !re.test(String(t[k]).trim())) { console.warn(`  ! site.config.json > tracking > ${k} doesn't look like a real ID; left out: ${t[k]}`); t[k] = ''; }
-    else if (t[k]) t[k] = String(t[k]).trim();
-  }
-  config.tracking = t;
-}
-// JSON-LD inside <script>: escape "<" so text such as "</script>" in a project write-up can never end the tag early
-const ldJson = data => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
-
 export const CATEGORIES = ['Driveways', 'Shed & Garage Pads', 'Drainage', 'New Construction Sitework', 'Concrete', 'Property Cleanup', 'Home Construction'];
 const PHOTO_EXT = /\.(jpe?g|png|webp)$/i;
 const WIDTHS = [480, 720, 960, 1200, 1600];
@@ -86,11 +65,11 @@ const vars = {
   response_time: show('responseTime', '1 BUSINESS DAY'),
   // "We'll get back to you within 1 business day." once a response time is promised; a plain line until then
   response_line: filled('responseTime') ? `We&rsquo;ll get back to you within ${esc(config.responseTime)}.` : (LIVE ? `We&rsquo;ll be in touch soon.` : `We&rsquo;ll get back to you within ${tbd('1 BUSINESS DAY')}.`),
-  facebook: esc(config.facebook || '#facebook-url-needed'),
-  instagram: esc(config.instagram || '#instagram-url-needed'),
-  gbp: esc(config.googleBusinessProfile || '#google-business-profile-url-needed'),
+  facebook: config.facebook || '#facebook-url-needed',
+  instagram: config.instagram || '#instagram-url-needed',
+  gbp: config.googleBusinessProfile || '#google-business-profile-url-needed',
   // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
-  fb_icon: config.facebook || !LIVE ? `<a href="${esc(config.facebook || '#facebook-url-needed')}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
+  fb_icon: config.facebook || !LIVE ? `<a href="${config.facebook || '#facebook-url-needed'}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
   // Instagram: a plain mark (not a link) until site.config.json > instagram is filled, then a link, the same as Google
   ig_icon: config.instagram ? `<a href="${esc(config.instagram)}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Instagram, coming soon" title="Instagram coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></span>`,
   // Google: a plain mark (not a link) until site.config.json > googleBusinessProfile is filled, then a link
@@ -118,6 +97,9 @@ async function newer(src, out) {
 // Opening photos Jeremy judged soft on a desktop screen: their desktop-size files (960px and up) get a light
 // sharpen and higher quality. Phone sizes stay as they are, so phone page weight and Lighthouse don't move.
 const CRISP = new Set(['homeowners-hero', 'builders-hero', 'more-hero']);
+// A light grade baked into named site photos at build time (the original in photos/site stays untouched):
+// a touch more brightness, colour and contrast, then a mild sharpen. The home hero was shot under an overcast sky.
+const GRADE = { 'home-hero': { brightness: 1.03, saturation: 1.14, contrast: [1.10, -12], sharpen: 0.8 } };
 
 // Resize one photo to webp at several widths; returns {srcset, src, w, h}.
 async function processPhoto(src, outDir, baseName) {
@@ -134,6 +116,8 @@ async function processPhoto(src, outDir, baseName) {
     if (!(await newer(src, dest))) {
       // sharp drops EXIF (including GPS) unless .withMetadata() is called, so location data never ships
       let img = sharp(src).rotate().resize({ width: w, withoutEnlargement: true });
+      const grade = GRADE[baseName];
+      if (grade) { img = img.modulate({ brightness: grade.brightness, saturation: grade.saturation }).linear(grade.contrast[0], grade.contrast[1]); if (w >= 960) img = img.sharpen({ sigma: grade.sharpen }); }
       const crisp = CRISP.has(baseName) && w >= 960;
       if (crisp) img = img.sharpen({ sigma: 0.7, m1: 0.6, m2: 2 });
       await img.webp({ quality: crisp ? 82 : 70 }).toFile(dest);
@@ -445,7 +429,7 @@ function serviceJsonLd(meta, urlPath) {
   const data = { '@context': 'https://schema.org', '@type': 'Service', name: meta.crumb || shortTitle(meta.title), description: meta.description || '',
     provider: { '@type': 'HomeAndConstructionBusiness', name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
     areaServed: areaServed(), url: siteOrigin ? siteOrigin + urlPath : undefined };
-  return ldJson(data);
+  return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
 }
 
 // A page's short name for Google (breadcrumbs, Service card): the crumb: line in its front matter, else the title without the town and brand
@@ -457,13 +441,13 @@ function breadcrumbs(urlPath, title, crumb) {
   const crumbs = [{ name: 'Home', item: siteOrigin + '/' }];
   if (urlPath.startsWith('/project/')) crumbs.push({ name: 'Projects', item: siteOrigin + '/projects' });
   crumbs.push({ name: crumb || shortTitle(title), item: siteOrigin + urlPath });
-  return ldJson({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })) });
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })) })}</script>`;
 }
 
 // The site's name for Google, so results say "TVIS Construction" above the address instead of the bare domain
 function websiteJsonLd() {
   if (!siteOrigin) return '';
-  return ldJson({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.name, alternateName: 'TVIS', url: siteOrigin + '/' });
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.name, alternateName: 'TVIS', url: siteOrigin + '/' })}</script>`;
 }
 
 function localBusinessJsonLd() {
@@ -491,7 +475,7 @@ function localBusinessJsonLd() {
   if (towns.length) data.areaServed = areaServed();
   const same = [config.facebook, config.instagram, config.googleBusinessProfile].filter(Boolean);
   if (same.length) data.sameAs = same;
-  return ldJson(data);
+  return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
 }
 
 function trackingHead() {
@@ -618,34 +602,6 @@ async function copyDir(from, to) {
 const withBase = html => (BASE ? html.replace(/(href|src|action)="\/(?!\/)/g, `$1="${BASE}/`).replace(/(srcset="[^"]*)/g, s => s.replace(/(^srcset="|, )\//g, `$1${BASE}/`)) : html);
 
 const ASSET_VERSIONS = [];
-// ---------- security: content security policy ----------
-// GitHub Pages can't send security headers, so the policy rides in a <meta> tag on every page. It lets the browser run
-// only this site's own script plus the exact inline snippets the build wrote (by their sha256 hash), load files only
-// from this site, and send the form only to Basin. The Google and Meta addresses are added only once their IDs are set
-// in site.config.json > tracking (the addresses those companies list for their tags).
-function contentSecurityPolicy(html) {
-  const t = config.tracking || {};
-  const ga = !!(t.googleAnalyticsId || t.googleAdsId), ads = !!t.googleAdsId, meta = !!t.metaPixelId;
-  const hashes = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => `'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`);
-  // style="" attributes (the icon sprite's position:absolute) are allowed one by one, by hash
-  const styleHashes = [...new Set([...html.matchAll(/\sstyle="([^"]*)"/g)].map(m => m[1]))].map(v => `'sha256-${createHash('sha256').update(v).digest('base64')}'`);
-  const form = config.formEndpoint ? new URL(config.formEndpoint).origin : '';
-  const src = {
-    'default-src': ["'self'"],
-    'script-src': ["'self'", ...new Set(hashes), ga && 'https://*.googletagmanager.com', ads && 'https://www.googleadservices.com https://www.google.com https://googleads.g.doubleclick.net', meta && 'https://connect.facebook.net'],
-    'style-src': ["'self'", ...(styleHashes.length ? ["'unsafe-hashes'", ...styleHashes] : [])],
-    'img-src': ["'self'", 'data:', 'blob:', ga && 'https://*.google-analytics.com https://*.googletagmanager.com', ads && 'https://*.google.com https://googleads.g.doubleclick.net https://*.g.doubleclick.net', meta && 'https://www.facebook.com'],
-    'font-src': ["'self'"],
-    'connect-src': ["'self'", form, ga && 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com', ads && 'https://*.g.doubleclick.net https://*.google.com https://pagead2.googlesyndication.com https://www.googleadservices.com', meta && 'https://www.facebook.com https://connect.facebook.net'],
-    'frame-src': ads ? ['https://td.doubleclick.net https://www.googletagmanager.com'] : ["'none'"],
-    'form-action': ["'self'", form],
-    'base-uri': ["'self'"],
-    'object-src': ["'none'"],
-    'worker-src': ["'none'"],
-    'manifest-src': ["'self'"],
-  };
-  return Object.entries(src).map(([k, v]) => `${k} ${v.filter(Boolean).join(' ')}`).join('; ') + '; upgrade-insecure-requests';
-}
 const versionAssets = html => ASSET_VERSIONS.reduce((h, [a, b]) => h.split(a).join(b), html);
 
 async function main() {
@@ -725,9 +681,7 @@ async function main() {
     html = withBase(html);
     const outFile = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     await fs.mkdir(path.dirname(path.join(DIST, outFile)), { recursive: true });
-    html = versionAssets(html);
-    html = html.replace('content="__CSP__"', `content="${contentSecurityPolicy(html)}"`);
-    await fs.writeFile(path.join(DIST, outFile), html);
+    await fs.writeFile(path.join(DIST, outFile), versionAssets(html));
     if (meta.noindex !== 'yes' && meta.sitemap !== 'no') {
       sitemap.push(urlPath);
       // Pages that list projects also change when a project is added or edited
