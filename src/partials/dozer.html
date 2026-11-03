@@ -1,7 +1,8 @@
 <!-- The TVIS dozer, side view, blade forward (it drives to the right). Colours come from --dz (body) and
      --dz-dark (glass, tracks, details), so it reads on the charcoal footer and on light pages alike.
      In the footer, site.js adds .go to the ground line once it scrolls into view and the dozer rolls in
-     once; with reduced motion it is simply parked. Elsewhere it stands still. -->
+     once (tracks run, three exhaust puffs, the blade settles as it stops); with reduced motion it is simply parked.
+     Elsewhere it stands still and the puffs stay hidden. -->
 <svg class="dozer" viewBox="0 0 260 120" aria-hidden="true" focusable="false">
   <g fill="var(--dz,#A3B654)">
     <!-- ripper -->
@@ -15,10 +16,17 @@
     <!-- exhaust stack and air intake -->
     <rect x="146" y="28" width="7" height="20"/><rect x="143" y="25" width="13" height="5"/>
     <rect x="166" y="38" width="10" height="10"/>
-    <!-- push arm -->
-    <path d="M150 88l62-6 2 9-62 6z"/>
-    <!-- blade: curved moldboard with a cutting edge -->
-    <path d="M208 32h14c9 16 13 34 13 54v26h-29z"/>
+  </g>
+  <!-- push arm and blade: one group so the blade can settle down a touch when the dozer stops in the footer -->
+  <g class="dz-blade">
+    <g fill="var(--dz,#A3B654)">
+      <path d="M150 88l62-6 2 9-62 6z"/>
+      <path d="M208 32h14c9 16 13 34 13 54v26h-29z"/>
+    </g>
+    <g fill="var(--dz-dark,#232B2E)">
+      <rect x="204" y="108" width="30" height="5"/>
+      <path d="M188 58l26 4-1 4-26-4z"/>
+    </g>
   </g>
   <g fill="var(--dz-dark,#232B2E)">
     <!-- cab glass with a glare stripe left in body colour -->
@@ -27,9 +35,6 @@
     <rect x="182" y="54" width="4" height="20"/><rect x="176" y="54" width="3" height="20"/>
     <!-- track belly and rollers -->
     <rect x="47" y="86" width="146" height="20" rx="10"/>
-    <!-- blade cutting edge and lift cylinder -->
-    <rect x="204" y="108" width="30" height="5"/>
-    <path d="M188 58l26 4-1 4-26-4z"/>
   </g>
   <path d="M74 30l10 0-12 30h-6z" fill="var(--dz,#A3B654)" opacity=".35"/>
   <g fill="var(--dz,#A3B654)">
@@ -37,5 +42,14 @@
     <circle cx="90" cy="100" r="4.5"/><circle cx="113" cy="100" r="4.5"/><circle cx="136" cy="100" r="4.5"/><circle cx="158" cy="100" r="4.5"/>
   </g>
   <circle cx="60" cy="96" r="4" fill="var(--dz-dark,#232B2E)"/><circle cx="180" cy="96" r="3.5" fill="var(--dz-dark,#232B2E)"/>
+  <!-- dirt pile in front of the blade (hidden unless rolling): grows as the dozer pushes, two clods tumble off the top -->
+  <g class="dz-dirt" fill="var(--dz,#A3B654)">
+    <path class="pile" d="M233 113c6-9 11-16 19-21 7 4 12 6 18 10 5 4 7 8 9 11z"/>
+    <circle class="clod" cx="250" cy="92" r="2.6"/><circle class="clod" cx="258" cy="98" r="2.2"/>
+  </g>
+  <!-- exhaust puffs: hidden unless the footer dozer is rolling -->
+  <g class="dz-smoke" fill="var(--dz,#A3B654)">
+    <circle class="puff" cx="149.5" cy="22" r="3.5"/><circle class="puff" cx="149.5" cy="22" r="3"/><circle class="puff" cx="149.5" cy="22" r="2.5"/>
+  </g>
   <rect class="track-run" x="41" y="81" width="158" height="30" rx="15" fill="none" stroke="var(--dz-dark,#232B2E)" stroke-width="3" stroke-dasharray="6 6"/>
 </svg>

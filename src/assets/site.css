@@ -309,9 +309,17 @@ body.menu-open{overflow:hidden}
 
 
 /* ---------- footer ---------- */
-.ftr{position:relative;background:var(--charcoal);color:#fff}
-.ftr-ground{position:relative;height:68px;border-bottom:8px solid var(--olive)}
-.dozer{position:absolute;right:var(--gut);bottom:-4px;width:150px;height:auto}
+/* Footer colour, kept quiet (2026-11-03): the charcoal deepens a touch toward the bottom, faint contour lines sit behind the
+   ground and the top of the columns (the same contour.svg as the header whisper, lifted so it reads on charcoal), a 1px
+   sunlit edge on top of the olive ground line and a 1px shadow under it, links in the soft off-white so the headings,
+   phone and logo carry the colour, and a hairline above the copyright row. */
+.ftr{position:relative;isolation:isolate;background:linear-gradient(180deg,var(--charcoal) 0,#1E2629 100%);color:#fff}
+.ftr::before{content:"";position:absolute;left:0;right:0;top:0;height:min(100%,560px);z-index:-1;background:url(/assets/img/contour.svg) 72% 0/1600px 400px no-repeat;opacity:.42;filter:brightness(2.6) saturate(.7);-webkit-mask:linear-gradient(90deg,transparent 0,#000 30%,#000 100%),linear-gradient(180deg,#000 40%,transparent 100%);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent 0,#000 30%,#000 100%),linear-gradient(180deg,#000 40%,transparent 100%);mask-composite:intersect;pointer-events:none}
+.ftr-ground{position:relative;height:68px;border-bottom:8px solid var(--olive);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+.ftr-ground::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--olive-light);opacity:.55}
+.ftr-list a,.ftr-list p,.ftr-bottom{color:#E3E7E0}
+.ftr-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:4px}
+.dozer{position:absolute;right:var(--gut);bottom:-4px;width:150px;height:auto;overflow:visible}
 .dozer-spot{--dz:var(--olive);--dz-dark:var(--ink);display:flex;align-items:flex-end;gap:0;margin-bottom:28px}
 .dozer-spot .dozer{position:static;width:min(220px,46vw)}
 .dozer-spot::after{content:"";flex:1;height:6px;background:var(--olive);margin-bottom:0}
@@ -320,9 +328,22 @@ body.menu-open{overflow:hidden}
 .thanks .dozer-spot::after{background:var(--olive-light)}
 .mmenu .dozer-spot .dozer{width:120px}
 .ftr-ground.armed .dozer{transform:translateX(-45vw);opacity:0}
-.ftr-ground.go .dozer{transform:none;opacity:1;transition:transform 1.6s cubic-bezier(.25,.6,.2,1),opacity .4s}
-.ftr-ground.go .track-run{animation:track-run 1.6s linear both}
-@keyframes track-run{from{stroke-dashoffset:84}to{stroke-dashoffset:0}}
+.ftr-ground.go .dozer{transform:none;opacity:1;transition:transform 3.4s cubic-bezier(.3,.5,.25,1),opacity .9s}
+.ftr-ground.go .track-run{animation:track-run 3.4s cubic-bezier(.3,.5,.25,1) both}
+@keyframes track-run{from{stroke-dashoffset:168}to{stroke-dashoffset:0}}
+.puff{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.ftr-ground.go .puff{animation:puff 1.5s cubic-bezier(.2,.6,.4,1) both}
+.ftr-ground.go .puff:nth-child(2){animation-delay:.55s}.ftr-ground.go .puff:nth-child(3){animation-delay:1.1s}
+@keyframes puff{0%{opacity:0;transform:translate(0,0) scale(.5)}12%{opacity:.55}100%{opacity:0;transform:translate(-14px,-26px) scale(1.9)}}
+.dz-blade{transform-box:view-box;transform-origin:150px 88px}
+.dz-dirt{opacity:0}.pile{transform-box:view-box;transform-origin:233px 113px}.clod{opacity:0;transform-box:view-box;transform-origin:250px 92px}
+.ftr-ground.go .dz-dirt{opacity:.8}
+.ftr-ground.go .pile{animation:pile-grow 3.4s cubic-bezier(.3,.5,.25,1) both}
+@keyframes pile-grow{from{transform:scale(.3,.35)}to{transform:scale(1,1)}}
+.ftr-ground.go .clod{animation:clod 1.1s cubic-bezier(.2,.5,.6,1) 1.2s both}.ftr-ground.go .clod:nth-child(3){animation-delay:2.1s;animation-duration:.9s}
+@keyframes clod{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}60%{transform:translate(9px,-8px)}100%{opacity:0;transform:translate(16px,8px)}}
+.ftr-ground.go .dz-blade{animation:blade-settle .7s cubic-bezier(.3,.7,.3,1) 3.25s both}
+@keyframes blade-settle{0%{transform:rotate(0)}55%{transform:rotate(2deg)}100%{transform:rotate(1.3deg)}}
 .ftr .tbd{background:#5A5220;color:#FFF3A8}
 .ftr-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(0,.8fr) minmax(0,1fr);gap:40px clamp(28px,4vw,64px);padding-top:clamp(40px,4vw,52px);padding-bottom:clamp(28px,3.4vw,44px)}
 .ftr-logo{display:block;width:min(280px,72vw)}

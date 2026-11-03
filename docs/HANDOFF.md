@@ -2,7 +2,7 @@
 
 Read this first. It is the full brief plus every decision made so far, so a Claude Code session in this folder can continue without the earlier conversation. `docs/ROADMAP.md` has the phases from here to launch and after.
 
-Last updated 2026-11-02 (pre-launch review, the last section). The sections run in date order, so the newest decisions are at the bottom; the Status list below is from the 2026-10-28 rebuild.
+Last updated 2026-11-03 (bug sweep, dozer and footer, the last section). The sections run in date order, so the newest decisions are at the bottom; the Status list below is from the 2026-10-28 rebuild.
 
 ## Status
 
@@ -688,3 +688,13 @@ Jeremy: "lets first spend like 15 minutes polishing up this header.. is there an
 - **Offered and not taken:** A, a two-line keyword stack beside the logo ("Excavation & Sitework" over the base town; it only fits at 1760px and wider); hero 2, the service pages' charcoal job caption on the hero (the hero is the East Ridge hillside driveway job, projects/2026-10-hillside-driveway, progress-1); hero 3, the Call button showing the number on desktop; hero 4, a recent-job card with a thumbnail. The CSS and markup for 2 and 3 are in the thread history if he comes back to them.
 - Phones are untouched: the menu, the header and the hero on a phone are the same as before this batch, to the pixel, except that the hero photo file is now the graded one.
 - Checks: no sideways scroll at any of the nine widths on all 26 pages, console clean, keyboard pass, Lighthouse mobile 90+ on home, Builders and Projects.
+
+## Bug sweep, slower dozer and footer touches (2026-11-03, after the header batch)
+
+Jeremy: "lets do an entire site inspection for bugs .. just straight bugs and issues", then "make the dozer at the bottom go slower... any other cool flares on the dozer go for it... like moving some dirt in front of it", and "any other nice touches you want to add to the footer go for it especially on the color.. but very subtle is key".
+
+- **The sweep** (all 26 pages, nine widths from 320 to 1920): links and anchors (one dead link is the Google mark in the home hero area, which points nowhere until `googleBusinessProfile` is set and is meant to), images, console, sideways scroll, phone menu (open, Escape, Tab stays inside), header marker and reading line, estimate form (required fields, bad email, honeypot), project filters and `?type=` presets, the before/after sliders, axe accessibility at 390 and 1440 (0 violations), titles, descriptions, canonicals, robots and sitemap (the four noindex pages are left out on purpose), html-validate.
+- **The one real bug:** every page shipped `<meta http-equiv="Content-Security-Policy" content="__CSP__">`. The header batch (5a1f761) copied an older `scripts/build.mjs` over the spacing pass's (fefcca8), which had added `contentSecurityPolicy()` and the `__CSP__` replacement, the https-only check on the config links, the tracking-ID checks and the `ldJson()` escaping. Browsers logged an error on every page and the policy did nothing. Fixed by restoring fefcca8's build.mjs and re-applying only the `GRADE` block from the header batch. Lesson, again: before a batch, pull the repo's latest `build.mjs` (and everything else) rather than copying from an older working copy.
+- **Dozer:** rolls in over 3.4s (was 1.6s) with an easier stop; the tracks run for the whole roll; three exhaust puffs rise from the stack during the first two seconds; a dirt pile grows in front of the blade as it pushes (`.dz-dirt` in `src/partials/dozer.html`, hidden everywhere but the footer roll) with two clods tumbling off; the blade settles down a touch as it stops (`.dz-blade`). All of it keys off `.ftr-ground.go`, which site.js never adds under reduced motion, so the parked dozer is unchanged there and on the 404, Thanks and phone menu.
+- **Footer colour, quiet:** charcoal deepens to #1E2629 at the bottom; the header's contour map sits behind the top of the footer at 42% with a brightness lift, masked off the left third and faded out by the columns; a 1px olive-light sunlit edge on top of the olive ground line and a 1px shadow under it; list links, the service-area text and the copyright row in the soft off-white (#E3E7E0) so the logo, phone and headings carry the colour; a hairline above the copyright row.
+- Checks: console 0 (the CSP error is gone), no sideways scroll at nine widths, axe 0, keyboard unchanged.

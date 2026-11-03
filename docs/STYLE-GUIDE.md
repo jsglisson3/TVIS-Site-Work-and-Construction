@@ -103,7 +103,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 - **Service area + CTA card:** towns list on the left, white CTA card with an 8px olive top border on the right.
 - **How it works card:** four numbered charcoal squares joined by a pale-olive line, with the last step in olive. A charcoal result bar with a check mark sits at the bottom.
 - **Form:** white card on the warm band. Inputs 58px tall, 1.5px gray border that darkens on hover, olive glow on focus. "I'm a…" is a three-way segmented control whose charcoal highlight slides to the option you tap (stacked on narrow phones, it slides down). "Add photos" is a tinted box with an olive camera square.
-- **Footer:** charcoal, 8px olive ground line with the small dozer, white logo, then Contact, Services, Pages and Service area columns. Copyright says "TVIS Construction. From the Ground Up."
+- **Footer:** charcoal, 8px olive ground line with the small dozer, white logo, then Contact, Services, Pages and Service area columns. Copyright says "TVIS Construction. From the Ground Up." Colour stays quiet (2026-11-03): the charcoal deepens a touch toward the bottom, the contour map whispers behind the top at 42%, a 1px sunlit edge sits on the ground line, links are the soft off-white (#E3E7E0) and a hairline sits above the copyright row. The dozer rolls in once over 3.4s with exhaust puffs, a dirt pile growing in front of the blade and the blade settling as it stops; parked and plain under reduced motion.
 - **Phone call bar:** fixed at the bottom on phones ("Call" and "Get an Estimate"). On the home page it appears once the hero buttons scroll away.
 - **Phone menu links:** a short olive bar slides in beside the link you press and the word shifts right and turns olive. The page you are on shows that same state while the menu is open (bar in, word shifted, olive-deep), like the desktop nav underline. While the menu is open, Tab cycles through Close and the menu links only, and Escape closes it.
 - **How it works on the home page:** the same card as the service pages, on a white band between the service cards (warm) and Recent projects (warm), with the heading "Start with a few photos".
@@ -123,7 +123,7 @@ Headings use `text-wrap: balance`. Never accent one word in a heading with a dif
 
 ## 8. Motion
 
-- One planned moment per page: the hero settling in on load (on desktop the photo eases from 104.5% to 100% over 1.8s while the text settles in), and the dozer rolling into the footer once.
+- One planned moment per page: the hero settling in on load (on desktop the photo eases from 104.5% to 100% over 1.8s while the text settles in), and the dozer rolling into the footer once (3.4s, an easy roll; Jeremy asked for slower on 2026-11-03).
 - Small responses to the user's own actions are fine, and they all share one curve and length: `--ease: cubic-bezier(.2,.7,.2,1)` and `--dur: .25s` (photo zooms 0.4s; the header's menu marker slides in .32s). The vocabulary is fixed: a line draws in under text, a photo eases to 103%, a button lifts 1px, an arrow nudges 4px, a highlight slides, the menu marker slides. Don't add a new kind of hover; reuse one of these.
 - The header's reading line (the bottom edge filling olive as the page is read) is the one piece of scroll-driven motion on the site. It is not a fade-in and never hides content.
 - Everything respects `prefers-reduced-motion`.
