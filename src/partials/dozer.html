@@ -1,9 +1,12 @@
 <!-- The TVIS dozer, side view, blade forward (it drives to the right). Colours come from --dz (body) and
      --dz-dark (glass, tracks, details), so it reads on the charcoal footer and on light pages alike.
      In the footer, site.js adds .go to the ground line once it scrolls into view and the dozer rolls in
-     once (tracks run, three exhaust puffs, the blade settles as it stops); with reduced motion it is simply parked.
+     once (blade lowers as it arrives, tracks run, a gentle pitch, exhaust puffs, dust off the rear track, the heap grows,
+     the blade and heap settle as it stops, then a faint idle puff now and then); with reduced motion it is simply parked.
      Elsewhere it stands still and the puffs stay hidden. -->
 <svg class="dozer" viewBox="0 0 260 120" aria-hidden="true" focusable="false">
+  <!-- everything rides in one group so the whole machine can pitch a touch while it rolls -->
+  <g class="dz-rig">
   <g fill="var(--dz,#A3B654)">
     <!-- ripper -->
     <path d="M14 64h30v9H26l-6 40h-8l5-40h-3z"/>
@@ -53,6 +56,13 @@
   <!-- exhaust puffs: hidden unless the footer dozer is rolling -->
   <g class="dz-smoke" fill="var(--dz,#A3B654)">
     <circle class="puff" cx="149.5" cy="22" r="3.5"/><circle class="puff" cx="149.5" cy="22" r="3"/><circle class="puff" cx="149.5" cy="22" r="2.5"/>
+    <!-- once parked, a faint idle puff every few seconds -->
+    <circle class="puff-idle" cx="149.5" cy="23" r="2.6"/>
+  </g>
+  <!-- dust kicked up behind the rear track while rolling -->
+  <g class="dz-tail" fill="var(--dz,#A3B654)">
+    <ellipse class="tdust" cx="44" cy="110" rx="6" ry="2.2"/><ellipse class="tdust" cx="40" cy="111" rx="5" ry="1.9"/>
   </g>
   <rect class="track-run" x="41" y="81" width="158" height="30" rx="15" fill="none" stroke="var(--dz-dark,#232B2E)" stroke-width="3" stroke-dasharray="6 6"/>
+  </g>
 </svg>
