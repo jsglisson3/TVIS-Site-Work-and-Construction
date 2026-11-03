@@ -1084,12 +1084,12 @@ body.menu-open{overflow:hidden}
   .phero-job{grid-template-columns:minmax(0,1fr) 54px}
   .phero-job .job-text{padding:13px 18px 14px;gap:7px 10px}
 }
-/* Opening photo ending (2026-11-02, Jeremy picked option 2 of five): on Homeowners, Builders & Contractors and More Services
+/* Opening photo ending (2026-11-03, Jeremy's choice: option 1 of five, clean stop; he tried option 2's olive bar first): on Homeowners, Builders & Contractors and More Services
    the photo no longer runs off the screen. On desktop it stops one page margin short of the screen edge, hard and square
-   (never a fade), and a solid olive bar runs down its right edge so the stop reads as deliberate.
-   To switch to option 1 (same stop, no bar), set --photo-end-bar to 0. Phones and tablets are unchanged. */
+   (never a fade), with warm gray beyond.
+   --photo-end-bar draws an olive bar down the photo's right edge (option 2); 0px = no bar. Phones and tablets are unchanged. */
 @media (min-width:901px){
-  :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn)){--photo-end-bar:12px;margin-right:calc(var(--gut) - var(--bleed))}
+  :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn)){--photo-end-bar:0px;margin-right:calc(var(--gut) - var(--bleed))}
   :is(.page-homeowners,.page-builders,.page-more) .phero-pic:has(>.photo:not(.photo-drawn))::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:var(--photo-end-bar);background:var(--olive)}
 }
 .proj-head{display:block;margin-bottom:40px}

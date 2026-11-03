@@ -613,3 +613,4 @@ Jeremy liked the caption bar but wanted the three opening photos (Homeowners, Bu
 - To switch to option 1 (same stop, no bar), set `--photo-end-bar` to `0px` in that block. Nothing else changes.
 - Phones and tablets are unchanged: the photo runs edge to edge under the text.
 - Checked: 390 / 820 / 901 / 1024 / 1180 / 1440 / 1750 / 1866, no sideways scroll, console clean, Lighthouse mobile 91 to 93 with 100 for accessibility, best practices and SEO.
+- 2026-11-03: Jeremy saw option 2 live and switched to option 1, the clean stop with no olive bar (`--photo-end-bar:0px`). Everything else in this section is unchanged.
