@@ -37,6 +37,8 @@ Everything that changes from business to business lives in `site.config.json`. E
 | `licensedLine` | The exact licensed and insured wording the business can stand behind. |
 | `responseTime` | e.g. `1 business day`. Shown on the thank-you message. |
 | `facebook`, `instagram`, `googleBusinessProfile` | Full URLs. The small marks in the header and footer link to them. |
+| `streetAddress`, `addressCity`, `addressState`, `postalCode`, `geo` | The address and map pin exactly as the Google Business Profile shows them. Used in the footer, the estimate page and the schema. Leave `streetAddress` empty to show the city only. |
+| `googleReviewUrl` | The profile's review link (Ask for reviews > Copy link). Shows "Leave us a Google review" in the footer. |
 | `domain` | Custom domain, once there is one. |
 | `formEndpoint` | The Basin form URL (below). |
 | `tracking.*` | Google Analytics, Google Ads and Meta Pixel IDs. Leave blank until the accounts exist. |

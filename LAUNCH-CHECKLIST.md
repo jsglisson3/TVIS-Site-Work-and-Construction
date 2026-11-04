@@ -16,7 +16,7 @@ Last updated 2026-11-02 (pre-launch review; full report linked in `docs/HANDOFF.
 
 ## Accounts and settings (outside the code)
 
-- [ ] **Google Business Profile:** create or claim it (the biggest local-search lever), then paste its URL into `googleBusinessProfile`. Until then the Google mark in the header and footer is a grey "coming soon" icon, not a link.
+- [x] **Google Business Profile:** verified 2026-11-04. Maps link, review link, address and map pin are in site.config.json; the Google marks now link to the profile.
 - [ ] **DMARC:** the DNS record still has the placeholder `rua=mailto:you@tvisconstruction.com`. Change it to `v=DMARC1; p=none` (or a real address you read).
 - [ ] **Basin:** add `tvisconstruction.com` under Allowed Domains (free). The free plan is 50 requests a month, 100 MB, 30-day history: move up a plan before running ads.
 - [ ] **Google Workspace billing** set up before 2026-11-11, or info@ stops receiving estimate emails.

@@ -9,3 +9,6 @@ Thumbs.db
 /TVIS-*/
 *.mov
 *.MOV
+
+# Photos picked for the Google Business Profile upload (copies of photos/site)
+/GBP Photos/

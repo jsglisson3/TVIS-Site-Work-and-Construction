@@ -1527,6 +1527,8 @@ html.lb-open{overflow:hidden}
   opacity:0;transform:translateY(3px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);pointer-events:none}
 .copied.on{opacity:1;transform:none}
 .ftr .copied{color:var(--olive-light)}
+/* empty, the note takes no room, so it never pushes a blank line under the email in a narrow footer column */
+.ftr .copied:empty{margin:0}
 
 /* ---- Round two (2026-11-03, 14:20 UTC): project openings, Next job + Share, card glide, form memory, side contours ---- */
 /* A project without a before/after pair opens with its photo where the slider would sit (build.mjs > projectDetail) */

@@ -62,6 +62,12 @@ const sms = texts ? tel.replace('tel:', 'sms:') : '';
 // "Call", "Call or text", "Call Jeremy", "Call or text Jeremy": the name only shows once it's filled in
 const talk = (texts ? 'Call or text' : 'Call') + (filled('ownerFirstName') ? ` ${esc(config.ownerFirstName)}` : '');
 
+// "1329 Gadd Rd, Hixson, TN 37343": the same string everywhere, to match the Google Business Profile
+function addressLine(sep = ', ') {
+  const cityLine = [config.addressCity, [config.addressState, config.postalCode].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+  return [config.streetAddress, cityLine].filter(Boolean).map(esc).join(sep);
+}
+
 const vars = {
   name: esc(config.name),
   tagline: esc(config.tagline),
@@ -89,6 +95,14 @@ const vars = {
   facebook: esc(config.facebook || '#facebook-url-needed'),
   instagram: esc(config.instagram || '#instagram-url-needed'),
   gbp: esc(config.googleBusinessProfile || '#google-business-profile-url-needed'),
+  // the street address, exactly as the Google Business Profile shows it; links to the profile once its URL is in
+  address_footer: filled('streetAddress') ? `<span>${config.googleBusinessProfile
+    ? `<a href="${esc(config.googleBusinessProfile)}">${addressLine('<br>')}</a>`
+    : addressLine('<br>')}</span>` : '',
+  address_dl: filled('streetAddress') ? `<div><dt>Address</dt><dd>${addressLine()}</dd></div>` : '',
+  // "Leave us a Google review": only once site.config.json > googleReviewUrl has the profile's review link
+  review_footer: config.googleReviewUrl ? `<a href="${esc(config.googleReviewUrl)}">Leave us a Google review</a>` : '',
+  review_link: config.googleReviewUrl ? `<a class="textlink" href="${esc(config.googleReviewUrl)}">Leave a review</a>` : '',
   // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
   fb_icon: config.facebook || !LIVE ? `<a href="${esc(config.facebook || '#facebook-url-needed')}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
   // Instagram: a plain mark (not a link) until site.config.json > instagram is filled, then a link, the same as Google
@@ -500,7 +514,10 @@ function localBusinessJsonLd() {
     name: config.name,
     slogan: config.tagline,
     description: 'Site prep and excavation, drainage and culverts, gravel and concrete driveways, pads for sheds and garages, concrete flat work and demolition for homeowners, builders and contractors in Chattanooga, TN and surrounding communities.',
-    address: { '@type': 'PostalAddress', addressLocality: 'Chattanooga', addressRegion: 'TN', addressCountry: 'US' },
+    // matches the Google Business Profile; the city alone while streetAddress is empty
+    address: filled('streetAddress')
+      ? { '@type': 'PostalAddress', streetAddress: config.streetAddress, addressLocality: config.addressCity, addressRegion: config.addressState || 'TN', postalCode: config.postalCode, addressCountry: 'US' }
+      : { '@type': 'PostalAddress', addressLocality: 'Chattanooga', addressRegion: 'TN', addressCountry: 'US' },
     areaServed: [{ '@type': 'City', name: 'Chattanooga, TN' }],
     knowsAbout: ['Site preparation', 'Excavation', 'Drainage', 'Culverts', 'Gravel driveways', 'Concrete driveways', 'Shed and garage pads', 'Concrete flat work', 'Demolition'],
     hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Sitework services', itemListElement: [
@@ -517,6 +534,10 @@ function localBusinessJsonLd() {
   if (towns.length) data.areaServed = areaServed();
   const same = [config.facebook, config.instagram, config.googleBusinessProfile].filter(Boolean);
   if (same.length) data.sameAs = same;
+  // the map pin and the Maps listing, so Google ties this site to the Business Profile
+  const g = config.geo || {};
+  if (filled('streetAddress') && Number.isFinite(g.latitude) && Number.isFinite(g.longitude)) data.geo = { '@type': 'GeoCoordinates', latitude: g.latitude, longitude: g.longitude };
+  if (config.googleBusinessProfile) data.hasMap = config.googleBusinessProfile;
   return ldJson(data);
 }
 
