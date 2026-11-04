@@ -1589,3 +1589,36 @@ html.lb-open{overflow:hidden}
     linear-gradient(270deg,rgba(16,20,22,.5) 0%,rgba(16,20,22,.34) 7%,rgba(16,20,22,.17) 16%,rgba(16,20,22,.05) 26%,rgba(16,20,22,0) 34%),
     linear-gradient(90deg,rgba(16,20,22,.84) 0%,rgba(16,20,22,.6) 34%,rgba(16,20,22,.06) 62%,rgba(16,20,22,0) 100%)}
 }
+
+/* Refine pass (2026-11-04, Jeremy: make an already great site 5-10% better, no redesign, nothing just for show).
+   Five small fixes found in a full review of every page at phone, tablet and desktop widths. */
+/* 1. "What happens next" on the service pages and the pad landing page reads like the homepage's version of the same
+      section: it was held to a 32ch column (about 270px) at every width, five short lines on desktop and narrower
+      than the screen on phones. The Related links keep their small size and now sit on one line. */
+.how-text p{max-width:46ch;font-size:clamp(18px,1.5vw,20px);line-height:1.55}
+.how-text p.svc-related{font-size:var(--t-small);line-height:1.5;max-width:none}
+/* 2. Estimate forms: a fieldset's legend sits outside the grid, so "I'm a..." got none of the 10px gap every other
+      label has above its field. And "optional, ..." notes that wrap start flush left instead of 6px in. */
+.f-who > legend{margin-bottom:10px}
+.f-l:has(> .opt){display:flex;flex-wrap:wrap;align-items:baseline;column-gap:6px;row-gap:2px}
+.f-l > .opt{margin-left:0}
+/* 3. Footer: the phone number, the email and Back to top get a 44px tap area (they were 24 to 32px tall). Padding
+      with a matching negative margin, so nothing moves.
+      The phone number and the email sit 6px apart, so their tap areas meet in that gap instead of overlapping. */
+.ftr-phone{padding-block:13px 3px;margin-block:-13px 3px}
+.ftr-phone + .ftr-list a{padding-block:3px 17px;margin-block:-3px -17px;background-position:0 calc(100% - 14px)} /* the hover underline stays 3px under the words */
+.ftr-top{padding-block:10px;margin-block:-10px}
+/* 4. Footer: the divider above the copyright line ran out to the page gutters; it now stops at the content edges,
+      in line with the logo and Back to top. */
+.ftr-bottom{position:relative;border-top:0}
+.ftr-bottom::before{content:"";position:absolute;top:0;left:var(--gut);right:var(--gut);height:1px;background:rgba(255,255,255,.08)}
+/* 5. Footer on laptops and tablets held sideways (960 to 1180px): the four link columns in one row under the logo,
+      as on desktop, instead of a tall two-by-two stack. */
+@media (min-width:960px) and (max-width:1180px){
+  .ftr-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);column-gap:32px}
+}
+/*    On desktop the Pages column was 135-150px wide, so "Builders & Contractors" (150px) broke onto two lines; the
+      column is now never narrower than its longest link, and the other columns give up the few pixels that takes. */
+@media (min-width:1181px){
+  .ftr-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(max-content,.8fr) minmax(0,1fr)}
+}
