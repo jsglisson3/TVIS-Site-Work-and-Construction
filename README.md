@@ -4,7 +4,7 @@ Marketing site for TVIS Construction, an excavation and sitework company in Chat
 
 Live at https://tvisconstruction.com/ once the DNS and the Pages custom domain are set (see below); until then at https://jsglisson3.github.io/TVIS-Site-Work-and-Construction/.
 
-## Run it on your computer
+## Run it on your computer(s)
 
 Needs [Node.js](https://nodejs.org) 20 or newer.
 
