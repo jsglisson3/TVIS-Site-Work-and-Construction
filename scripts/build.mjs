@@ -271,6 +271,10 @@ async function loadProjects() {
       status,
       featured: /^y/i.test(info.featured || ''),
       description: (info.description || info.about || '').replace(/^\[CONFIRM\]\s*/i, m => (LIVE ? '' : m)),
+      // A Google review this customer left about this job, copied exactly (optional). The quote shows on the
+      // project page and in the homepage reviews section, linked to the profile. Never edit or invent one.
+      review: (info.review || '').replace(/^["\u201C]+|["\u201D]+$/g, '').trim(),
+      reviewer: info.reviewer || '',
       date: folder.slice(0, 7),
       photos,
     });
@@ -375,6 +379,8 @@ function projectDetail(p, next) {
 <section class="sec pd">
   <div class="wrap">
     ${group('before', 'Before')}${group('progress', 'In progress')}${group('after', 'After')}
+    ${p.review ? `<section class="pd-rev" aria-labelledby="pd-rev-h"><h2 id="pd-rev-h">What the customer said</h2>${reviewQuote(p)}</section>` : ''}
+    ${reviewUrl() ? `<p class="pd-ask">Was this your job? <a href="${reviewUrl()}">Tell others how it went on Google</a>.</p>` : ''}
     <div class="pd-cta">
       <a class="btn btn-primary" href="${estimate}">Get an Estimate for a job like this</a>
       <a class="call-link" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Or call us</a>
@@ -383,6 +389,33 @@ function projectDetail(p, next) {
       ${nextJob}
       <span class="pd-share-wrap"><button class="pd-share" type="button" data-share hidden><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M5 13v7h14v-7"/></svg>Share this job</button></span>
     </div>
+  </div>
+</section>`;
+}
+
+// ---------- reviews ----------
+// Real Google reviews, tied to the job they are about (project.txt > review: and reviewer:). No review schema:
+// Google ignores reviews a business shows about itself, and marking them up can count against the site.
+const reviewUrl = () => (config.googleReviewUrl ? '/review' : '');
+function reviewQuote(p, { job = false } = {}) {
+  if (!p.review) return '';
+  const who = [esc(p.reviewer || 'Google review'), job ? townHtml(p) : ''].filter(Boolean).join(', ');
+  return `<figure class="rev">
+  <blockquote><p>${esc(p.review)}</p></blockquote>
+  <figcaption><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg><span>${who}</span>${job ? `<a href="/project/${p.id}">See the job</a>` : ''}</figcaption>
+</figure>`;
+}
+// The homepage section: every project with a review, newest first. Hidden until the first one is in.
+function homeReviews() {
+  const list = projects.filter(p => p.review).sort((a, b) => b.id.localeCompare(a.id)).slice(0, 6);
+  if (!list.length) return '';
+  return `<section class="sec reviews" aria-labelledby="rev-h">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="rev-h">What customers say</h2></div>
+    <div class="rev-grid">
+${list.map(p => reviewQuote(p, { job: true })).join('\n')}
+    </div>
+    <p class="rev-links">${config.googleBusinessProfile ? `<a class="textlink" href="${esc(config.googleBusinessProfile)}">Read all reviews on Google</a>` : ''}${reviewUrl() ? `<a class="textlink" href="${reviewUrl()}">Leave a review</a>` : ''}</p>
   </div>
 </section>`;
 }
@@ -732,6 +765,7 @@ async function main() {
     project_filters: ['<li><button type="button" data-filter="all" aria-pressed="true">All</button></li>']
       .concat(CATEGORIES.filter(c => projects.some(p => p.category === c)).map(c => `<li><button type="button" data-filter="${slugify(c)}" aria-pressed="false">${esc(c)}</button></li>`)).join('\n      '),
     local_business: localBusinessJsonLd(),
+    home_reviews: homeReviews(),
   };
 
   const layout = await readPartial('layout');
@@ -810,6 +844,23 @@ async function main() {
   if (origin) {
     await fs.writeFile(path.join(DIST, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...sitemap].sort((a, b) => (b === '/') - (a === '/')).map(u => `  <url><loc>${origin}${u}</loc>${lastmods[u] ? `<lastmod>${lastmods[u]}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`);
     await fs.writeFile(path.join(DIST, 'CNAME'), config.domain.replace(/^https?:\/\//, '').replace(/\/$/, '') + '\n');
+  }
+  // tvisconstruction.com/review: a short address for the review cards, QR code and texts. It forwards straight to
+  // the Google review form, so the printed cards keep working if the profile's review link ever changes.
+  if (config.googleReviewUrl) {
+    const to = esc(config.googleReviewUrl);
+    await fs.writeFile(path.join(DIST, 'review.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0; url=${to}">
+<link rel="icon" href="/favicon.ico">
+<title>Review ${esc(config.name)} on Google</title>
+</head><body>
+<p>Taking you to Google to review ${esc(config.name)}&hellip;</p>
+<p><a href="${to}">Tap here if nothing happens</a>. Thank you!</p>
+</body></html>
+`);
   }
   await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
   await fs.writeFile(path.join(DIST, '.nojekyll'), '');

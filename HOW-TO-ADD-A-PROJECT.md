@@ -43,6 +43,12 @@ description: Washed-out ruts regraded, new culvert under the entrance, fresh cru
 - **status**: `Completed` or `In Progress`. Leave it blank and the site works it out: In Progress until there's an after photo.
 - **featured**: `yes` pins the project to the top of the Projects page and the homepage. Use it for the best two or three.
 - **description**: one or two sentences. No prices, no customer names.
+- **review** and **reviewer** (optional): when the customer leaves a Google review about this job, copy it here exactly as written, with their name as Google shows it (first name and last initial is fine). The quote shows on the project's page and in the homepage "What customers say" section, which appears once the first one is in. Ask the customer first, never shorten or change their words, and never add a review that isn't on Google.
+
+```
+review: Joey and his crew showed up when they said and the drive has held up through every storm since.
+reviewer: Mike R.
+```
 
 ## 4. Publish
 

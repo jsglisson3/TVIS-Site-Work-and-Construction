@@ -25,7 +25,7 @@ Last updated 2026-11-02 (pre-launch review; full report linked in `docs/HANDOFF.
 
 ## Business details (`site.config.json`)
 
-- [x] `phone`: 423-618-3112 (Joey said this number is temporary; change it here only, it updates every page and the schema)
+- [x] `phone`: 423-225-7038 since 2026-11-04 (Jeremy: "use this number now"; it replaced the temporary 423-618-3112). Change it here only: it updates every page, every call button and the schema. Update the Google Business Profile and Facebook to the same number.
 - [x] `email`: info@tvisconstruction.com
 - [x] `facebook`, `baseLocation`, `serviceArea`, `serviceTowns`, `domain`, `formEndpoint`, `googleSiteVerification`
 - [ ] `phoneTakesTexts`: `false` now. Set `true` if Joey takes texts (adds a Text button on phones)
