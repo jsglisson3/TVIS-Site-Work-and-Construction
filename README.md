@@ -86,6 +86,7 @@ Fill in `site.config.json > tracking` and the tags are added to every page. The 
 | `scripts/rename-logo.py` | One-off that changed the logo's bottom line to "CONSTRUCTION" after the 2026 rename to TVIS Construction. If `trace-logo.py` is ever rerun, run this afterwards on both SVGs. |
 | `scripts/serve.mjs` | The local preview server. |
 | `photos/site/` | Photos for fixed spots on the pages. |
+| `photos/facebook/` | New job photos pulled from the TVIS Facebook page (not on the site until picked). Steps and log in its README; `scripts/fb-import.mjs` saves them. |
 | `PHOTOGRAPHY-INDEX.md` | Every photo in the Drive master library (`G:\My Drive\TVIS\Images`), where each is used on the site, and what is still available. Updated on every photo review. |
 | `projects/` | One folder per job. Becomes the Projects gallery, each project's page and the homepage's Recent projects. |
 | `.github/workflows/deploy.yml` | Publishes the site on every push to `main`. |

@@ -29,6 +29,16 @@ The running record of every photo in the master library, where each one is used 
 - **Still missing from the library:** a real teardown (Demolition still uses land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
 - **On the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
 
+## Facebook photos (second source)
+
+Joey also posts job photos on the TVIS Facebook page that aren't in Drive. New ones are saved in `photos/facebook/` (stripped of metadata, named `<post date>_fb<photo id>.jpg`). Steps for the next pull and the log of every Facebook photo already looked at are in `photos/facebook/README.md`. First pull 2026-11-04: 26 looked at, 16 saved, 10 skipped (5 already in Drive: IMG_7069, IMG_8345, IMG_8352, IMG_8429, IMG_8483).
+
+Placed on the site 2026-11-04 (Jeremy asked for it; he commits and pushes):
+- **New project `projects/2026-10-chattanooga-backyard-wall-stamped-patio/`** (Concrete): before-1 `fb122102111919532034` (covered patio before), before-2 `fb122102112177532034` (dig-out by the porch steps), progress-1 `fb122097566991532034` (excavator digging), progress-2 `fb122102112009532034`, after-1 `fb122102127279532034` (stamped patio with drain; Joey's caption says TVIS did it), after-2 `fb122102112147532034` (finished block wall). Same white house with the covered patio in every shot, but the stamped patio came from a separate post: **confirm with Joey** that it's the same job, and the month (2026-10 is the posting month; the leaves look like spring).
+- **Hillside driveway project:** new progress-3 `fb122102098029532034` (gravel base before the pour; the old progress-3 and -4 became -4 and -5) and after-4 `fb122102098203532034` (finished drive beside the house).
+- **Not used, on the bench:** `fb122102115807532034` and `fb122102115783532034` (graded red-clay and gravel drive in the woods; a closer look showed they read as dirt, not as the crushed-stone base `pads-step-3` needs, so that spot keeps IMG_0163), `fb122102098005532034` and `fb122102098293532034` (the hillside job already has two pour shots and two lot shots), `fb122097567753532034` and `fb122102112093532034` (the wall job, toys and an SUV in frame), and the roadside mini-excavator pair from 2026-11-03 (ask Joey what that job is).
+- The stamped patio answers the old "Ask Joey about the stamped concrete patio" item only partly: `IMG_5062`/`IMG_5074` in Drive are a different patio.
+
 ## Notes on repeats
 
 - On the pages, each photo appears once, except `IMG_7069` (rock swale), which is used on Homeowners and on the Drainage page in two different crops, and `IMG_6867.heic` (the pad in forms), which is the homepage pad card and step 2 of the pad sequence.
