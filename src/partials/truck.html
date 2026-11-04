@@ -1,0 +1,33 @@
+<!-- The TVIS dump truck (2026-11-04), side view, cab to the right, in the dozer's style, with a small TVIS plate on the
+     door. Footer only, from 600px up: the excavator fills its bed with two buckets, then it drives the road the dozer
+     has just graded and fades away behind the dozer. Colours come from --dz and --dz-dark like the other machines. -->
+<svg class="truck" viewBox="0 0 150 78" aria-hidden="true" focusable="false">
+  <g class="tr-rig">
+  <!-- the load: rises a step with each bucket -->
+  <path class="tr-load" d="M8 25c10-6 26-9 42-9s32 3 42 9z" fill="var(--dz,#A3B654)" opacity=".8"/>
+  <g fill="var(--dz,#A3B654)">
+    <!-- dump bed -->
+    <path d="M4 24h91l-4 30H8z"/>
+    <!-- frame -->
+    <rect x="4" y="53" width="141" height="7"/>
+    <!-- cab, hood forward, exhaust stack behind it -->
+    <path d="M99 22h23c5 0 8 3 10 7l5 11h8v20H99z"/>
+    <rect x="95" y="11" width="3.5" height="13"/>
+  </g>
+  <g fill="var(--dz-dark,#232B2E)">
+    <!-- bed ribs, window, bumper, the wheel wells -->
+    <rect x="24" y="28" width="2.4" height="22"/><rect x="48" y="28" width="2.4" height="22"/><rect x="72" y="28" width="2.4" height="22"/>
+    <path d="M105 28h16l5 12h-21z"/>
+    <rect x="140" y="56" width="7" height="4"/>
+    <circle cx="27" cy="66" r="12.5"/><circle cx="52" cy="66" r="12.5"/><circle cx="121" cy="66" r="12.5"/>
+  </g>
+  <!-- TVIS plate on the door -->
+  <rect x="104" y="44" width="25" height="11" fill="var(--dz-dark,#232B2E)"/>
+  <text x="116.5" y="52.6" text-anchor="middle" font-family="Barlow Condensed, Barlow Condensed Fallback, Arial Narrow, Arial, sans-serif" font-weight="700" font-size="9.6" letter-spacing=".5" fill="#FF8200">TVIS</text>
+  </g>
+  <g fill="var(--dz,#A3B654)"><circle cx="27" cy="67" r="10"/><circle cx="52" cy="67" r="10"/><circle cx="121" cy="67" r="10"/></g>
+  <g fill="var(--dz-dark,#232B2E)"><circle cx="27" cy="67" r="4.2"/><circle cx="52" cy="67" r="4.2"/><circle cx="121" cy="67" r="4.2"/></g>
+  <!-- dust off the rear wheels as it pulls away, exhaust as it starts -->
+  <g class="tr-dust" fill="var(--dz,#A3B654)"><ellipse class="tdust2" cx="14" cy="76" rx="6" ry="2.2"/><ellipse class="tdust2" cx="12" cy="76" rx="5" ry="2"/><ellipse class="tdust2" cx="13" cy="76" rx="5.5" ry="2.1"/></g>
+  <g class="tr-smoke" fill="var(--dz,#A3B654)"><circle class="tpuff" cx="96.7" cy="8" r="3"/><circle class="tpuff" cx="96.7" cy="8" r="2.6"/></g>
+</svg>

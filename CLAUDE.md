@@ -22,7 +22,7 @@ Marketing site for an excavation and sitework company in Chattanooga, TN. Its on
   - the colours and type sizes listed there, headlines in two lines or fewer at every width
   - square corners and flat buttons; soft shadows only on the header, the form and sidebar cards and their primary buttons (Jeremy asked for them); no gradients beyond the photo scrim
   - no carousels, counters, icon-card grids or tiny letter-spaced labels
-- Motion is limited to one planned moment per page (the hero settle on the homepage, the pad build-up on `/homeowners`, the footer dozer), and it must respect `prefers-reduced-motion`.
+- Motion is limited to one planned moment per page (the hero settle on the homepage, the pad build-up on `/homeowners`, the footer crew: the dozer rolling in, the excavator loading the truck), and it must respect `prefers-reduced-motion`.
 - Every page must work at 390px and 1440px with no sideways scroll.
 - Lighthouse mobile must score 90+ on every page. Check pages in a real browser, look at the screenshots, and fix what you see before calling anything done.
 - Keep the `projects/` folder format and `project.txt` fields stable. A future automation depends on them.

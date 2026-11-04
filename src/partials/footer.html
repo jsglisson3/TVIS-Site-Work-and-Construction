@@ -1,6 +1,8 @@
-<!-- Footer: charcoal. The dozer rolls along the ground line once, the one motion moment down here. -->
+<!-- Footer: charcoal. The crew works the ground line once, the one motion moment down here: the excavator loads the
+     truck, the dozer rolls in and grades a road, the truck drives it and fades away behind the dozer (phones: the
+     excavator builds a spoil pile instead). The truck sits in .ftr-lane, under the dozer, so it can pass behind it. -->
 <footer class="ftr">
-  <div class="ftr-ground" data-ground aria-hidden="true">{{> dozer}}</div>
+  <div class="ftr-ground" data-ground aria-hidden="true"><div class="ftr-lane"><div class="ftr-road"><div class="road-run"></div></div>{{> truck}}</div>{{> excavator}}{{> dozer}}</div>
   <div class="wrap ftr-grid" data-nosnippet>
     <div class="ftr-brand">
       <a class="ftr-logo" href="/" aria-label="{{name}}, home"><img src="/assets/img/logo-reverse.svg" alt="" width="1619" height="776" decoding="async"></a>

@@ -315,7 +315,7 @@ body.menu-open{overflow:hidden}
    phone and logo carry the colour, and a hairline above the copyright row. */
 .ftr{position:relative;isolation:isolate;background:linear-gradient(180deg,var(--charcoal) 0,#1E2629 100%);color:#fff}
 .ftr::before{content:"";position:absolute;left:0;right:0;top:0;height:min(100%,560px);z-index:-1;background:url(/assets/img/contour.svg) 72% 0/1600px 400px no-repeat;opacity:.42;filter:brightness(2.6) saturate(.7);-webkit-mask:linear-gradient(90deg,transparent 0,#000 30%,#000 100%),linear-gradient(180deg,#000 40%,transparent 100%);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent 0,#000 30%,#000 100%),linear-gradient(180deg,#000 40%,transparent 100%);mask-composite:intersect;pointer-events:none}
-.ftr-ground{position:relative;height:68px;border-bottom:8px solid var(--olive);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+.ftr-ground{position:relative;height:88px;border-bottom:8px solid var(--olive);box-shadow:0 1px 0 rgba(0,0,0,.28)} /* 88 (was 68) since the crew: room for the excavator's arm */
 .ftr-ground::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--olive-light);opacity:.55}
 .ftr-list a,.ftr-list p,.ftr-bottom{color:#E3E7E0}
 .ftr-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:4px}
@@ -721,7 +721,7 @@ body.menu-open{overflow:hidden}
   .who-body{padding:20px}
   .who-card .photo,.svc-card .photo{aspect-ratio:16/9}
   .band-in{gap:24px}
-  .ftr-ground{height:56px}
+  .ftr-ground{height:66px} /* 66 (was 56) since the crew */
   .dozer{width:104px}
   .ftr-grid{grid-template-columns:1fr;gap:32px}
   .ftr-bottom{flex-direction:column;align-items:flex-start}
@@ -1622,3 +1622,134 @@ html.lb-open{overflow:hidden}
 @media (min-width:1181px){
   .ftr-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.1fr) minmax(max-content,.8fr) minmax(0,1fr)}
 }
+
+/* Framed lone project photo (Jeremy, 2026-11-04: "match the framing style used in other photos on everything that
+   makes sense", with a project page's single "Before" photo as the example). A gallery group with one photo runs the
+   full content width on its own, so on desktop it gets the placed-photo frame: the 6px olive edge and the offset
+   contour panel 20px down and to the right. The panel is a grid-placed ::before on the grid, like .proj-grid-one,
+   because the tile clips its overflow. Groups of two or more stay plain, like every other grid of photos. */
+@media (min-width:901px){
+  .pd-grid:has(> .g-full:only-child){isolation:isolate;margin-bottom:20px}
+  .pd-grid > .g-full:only-child{grid-row:1;border-bottom:6px solid var(--olive)}
+  .pd-grid:has(> .g-full:only-child)::before{content:"";grid-column:1/-1;grid-row:1;position:relative;z-index:-1;margin:20px -20px -20px 20px;
+    background:var(--tint) url(/assets/img/contour.svg) 50% 50%/1600px 400px no-repeat}
+}
+
+/* Refine pass two (2026-11-04, Jeremy: "hit me with another pass", "small spacing anything"). Every section's padding
+   and every heading, text and button gap measured on 18 pages at 1440 and 390; these were the ones out of step. */
+/* 1. Project cards (home Recent projects, a service page's Recent jobs, the Projects page): each card keeps a 40px
+      margin below it as the space between rows, so the last row carried 40px extra and those sections ended about
+      104px below the last line instead of the usual 64px (84 instead of 44 on phones). Only grids that hold cards. */
+@media (min-width:600px){
+  .proj-grid:not(.proj-grid-one):has(> .proj){margin-bottom:-40px}
+}
+/* 2. Projects page opening: 52px above and 32px below, where every other page opening has the same space above and
+      below (--open-pad). On phones the title sat 16px over its intro line instead of the usual 24px. */
+.proj-open{padding:var(--open-pad) 0}
+@media (max-width:900px){ .proj-open .proj-head{row-gap:var(--gap-intro)} }
+/* 3. A line of text before a button is 32px above it everywhere else: the Homeowners "What to send us" card had 24px
+      and the "Qualified trades..." note on Builders and Site Prep had 28px. That note also sat 16px or 20px under its
+      list depending on the page; it is 20px on both now. */
+.pads-bottom .pads-ask p{margin-bottom:32px}
+.fine,.sv .fine{margin-top:-12px;margin-bottom:32px}
+/* 4. A button with "Or call us" under it on phones: 16px apart on every page (the project pages and Home Construction
+      had 20px). */
+.hc-cta,.pd-cta{row-gap:16px}
+/* 5. Phones, home "The work we do most" rows: the service name sat 5px over its description, where every other card
+      has 8-10px. */
+@media (max-width:560px){ .svc-body{gap:8px} }
+/* 6. Phones and tablets, Builders phase list: the description lines up under the phase name instead of under the
+      number, so each phase reads as one block. */
+@media (max-width:900px){
+  .phase-track a{display:grid;grid-template-columns:minmax(14px,auto) minmax(0,1fr);column-gap:14px;row-gap:4px;align-items:baseline}
+  .ph-d{grid-column:2}
+}
+/* 7. Project pages on phones: "Share this job" sat 14px in from the left edge, pushed by the (empty) "Link copied"
+      note in front of it. The note now floats beside the button on desktop and under it on phones, taking no space. */
+.pd-share-wrap{position:relative}
+.pd-share-wrap .copied{position:absolute;right:100%;top:50%;margin:-.5em 14px 0 0;white-space:nowrap}
+@media (max-width:900px){ .pd-share-wrap .copied{right:auto;left:0;top:100%;width:100%;margin:10px 0 0;text-align:center} }
+
+/* The crew (2026-11-04, Jeremy: Joey's new excavator "will be a trademark of his business", "make it something
+   together" with the dozer, which stays exactly as it is). Footer only. Markup: src/partials/excavator.html and
+   truck.html, placed by footer.html: .ftr-lane (road + truck, under the dozer) then the excavator, then the dozer.
+   Sizes hang off --k, the dozer's own scale (150px / 260 on desktop, 104 / 260 at 900px and under), so the three
+   machines keep their proportions at every width: the excavator a touch smaller than the dozer, the truck taller
+   than both. The story, once the footer scrolls into view (site.js adds .armed then .go to .ftr-ground, not under
+   reduced motion, where everything simply sits parked): the excavator digs two buckets (0.5 to 5.5s) and swings them
+   into the truck's bed while the dozer rolls in (0 to 6s, unchanged) grading a road behind it; the loaded truck pulls
+   away at 6.3s, drives the new road and fades out behind the dozer (the lane's mask), leaving the excavator, the road
+   and the dozer. Phones (under 600px): no truck or road, the excavator dumps onto a spoil pile that grows with each
+   bucket. All the arm angles come from a small inverse-kinematics script (/mnt/project-files/tvis-excavator/source). */
+.ftr-ground{--k:.5769;--dzw:calc(260px*var(--k));--ke:calc(var(--k)*.82);--kt:calc(var(--k)*1.25);--trl:calc(var(--gut) + 184.5px*var(--k))}
+@media (max-width:900px){.ftr-ground{--k:.4}}
+.ftr-ground .dozer{z-index:3}
+.exc{position:absolute;left:calc(var(--gut) - 11.5px*var(--k));bottom:0;width:calc(300px*var(--ke));height:auto;overflow:visible;z-index:2}
+.ftr-lane{position:absolute;left:0;right:0;top:-40px;bottom:0;overflow:hidden;z-index:1;--fade:linear-gradient(90deg,#000 calc(100% - var(--gut) - var(--dzw) + 30px*var(--k)),transparent calc(100% - var(--gut) - var(--dzw)*.5));-webkit-mask-image:var(--fade);mask-image:var(--fade)}
+.truck{position:absolute;left:var(--trl);bottom:0;width:calc(150px*var(--kt));height:auto;overflow:visible;--drive:calc(100vw - var(--gut) - var(--dzw)*.5 + 8px - var(--trl))}
+.ftr-road{position:absolute;left:calc(var(--trl) + 4px*var(--kt));right:calc(var(--gut) + var(--dzw) - 40px*var(--k));bottom:0;height:7px;overflow:hidden}
+.road-run{position:absolute;inset:0;border-top:2px solid rgba(163,182,84,.85);background:radial-gradient(circle,rgba(163,182,84,.8) 0 1px,transparent 1.4px) 0 1px/6px 5px,rgba(163,182,84,.24)}
+.exc *,.truck *{transform-box:view-box}
+.xpuff,.xpuff-idle,.tpuff{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+/* resting pose (also the reduced-motion picture): bucket down at the pile */
+.ex-boom{transform-origin:134px 80px;transform:rotate(-31.0deg)}.ex-stick{transform-origin:190px 26px;transform:rotate(18.5deg)}.ex-bucket{transform-origin:218.5px 109.2px;transform:rotate(27.4deg)}
+.ex-rig{transform-origin:76px 128px}
+.ex-load,.ex-drop circle,.ex-kick circle,.sp-clod{opacity:0}
+.ex-pile{transform-origin:205px 128px}
+.ex-spoil,.sp-bits{display:none}.ex-spoil{transform-origin:281px 128px;transform:scale(0)}.sp-clod{transform-origin:281px 108px}
+.sp-clod:nth-of-type(1),.sp-clod:nth-of-type(2){translate:0 6px}
+.tr-load{transform-origin:50px 25px;transform:scaleY(0)}.tr-rig{transform-origin:75px 60px}
+.tdust2{opacity:0;transform-origin:14px 76px}
+/* the excavator: two buckets over 5s from 0.5s (dig, curl, lift, swing over the bed, dump, swing back) */
+@keyframes ex-boom{0%{transform:rotate(-31.0deg)}7%{transform:rotate(-22.1deg)}15%{transform:rotate(-30.3deg)}24%{transform:rotate(-30.2deg)}31%{transform:rotate(2.8deg)}35%{transform:rotate(6.2deg)}40%{transform:rotate(6.2deg)}45%{transform:rotate(-30.2deg)}50%{transform:rotate(-31.0deg)}57%{transform:rotate(-22.1deg)}65%{transform:rotate(-30.3deg)}74%{transform:rotate(-30.8deg)}81%{transform:rotate(0.5deg)}85%{transform:rotate(3.6deg)}90%{transform:rotate(3.6deg)}95%{transform:rotate(-30.8deg)}100%{transform:rotate(-31.0deg)}}
+@keyframes ex-stick{0%{transform:rotate(18.5deg)}7%{transform:rotate(15.1deg)}15%{transform:rotate(23.0deg)}24%{transform:rotate(-2.3deg)}31%{transform:rotate(-87.5deg)}35%{transform:rotate(-93.3deg)}40%{transform:rotate(-93.3deg)}45%{transform:rotate(-2.3deg)}50%{transform:rotate(18.5deg)}57%{transform:rotate(15.1deg)}65%{transform:rotate(23.0deg)}74%{transform:rotate(-4.8deg)}81%{transform:rotate(-85.1deg)}85%{transform:rotate(-90.3deg)}90%{transform:rotate(-90.3deg)}95%{transform:rotate(-4.8deg)}100%{transform:rotate(18.5deg)}}
+@keyframes ex-bucket{0%{transform:rotate(27.4deg)}7%{transform:rotate(-8.0deg)}15%{transform:rotate(77.3deg)}24%{transform:rotate(117.5deg)}31%{transform:rotate(159.7deg)}35%{transform:rotate(42.2deg)}40%{transform:rotate(42.2deg)}45%{transform:rotate(117.5deg)}50%{transform:rotate(27.4deg)}57%{transform:rotate(-8.0deg)}65%{transform:rotate(77.3deg)}74%{transform:rotate(120.6deg)}81%{transform:rotate(159.6deg)}85%{transform:rotate(41.7deg)}90%{transform:rotate(41.7deg)}95%{transform:rotate(120.6deg)}100%{transform:rotate(27.4deg)}}
+.ftr-ground.go .ex-boom{animation:ex-boom 5s ease-in-out .5s both}
+.ftr-ground.go .ex-stick{animation:ex-stick 5s ease-in-out .5s both}
+.ftr-ground.go .ex-bucket{animation:ex-bucket 5s ease-in-out .5s both}
+.ftr-ground.go .ex-rig{animation:ex-rock 2.5s ease-in-out .5s 2 both}
+@keyframes ex-rock{0%,6%{transform:none}16%{transform:rotate(.45deg)}28%{transform:rotate(.7deg)}40%{transform:none}54%{transform:rotate(-.35deg)}68%,100%{transform:none}}
+.ftr-ground.go .ex-load{animation:ex-load 2.5s linear .5s 2 both}
+@keyframes ex-load{0%,24%{opacity:0}31%,68%{opacity:.75}73%,100%{opacity:0}}
+.ftr-ground.go .ex-pile{animation:pile-dug 5.5s ease-out both}
+@keyframes pile-dug{0%,21%{transform:none}26%,66%{transform:scale(.98,.94)}71%,100%{transform:scale(.96,.88)}}
+.ftr-ground.go .ex-kick circle{animation:ex-kick-a 2.5s cubic-bezier(.2,.6,.5,1) .5s 2 both}
+.ftr-ground.go .ex-kick circle:nth-child(2){animation-name:ex-kick-b}.ftr-ground.go .ex-kick circle:nth-child(3){animation-name:ex-kick-c}
+@keyframes ex-kick-a{0%,15%{opacity:0;transform:none}18%{opacity:.9}30%{opacity:.9;transform:translate(-5px,-9px)}40%,100%{opacity:0;transform:translate(-9px,4px)}}
+@keyframes ex-kick-b{0%,16%{opacity:0;transform:none}19%{opacity:.85}31%{opacity:.85;transform:translate(4px,-7px)}40%,100%{opacity:0;transform:translate(8px,5px)}}
+@keyframes ex-kick-c{0%,17%{opacity:0;transform:none}20%{opacity:.8}30%{opacity:.8;transform:translate(-8px,-5px)}38%,100%{opacity:0;transform:translate(-12px,4px)}}
+.ftr-ground.go .ex-drop circle{animation:ex-drop 2.5s cubic-bezier(.5,0,.8,.6) .5s 2 both}
+.ftr-ground.go .ex-drop circle:nth-child(2){animation-delay:.56s}.ftr-ground.go .ex-drop circle:nth-child(3){animation-delay:.6s}
+@keyframes ex-drop{0%,69%{opacity:0;transform:translateY(-4px)}72%{opacity:.9}84%{opacity:.9;transform:translateY(8px)}88%,100%{opacity:0;transform:translateY(10px)}}
+.ftr-ground.go .xpuff{animation:puff 1.5s cubic-bezier(.2,.6,.4,1) 1.15s 2 both}.ftr-ground.go .xpuff:nth-child(2){animation-delay:1.4s}
+.ftr-ground.go .xpuff-idle{animation:puff-idle 3.6s ease-out 6.1s infinite}
+/* the truck: the load rises a step with each bucket, the bed takes the weight, then it drives off at 6.3s */
+.ftr-ground.go .tr-load{animation:load 5.5s linear both}
+@keyframes load{0%,41%{transform:scaleY(0)}46%,86%{transform:scaleY(.55)}91%,100%{transform:scaleY(1)}}
+.ftr-ground.go .tr-rig{animation:tr-rig 7.3s ease-in-out both}
+@keyframes tr-rig{0%,31%{transform:none}33%{transform:translateY(1.4px)}36%,66%{transform:none}68%{transform:translateY(1.8px)}71%,86%{transform:none}91%{transform:rotate(-1.3deg)}100%{transform:none}}
+.ftr-ground.go .truck{animation:drive 5.6s cubic-bezier(.42,0,.32,1) 6.3s both}
+@keyframes drive{from{transform:none}to{transform:translateX(var(--drive))}}
+.ftr-ground.go .tpuff{animation:puff 1.5s cubic-bezier(.2,.6,.4,1) 6.1s both}.ftr-ground.go .tpuff:nth-child(2){animation-delay:6.7s}
+.ftr-ground.go .tdust2{animation:tdust 1.4s ease-out 6.7s both}.ftr-ground.go .tdust2:nth-of-type(2){animation-delay:7.5s}.ftr-ground.go .tdust2:nth-of-type(3){animation-delay:8.3s}
+/* the road: it appears behind the dozer in step with the roll (the same keyframes, the same easing) */
+.ftr-ground.armed .road-run{transform:translateX(-45vw);opacity:0}
+.ftr-ground.go .road-run{animation:dozer-roll 6s cubic-bezier(.3,.5,.25,1) both}
+/* phones: no room for three machines, so the excavator dumps onto a spoil pile beside it (lower swing, two-tone
+   pile that grows a step per bucket, clods rolling down its sides) and the dozer rolls in as always */
+@media (max-width:599px){
+  .ftr-lane{display:none}
+  .ex-spoil,.sp-bits{display:block}
+  .ftr-ground.go .ex-boom{animation-name:ex-boom-b}.ftr-ground.go .ex-stick{animation-name:ex-stick-b}.ftr-ground.go .ex-bucket{animation-name:ex-bucket-b}
+  .ftr-ground.go .ex-drop circle{animation-name:ex-drop-b}
+  .ftr-ground.go .ex-spoil{animation:spoil 5.5s linear both}
+  .ftr-ground.go .sp-clod.l{animation:sp-l .9s cubic-bezier(.3,.4,.6,1) 2.5s both}.ftr-ground.go .sp-clod.r{animation:sp-r .85s cubic-bezier(.3,.4,.6,1) 2.56s both}
+  .ftr-ground.go .sp-clod.l:nth-of-type(3){animation-delay:5s}.ftr-ground.go .sp-clod.r:nth-of-type(4){animation-delay:5.08s}
+}
+@keyframes ex-boom-b{0%{transform:rotate(-31.0deg)}7%{transform:rotate(-22.1deg)}15%{transform:rotate(-30.3deg)}24%{transform:rotate(-28.3deg)}31%{transform:rotate(-9.1deg)}35%{transform:rotate(-5.0deg)}40%{transform:rotate(-5.0deg)}45%{transform:rotate(-28.3deg)}50%{transform:rotate(-31.0deg)}57%{transform:rotate(-22.1deg)}65%{transform:rotate(-30.3deg)}74%{transform:rotate(-28.3deg)}81%{transform:rotate(-9.1deg)}85%{transform:rotate(-5.0deg)}90%{transform:rotate(-5.0deg)}95%{transform:rotate(-28.3deg)}100%{transform:rotate(-31.0deg)}}
+@keyframes ex-stick-b{0%{transform:rotate(18.5deg)}7%{transform:rotate(15.1deg)}15%{transform:rotate(23.0deg)}24%{transform:rotate(0.2deg)}31%{transform:rotate(-33.4deg)}35%{transform:rotate(-37.1deg)}40%{transform:rotate(-37.1deg)}45%{transform:rotate(0.2deg)}50%{transform:rotate(18.5deg)}57%{transform:rotate(15.1deg)}65%{transform:rotate(23.0deg)}74%{transform:rotate(0.2deg)}81%{transform:rotate(-33.4deg)}85%{transform:rotate(-37.1deg)}90%{transform:rotate(-37.1deg)}95%{transform:rotate(0.2deg)}100%{transform:rotate(18.5deg)}}
+@keyframes ex-bucket-b{0%{transform:rotate(27.4deg)}7%{transform:rotate(-8.0deg)}15%{transform:rotate(77.3deg)}24%{transform:rotate(113.0deg)}31%{transform:rotate(117.5deg)}35%{transform:rotate(-2.9deg)}40%{transform:rotate(-2.9deg)}45%{transform:rotate(113.0deg)}50%{transform:rotate(27.4deg)}57%{transform:rotate(-8.0deg)}65%{transform:rotate(77.3deg)}74%{transform:rotate(113.0deg)}81%{transform:rotate(117.5deg)}85%{transform:rotate(-2.9deg)}90%{transform:rotate(-2.9deg)}95%{transform:rotate(113.0deg)}100%{transform:rotate(27.4deg)}}
+@keyframes ex-drop-b{0%,69%{opacity:0;transform:translate(-15px,46px)}72%{opacity:.9}83%{opacity:.9;transform:translate(-15px,60px)}86%,100%{opacity:0;transform:translate(-15px,63px)}}
+@keyframes spoil{0%,41%{transform:scale(0)}44%{transform:scale(.8,.56)}47%,86%{transform:scale(.72,.62)}89%{transform:scale(1.18,1.04)}92%,100%{transform:scale(1.12)}}
+@keyframes sp-l{0%{opacity:0;transform:none}15%{opacity:.95}100%{opacity:0;transform:translate(-17px,19px)}}
+@keyframes sp-r{0%{opacity:0;transform:none}15%{opacity:.95}100%{opacity:0;transform:translate(16px,19px)}}
