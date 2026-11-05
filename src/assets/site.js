@@ -438,6 +438,47 @@ if (/[?&]slots\b/.test(location.search)) {
     thanks.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
 
+  // ---- a clean estimate email: the customer's answers first in a set order, empty rows left out,
+  // the phone written 423-555-1234, and all the behind-the-scenes source fields folded into one
+  // plain "Found us" line (plus one "Ad details" row only when the visit came from an ad). Without JavaScript
+  // the form still posts every field as it is.
+  function pageName(p) {
+    p = (p || '').split(/[?#]/)[0].replace(/\/+$/, '');
+    if (!p) return 'Home page';
+    if (p.indexOf('/project/') === 0) return 'a job page (' + p.slice(9).replace(/^\d{4}-\d{2}-/, '').replace(/-/g, ' ') + ')';
+    var n = p.replace(/^\/(lp\/)?/, '').replace(/-/g, ' ');
+    return n.charAt(0).toUpperCase() + n.slice(1) + ' page';
+  }
+  function tidy(raw) {
+    var v = function (k) { var x = raw.get(k); return typeof x === 'string' ? x.trim() : ''; };
+    var fd = new FormData(), add = function (k, x) { if (x) fd.append(k, x); };
+    var digits = v('Phone').replace(/\D/g, '');
+    if (digits.length === 11 && digits.charAt(0) === '1') digits = digits.slice(1);
+    add('Name', v('Name'));
+    add('Phone', digits.length === 10 ? digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6) : v('Phone'));
+    add('email', v('email'));
+    add('Project address or town', v('Project address or town'));
+    add('Project type', v('Project type'));
+    add('I am a', v('I am a'));
+    add('Project details', v('Project details'));
+    add('Heard about us', v('Heard about us'));
+    var ref = v('Referrer'), host = '';
+    try { host = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''; } catch (e) {}
+    var how = v('gclid') || /google/i.test(v('utm_source')) && /cpc|paid|ads/i.test(v('utm_medium')) ? 'a Google ad'
+      : v('fbclid') && /cpc|paid|ads/i.test(v('utm_medium')) || /facebook|instagram|meta/i.test(v('utm_source')) && v('utm_medium') ? 'a Facebook or Instagram ad'
+      : /google\./.test(host) ? 'Google search or Maps'
+      : /facebook|fb\.|instagram/.test(host) || v('fbclid') ? 'Facebook'
+      : /bing\.|yahoo\.|duckduckgo/.test(host) ? 'a web search (' + host + ')'
+      : host && host !== location.hostname ? 'a link on ' + host
+      : 'typed the address or used a saved link';
+    var first = pageName(v('First page visited'));
+    add('Found us', how.charAt(0).toUpperCase() + how.slice(1) + (/^(Home|Estimate) page$/.test(first) ? '' : ', first looked at the ' + first));
+    var ad = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].map(v).filter(Boolean);
+    if (v('gclid')) ad.push('gclid ' + v('gclid')); else if (v('fbclid') && /ad/.test(how)) ad.push('fbclid ' + v('fbclid'));
+    add('Ad details', ad.join(' / '));
+    return fd;
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     fail.hidden = true;
@@ -450,8 +491,7 @@ if (/[?&]slots\b/.test(location.search)) {
     // honeypot filled or sent within 3 seconds: almost certainly a bot, so pretend it worked
     if (form.querySelector('[name=_gotcha]').value || Date.now() - opened < 3000) { showThanks(); return; }
     sendBtn.disabled = true; sendBtn.textContent = files.length ? 'Sending photos…' : 'Sending…';
-    var fd = new FormData(form);
-    fd.delete('photos[]');
+    var fd = tidy(new FormData(form));
     Promise.all(files.map(shrink)).then(function (ready) {
       ready.forEach(function (f) { fd.append('photos[]', f, f.name); });
       return fetch(form.getAttribute('action'), { method: 'POST', body: fd, headers: { Accept: 'application/json' } });

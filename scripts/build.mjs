@@ -105,8 +105,9 @@ const vars = {
   review_link: config.googleReviewUrl ? `<a class="textlink" href="${esc(config.googleReviewUrl)}">Leave a review</a>` : '',
   // the small social marks in the header, footer and estimate page: shown only once the URL exists (always while building)
   fb_icon: config.facebook || !LIVE ? `<a href="${esc(config.facebook || '#facebook-url-needed')}" aria-label="${esc(config.name)} on Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-fb"/></svg></a>` : '',
-  // Instagram: a plain mark (not a link) until site.config.json > instagram is filled, then a link, the same as Google
-  ig_icon: config.instagram ? `<a href="${esc(config.instagram)}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Instagram, coming soon" title="Instagram coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></span>`,
+  // Instagram: TVIS has no account (Jeremy, 2026-11-05), so no mark at all while site.config.json > instagram is blank;
+  // put the profile URL there one day and the linked mark comes back in the header, menu, footer and estimate card
+  ig_icon: config.instagram ? `<a href="${esc(config.instagram)}" aria-label="${esc(config.name)} on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg></a>` : '',
   // Google: a plain mark (not a link) until site.config.json > googleBusinessProfile is filled, then a link
   gbp_icon: config.googleBusinessProfile ? `<a href="${esc(config.googleBusinessProfile)}" aria-label="${esc(config.name)} on Google"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></a>` : `<span class="soc-soon" role="img" aria-label="${esc(config.name)} on Google, coming soon" title="Google profile coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg></span>`,
   form_endpoint: esc(config.formEndpoint || ''),

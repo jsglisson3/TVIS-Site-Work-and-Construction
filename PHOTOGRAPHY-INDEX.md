@@ -39,6 +39,12 @@ Placed on the site 2026-11-04 (Jeremy asked for it; he commits and pushes):
 - **Not used, on the bench:** `fb122102115807532034` and `fb122102115783532034` (graded red-clay and gravel drive in the woods; a closer look showed they read as dirt, not as the crushed-stone base `pads-step-3` needs, so that spot keeps IMG_0163), `fb122102098005532034` and `fb122102098293532034` (the hillside job already has two pour shots and two lot shots), `fb122097567753532034` and `fb122102112093532034` (the wall job, toys and an SUV in frame), and the roadside mini-excavator pair from 2026-11-03 (ask Joey what that job is).
 - The stamped patio answers the old "Ask Joey about the stamped concrete patio" item only partly: `IMG_5062`/`IMG_5074` in Drive are a different patio.
 
+## Google Business Profile picks (2026-11-04)
+
+15 photos chosen for the Google Business Profile, saved as full-size JPG copies in `C:\Users\jsgli\Desktop\TVIS Google Business Photos\` (with `PICKS.txt` giving the reason for each): IMG_8314, IMG_8428, IMG_8753, fb122102127279532034, fb122102112147532034, IMG_7070, IMG_5473, 116BADD9, IMG_6867.heic, IMG_5203, IMG_7245, IMG_4281, IMG_1175, IMG_8083, 1000035915. One or two per job across 11 jobs.
+
+New in Drive since the last review: `joey rocks .jpg` (2048x1152, stone-edged landscape bed beside a new asphalt drive). `2a621362-1b11-4c47-b72c-b73ae168889e.jpg` is gone (only its " (1)" copy is left), and `joey rocks .jpg` is byte-for-byte identical to that copy: the same photo, renamed in Drive. The site copy (`home-homeowner`, Harrison after-4) is unaffected.
+
 ## Notes on repeats
 
 - On the pages, each photo appears once, except `IMG_7069` (rock swale), which is used on Homeowners and on the Drainage page in two different crops, and `IMG_6867.heic` (the pad in forms), which is the homepage pad card and step 2 of the pad sequence.
