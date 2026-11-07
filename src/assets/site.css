@@ -1881,25 +1881,27 @@ html.lb-open{overflow:hidden}
 
 /* ---- Home hero motion (2026-11-07, Jeremy: "make it move slightly... something interesting instead of this static
    photo alone"). Researched, then kept to the restraint premium builder and architecture sites use: one cinematic
-   reveal on load, then a photo that breathes, and a little depth under the mouse. All of it is transform-only (no
+   reveal on load, then stillness. All of it is transform-only (no
    repaint), the photo still paints at once so the page's speed score is unchanged, and none of it runs under
    prefers-reduced-motion (the hero then simply appears, finished).
    1. The blade pass (once): a dark panel covering the photo slides off to the right with a 5px olive edge leading it,
       like a dozer blade passing over and leaving the finished grade behind (1.25s). The photo eases from 108% to 100%.
    2. The words: each headline line rises from behind its own baseline, the olive bar draws in from the left, then the
       subhead, buttons and photo line settle; the caption bar comes up last, once the photo is uncovered.
-   3. The breathing photo (after the reveal, desktop and phones): a very slow push-in and drift, 26s each way, paused
-      while the hero is scrolled out of view (site.js adds .hv-off).
-   4. Depth (desktop with a mouse only, site.js): the photo shifts up to 12px against the pointer and the contour map on
-      the dark field a third of that the other way, easing over .9s. ---- */
+   3. The glide (desktop with a mouse): the photo follows the pointer by up to 8px across and 5px up and down, eased in
+      site.js so it glides and comes to rest; nothing moves on its own. (A looping 26s drift and a CSS-transition version
+      of this that moved the contour lines the other way were tried first the same day; Jeremy found them odd.) ---- */
 .hero.hv .hero-bg{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   /* 1. the blade pass */
   .hero.hv .hero-bg::before{content:"";position:absolute;z-index:3;top:0;bottom:0;left:-6px;right:0;background:#1B2225;border-left:6px solid var(--olive);pointer-events:none;animation:hvBlade 1.25s cubic-bezier(.65,0,.25,1) .1s both}
-  .hero.hv .hero-bg .photo>img{animation:hvPhoto 2.4s cubic-bezier(.2,.7,.2,1) both;translate:var(--hx,0px) var(--hy,0px);transition:translate .9s cubic-bezier(.2,.7,.2,1)}
-  /* 3. the breathing photo: the frame starts a touch zoomed so the drift and the depth never show an edge */
-  .hero.hv .hero-bg .photo{transform-origin:62% 70%;animation:hvDrift 26s ease-in-out 2.4s infinite alternate both}
-  .hero.hv.hv-off .hero-bg .photo{animation-play-state:paused}
+  /* a slow, one-time settle: the photo eases from 107% to 100% over 6s after the blade uncovers it, then stops */
+  .hero.hv .hero-bg .photo>img{animation:hvPhoto 6s cubic-bezier(.16,.84,.3,1) both}
+  /* 3. the glide (desktop with a mouse, site.js): the photo frame follows the pointer by a few pixels with a smooth
+     ease, nothing moves on its own. The frame sits 3% oversize so an edge never shows. */
+  @media (min-width:901px) and (hover:hover) and (pointer:fine){
+    .hero.hv .hero-bg .photo{transform:translate3d(var(--hx,0px),var(--hy,0px),0) scale(1.03);will-change:transform}
+  }
   /* 2. the words */
   .hero.hv h1 span{animation:hvLine .95s cubic-bezier(.2,.7,.2,1) .2s both}
   .hero.hv h1 span+span{animation-delay:.34s}
@@ -1909,14 +1911,9 @@ html.lb-open{overflow:hidden}
   .hero.hv .hv-proof{animation-delay:.95s}
   /* backwards, not both: once it has risen the bar drops its clip-path, which would otherwise hide the focus ring */
   .hero.hv .hv-job{animation:jobIn .6s var(--ease) 1.2s backwards}
-  /* 4. depth: the contour map drifts a little against the photo */
-  @media (min-width:901px){
-    .hero.hv::before{inset:-12px auto -12px -12px;translate:calc(var(--hx,0px) * -.35) calc(var(--hy,0px) * -.35);transition:translate .9s cubic-bezier(.2,.7,.2,1)}
-  }
 }
 @keyframes hvBlade{from{transform:translateX(0)}to{transform:translateX(calc(100% + 12px))}}
-@keyframes hvPhoto{from{transform:scale(1.08)}to{transform:none}}
-@keyframes hvDrift{from{transform:scale(1.035)}to{transform:scale(1.085) translate3d(-1.1%,-.7%,0)}}
+@keyframes hvPhoto{from{transform:scale(1.07)}to{transform:none}}
 @keyframes hvLine{from{transform:translateY(.5em);clip-path:inset(100% 0 -20% 0)}to{transform:none;clip-path:inset(-20% 0 -20% 0)}}
 @keyframes hvBar{from{transform:scaleX(0)}to{transform:none}}
 /* phones, reworked smaller (2026-11-07, Jeremy: "too big text" on mobile): a 37px headline at 390px wide instead of 44,

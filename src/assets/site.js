@@ -180,26 +180,30 @@
   update();
 })();
 
-// ---- homepage hero: depth under the mouse, and the photo's slow drift paused while the hero is out of view ----
-//      (desktop with a fine pointer only for the depth; nothing at all under prefers-reduced-motion)
+// ---- homepage hero: the photo glides a few pixels with the mouse (desktop, fine pointer, never under reduced motion).
+//      Eased toward the pointer every frame and stopped once it has come to rest, so nothing moves on its own. ----
 (function () {
   var hero = document.querySelector('.hero.hv');
   if (!hero || !window.matchMedia) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) { hero.classList.toggle('hv-off', !es[0].isIntersecting); }).observe(hero);
-  }
   var fine = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 901px)');
-  var raf = 0, x = 0, y = 0;
-  function apply() { raf = 0; hero.style.setProperty('--hx', x.toFixed(1) + 'px'); hero.style.setProperty('--hy', y.toFixed(1) + 'px'); }
+  var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+  function step() {
+    x += (tx - x) * 0.07; y += (ty - y) * 0.07;
+    if (Math.abs(tx - x) < 0.05 && Math.abs(ty - y) < 0.05) { x = tx; y = ty; raf = 0; }
+    else raf = requestAnimationFrame(step);
+    hero.style.setProperty('--hx', x.toFixed(2) + 'px');
+    hero.style.setProperty('--hy', y.toFixed(2) + 'px');
+  }
+  function go() { if (!raf) raf = requestAnimationFrame(step); }
   hero.addEventListener('pointermove', function (e) {
     if (!fine.matches) return;
     var r = hero.getBoundingClientRect();
-    x = -((e.clientX - r.left) / r.width - .5) * 24;   // up to 12px either way, against the pointer
-    y = -((e.clientY - r.top) / r.height - .5) * 16;   // up to 8px
-    if (!raf) raf = requestAnimationFrame(apply);
+    tx = ((e.clientX - r.left) / r.width - .5) * -16;   // up to 8px either way, against the pointer
+    ty = ((e.clientY - r.top) / r.height - .5) * -10;   // up to 5px
+    go();
   }, { passive: true });
-  hero.addEventListener('pointerleave', function () { x = 0; y = 0; if (!raf) raf = requestAnimationFrame(apply); });
+  hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; go(); });
 })();
 
 // ---- ?slots shows the file name each empty photo spot wants (for adding photos, not for visitors) ----
