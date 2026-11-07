@@ -517,7 +517,7 @@ function areaServed() {
 // Service card for Google: what the page offers, who offers it, where
 function serviceJsonLd(meta, urlPath) {
   const data = { '@context': 'https://schema.org', '@type': 'Service', name: meta.crumb || shortTitle(meta.title), description: meta.description || '',
-    provider: { '@type': 'HomeAndConstructionBusiness', name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
+    provider: { '@type': 'HomeAndConstructionBusiness', '@id': siteOrigin ? siteOrigin + '/#business' : undefined, name: config.name, telephone: digits ? tel.replace('tel:', '') : undefined, url: siteOrigin ? siteOrigin + '/' : undefined },
     areaServed: areaServed(), url: siteOrigin ? siteOrigin + urlPath : undefined };
   return ldJson(data);
 }
@@ -537,7 +537,8 @@ function breadcrumbs(urlPath, title, crumb) {
 // The site's name for Google, so results say "TVIS Construction" above the address instead of the bare domain
 function websiteJsonLd() {
   if (!siteOrigin) return '';
-  return ldJson({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.name, alternateName: 'TVIS', url: siteOrigin + '/' });
+  // @id ties the site to the business below, so Google reads them as one brand (helps the site name and sitelinks)
+  return ldJson({ '@context': 'https://schema.org', '@type': 'WebSite', '@id': siteOrigin + '/#website', name: config.name, alternateName: 'TVIS', url: siteOrigin + '/', publisher: { '@id': siteOrigin + '/#business' } });
 }
 
 function localBusinessJsonLd() {
@@ -545,6 +546,7 @@ function localBusinessJsonLd() {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'HomeAndConstructionBusiness',
+    '@id': site ? site + '/#business' : undefined,
     name: config.name,
     slogan: config.tagline,
     description: 'Site prep and excavation, drainage and culverts, gravel and concrete driveways, pads for sheds and garages, concrete flat work and demolition for homeowners, builders and contractors in Chattanooga, TN and surrounding communities.',
