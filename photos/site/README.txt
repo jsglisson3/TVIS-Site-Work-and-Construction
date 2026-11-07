@@ -17,6 +17,7 @@ Homepage
   home-svc-drainage.jpg             French drain trench with pipe and stone
   svc-drainage-hero.jpg             rock swale and block wall, 4:3 (Drainage page opening)
   home-svc-siteprep.jpg             excavator grading a new home lot
+  home-owner.jpg                    Joey on a job with his machine, 4:3 (the "Meet Joey" section above the band)
   (the homepage's Recent projects come from the projects/ folder, not from here)
 
 Homeowners page

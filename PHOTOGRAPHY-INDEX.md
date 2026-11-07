@@ -26,7 +26,7 @@ The running record of every photo in the master library, where each one is used 
 
 - **Ask Joey about the stamped concrete patio** (`IMG_5062`, `IMG_5074`). If TVIS poured it, it is a good second Concrete project or the Concrete page panel.
 - **Cleanup before/after is half there.** `IMG_8985`, `IMG_8986`, `IMG_8988`, `IMG_8993` are overgrown yards around one house. With "after" shots of the same views from Joey, that becomes a real cleanup project and slider.
-- **Still missing from the library:** a real teardown (Demolition still uses land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
+- **Still missing from the library:** a real teardown for the Demolition page photos (the 2026-11 mobile home teardown project has one now, see below; the page photos still use land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
 - **On the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
 
 ## Facebook photos (second source)
@@ -407,3 +407,10 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 - Each project's month matches its photos' capture dates. Towns came from GPS in the originals during the 2026-11-02 review; the Drive copies no longer carry GPS, so towns can't be re-checked from the files.
 - Fixed the same day with Jeremy's go-ahead: the Homeowners `pads-step-3` alt text described a concrete slab, but the photo is a gravel entrance; it now matches the Pads page wording.
 - Re-checked the same afternoon and put back: `IMG_6867` (garage pad progress-1) and `IMG_8090` (final grading after-3). Their capture dates fit the jobs (IMG_6867 is 9 Aug 2025, two days before that slab was poured; IMG_8090 is the day after the other final-grading photos), and the earlier review placed them using GPS, which the Drive copies no longer carry. Joey can still confirm.
+
+Second pull 2026-11-07 (Jeremy sent the photos; dates are Joey's posts of 2026-11-06):
+- **New project `projects/2026-11-mobile-home-teardown/`** (Property Cleanup, so it is also the "Recent job like this" on the Demolition & Cleanup page): before-1 `fb122105896875532034` / after-1 `fb122105896815532034` (slider), before-2 `fb122105896851532034`, progress-1 `fb122105896893532034`, progress-2 `fb122105896827532034` (cropped), after-2 `fbnoid-cleared-lot` (cropped). Crops keep the dumpster company's sign and phone number off the site. Town unknown: ask Joey.
+- **Homepage "Meet Joey"**: `photos/site/home-owner.jpg` is `fb122105881167532034` (Joey with Tom, the customer), lightly brightened, 4:3.
+- **Not used:** `fb122105893143532034` (house number and people on the porch).
+- **Worth a swap later:** the Demolition page and homepage demolition card still show brush clearing; `fb122105896893532034` (excavator on the debris pile) is the first real teardown shot.
+

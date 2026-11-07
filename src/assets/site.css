@@ -1771,3 +1771,24 @@ html.lb-open{overflow:hidden}
 .pd-ask{margin-top:32px;color:var(--ink-soft)}
 .pd-ask a{font-weight:700;color:var(--olive-deep)}
 @media (min-width:901px){ .pd-rev{margin-top:40px} .pd-rev .rev{max-width:820px} }
+
+/* ---------- Meet the owner (home, 2026-11-07) ----------
+   Joey's photo on the left, placed like the Builders section photos (6px olive bottom edge, offset contour panel
+   behind it on desktop), words on the right. Phones: photo edge to edge, then the words. */
+.owner-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px clamp(40px,5vw,80px);align-items:center}
+.owner-pic>.photo{aspect-ratio:4/3}
+.owner-pic>.photo>img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.owner-text h2{font-size:var(--t-h2);line-height:1}
+.owner-text p:not(.sv-eyebrow){margin-top:24px;font-size:clamp(18px,1.5vw,20px);line-height:1.55;max-width:44ch}
+.owner-text .bar+p{margin-top:28px}
+.owner-text .cta-actions{margin-top:32px}
+@media (min-width:901px){
+  .owner-pic{position:relative;isolation:isolate;margin-bottom:20px}
+  .owner-pic::after{content:"";position:absolute;top:20px;right:20px;bottom:-20px;left:-20px;z-index:-1;
+    background:var(--tint) url(/assets/img/contour.svg) 50% 50%/1600px 400px no-repeat}
+  .owner-pic>.photo{border-bottom:6px solid var(--olive)}
+}
+@media (max-width:900px){
+  .owner-in{grid-template-columns:1fr;gap:24px}
+  .owner-pic{margin:0 calc(-1 * var(--gut))}
+}

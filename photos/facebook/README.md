@@ -20,10 +20,18 @@ No Facebook login is needed: the page's photos open one by one while signed out.
 
 ## Log of processed photos
 
-Latest post covered: **2026-11-03**. 26 photos looked at on 2026-11-04. Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.md`.
+Latest post covered: **2026-11-06**. 26 photos looked at on 2026-11-04; 8 more on 2026-11-07 (Jeremy downloaded them and sent them in, because Facebook is blocked from Claude's cloud workspace). Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.md`.
 
 | fbid | Posted | Result | What it shows | Job (best guess) |
 |---|---|---|---|---|
+| 122105896875532034 | 2026-11-06 | Saved, used | Wide before: old mobile home, backhoe in front, mini excavator by the shed | Mobile home teardown (Joey's posts: "removal and clean up of an old mobile home", "seed and straw") |
+| 122105896851532034 | 2026-11-06 | Saved, used | Backhoe parked in front of the mobile home, mini excavator behind | Same |
+| 122105893143532034 | 2026-11-06 | Saved, not for the site | Before, machines and the home; two people on the porch steps and the house number on the post | Same |
+| 122105896827532034 | 2026-11-06 | Saved, used (cropped) | From the backhoe seat: home half torn down, debris, mattresses, rented dumpsters (crop drops the dumpster company's sign) | Same |
+| 122105896893532034 | 2026-11-06 | Saved, used | Mini excavator and backhoe on the flattened debris pile | Same |
+| 122105896815532034 | 2026-11-06 | Saved, used | After: cleared lot, dumpster at the back | Same |
+| (no id: Jeremy's file "s.jpg") | 2026-11-06 | Saved as `2026-11-06_fbnoid-cleared-lot.jpg`, used (cropped) | After: lot seeded and strawed, dumpster with the dumpster company's sign at the right (crop drops it) | Same |
+| 122105881167532034 | 2026-11-06 | Saved, used on the homepage | Joey (right) with Tom, the customer, beside the mini excavator and debris | Same; "Meet Joey" photo `photos/site/home-owner.jpg` |
 | 122102962827532034 | 2026-11-03 | Saved | Orange mini excavator on a strip of dirt along a road beside a brick building | Roadside job, Nov 2026 (ask Joey) |
 | 122102962803532034 | 2026-11-03 | Saved | Same job, wider: graded dirt strip between lawn and road, machine by the building | Same |
 | 122102133489532034 | 2026-11-02 | Skipped (child in photo) | Graded lot, gravel, footings | |

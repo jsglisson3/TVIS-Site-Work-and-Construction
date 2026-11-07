@@ -108,6 +108,25 @@ body_class: page-home
   </div>
 </section>
 
+<!-- Meet the owner (2026-11-07, Jeremy: "a meet the owner section"). Photo: photos/site/home-owner.jpg,
+     Joey on the right with the customer (Joey's Facebook post, 2026-11-06). The yellow line only shows while building (launchMode false). -->
+<section class="sec owner" aria-labelledby="owner-h">
+  <div class="wrap owner-in">
+    <div class="owner-pic">{{photo slot="home-owner" label="Joey on a job, machine in frame" alt="Joey, the owner of TVIS Construction (right), with a customer beside the mini excavator after tearing down an old mobile home" sizes="(min-width: 1440px) 680px, (min-width: 900px) 50vw, 100vw"}}</div>
+    <div class="owner-text">
+      <p class="sv-eyebrow">The owner</p>
+      <h2 id="owner-h">Meet Joey</h2>
+      <span class="bar" aria-hidden="true"></span>
+      <p>TVIS Construction is Joey&rsquo;s business, based in {{base}}. Call and you talk to Joey himself. He&rsquo;ll talk the job through with you and give you a straight answer on how he&rsquo;d handle it.</p>
+      <p><span class="tbd tbd-long">[JOEY: one or two sentences, e.g. how long he has been doing this work or why he started TVIS]</span></p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="/estimate">Get an Estimate</a>
+        <a class="call-link" href="{{phone_href}}" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#i-phone"/></svg>Call Joey</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec band" aria-labelledby="band-h">
   <div class="band-bg">{{photo slot="home-band" label="wide jobsite shot, cleared lot or a machine at work" alt="Cleared wooded lot with new footings poured for a home" sizes="100vw"}}</div>
   <div class="wrap band-in">
