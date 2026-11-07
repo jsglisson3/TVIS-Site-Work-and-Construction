@@ -1,6 +1,6 @@
 title: Mobile home teardown and lot cleanup
 category: Property Cleanup
-town:
+town: Dunlap
 status: Completed
 featured: no
 description: An old mobile home that had sat empty for years torn down and hauled off, then the lot cleaned up, seeded and strawed.

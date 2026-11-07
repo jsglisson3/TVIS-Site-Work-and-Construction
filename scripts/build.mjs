@@ -514,6 +514,8 @@ const AREA_TYPES = {
   'East Brainerd': ['Place', 'East Brainerd, TN'], 'East Ridge': ['City', 'East Ridge, TN'], 'Ooltewah': ['Place', 'Ooltewah, TN'],
   'Cleveland': ['City', 'Cleveland, TN'], 'Jasper': ['City', 'Jasper, TN'], 'Sequatchie County': ['AdministrativeArea', 'Sequatchie County, TN'],
   'North Georgia': ['AdministrativeArea', 'North Georgia'],
+  'Harrison': ['Place', 'Harrison, TN'], 'Hamilton County': ['AdministrativeArea', 'Hamilton County, TN'],
+  'Ringgold': ['City', 'Ringgold, GA'], 'Rossville': ['City', 'Rossville, GA'], 'Fort Oglethorpe': ['City', 'Fort Oglethorpe, GA'],
 };
 function areaServed() {
   const towns = filled('serviceTowns') ? config.serviceTowns.split(/,\s*|\s+and\s+/).map(t => t.trim()).filter(Boolean) : [];
