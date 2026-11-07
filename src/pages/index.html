@@ -6,22 +6,29 @@ nav: home
 schema: yes
 body_class: page-home
 ---
-<section class="hero" aria-labelledby="hero-h">
+<section class="hero hv" aria-labelledby="hero-h">
   <!-- Headline "Groundwork Done Right." is Jeremy's choice (2026-10-28); "From the Ground Up." stays the tagline (footer, config).
-       Concept C (2026-11-02): a "where" line above the headline, a plain one-sentence subhead, a lighter scrim and the service strip under the photo.
-       Full-width jobsite photograph. Drop photos/site/home-hero.jpg in and it replaces the drawing. -->
+       Hero v2 (2026-11-07, Jeremy picked option 2 of three, then photo 1 of six): one finished job fills the right of the
+       screen (home-hero, IMG_8482, the East Ridge hillside job: new concrete drive up to the two-story home under tall
+       pines), fading into the dark field behind the words. The caption bar at the bottom right, a step above the service
+       bar, names the job and links to it (Jeremy took out a row of three small project photos there: "a little less
+       clutter"). Finished work only: no in-progress shots here.
+       Phones: the photo on top, the caption bar under it, then the words on the dark field. -->
   <div class="hero-bg">
-    {{photo slot="home-hero" sizes="(max-width: 900px) 80vw, 100vw" label="wide jobsite shot, excavator grading a residential lot, crew in frame" alt="Mini excavator grading a hillside lot in front of a new two-story home" kind="Hero photo" draw="hero" eager}}
+    {{photo slot="home-hero" sizes="(max-width: 900px) 66vw, 72vw" label="finished job, wide, bright: a new lawn, drive or pad with the home beside it" alt="Finished concrete driveway up a wooded hillside lot to a new two-story home with tall pines around it, East Ridge" kind="Hero photo" draw="hero" eager}}
   </div>
   <div class="wrap hero-in">
-    <p class="hero-eyebrow">Excavation &amp; Sitework <span aria-hidden="true">&middot;</span> Chattanooga, TN</p>
-    <h1 id="hero-h"><span>Groundwork</span> <span>Done Right.</span></h1>
+    <!-- The "where" line sits inside the H1 (2026-11-07 SEO pass) so the page's main heading says what TVIS does and where;
+         it looks exactly as before. -->
+    <h1 id="hero-h"><span class="hero-eyebrow">Excavation &amp; Sitework <span aria-hidden="true">&middot;</span> Chattanooga, TN</span> <span class="hl">Groundwork</span> <span class="hl">Done Right.</span></h1>
     <p class="hero-sub">Site prep, driveways, drainage, concrete and pads for homeowners and builders.</p>
     <div class="hero-act">
       <a class="btn btn-primary" href="/estimate">Get an Estimate</a>
       <a class="btn btn-outline" href="{{phone_href}}" data-track="call">Call us</a>
     </div>
+    <p class="hv-proof"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-addphoto"/></svg><span>Send a few photos. We&rsquo;ll look them over and call to talk it through.</span></p>
   </div>
+  <a class="phero-job hv-job" href="/project/2026-10-hillside-driveway"><span class="job-text"><small>In this photo</small><strong>Hillside lot grading and concrete driveway</strong><span class="job-meta">East Ridge, TN &middot; October 2026</span><span class="see">See the 10 photos</span></span><span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
 </section>
 
 {{> service-strip}}
@@ -112,8 +119,10 @@ body_class: page-home
      Joey on the right with the customer (Joey's Facebook post, 2026-11-06). The yellow line only shows while building (launchMode false). -->
 <section class="sec owner" aria-labelledby="owner-h">
   <div class="wrap owner-in">
-    <div class="owner-pic">{{photo slot="home-owner" label="Joey on a job, machine in frame" alt="Joey, the owner of TVIS Construction (right), with a customer beside the mini excavator after tearing down an old mobile home" sizes="(min-width: 1440px) 720px, (min-width: 900px) 54vw, 100vw"}}
-      <a class="phero-job" href="/project/2026-11-mobile-home-teardown"><span class="job-text"><small>In this photo</small><strong>Mobile home teardown and lot cleanup</strong><span class="job-meta">November 2026</span><span class="see">See the 6 photos</span></span><span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
+    <div class="owner-pic">
+      <!-- name tag over Joey (Jeremy, 2026-11-07: make it clear who Joey is); placed in % of the 4:3 photo, so it stays on him at every width -->
+      <div class="owner-photo">{{photo slot="home-owner" label="Joey on a job, machine in frame" alt="Joey, the owner of TVIS Construction (right), with a customer beside the mini excavator after tearing down an old mobile home" sizes="(min-width: 1440px) 720px, (min-width: 900px) 54vw, 100vw"}}<span class="owner-tag" aria-hidden="true">Joey <small>Owner</small></span></div>
+      <a class="phero-job" href="/project/2026-11-mobile-home-teardown"><span class="job-text"><small>In this photo</small><strong>Mobile home teardown and lot cleanup</strong><span class="job-meta">Joey (right) with the customer</span><span class="see">See the 6 photos</span></span><span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
     </div>
     <div class="owner-text">
       <p class="sv-eyebrow">The owner</p>

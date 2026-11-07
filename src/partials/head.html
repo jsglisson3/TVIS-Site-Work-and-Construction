@@ -30,6 +30,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" href="/assets/fonts/BarlowCondensed-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/SourceSans3.woff2" as="font" type="font/woff2" crossorigin>
+<!-- the contour map is the biggest thing on screen in some page openings (Projects) and short pages' footers; fetching it early keeps it from being the slowest paint -->
+<link rel="preload" href="/assets/img/contour.svg" as="image" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css">
 {{structured_data}}
 <!-- ===== Tracking: Google Analytics / Google Ads / Meta Pixel =====

@@ -11,7 +11,7 @@ Needs [Node.js](https://nodejs.org) 20 or newer.
 ```bash
 npm install      # once
 npm run dev      # builds into dist/ and serves a preview at http://localhost:8080
-```
+```d
 
 Re-run `npm run dev` after changing anything. Press Ctrl+C to stop it.
 

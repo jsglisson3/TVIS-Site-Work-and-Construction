@@ -132,12 +132,18 @@ async function newer(src, out) {
 
 // Opening photos Jeremy judged soft on a desktop screen: their desktop-size files (960px and up) get a light
 // sharpen and higher quality. Phone sizes stay as they are, so phone page weight and Lighthouse don't move.
-const CRISP = new Set(['homeowners-hero', 'builders-hero', 'more-hero']);
+const CRISP = new Set(['homeowners-hero', 'builders-hero', 'more-hero', 'home-hero']);
+
+// Photos drawn wider than 1000px on a desktop (the home hero fills about 72% of the screen) also get a file at their full
+// size (up to 2400px), so Retina laptops and big monitors get a sharp picture. Phones never ask for it.
+const XL = new Set(['home-hero']);
 
 // Resize one photo to webp at several widths; returns {srcset, src, w, h}.
 // A light grade baked into named site photos at build time (the original in photos/site stays untouched):
-// a touch more brightness, colour and contrast, then a mild sharpen. The home hero was shot under an overcast sky.
-const GRADE = { 'home-hero': { brightness: 1.03, saturation: 1.14, contrast: [1.10, -12], sharpen: 0.8 } };
+// a touch more brightness, colour and contrast, then a mild sharpen. Used 2026-11-03 to 2026-11-07 for the old home hero
+// (IMG_8314, shot under an overcast sky); the hero photo since then needs none. Example entry:
+// 'home-hero': { brightness: 1.03, saturation: 1.14, contrast: [1.10, -12], sharpen: 0.8 }
+const GRADE = {};
 async function processPhoto(src, outDir, baseName) {
   await fs.mkdir(outDir, { recursive: true });
   const meta = await sharp(src).rotate().metadata();
@@ -145,6 +151,7 @@ async function processPhoto(src, outDir, baseName) {
   const rotated = (meta.orientation || 1) >= 5;
   const fullW = rotated ? meta.height : meta.width, fullH = rotated ? meta.width : meta.height;
   const widths = WIDTHS.filter(w => w < fullW).concat(fullW > WIDTHS.at(-1) ? [] : [fullW]);
+  if (XL.has(baseName) && fullW > WIDTHS.at(-1)) widths.push(Math.min(fullW, 2400));
   const out = [];
   for (const w of widths.length ? widths : [fullW]) {
     const file = `${baseName}-${w}.webp`;

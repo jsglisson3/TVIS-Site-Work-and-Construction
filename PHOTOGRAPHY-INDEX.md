@@ -29,6 +29,12 @@ The running record of every photo in the master library, where each one is used 
 - **Still missing from the library:** a real teardown for the Demolition page photos (the 2026-11 mobile home teardown project has one now, see below; the page photos still use land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
 - **On the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
 
+## Home hero (2026-11-07)
+
+The homepage hero was rebuilt and now shows **finished work only** (Jeremy turned down an "In progress" photo). Main photo `home-hero` = IMG_8482 (East Ridge hillside drive under tall pines; also hillside after-2), picked by Jeremy from six candidates. A row of three small "More finished work" photos (IMG_7070, IMG_8753, 116BADD9) was tried under it the same day and taken out by Jeremy for less clutter.
+
+How it was picked: about 90 photos compared side by side, with full-size decodes of the strongest HEICs. Most finished-job photos put the house in the middle of the frame, so the hero photo sits on the right and fades into the dark behind the words. The other five candidates Jeremy saw, for a future change: IMG_8483 (same hillside drive, house small), IMG_3836 (white farmhouse with new gravel drive; unused anywhere, but no project page), 823cc44f (Harrison drive between two homes, stone beds), IMG_8753 (gray two-story, Chattanooga), IMG_7070 (Harrison lawn). IMG_8428 (finisher edging a fresh pour) is the strongest craft shot if an in-progress photo is ever wanted elsewhere. The mobile home teardown photos are too harsh (sun in frame) for a hero.
+
 ## Facebook photos (second source)
 
 Joey also posts job photos on the TVIS Facebook page that aren't in Drive. New ones are saved in `photos/facebook/` (stripped of metadata, named `<post date>_fb<photo id>.jpg`). Steps for the next pull and the log of every Facebook photo already looked at are in `photos/facebook/README.md`. First pull 2026-11-04: 26 looked at, 16 saved, 10 skipped (5 already in Drive: IMG_7069, IMG_8345, IMG_8352, IMG_8429, IMG_8483).
@@ -67,7 +73,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | builders-utilities | builders | 1000035893.jpg | 0.80 |
 | home-band | Home | IMG_5196.HEIC | 0.86 |
 | home-builder | Home | 1000035915.jpg | 0.80 |
-| home-hero | Home | IMG_8314.HEIC | 0.90 |
+| home-hero | Home (hero, since 2026-11-07) | IMG_8482.HEIC | same file as hillside after-2 |
 | home-homeowner | Home | 2a621362-1b11-4c47-b72c-b73ae168889e.jpg | 0.91 |
 | home-svc-concrete | Home | IMG_8183.HEIC | 0.85 |
 | home-svc-demolition | Home | IMG_7245.HEIC | 0.82 |
@@ -308,7 +314,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_7069 (1).HEIC | Duplicate |  |  |  | Copy of IMG_7069.HEIC |
 | IMG_7069.HEIC | Used | Drainage | Rock swale beside block wall, lawn; sun in frame | spot `homeowners-drainage` (homeowners); spot `svc-drainage-hero` (svc-drainage); project `2026-06-harrison-drainage-yard/after-2.jpg` | Good. 4032x3024 |
 | IMG_7070 (1).HEIC | Duplicate |  |  |  | Copy of IMG_7070.HEIC |
-| IMG_7070.HEIC | Used | Drainage/landscape | Finished lawn, paved drive, stone drain bed | spot `homeowners-hero` (homeowners); project `2026-06-harrison-drainage-yard/after-1.jpg` | Strong. 4032x3024 |
+| IMG_7070.HEIC | Used | Drainage/landscape | Finished lawn, paved drive, stone drain bed | spot `homeowners-hero` (homeowners); project `2026-06-harrison-drainage-yard/after-1.jpg` | Strong; best light in the library. 4032x3024 |
 | IMG_7071 (1).HEIC | Duplicate |  |  |  | Copy of IMG_7071.HEIC |
 | IMG_7071.HEIC | Used | Landscape | Finished lawn and drive; sun flare | project `2026-06-harrison-drainage-yard/after-3.jpg` | OK. 4032x3024 |
 | IMG_7139.HEIC | Weak | Other | Overgrown bank, small block; blue paint |  | Weak. 3024x4032 portrait |
@@ -350,7 +356,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8274.HEIC | Not usable | Other (carpentry) | Same |  | Not core. 4032x3024 |
 | IMG_8275.HEIC | Not usable | Other (carpentry) | Same |  | Not core. 4032x3024 |
 | IMG_8308.MOV | Video |  |  |  |  |
-| IMG_8314.HEIC | Used | Excavation/site prep | Mini excavator on hillside lot, two-story home | spot `home-hero` (Home); project `2026-10-hillside-driveway/progress-1.jpg` | Strong (homepage hero). 4032x3024 |
+| IMG_8314.HEIC | Used | Excavation/site prep | Mini excavator on hillside lot, two-story home | project `2026-10-hillside-driveway/progress-1.jpg` | Strong; overcast. The homepage hero until 2026-11-07 (Jeremy wants finished work only in the hero now). 4032x3024 |
 | IMG_8316.HEIC | Available | Site prep | Graded lot, mini excavator, gravel, pallet |  | OK. 4032x3024 |
 | IMG_8345.HEIC | Used | Site prep | Hillside lot, excavator, long shadow, road | project `2026-10-hillside-driveway/progress-2.jpg` | Shadow. 4032x3024 |
 | IMG_8352.HEIC | Available | Driveway (before) | Hillside lot before the driveway |  | Good. 4032x3024 |
@@ -359,7 +365,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8427.HEIC | Weak | Concrete | Fresh pour, crew member facing camera |  | Face visible; avoid. 4032x3024 |
 | IMG_8428.HEIC | Used | Concrete | Finisher edging fresh pour, mixer truck | spot `svc-concrete-panel` (svc-concrete) | Strong. 4032x3024 |
 | IMG_8429.HEIC | Used | Concrete | Fresh pour, photographer shadow | project `2026-10-hillside-driveway/progress-4.jpg` | Shadow; replaced on Builders 2026-11-03. 4032x3024 |
-| IMG_8482.HEIC | Used | Concrete | Finished drive to hillside home | project `2026-10-hillside-driveway/after-2.jpg` | Good. 4032x3024 |
+| IMG_8482.HEIC | Used | Concrete | Finished drive to hillside home under tall pines, blue sky | spot `home-hero` (Home hero, since 2026-11-07); project `2026-10-hillside-driveway/after-2.jpg` | Strong: house centred, clear light. Jeremy's pick for the hero. 4032x3024 |
 | IMG_8483.HEIC | Used | Concrete | Finished drive, curve, tall pines | spot `homeowners-driveways-after` (Homeowners (before/after slider)); project `2026-10-hillside-driveway/after-1.jpg` | Strong. 4032x3024 |
 | IMG_8484.HEIC | Used | Concrete | Finished drive close | spot `builders-concrete-after` (Builders (before/after slider)); project `2026-10-hillside-driveway/after-3.jpg` | Good. 4032x3024 |
 | IMG_8559.PNG | Available | Concrete | Collage of a finished concrete drive |  | Collage; don't use as a photo. 1284x899 |
