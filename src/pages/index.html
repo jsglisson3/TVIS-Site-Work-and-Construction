@@ -16,6 +16,9 @@ body_class: page-home
        Phones: the photo on top, the caption bar under it, then the words on the dark field. -->
   <div class="hero-bg">
     {{photo slot="home-hero" sizes="(max-width: 900px) 66vw, 72vw" label="finished job, wide, bright: a new lawn, drive or pad with the home beside it" alt="Finished concrete driveway up a wooded hillside lot to a new two-story home with tall pines around it, East Ridge" kind="Hero photo" draw="hero" eager}}
+    <!-- before → after (Jeremy picked it, 2026-11-07): the same lot before the drive, shown for a moment, then the olive
+         blade sweeps across it and leaves the finished photo above. Decorative (it is gone a second later), so no alt. -->
+    <div class="hv-before" aria-hidden="true">{{photo slot="home-hero-before" sizes="(max-width: 900px) 66vw, 72vw" label="the same lot before the work, same view" alt="" eager}}<span class="hv-before-tag">Before</span></div>
   </div>
   <div class="wrap hero-in">
     <!-- The "where" line sits inside the H1 (2026-11-07 SEO pass) so the page's main heading says what TVIS does and where;
@@ -122,7 +125,7 @@ body_class: page-home
     <div class="owner-pic">
       <!-- name tag over Joey (Jeremy, 2026-11-07: make it clear who Joey is); placed in % of the 4:3 photo, so it stays on him at every width -->
       <div class="owner-photo">{{photo slot="home-owner" label="Joey on a job, machine in frame" alt="Joey, the owner of TVIS Construction (right), with a customer beside the mini excavator after tearing down an old mobile home" sizes="(min-width: 1440px) 720px, (min-width: 900px) 54vw, 100vw"}}<span class="owner-tag" aria-hidden="true">Joey <small>Owner</small></span></div>
-      <a class="phero-job" href="/project/2026-11-mobile-home-teardown"><span class="job-text"><small>In this photo</small><strong>Mobile home teardown and lot cleanup</strong><span class="job-meta">Joey (right) with the customer</span><span class="see">See the 6 photos</span></span><span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
+      <a class="phero-job" href="/project/2026-11-mobile-home-teardown"><span class="job-text"><small>In this photo</small><strong>Mobile home teardown and lot cleanup</strong><span class="see">See the 6 photos</span></span><span class="who-go" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></span></a>
     </div>
     <div class="owner-text">
       <p class="sv-eyebrow">The owner</p>

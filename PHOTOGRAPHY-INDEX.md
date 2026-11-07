@@ -360,7 +360,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_8316.HEIC | Available | Site prep | Graded lot, mini excavator, gravel, pallet |  | OK. 4032x3024 |
 | IMG_8345.HEIC | Used | Site prep | Hillside lot, excavator, long shadow, road | project `2026-10-hillside-driveway/progress-2.jpg` | Shadow. 4032x3024 |
 | IMG_8352.HEIC | Available | Driveway (before) | Hillside lot before the driveway |  | Good. 4032x3024 |
-| IMG_8353.HEIC | Used | Driveway (before) | Same, tighter | spot `homeowners-driveways-before` (Homeowners (before/after slider)); project `2026-10-hillside-driveway/before-1.jpg` | Good. 4032x3024 |
+| IMG_8353.HEIC | Used | Driveway (before) | Same, tighter | spot `homeowners-driveways-before` (Homeowners (before/after slider)); spot `home-hero-before` (Home hero, shown for a second before the blade sweep, since 2026-11-07); project `2026-10-hillside-driveway/before-1.jpg` | Good. 4032x3024 |
 | IMG_8425.HEIC | Used | Concrete | Fresh pour, mixer truck, crew | spot `builders-concrete-before` (Builders (before/after slider)); project `2026-10-hillside-driveway/progress-3.jpg` | Good. 4032x3024 |
 | IMG_8427.HEIC | Weak | Concrete | Fresh pour, crew member facing camera |  | Face visible; avoid. 4032x3024 |
 | IMG_8428.HEIC | Used | Concrete | Finisher edging fresh pour, mixer truck | spot `svc-concrete-panel` (svc-concrete) | Strong. 4032x3024 |

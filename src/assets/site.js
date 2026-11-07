@@ -180,30 +180,19 @@
   update();
 })();
 
-// ---- homepage hero: the photo glides a few pixels with the mouse (desktop, fine pointer, never under reduced motion).
-//      Eased toward the pointer every frame and stopped once it has come to rest, so nothing moves on its own. ----
+// ---- homepage hero, before → after: hold the blade sweep until the "before" photo has loaded, so it never pops in
+//      half way; if it hasn't arrived within 2 seconds, drop it and let the finished photo show on its own ----
 (function () {
   var hero = document.querySelector('.hero.hv');
-  if (!hero || !window.matchMedia) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 901px)');
-  var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
-  function step() {
-    x += (tx - x) * 0.07; y += (ty - y) * 0.07;
-    if (Math.abs(tx - x) < 0.05 && Math.abs(ty - y) < 0.05) { x = tx; y = ty; raf = 0; }
-    else raf = requestAnimationFrame(step);
-    hero.style.setProperty('--hx', x.toFixed(2) + 'px');
-    hero.style.setProperty('--hy', y.toFixed(2) + 'px');
-  }
-  function go() { if (!raf) raf = requestAnimationFrame(step); }
-  hero.addEventListener('pointermove', function (e) {
-    if (!fine.matches) return;
-    var r = hero.getBoundingClientRect();
-    tx = ((e.clientX - r.left) / r.width - .5) * -16;   // up to 8px either way, against the pointer
-    ty = ((e.clientY - r.top) / r.height - .5) * -10;   // up to 5px
-    go();
-  }, { passive: true });
-  hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; go(); });
+  var img = hero && hero.querySelector('.hv-before img');
+  if (!img) return;
+  if (img.complete && img.naturalWidth) return;
+  hero.classList.add('hv-wait');
+  var done = false;
+  function go(skip) { if (done) return; done = true; if (skip) hero.classList.add('hv-skip'); hero.classList.remove('hv-wait'); }
+  img.addEventListener('load', function () { go(false); });
+  img.addEventListener('error', function () { go(true); });
+  setTimeout(function () { go(true); }, 2000);
 })();
 
 // ---- ?slots shows the file name each empty photo spot wants (for adding photos, not for visitors) ----

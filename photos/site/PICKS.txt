@@ -1,6 +1,7 @@
 Which of Joey's photos fills each spot (numbers and names from /mnt/project-files/tvis-photos/index.json)
 
 home-hero                      IMG_8482   finished concrete drive up the East Ridge hillside lot under tall pines (2026-11-07 hero rebuild, Jeremy's pick of six; was #96 IMG_8314, the excavator on the same lot)
+home-hero-before               IMG_8353   the same hillside lot before the drive; the hero opens on it and the olive blade sweeps it away (2026-11-07)
 home-band                      #164 IMG_5196   wide cleared lot with poured footings (2026-11-02 variety pass; was #101)
 home-homeowner                 #114 2a621362   driveway with landscaped stone beds (Joey confirmed 2026-10-29: TVIS work)
 home-builder                   #113 1000035915 graded lot, silt fence, excavator

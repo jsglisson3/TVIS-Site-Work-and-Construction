@@ -1884,24 +1884,27 @@ html.lb-open{overflow:hidden}
    reveal on load, then stillness. All of it is transform-only (no
    repaint), the photo still paints at once so the page's speed score is unchanged, and none of it runs under
    prefers-reduced-motion (the hero then simply appears, finished).
-   1. The blade pass (once): a dark panel covering the photo slides off to the right with a 5px olive edge leading it,
-      like a dozer blade passing over and leaving the finished grade behind (1.25s). The photo eases from 108% to 100%.
+   1. Before → after (once, Jeremy's pick of two): the page opens on the same hillside lot before the work, tagged
+      "Before". After half a second a thin olive blade line sweeps left to right (1.5s) and leaves the finished drive
+      behind it. site.js holds the sweep until the before photo has loaded (and drops the before photo if it hasn't
+      arrived within 2s), so it never pops in half way. The finished photo eases from 106% to 100% underneath. (The first
+      version was a dark panel sliding off the photo.)
    2. The words: each headline line rises from behind its own baseline, the olive bar draws in from the left, then the
       subhead, buttons and photo line settle; the caption bar comes up last, once the photo is uncovered.
-   3. The glide (desktop with a mouse): the photo follows the pointer by up to 8px across and 5px up and down, eased in
-      site.js so it glides and comes to rest; nothing moves on its own. (A looping 26s drift and a CSS-transition version
-      of this that moved the contour lines the other way were tried first the same day; Jeremy found them odd.) ---- */
+   After that the hero holds still. Tried and removed the same day because Jeremy didn't like them: a looping 26s drift
+   on the photo, a mouse-depth shift (photo and contour lines moving opposite ways), and a smoothed mouse glide with a
+   6s settle. Don't add pointer or idle motion to the hero again. ---- */
 .hero.hv .hero-bg{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
-  /* 1. the blade pass */
-  .hero.hv .hero-bg::before{content:"";position:absolute;z-index:3;top:0;bottom:0;left:-6px;right:0;background:#1B2225;border-left:6px solid var(--olive);pointer-events:none;animation:hvBlade 1.25s cubic-bezier(.65,0,.25,1) .1s both}
-  /* a slow, one-time settle: the photo eases from 107% to 100% over 6s after the blade uncovers it, then stops */
-  .hero.hv .hero-bg .photo>img{animation:hvPhoto 6s cubic-bezier(.16,.84,.3,1) both}
-  /* 3. the glide (desktop with a mouse, site.js): the photo frame follows the pointer by a few pixels with a smooth
-     ease, nothing moves on its own. The frame sits 3% oversize so an edge never shows. */
-  @media (min-width:901px) and (hover:hover) and (pointer:fine){
-    .hero.hv .hero-bg .photo{transform:translate3d(var(--hx,0px),var(--hy,0px),0) scale(1.03);will-change:transform}
-  }
+  /* 1. before → after: the before photo (z 2) under the fade (z 3) and the blade line (z 4); both wait for .hv-wait to go */
+  .hero.hv .hv-before{display:block;position:absolute;inset:0;z-index:2;animation:hvWipe 1.5s cubic-bezier(.6,0,.3,1) .55s both}
+  .hero.hv .hero-bg::after{z-index:3}
+  .hero.hv .hero-bg::before{content:"";position:absolute;z-index:4;top:0;bottom:0;left:0;width:6px;background:var(--olive);box-shadow:0 0 18px rgba(16,20,22,.45);pointer-events:none;animation:hvBlade 1.5s cubic-bezier(.6,0,.3,1) .55s both}
+  .hero.hv.hv-wait .hv-before,.hero.hv.hv-wait .hero-bg::before{animation-play-state:paused}
+  .hero.hv.hv-skip .hv-before{display:none}
+  .hv-before-tag{position:absolute;z-index:5;top:clamp(16px,2.4vw,28px);left:var(--gut);padding:8px 11px;background:#1B2225;color:#fff;font:700 13px/1 var(--display);letter-spacing:.1em;text-transform:uppercase}
+  /* the photo eases from 106% to 100% while the blade uncovers it, then stays still */
+  .hero.hv .hero-bg .photo>img{animation:hvPhoto 2.2s cubic-bezier(.2,.7,.2,1) both}
   /* 2. the words */
   .hero.hv h1 span{animation:hvLine .95s cubic-bezier(.2,.7,.2,1) .2s both}
   .hero.hv h1 span+span{animation-delay:.34s}
@@ -1910,10 +1913,13 @@ html.lb-open{overflow:hidden}
   .hero.hv .hero-act{animation-delay:.82s}
   .hero.hv .hv-proof{animation-delay:.95s}
   /* backwards, not both: once it has risen the bar drops its clip-path, which would otherwise hide the focus ring */
-  .hero.hv .hv-job{animation:jobIn .6s var(--ease) 1.2s backwards}
+  .hero.hv .hv-job{animation:jobIn .6s var(--ease) 2s backwards}
 }
-@keyframes hvBlade{from{transform:translateX(0)}to{transform:translateX(calc(100% + 12px))}}
-@keyframes hvPhoto{from{transform:scale(1.07)}to{transform:none}}
+@keyframes hvBlade{from{left:0;opacity:1}92%{opacity:1}to{left:100%;opacity:0}}
+@keyframes hvWipe{from{clip-path:inset(0 0 0 0)}to{clip-path:inset(0 0 0 100%)}}
+.hv-before{display:none}
+@media (min-width:901px){.hv-before-tag{left:calc(36% + 16px)}}
+@keyframes hvPhoto{from{transform:scale(1.06)}to{transform:none}}
 @keyframes hvLine{from{transform:translateY(.5em);clip-path:inset(100% 0 -20% 0)}to{transform:none;clip-path:inset(-20% 0 -20% 0)}}
 @keyframes hvBar{from{transform:scaleX(0)}to{transform:none}}
 /* phones, reworked smaller (2026-11-07, Jeremy: "too big text" on mobile): a 37px headline at 390px wide instead of 44,
