@@ -1,6 +1,6 @@
 title: Backyard retaining wall and stamped patio
 category: Concrete
-town: Chattanooga
+town: Harrison
 status: Completed
 featured: no
 description: [CONFIRM] Back yard dug out and regraded, a block retaining wall built, and the covered patio finished in stamped concrete with a drain.

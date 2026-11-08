@@ -1951,3 +1951,8 @@ html.lb-open{overflow:hidden}
   .hero.hv h1 .hl{animation:hvLine .95s cubic-bezier(.2,.7,.2,1) .2s both}
   .hero.hv h1 .hl+.hl{animation-delay:.34s}
 }
+/* phones and tablets: the hero photo sits closer in (Jeremy, 2026-11-08: "a little far zoomed out on mobile"). Both the
+   before and the finished photo use the same crop so the sweep still lines up; anchored low so the sky is what's cut. */
+@media (max-width:900px){
+  .hero.hv .hero-bg .photo{transform:scale(1.25);transform-origin:46% 82%}
+}
