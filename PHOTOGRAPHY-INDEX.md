@@ -26,7 +26,7 @@ The running record of every photo in the master library, where each one is used 
 
 - **Ask Joey about the stamped concrete patio** (`IMG_5062`, `IMG_5074`). If TVIS poured it, it is a good second Concrete project or the Concrete page panel.
 - **Cleanup before/after is half there.** `IMG_8985`, `IMG_8986`, `IMG_8988`, `IMG_8993` are overgrown yards around one house. With "after" shots of the same views from Joey, that becomes a real cleanup project and slider.
-- **Still missing from the library:** a real teardown for the Demolition page photos (the 2026-11 mobile home teardown project has one now, see below; the page photos still use land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in). Worth asking Joey to shoot these on upcoming jobs.
+- **Still missing from the library:** a real teardown for the Demolition page photos (the 2026-11 mobile home teardown project has one now, see below; the page photos still use land clearing), drainage before/after (standing water, then dry yard), a shed sitting on a finished gravel pad, and a compacted-gravel pad (`pads-step-3` uses `IMG_0163`, a gravel construction entrance, as a stand-in; replaced on 2026-11-09 by the Facebook gravel pad `fb122108116389532034`). Worth asking Joey to shoot these on upcoming jobs.
 - **On the bench:** `IMG_3836` (clean gravel drive to a white house, unused) for Gravel Driveways or a new project; `IMG_7245`/`IMG_7246` are close cousins, so don't add more from that set.
 
 ## Home hero (2026-11-07)
@@ -43,6 +43,7 @@ Placed on the site 2026-11-04 (Jeremy asked for it; he commits and pushes):
 - **New project `projects/2026-10-chattanooga-backyard-wall-stamped-patio/`** (Concrete): before-1 `fb122102111919532034` (covered patio before), before-2 `fb122102112177532034` (dig-out by the porch steps), progress-1 `fb122097566991532034` (excavator digging), progress-2 `fb122102112009532034`, after-1 `fb122102127279532034` (stamped patio with drain; Joey's caption says TVIS did it), after-2 `fb122102112147532034` (finished block wall). Same white house with the covered patio in every shot, but the stamped patio came from a separate post: **confirm with Joey** that it's the same job, and the month (2026-10 is the posting month; the leaves look like spring).
 - **Hillside driveway project:** new progress-3 `fb122102098029532034` (gravel base before the pour; the old progress-3 and -4 became -4 and -5) and after-4 `fb122102098203532034` (finished drive beside the house).
 - **Not used, on the bench:** `fb122102115807532034` and `fb122102115783532034` (graded red-clay and gravel drive in the woods; a closer look showed they read as dirt, not as the crushed-stone base `pads-step-3` needs, so that spot keeps IMG_0163), `fb122102098005532034` and `fb122102098293532034` (the hillside job already has two pour shots and two lot shots), `fb122097567753532034` and `fb122102112093532034` (the wall job, toys and an SUV in frame), and the roadside mini-excavator pair from 2026-11-03 (ask Joey what that job is).
+- **Pull of 2026-11-09 (placed the same day, Jeremy asked for it):** new project `projects/2026-11-gravel-parking-pad/` (Driveways, the first Driveways job, so it also shows on Gravel Driveways; town Harrison, per Jeremy): before-1 `fb122108116359532034`, after-1 `fb122108116389532034`, both cropped to the bottom 1536x1152 to cut the sky. `pads-step-3` now uses the same after crop (was IMG_0163), with new alt text on Homeowners and Pads. Notes from the pull: A gravel parking pad beside a white house, same view before (`fb122108116359532034`: leaves over thin old gravel, a pile of new stone) and after (`fb122108116389532034`: fresh compacted crushed stone), Kubota backhoe and mini excavator in both. First real compacted-gravel pad in the library: candidate for `pads-step-3` (replacing the IMG_0163 stand-in), a Gravel Driveways before/after slider, or a small new project. Both are about 40% sky, so crop tight. Ask Joey the town and whether it's a parking pad or a drive.
 - The stamped patio answers the old "Ask Joey about the stamped concrete patio" item only partly: `IMG_5062`/`IMG_5074` in Drive are a different patio.
 
 ## Google Business Profile picks (2026-11-04)
@@ -97,7 +98,7 @@ Matched by comparing every website image against every Drive photo (crops allowe
 | pads-feature | homeowners, svc-shed-garage-pads | B551ACFE-430D-43BD-A530-05A8C01A5D5F.HEIC | 0.86 |
 | pads-step-1 | homeowners, svc-shed-garage-pads | Resized_20250711_121100.jpg | 0.85 |
 | pads-step-2 | homeowners, svc-shed-garage-pads | IMG_6867.heic | 0.82 |
-| pads-step-3 | homeowners, svc-shed-garage-pads | IMG_0163.HEIC | 0.95 |
+| pads-step-3 | homeowners, svc-shed-garage-pads | Facebook fb122108116389532034 (since 2026-11-09; was IMG_0163) | same file |
 | pads-step-4 | homeowners, svc-shed-garage-pads | Resized_20251023_153542.jpg | 0.88 |
 | svc-concrete-hero | svc-concrete | IMG_8753.HEIC | 0.89 |
 | svc-concrete-panel | svc-concrete | IMG_8428.HEIC | 0.81 |
@@ -203,7 +204,7 @@ Status: **Used** (on the site now), **Available** (usable, not on the site), **W
 | IMG_0151.HEIC | Used | Final grade | Graded side/rear yard of new home | project `2025-05-backyard-grading/after-2.jpg` | OK. 4032x3024 |
 | IMG_0152.HEIC | Available | Final grade | Graded yard around new home |  | Good. 4032x3024 |
 | IMG_0153.HEIC | Used | Final grade | Graded rear yard, porch | project `2025-05-backyard-grading/after-1.jpg` | Good. 4032x3024 |
-| IMG_0163.HEIC | Used | Driveway (gravel) | Gravel construction entrance, orange fencing | spot `pads-step-3` (homeowners, svc-shed-garage-pads); project `2025-05-backyard-grading/after-3.jpg` | OK. 4032x3024 |
+| IMG_0163.HEIC | Used | Driveway (gravel) | Gravel construction entrance, orange fencing | project `2025-05-backyard-grading/after-3.jpg` (was spot `pads-step-3` until 2026-11-09) | OK. 4032x3024 |
 | IMG_0165.HEIC | Weak | Final grade | New two-story home front, graded lot; person and SUV in frame |  | Person/vehicle; avoid. 4032x3024 |
 | IMG_1156.HEIC | Used | Final grade | Two new homes, graded lot, gravel; hazy sky | project `2025-08-east-brainerd-two-new-homes/after-2.jpg` | OK, lens flare. 4032x3024 |
 | IMG_1174.HEIC | Used | Final grade | Blue home with new stairs, gravel | project `2025-08-east-brainerd-two-new-homes/after-3.jpg` | OK; lens flare. 4032x3024 |

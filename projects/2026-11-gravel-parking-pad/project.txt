@@ -1,0 +1,6 @@
+title: Gravel parking pad
+category: Driveways
+town: Harrison
+status: Completed
+featured: no
+description: [CONFIRM] Old gravel under a layer of leaves cleaned up, then fresh crushed stone spread, graded and packed down into a smooth parking pad beside the house.

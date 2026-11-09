@@ -20,10 +20,18 @@ No Facebook login is needed: the page's photos open one by one while signed out.
 
 ## Log of processed photos
 
-Latest post covered: **2026-11-06**. 26 photos looked at on 2026-11-04; 8 more on 2026-11-07 (Jeremy downloaded them and sent them in, because Facebook is blocked from Claude's cloud workspace). Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.md`.
+Latest post covered: **2026-11-09**. 26 photos looked at on 2026-11-04; 8 more on 2026-11-07 (Jeremy downloaded them and sent them in, because Facebook is blocked from Claude's cloud workspace); 2 new on 2026-11-09 (pulled signed out from Jeremy's PC, where Facebook works).
+
+About the ids: the 2026-11-06 rows use the number inside the image's file name, not the `fbid=` in the photo's address (for example address `fbid=122105894157532034` shows image `..._122105896893532034_...`). Both trace back to the same photo. From 2026-11-09 on, rows use the `fbid=` number, as the naming rule says.
+
+Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.md`.
 
 | fbid | Posted | Result | What it shows | Job (best guess) |
 |---|---|---|---|---|
+| 122108116389532034 | 2026-11-09 | Saved, used (project after-1 and pads-step-3) | After: fresh, smooth crushed-stone parking pad beside a white house, rock-edged bed, backhoe and mini excavator parked behind | Gravel parking pad, Harrison, Nov 2026 |
+| 122108116359532034 | 2026-11-09 | Saved, used (project before-1) | Before, same view: thin old gravel under leaves, pile of new stone, same two machines | Same |
+| 122105894061532034 (image 122105896839532034) | 2026-11-06 | Already saved as `2026-11-06_fbnoid-cleared-lot.jpg` (dHash distance 6) | Seeded and strawed lot, dumpster | Mobile home teardown |
+| 122097560493532034 | 2026-10-28 | Skipped (a graphic, not a job photo) | | |
 | 122105896875532034 | 2026-11-06 | Saved, used | Wide before: old mobile home, backhoe in front, mini excavator by the shed | Mobile home teardown (Joey's posts: "removal and clean up of an old mobile home", "seed and straw") |
 | 122105896851532034 | 2026-11-06 | Saved, used | Backhoe parked in front of the mobile home, mini excavator behind | Same |
 | 122105893143532034 | 2026-11-06 | Saved, not for the site | Before, machines and the home; two people on the porch steps and the house number on the post | Same |
