@@ -39,6 +39,7 @@ Everything that changes from business to business lives in `site.config.json`. E
 | `facebook`, `instagram`, `googleBusinessProfile` | Full URLs. The small marks in the header and footer link to them. |
 | `streetAddress`, `addressCity`, `addressState`, `postalCode`, `geo` | The address and map pin exactly as the Google Business Profile shows them. Used in the footer, the estimate page and the schema. Leave `streetAddress` empty to show the city only. |
 | `googleReviewUrl` | The profile's review link (Ask for reviews > Copy link). Shows "Leave us a Google review" in the footer, and makes the short address `tvisconstruction.com/review` (for the review cards, QR code and texts) that forwards to the Google review form. |
+| `reviews` | Google reviews about the business as a whole (not one job): `reviewer`, `stars`, `date` (YYYY-MM-DD) and `text`, copied exactly from Google. They show in the homepage "What customers say" section with a "Read it on Google" link. A review about one job goes in its `project.txt` instead (see HOW-TO-ADD-A-PROJECT.md). |
 | `domain` | Custom domain, once there is one. |
 | `formEndpoint` | The Basin form URL (below). |
 | `tracking.*` | Google Analytics, Google Ads and Meta Pixel IDs. Leave blank until the accounts exist. |

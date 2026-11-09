@@ -27,6 +27,10 @@
   "_googleBusinessProfile": "the profile's Maps link: Google Business Profile > Share > Copy link (https://maps.app.goo.gl/...). Turns the Google marks into links and joins the schema sameAs and hasMap.",
   "googleReviewUrl": "https://g.page/r/CSz7h5rTtA32EBM/review",
   "_googleReviewUrl": "the review link: Google Business Profile > Ask for reviews > Copy link (https://g.page/r/.../review). Shows a 'Leave us a Google review' link in the footer.",
+  "reviews": [
+    { "reviewer": "Dan S", "stars": 5, "date": "2026-11-09", "text": "Joey has helped me with numerous jobs and has always offered fair prices, great value, and great communication. Definitely would recommend." }
+  ],
+  "_reviews": "Google reviews about the business as a whole (not one job), copied exactly as Google shows them, with the name as Google shows it. They show in the homepage 'What customers say' section with a 'Read it on Google' link. A review about one job goes in that job's project.txt (review: / reviewer:) instead. Never shorten, change or invent one.",
   "googleSiteVerification": "2jRRDxl0NHKcagbnaPNGg1jdLlrFf4lMYD4fOA2nKkA",
   "_googleSiteVerification": "the code from Google Search Console > Settings > Ownership verification > HTML tag (just the content value). Leave empty if you verify through DNS instead.",
   "domain": "tvisconstruction.com",

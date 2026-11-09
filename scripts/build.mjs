@@ -281,7 +281,7 @@ async function loadProjects() {
       description: (info.description || info.about || '').replace(/^\[CONFIRM\]\s*/i, m => (LIVE ? '' : m)),
       // A Google review this customer left about this job, copied exactly (optional). The quote shows on the
       // project page and in the homepage reviews section, linked to the profile. Never edit or invent one.
-      review: (info.review || '').replace(/^["\u201C]+|["\u201D]+$/g, '').trim(),
+      review: stripQuotes(info.review),
       reviewer: info.reviewer || '',
       date: folder.slice(0, 7),
       photos,
@@ -402,26 +402,41 @@ function projectDetail(p, next) {
 }
 
 // ---------- reviews ----------
-// Real Google reviews, tied to the job they are about (project.txt > review: and reviewer:). No review schema:
-// Google ignores reviews a business shows about itself, and marking them up can count against the site.
+// Real Google reviews, copied exactly. Two sources: project.txt (review: and reviewer:) for a review about one job,
+// and site.config.json > reviews for one about the business as a whole (several jobs, no single project). No review
+// schema: Google ignores reviews a business shows about itself, and marking them up can count against the site.
 const reviewUrl = () => (config.googleReviewUrl ? '/review' : '');
+const stripQuotes = s => String(s || '').replace(/^["\u201C]+|["\u201D]+$/g, '').trim();
+const generalReviews = (Array.isArray(config.reviews) ? config.reviews : [])
+  .map(r => ({ review: stripQuotes(r.text), reviewer: r.reviewer || '', stars: Number(r.stars) || 0, date: r.date || '' }))
+  .filter(r => r.review);
+function starsHtml(n) {
+  n = Math.max(0, Math.min(5, Math.round(n)));
+  return n ? `<span class="rev-stars" role="img" aria-label="${n} out of 5 stars">${'\u2605'.repeat(n)}</span>` : '';
+}
 function reviewQuote(p, { job = false } = {}) {
   if (!p.review) return '';
   const who = [esc(p.reviewer || 'Google review'), job ? townHtml(p) : ''].filter(Boolean).join(', ');
+  const link = job ? `<a href="/project/${p.id}">See the job</a>`
+    : (!p.id && config.googleBusinessProfile ? `<a href="${esc(config.googleBusinessProfile)}">Read it on Google</a>` : '');
   return `<figure class="rev">
-  <blockquote><p>${esc(p.review)}</p></blockquote>
-  <figcaption><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg><span>${who}</span>${job ? `<a href="/project/${p.id}">See the job</a>` : ''}</figcaption>
+  ${starsHtml(p.stars)}<blockquote><p>${esc(p.review)}</p></blockquote>
+  <figcaption><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-g"/></svg><span>${who}</span>${link}</figcaption>
 </figure>`;
 }
-// The homepage section: every project with a review, newest first. Hidden until the first one is in.
+// The homepage section: every review, newest first (job reviews by project folder date, the others by their date).
+// Hidden until the first one is in.
 function homeReviews() {
-  const list = projects.filter(p => p.review).sort((a, b) => b.id.localeCompare(a.id)).slice(0, 6);
+  const list = [
+    ...projects.filter(p => p.review).map(p => ({ key: p.id, html: reviewQuote(p, { job: true }) })),
+    ...generalReviews.map(r => ({ key: r.date, html: reviewQuote(r) })),
+  ].sort((a, b) => b.key.localeCompare(a.key)).slice(0, 6);
   if (!list.length) return '';
   return `<section class="sec reviews" aria-labelledby="rev-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="rev-h">What customers say</h2></div>
     <div class="rev-grid">
-${list.map(p => reviewQuote(p, { job: true })).join('\n')}
+${list.map(r => r.html).join('\n')}
     </div>
     <p class="rev-links">${config.googleBusinessProfile ? `<a class="textlink" href="${esc(config.googleBusinessProfile)}">Read all reviews on Google</a>` : ''}${reviewUrl() ? `<a class="textlink" href="${reviewUrl()}">Leave a review</a>` : ''}</p>
   </div>
