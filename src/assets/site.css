@@ -1956,3 +1956,40 @@ html.lb-open{overflow:hidden}
 @media (max-width:900px){
   .hero.hv .hero-bg .photo{transform:scale(1.25);transform-origin:46% 82%}
 }
+
+/* ---------- Stray Wolf Technology footer badge (2026-11-09) ----------
+   The kit's stylesheet, v1, from https://straywolftech.com, kept as supplied (here, not in an inline <style>, which the CSP blocks).
+   footer.html uses the dark logo badge, for the charcoal footer. */
+.swt-badge{
+  --swt-ink:#24221F;--swt-accent:#D9531E;--swt-forehead:#56504A;--swt-facet:#4A453E;--swt-eye:#F4F2EE;--swt-tech:#4A453E;
+  display:inline-flex;align-items:center;gap:.6em;
+  color:inherit;text-decoration:none;font-size:.875rem;line-height:1.2;
+  border-radius:4px;padding:.25em .125em;
+  -webkit-tap-highlight-color:transparent;
+}
+.swt-badge--dark{
+  --swt-ink:#F4F2EE;--swt-accent:#EE6A35;--swt-forehead:#6A635A;--swt-facet:#5A544B;--swt-eye:#24221F;--swt-tech:#D8D2C8;
+}
+@media (prefers-color-scheme:dark){
+  .swt-badge--auto{--swt-ink:#F4F2EE;--swt-accent:#EE6A35;--swt-forehead:#6A635A;--swt-facet:#5A544B;--swt-eye:#24221F;--swt-tech:#D8D2C8;}
+}
+.swt-badge .swt-i{fill:var(--swt-ink)}
+.swt-badge .swt-a{fill:var(--swt-accent)}
+.swt-badge .swt-h{fill:var(--swt-forehead)}
+.swt-badge .swt-f{fill:var(--swt-facet)}
+.swt-badge .swt-e{fill:var(--swt-eye)}
+.swt-badge .swt-t{fill:var(--swt-tech)}
+.swt-badge .swt-c{stroke:var(--swt-accent)}
+.swt-badge .swt-mark{display:block;height:2.5em;width:auto;flex:none}
+.swt-badge .swt-icon{display:block;height:1.6em;width:auto;flex:none}
+.swt-badge .swt-label{white-space:nowrap}
+.swt-badge--logo .swt-label{font-size:.857em;opacity:.8}
+.swt-badge--text .swt-label b{font-weight:600}
+.swt-badge .swt-mark,.swt-badge .swt-icon{transition:transform .2s ease}
+.swt-badge:hover .swt-mark,.swt-badge:hover .swt-icon{transform:translateY(-1px)}
+.swt-badge--text:hover .swt-label b{text-decoration:underline;text-decoration-color:var(--swt-accent);text-underline-offset:.2em}
+.swt-badge:focus-visible{outline:2px solid var(--swt-accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.swt-badge .swt-mark,.swt-badge .swt-icon{transition:none}.swt-badge:hover .swt-mark,.swt-badge:hover .swt-icon{transform:none}}
+@media print{.swt-badge .swt-mark{height:1.75em}}
+/* in the footer's bottom row: keep the badge's own look, not the row's olive underline on hover */
+.ftr-bottom .swt-badge,.ftr-bottom .swt-badge:hover{color:#E3E7E0;text-decoration:none}
