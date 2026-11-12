@@ -36,7 +36,7 @@ Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.m
 | 122105894061532034 (image 122105896839532034) | 2026-11-06 | Already saved as `2026-11-06_fbnoid-cleared-lot.jpg` (dHash distance 6) | Seeded and strawed lot, dumpster | Mobile home teardown |
 | 122097560493532034 | 2026-10-28 | Skipped (a graphic, not a job photo) | | |
 | 122105896875532034 | 2026-11-06 | Saved, used | Wide before: old mobile home, backhoe in front, mini excavator by the shed | Mobile home teardown (Joey's posts: "removal and clean up of an old mobile home", "seed and straw") |
-| 122105896851532034 | 2026-11-06 | Saved, used | Backhoe parked in front of the mobile home, mini excavator behind | Same |
+| 122105896851532034 | 2026-11-06 | Saved, taken off the site 2026-11-11 (Jeremy: "does not show anything") | Backhoe parked in front of the mobile home, mini excavator behind | Same |
 | 122105893143532034 | 2026-11-06 | Saved, not for the site | Before, machines and the home; two people on the porch steps and the house number on the post | Same |
 | 122105896827532034 | 2026-11-06 | Saved, used (cropped) | From the backhoe seat: home half torn down, debris, mattresses, rented dumpsters (crop drops the dumpster company's sign) | Same |
 | 122105896893532034 | 2026-11-06 | Saved, used | Mini excavator and backhoe on the flattened debris pile | Same |
