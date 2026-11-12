@@ -9,7 +9,7 @@
  *   <script src="/js/site-notes.js" data-site="cedar-street"
  *           data-api="https://YOUR-SERVICE.workers.dev" defer></script>
  *
- * On the client's own page (/notes/index.html: login + their boxes + the
+ * On the client's own page (/portal/index.html: login + their boxes + the
  * Edit mode button) the same tag plus:
  *           data-hub
  * That page is the only way in. Its Edit mode button (any element with
@@ -22,10 +22,13 @@
  *                   (demo password: wolf)
  *   data-to         who the notes go to (default: Jeremy)
  *   data-hub        this page is the client's own page (and the password page)
- *   data-login-url  where that page lives (default: /notes/)
+ *   data-login-url  where that page lives (default: /portal/)
  *   data-door       the hidden way in (default: the "Powered by Stray Wolf" badge).
- *                   Press and hold it for 2 seconds: the wolf's eyes glow, a ring
- *                   fills, and the client's page opens. A normal tap works as usual.
+ *                   Press and hold it for 2 seconds: a soft moonlight grows from it
+ *                   (the wolf's eyes glow), washes over the screen, and the client's
+ *                   page comes up out of it. A normal tap works as usual. Any CSS
+ *                   selector works, several too (".swt-badge, .moon-door"); inside
+ *                   it, an element marked data-door-center is where the light starts.
  *                   data-door="none" turns it off.
  *   data-name       the business name ("Welcome, TVIS Construction")
  *   data-logo       their logo picture, shown big on the login box
@@ -46,7 +49,7 @@
   var TO = S.getAttribute("data-to") || "Jeremy";
   var IS_HUB = S.hasAttribute("data-hub") || S.hasAttribute("data-login");
   var MODE = IS_HUB ? "hub" : "edit";   // hub = their own page; edit = Edit mode on the site
-  var LOGIN_URL = S.getAttribute("data-login-url") || "/notes/";
+  var LOGIN_URL = S.getAttribute("data-login-url") || "/portal/";
   var DOOR = S.getAttribute("data-door") || ".swt-badge";   // the hidden way in: hold this for 2 seconds
   var NAME = S.getAttribute("data-name") || "";   // the business name, for "Welcome, ..." on the login box
   var LOGO = S.getAttribute("data-logo") || "";   // their logo, shown on the login box
@@ -374,7 +377,7 @@
     } }, [
       h("div", { class: "bd", style: "padding-top:22px;gap:14px" }, [
         LOGO ? h("div", { class: "logo" }, [h("img", { src: LOGO, alt: NAME || "Logo" })]) : h("div", { class: "lock" }, [icon("lock")]),
-        h("div", { class: "center" }, [NAME ? h("p", { class: "kick" }, [icon("lock"), h("span", { text: IS_HUB ? "Private client login" : "Owner login" })]) : null, h("h2", { text: NAME ? "Welcome, " + NAME : "Owner login" }), h("p", { text: "Type the password " + TO + " gave you." })]),
+        h("div", { class: "center" }, [NAME ? h("p", { class: "kick" }, [icon("lock"), h("span", { text: IS_HUB ? "Client Portal" : "Owner login" })]) : null, h("h2", { text: NAME ? "Welcome, " + NAME : "Owner login" }), h("p", { text: "Type the password " + TO + " gave you." })]),
         h("label", { class: "q", for: "swn-pw", text: "Password" }),
         h("div", { class: "pw" }, [pw, showBtn]),
         err, btn,
@@ -532,7 +535,7 @@
   /* ----- one note ----- */
   function addNote(target, label, ev, wantPhotos) {
     closePanels();
-    var note = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), page: location.pathname, title: MODE === "hub" ? "Your page" : pageName(), hub: MODE === "hub", path: null, fx: .5, fy: .5, on: label || "", text: "", pics: [] };
+    var note = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), page: location.pathname, title: MODE === "hub" ? "Client Portal" : pageName(), hub: MODE === "hub", path: null, fx: .5, fy: .5, on: label || "", text: "", pics: [] };
     if (target) {
       var r = target.getBoundingClientRect();
       note.path = pathOf(target); note.on = label && target.hasAttribute("data-note-box") ? label : describe(target);
@@ -716,12 +719,12 @@
       list.appendChild(h("li", { class: "item" }, [
         h("span", { class: "num", text: String(i + 1) }),
         h("div", { style: "min-width:0;display:grid;gap:4px" }, [
-          h("div", { class: "w", text: (note.hub ? "Your page · " : note.title && note.title !== "Home" ? note.title + " page · " : "") + note.on }),
+          h("div", { class: "w", text: (note.hub ? "Client Portal · " : note.title && note.title !== "Home" ? note.title + " page · " : "") + note.on }),
           h("div", { class: "s" + (note.text ? "" : " empty"), text: note.text || "(photos only)" }),
           note.pics.length ? th : null,
           h("div", { class: "acts" }, [
             here ? h("button", { class: "b quiet", type: "button", onclick: function () { openNote(i); } }, [icon("pencil"), h("span", { text: "Change" })])
-                 : h("button", { class: "b quiet", type: "button", onclick: function () { if (!note.hub) lsSet("on", "1"); location.href = note.page; } }, [icon("arrow"), h("span", { text: note.hub ? "Go to your page" : "Go to that page" })]),
+                 : h("button", { class: "b quiet", type: "button", onclick: function () { if (!note.hub) lsSet("on", "1"); location.href = note.page; } }, [icon("arrow"), h("span", { text: note.hub ? "Go to your portal" : "Go to that page" })]),
             h("button", { class: "b danger", type: "button", onclick: function () { removeNote(i); openReview(); } }, [icon("trash"), h("span", { text: "Delete" })])
           ])
         ])
@@ -827,7 +830,7 @@
     var step = function (n, ic, title, text) { return h("li", {}, [h("div", { class: "circ" }, [icon(ic), h("i", { text: String(n) })]), h("div", {}, [h("b", { text: title }), h("span", { text: text })])]); };
     veil(h("div", { class: "card", role: "dialog", "aria-label": "How this works" }, [
       h("div", { class: "hd" }, [
-        h("div", { class: "grow" }, [h("h2", { text: first ? (MODE === "edit" ? "You're in Edit mode. Here's how it works." : "Welcome! Here's how it works.") : "How this works" }), h("p", { text: MODE === "edit" ? "Leave notes for " + TO + " right on your own website." : "This is your own page for sending " + TO + " what you need." })]),
+        h("div", { class: "grow" }, [h("h2", { text: first ? (MODE === "edit" ? "You're in Edit mode. Here's how it works." : "Welcome! Here's how it works.") : "How this works" }), h("p", { text: MODE === "edit" ? "Leave notes for " + TO + " right on your own website." : "This is your Client Portal for sending " + TO + " what you need." })]),
         first ? null : h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { closePanels(); render(); } }, [icon("x")])
       ]),
       h("div", { class: "bd" }, [
@@ -931,46 +934,51 @@
   }
 
   // The hidden door: press and hold the Stray Wolf badge (or data-door) for 2 seconds.
-  // The wolf's eyes glow orange and a ring fills around it; then the client's page opens.
-  // Let go early and nothing happens, and a normal tap still follows the badge's link.
+  // A soft moonlight grows from it (the wolf's eyes glow orange too), then the light
+  // washes over the whole screen and the client's page comes up out of it. Let go
+  // early and the light fades away; a normal tap still follows the badge's link.
+  var WASH = "#FFFDF8", WASH_KEY = "swn-moonlight";
   function door() {
     if (!DOOR || DOOR === "none" || IS_HUB) return;
-    // so a long press on a phone doesn't open the link menu or select text instead
+    // so a long press on a phone doesn't open the link menu, select text or scroll instead
     var prep = function () { Array.prototype.forEach.call(document.querySelectorAll(DOOR), function (el) { el.style.webkitTouchCallout = "none"; el.style.webkitUserSelect = "none"; el.style.userSelect = "none"; el.style.touchAction = "none"; }); };
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", prep); else prep();
-    var HOLD = 2000, timer = 0, ring = null, eyes = [], opened = false, startX = 0, startY = 0;
-    var NS = "http://www.w3.org/2000/svg";
+    var HOLD = 2000, timer = 0, glow = null, glowAnim = null, eyes = [], opened = false, startX = 0, startY = 0;
+    var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function fixed(css) { var d = document.createElement("div"); d.setAttribute("aria-hidden", "true"); d.setAttribute("data-site-notes-light", ""); d.style.cssText = "position:fixed;pointer-events:none;z-index:2147483646;" + css; document.body.appendChild(d); return d; }
     function reset() {
       clearTimeout(timer); timer = 0;
-      if (ring) { ring.remove(); ring = null; }
-      eyes.forEach(function (e) { e.style.fill = ""; e.style.filter = ""; e.style.transition = ""; }); eyes = [];
+      if (glow) {
+        var g = glow; glow = null;
+        if (glowAnim && g.animate) { var o = getComputedStyle(g).opacity, t = getComputedStyle(g).transform; glowAnim.cancel(); g.animate([{ opacity: o, transform: t }, { opacity: 0, transform: t }], { duration: 380, easing: "ease-out", fill: "forwards" }).onfinish = function () { g.remove(); }; }
+        else g.remove();
+      }
+      eyes.forEach(function (e) { e.style.fill = ""; e.style.filter = ""; }); eyes = [];
     }
     function start(e, el) {
       if (e.button > 0) return;
       reset(); opened = false; startX = e.clientX; startY = e.clientY;
-      el.style.webkitTouchCallout = "none"; el.style.webkitUserSelect = "none"; el.style.userSelect = "none";
-      var head = el.querySelector("svg g") || el, r = head.getBoundingClientRect();
+      var at = el.querySelector("[data-door-center]") || (el.matches(".swt-badge") && el.querySelector("svg g")) || el, r = at.getBoundingClientRect();
+      var cx = r.left + r.width / 2, cy = r.top + r.height / 2, size = Math.max(110, Math.max(r.width, r.height) * 3.4);
       eyes = Array.prototype.slice.call(el.querySelectorAll(".swt-e"));
       eyes.forEach(function (x) { x.style.transition = "fill 1.6s ease, filter 1.6s ease"; });
-      var size = Math.max(r.width, r.height) + 22;
-      ring = document.createElementNS(NS, "svg");
-      ring.setAttribute("viewBox", "0 0 100 100"); ring.setAttribute("aria-hidden", "true");
-      ring.style.cssText = "position:fixed;z-index:2147483646;pointer-events:none;left:" + (r.left + r.width / 2 - size / 2) + "px;top:" + (r.top + r.height / 2 - size / 2) + "px;width:" + size + "px;height:" + size + "px;transform:rotate(-90deg)";
-      var track = document.createElementNS(NS, "circle"), arc = document.createElementNS(NS, "circle");
-      [track, arc].forEach(function (c) { c.setAttribute("cx", "50"); c.setAttribute("cy", "50"); c.setAttribute("r", "46"); c.setAttribute("fill", "none"); c.setAttribute("stroke-width", "4"); });
-      track.setAttribute("stroke", "rgba(238,106,53,.22)");
-      arc.setAttribute("stroke", "#EE6A35"); arc.setAttribute("stroke-linecap", "round");
-      arc.setAttribute("stroke-dasharray", "289"); arc.setAttribute("stroke-dashoffset", "289");
-      ring.appendChild(track); ring.appendChild(arc); document.body.appendChild(ring);
-      requestAnimationFrame(function () {
-        eyes.forEach(function (x) { x.style.fill = "#EE6A35"; x.style.filter = "drop-shadow(0 0 3px #EE6A35)"; });
-        if (arc.animate) arc.animate([{ strokeDashoffset: 289 }, { strokeDashoffset: 0 }], { duration: HOLD, easing: "linear", fill: "forwards" });
-        else arc.setAttribute("stroke-dashoffset", "0");
-      });
+      // the moonlight: a soft round glow centred on the door that slowly brightens and swells
+      glow = fixed("left:" + (cx - size / 2) + "px;top:" + (cy - size / 2) + "px;width:" + size + "px;height:" + size + "px;border-radius:50%;opacity:0;" +
+        "mix-blend-mode:screen;background:radial-gradient(circle," + WASH + " 0," + WASH + " 9%,rgba(255,250,236,.85) 18%,rgba(255,240,214,.4) 38%,rgba(255,236,206,.12) 54%,rgba(255,236,206,0) 70%)");
+      requestAnimationFrame(function () { eyes.forEach(function (x) { x.style.fill = "#EE6A35"; x.style.filter = "drop-shadow(0 0 3px #EE6A35)"; }); });
+      if (glow.animate) glowAnim = glow.animate([{ opacity: 0, transform: "scale(.35)" }, { opacity: .7, transform: "scale(.8)", offset: .45 }, { opacity: 1, transform: "scale(1.3)" }], { duration: HOLD, easing: "cubic-bezier(.4,0,.7,1)", fill: "forwards" });
+      else glow.style.opacity = "1";
       timer = setTimeout(function () {
-        opened = true;
-        if (ring && ring.animate) ring.animate([{ opacity: 1, transform: "rotate(-90deg) scale(1)" }, { opacity: 0, transform: "rotate(-90deg) scale(1.35)" }], { duration: 260, fill: "forwards" });
-        setTimeout(function () { location.href = LOGIN_URL; }, 220);
+        opened = true; timer = 0;
+        try { sessionStorage.setItem(WASH_KEY, "1"); } catch (x) {}
+        if (navigator.vibrate) try { navigator.vibrate(12); } catch (x) {}
+        // then the light washes over everything, from the door outwards
+        var far = Math.max(Math.hypot(cx, cy), Math.hypot(innerWidth - cx, cy), Math.hypot(cx, innerHeight - cy), Math.hypot(innerWidth - cx, innerHeight - cy));
+        var d = far * 4 + 200, from = Math.min(1, size * .9 / d), wash = fixed("left:" + (cx - d / 2) + "px;top:" + (cy - d / 2) + "px;width:" + d + "px;height:" + d + "px;border-radius:50%;background:radial-gradient(circle," + WASH + " 0," + WASH + " 50%,rgba(255,253,248,.85) 66%,rgba(255,250,236,.35) 84%,rgba(255,250,236,0) 100%);transform:scale(" + from + ")");
+        var go = function () { location.href = LOGIN_URL; };
+        if (calm || !wash.animate) { wash.style.transform = "none"; setTimeout(go, 120); return; }
+        wash.animate([{ transform: "scale(" + from + ")" }, { transform: "scale(1)" }], { duration: 800, easing: "cubic-bezier(.6,0,.8,.5)", fill: "forwards" }).onfinish = go;
+        setTimeout(go, 1200);                  // in case the animation never reports back
       }, HOLD);
     }
     document.addEventListener("pointerdown", function (e) { var el = e.target.closest && e.target.closest(DOOR); if (el) start(e, el); }, true);
@@ -980,11 +988,25 @@
     document.addEventListener("click", function (e) { if (opened && e.target.closest && e.target.closest(DOOR)) { e.preventDefault(); e.stopPropagation(); } }, true);
     document.addEventListener("contextmenu", function (e) { if (e.target.closest && e.target.closest(DOOR) && (timer || opened)) e.preventDefault(); }, true);
     document.addEventListener("dragstart", function (e) { if (e.target.closest && e.target.closest(DOOR)) e.preventDefault(); }, true);
+    // coming back with the browser's Back button: no leftover light
+    window.addEventListener("pageshow", function (e) { if (e.persisted) { opened = false; Array.prototype.forEach.call(document.querySelectorAll("[data-site-notes-light]"), function (d) { d.remove(); }); } });
+  }
+  // The client's page, arrived at through the door: it comes up out of the moonlight
+  function arrive() {
+    var on = false; try { on = sessionStorage.getItem(WASH_KEY) === "1"; sessionStorage.removeItem(WASH_KEY); } catch (x) {}
+    if (!on) return;
+    var d = document.createElement("div"); d.setAttribute("aria-hidden", "true"); d.setAttribute("data-keep", "");
+    d.style.cssText = "position:fixed;inset:0;z-index:2147483647;pointer-events:none;background:" + WASH;
+    (document.body || document.documentElement).appendChild(d);
+    var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!d.animate || calm) { setTimeout(function () { d.remove(); }, calm ? 60 : 400); return; }
+    d.animate([{ opacity: 1 }, { opacity: 1, offset: .15 }, { opacity: 0 }], { duration: 900, easing: "ease-out", fill: "forwards" }).onfinish = function () { d.remove(); };
   }
   function boot() {
     door();
     var token = lsGet("token"), on = lsGet("on") === "1";
     if (IS_HUB) {
+      arrive();
       lsSet("on", null);                       // on their page, Edit mode is off until they tap it
       if (token) { unlock(); mount(); start(); }
       else { lock(); mount(); showLogin(); }

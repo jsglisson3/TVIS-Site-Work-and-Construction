@@ -31,7 +31,7 @@ for (const k of ['facebook', 'instagram', 'googleBusinessProfile', 'formEndpoint
   }
 }
 // Site Notes (Jeremy's notes kit): notes.api is the notes service address (https://...workers.dev) or "demo";
-// notes.site is the short name from Jeremy's admin page. Empty api = notes are off: no /notes page and no script.
+// notes.site is the short name from Jeremy's admin page. Empty api = notes are off: no /portal page and no script.
 const NOTES = config.notes || {};
 NOTES.api = String(NOTES.api || '').trim();
 NOTES.site = String(NOTES.site || '').trim();
@@ -84,8 +84,8 @@ function addressLine(sep = ', ') {
 
 const vars = {
   name: esc(config.name),
-  // Site Notes on every page: invisible to visitors; holding the "Powered by Stray Wolf" wolf for 2 seconds opens /notes/
-  notes_tag: NOTES.api ? `<script src="/assets/site-notes.js" data-site="${esc(NOTES.site)}" data-api="${esc(NOTES.api)}" data-login-url="/notes/" defer></script>\n` : '',
+  // Site Notes on every page: invisible to visitors; holding the "Powered by Stray Wolf" wolf for 2 seconds opens /portal/
+  notes_tag: NOTES.api ? `<script src="/assets/site-notes.js" data-site="${esc(NOTES.site)}" data-api="${esc(NOTES.api)}" data-login-url="/portal/" defer></script>\n` : '',
   notes_api: esc(NOTES.api),
   notes_site: esc(NOTES.site),
   tagline: esc(config.tagline),
@@ -908,11 +908,11 @@ async function main() {
 </body></html>
 `);
   }
-  // tvisconstruction.com/notes: Joey's own page for sending Jeremy notes and photos (Site Notes). Hidden from search
+  // tvisconstruction.com/portal: Joey's Client Portal for sending Jeremy changes and photos (Site Notes). Hidden from search
   // engines and only built once site.config.json > notes.api is filled in. Its own tight security policy: this
   // site's script, its own inline styles (by hash), and the notes service.
   if (NOTES.api) {
-    await copyDir(path.join(ROOT, 'src', 'notes', 'brand'), path.join(DIST, 'notes', 'brand'));
+    await copyDir(path.join(ROOT, 'src', 'notes', 'brand'), path.join(DIST, 'portal', 'brand'));
     let html = await render(await fs.readFile(path.join(ROOT, 'src', 'notes', 'index.html'), 'utf8'), vars);
     html = versionAssets(withBase(html));
     const h = v => `'sha256-${createHash('sha256').update(v).digest('base64')}'`;
@@ -921,8 +921,18 @@ async function main() {
     const csp = [`default-src 'self'`, `script-src 'self'`, `style-src 'self' ${styles.join(' ')}${attrs.length ? ` 'unsafe-hashes' ${attrs.join(' ')}` : ''}`,
       `img-src 'self' data: blob:`, `font-src 'self'`, `connect-src 'self'${notesOrigin ? ' ' + notesOrigin : ''}`, `frame-src 'none'`,
       `form-action 'none'`, `base-uri 'self'`, `object-src 'none'`, `worker-src 'none'`, 'upgrade-insecure-requests'].join('; ');
-    await fs.writeFile(path.join(DIST, 'notes', 'index.html'), html.replace('content="__CSP__"', `content="${csp}"`));
-    console.log('  page /notes/ (Site Notes)');
+    await fs.writeFile(path.join(DIST, 'portal', 'index.html'), html.replace('content="__CSP__"', `content="${csp}"`));
+    console.log('  page /portal/ (Client Portal)');
+    // the first address it had (Nov 12 2026), forwarding to the new one
+    await fs.mkdir(path.join(DIST, 'notes'), { recursive: true });
+    await fs.writeFile(path.join(DIST, 'notes', 'index.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="refresh" content="0; url=/portal/">
+<title>Client Portal</title>
+</head><body><p><a href="/portal/">Go to your Client Portal</a></p></body></html>
+`);
   }
   await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
   await fs.writeFile(path.join(DIST, '.nojekyll'), '');

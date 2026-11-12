@@ -34,7 +34,7 @@
   "googleSiteVerification": "2jRRDxl0NHKcagbnaPNGg1jdLlrFf4lMYD4fOA2nKkA",
   "_googleSiteVerification": "the code from Google Search Console > Settings > Ownership verification > HTML tag (just the content value). Leave empty if you verify through DNS instead.",
   "notes": { "api": "https://site-notes.jsglisson.workers.dev", "site": "tvis-construction" },
-  "_notes": "Site Notes, Jeremy's way for Joey to send change requests and photos. api = the notes service address from Jeremy (https://site-notes.....workers.dev). Leave it empty and there is no /notes page and nothing extra on the site. Holding the 'Powered by Stray Wolf' wolf in the footer for 2 seconds opens tvisconstruction.com/notes.",
+  "_notes": "Site Notes, Jeremy's way for Joey to send change requests and photos. api = the notes service address from Jeremy (https://site-notes.....workers.dev). Leave it empty and there is no Client Portal (/portal) and nothing extra on the site. Holding the 'Powered by Stray Wolf' wolf in the footer for 2 seconds opens tvisconstruction.com/portal.",
   "domain": "tvisconstruction.com",
   "formEndpoint": "https://usebasin.com/f/4513058586c6",
   "tracking": {
