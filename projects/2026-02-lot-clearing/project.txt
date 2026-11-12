@@ -3,4 +3,4 @@ category: Property Cleanup
 town: Sequatchie County
 status: Completed
 featured: no
-description: [CONFIRM] Brush, small trees and stumps cleared off a wooded lot and piled up, then the ground graded smooth with the bigger trees left standing.
+description: [CONFIRM] Cleared brush, small trees and stumps off a wooded lot and graded the ground smooth, leaving the bigger trees standing.

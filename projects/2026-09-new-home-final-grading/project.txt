@@ -3,4 +3,4 @@ category: New Construction Sitework
 town: Sequatchie County
 status: Completed
 featured: yes
-description: [CONFIRM] Rough lot around a newly set home taken to final grade, with a gravel drive put in.
+description: [CONFIRM] Took the rough lot around a newly set home to final grade and put in a gravel drive.

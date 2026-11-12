@@ -3,4 +3,4 @@ category: New Construction Sitework
 town: Sequatchie County
 status: Completed
 featured: no
-description: [CONFIRM] Wooded lot cleared and graded so a manufactured home could be set on it.
+description: [CONFIRM] Cleared and graded a wooded lot so a manufactured home could be set on it.

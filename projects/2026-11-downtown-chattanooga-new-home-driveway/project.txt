@@ -1,0 +1,6 @@
+title: New home driveway
+category: Concrete
+town: Downtown Chattanooga
+status: In Progress
+featured: no
+description: [CONFIRM] Dug a trench along the side of a new home, then graded the driveway and laid a packed gravel base, ready for the concrete pour.

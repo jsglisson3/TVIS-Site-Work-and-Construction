@@ -3,4 +3,4 @@ category: Driveways
 town: Harrison
 status: Completed
 featured: no
-description: [CONFIRM] Old gravel under a layer of leaves cleaned up, then fresh crushed stone spread, graded and packed down into a smooth parking pad beside the house.
+description: [CONFIRM] Cleaned up old gravel buried under leaves, then spread, graded and packed fresh crushed stone into a smooth parking pad beside the house.

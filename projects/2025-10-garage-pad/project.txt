@@ -3,4 +3,4 @@ category: Shed & Garage Pads
 town: Reelfoot Lake
 status: Completed
 featured: yes
-description: [CONFIRM] Pad laid out and formed in an open yard, slab poured, and the building framed and finished on it.
+description: [CONFIRM] Laid out and formed the pad in an open yard and poured the slab, then the building was framed and finished on it.

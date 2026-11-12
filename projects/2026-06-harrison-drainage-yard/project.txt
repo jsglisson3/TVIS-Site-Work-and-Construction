@@ -3,4 +3,4 @@ category: Drainage
 town: Harrison
 status: Completed
 featured: yes
-description: [CONFIRM] Rock-lined swale and stone drain bed along the block wall, with the yard graded so water runs away from the house.
+description: [CONFIRM] Built a rock-lined swale and stone drain bed along the block wall, and graded the yard so water runs away from the house.

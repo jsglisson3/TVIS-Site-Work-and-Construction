@@ -3,4 +3,4 @@ category: Concrete
 town: Chattanooga
 status: Completed
 featured: no
-description: [CONFIRM] Lot graded around a new two-story home, then a long concrete driveway poured up the slope.
+description: [CONFIRM] Graded the lot around a new two-story home, then poured a long concrete driveway up the slope.

@@ -3,4 +3,4 @@ category: Property Cleanup
 town: Dunlap
 status: Completed
 featured: no
-description: An old mobile home that had sat empty for years torn down and hauled off, then the lot cleaned up, seeded and strawed.
+description: Tore down and hauled off an old mobile home that had sat empty for years, then cleaned up the lot and seeded and strawed it.

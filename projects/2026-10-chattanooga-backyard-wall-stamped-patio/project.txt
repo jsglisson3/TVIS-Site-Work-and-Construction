@@ -3,4 +3,4 @@ category: Concrete
 town: Harrison
 status: Completed
 featured: no
-description: [CONFIRM] Back yard dug out and regraded, a block retaining wall built, and the covered patio finished in stamped concrete with a drain.
+description: [CONFIRM] Dug out and regraded the back yard, built a block retaining wall, and finished the covered patio in stamped concrete with a drain.

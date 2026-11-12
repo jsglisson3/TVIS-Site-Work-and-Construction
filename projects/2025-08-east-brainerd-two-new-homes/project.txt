@@ -3,4 +3,4 @@ category: New Construction Sitework
 town: East Brainerd
 status: Completed
 featured: no
-description: [CONFIRM] Lots around two new homes graded, with crushed stone spread for the drives and parking.
+description: [CONFIRM] Graded the lots around two new homes and spread crushed stone for the drives and parking.

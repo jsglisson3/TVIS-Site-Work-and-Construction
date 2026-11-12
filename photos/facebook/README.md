@@ -20,7 +20,7 @@ No Facebook login is needed: the page's photos open one by one while signed out.
 
 ## Log of processed photos
 
-Latest post covered: **2026-11-09**. 26 photos looked at on 2026-11-04; 8 more on 2026-11-07 (Jeremy downloaded them and sent them in, because Facebook is blocked from Claude's cloud workspace); 2 new on 2026-11-09 (pulled signed out from Jeremy's PC, where Facebook works).
+Latest post covered: **2026-11-11**. 26 photos looked at on 2026-11-04; 8 more on 2026-11-07 (Jeremy downloaded them and sent them in, because Facebook is blocked from Claude's cloud workspace); 2 new on 2026-11-09 (pulled signed out from Jeremy's PC, where Facebook works); 3 new on 2026-11-11 (same way).
 
 About the ids: the 2026-11-06 rows use the number inside the image's file name, not the `fbid=` in the photo's address (for example address `fbid=122105894157532034` shows image `..._122105896893532034_...`). Both trace back to the same photo. From 2026-11-09 on, rows use the `fbid=` number, as the naming rule says.
 
@@ -28,6 +28,9 @@ Where the saved ones went on the site: "Facebook photos" in `PHOTOGRAPHY-INDEX.m
 
 | fbid | Posted | Result | What it shows | Job (best guess) |
 |---|---|---|---|---|
+| 122109137451532034 | 2026-11-11 | Saved, used (project progress-2, cropped: drops a real-estate For Sale sign with a phone number, and some sky) | Graded gravel base for the driveway in front of a new white board-and-batten home, Kubota U35 mini excavator at right, block retaining wall at left | New home driveway, downtown Chattanooga (concrete poured the next day, per Joey's post) |
+| 122109137487532034 | 2026-11-11 | Saved, used (project before-1, top cropped) | Trench dug along the side of the same home, dirt pile, plywood over the trench, cone; sun flare top left | Same |
+| 122109137535532034 | 2026-11-11 | Saved, used (project progress-1, portrait) | Mini excavator digging the same trench beside the home | Same |
 | 122108116389532034 | 2026-11-09 | Saved, used (project after-1 and pads-step-3) | After: fresh, smooth crushed-stone parking pad beside a white house, rock-edged bed, backhoe and mini excavator parked behind | Gravel parking pad, Harrison, Nov 2026 |
 | 122108116359532034 | 2026-11-09 | Saved, used (project before-1) | Before, same view: thin old gravel under leaves, pile of new stone, same two machines | Same |
 | 122105894061532034 (image 122105896839532034) | 2026-11-06 | Already saved as `2026-11-06_fbnoid-cleared-lot.jpg` (dHash distance 6) | Seeded and strawed lot, dumpster | Mobile home teardown |
