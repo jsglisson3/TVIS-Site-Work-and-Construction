@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" class="swn-locked">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#24221F">
+<title>Your page · Stray Wolf Technology</title>
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
+<!--
+  Joey's own page for sending Jeremy notes and photos (Site Notes, by Stray Wolf Technology).
+  scripts/build.mjs fills in {{name}} and the notes values from site.config.json > notes and
+  writes it to dist/notes/index.html, only once notes.api is filled in. Hidden from search engines.
+-->
+<style>
+  @font-face{font-family:"SW Zilla";src:url("brand/zilla-slab-600.woff2") format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"SW Zilla";src:url("brand/zilla-slab-700.woff2") format("woff2");font-weight:700;font-display:swap}
+  @font-face{font-family:"SW Mono";src:url("brand/plex-mono-500.woff2") format("woff2");font-weight:500;font-display:swap}
+  :root{--paper:#F4F2EE;--card:#fff;--stone:#E7E1D7;--ink:#24221F;--muted:#615b52;--line:#e2dcd2;--accent:#C2541B;--accent-hi:#D9531E;--accent-soft:#FBEEE6;
+        --sage:#5F7152;--sage-soft:#E9EFE4;--char:#24221F;
+        --slab:"SW Zilla","Zilla Slab",Georgia,serif;--mono:"SW Mono","IBM Plex Mono",ui-monospace,Menlo,monospace}
+  *{box-sizing:border-box}
+  html.swn-locked main{visibility:hidden}
+  body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  .sw-head{position:sticky;top:0;z-index:5;background:rgba(244,242,238,.9);-webkit-backdrop-filter:saturate(1.2) blur(10px);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--line)}
+  .sw-head .wrap{max-width:1180px;display:flex;align-items:center;gap:16px;min-height:70px}
+  .sw-brand{display:block;line-height:0}
+  .sw-brand img{height:36px;width:auto}
+  .sw-head .gap{flex:1}
+  .secure{display:inline-flex;align-items:center;gap:8px;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sage);background:var(--sage-soft);border:1px solid #d3ddc9;border-radius:999px;padding:8px 13px 8px 10px;white-space:nowrap}
+  .secure svg{width:15px;height:15px;flex:none}
+
+  /* ---------- welcome ---------- */
+  .hero{position:relative;text-align:center;padding:56px 0 36px;isolation:isolate}
+  .hero::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;
+     background:
+      linear-gradient(180deg,rgba(244,242,238,0) 50%,var(--paper)),
+      conic-gradient(from 210deg at 14% 0%,rgba(36,34,31,.03) 0 38deg,transparent 38deg 66deg,rgba(36,34,31,.02) 66deg 118deg,transparent 118deg),
+      conic-gradient(from 125deg at 86% 6%,rgba(217,83,30,.045) 0 34deg,transparent 34deg 78deg,rgba(36,34,31,.025) 78deg 124deg,transparent 124deg)}
+  .kicker{display:flex;justify-content:center;align-items:center;gap:12px;font:500 12.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 22px}
+  .kicker::before,.kicker::after{content:"";width:30px;height:1px;background:currentColor;opacity:.45}
+  .plate{display:inline-grid;place-items:center;background:var(--card);border-radius:26px;padding:26px 42px;margin:0 0 26px;
+         box-shadow:0 0 0 1px var(--line),0 22px 44px -22px rgba(36,34,31,.32)}
+  .plate img{display:block;width:min(320px,62vw);height:auto;max-height:150px;object-fit:contain}
+  h1{font:700 clamp(34px,6.2vw,54px)/1.05 var(--slab);letter-spacing:-.005em;margin:0 0 14px}
+  .lead{margin:0 auto;color:var(--muted);max-width:560px;font-size:18px}
+  .trust{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;color:var(--muted);font-size:14.5px}
+  .trust li{display:inline-flex;align-items:center;gap:7px}
+  .trust svg{width:16px;height:16px;color:var(--sage)}
+
+  /* ---------- Edit mode ---------- */
+  .edit{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:16px 22px;align-items:center;color:#fff;border-radius:24px;padding:28px;margin:6px 0 14px;text-decoration:none;cursor:pointer;
+        background:linear-gradient(135deg,#2e2a26,#1e1c19);box-shadow:0 24px 50px -24px rgba(36,34,31,.6)}
+  .edit::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(217,83,30,.9)}
+  .edit::before{content:"";position:absolute;right:-70px;top:-90px;width:300px;height:300px;pointer-events:none;
+        background:conic-gradient(from 200deg,rgba(255,255,255,.055) 0 50deg,transparent 50deg 95deg,rgba(255,255,255,.035) 95deg 150deg,transparent 150deg)}
+  .edit .ic{width:68px;height:68px;border-radius:18px;background:var(--accent-hi);display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(217,83,30,.6)}
+  .edit .ic svg{width:34px;height:34px}
+  .edit .k{font:500 12.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#f3a57d;margin:0 0 9px}
+  .edit b{display:block;font:700 28px/1.15 var(--slab)}
+  .edit em{font-style:normal}
+  .edit .t{color:#d9d3ca;font-size:17px;line-height:1.5;margin:6px 0 0}
+  .edit .go{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:10px;background:var(--accent-hi);color:#fff;font-weight:700;font-size:19px;border-radius:14px;min-height:62px;padding:0 20px;transition:filter .15s}
+  .edit .go svg{width:22px;height:22px;transition:transform .2s}
+  .edit:hover .go{filter:brightness(1.07)}.edit:hover .go svg{transform:translateX(4px)}
+  .edit:focus-visible{outline:3px solid var(--accent-hi);outline-offset:4px}
+  .edit[data-edit-mode="soon"]{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+  .edit[data-edit-mode="soon"]::after,.edit[data-edit-mode="soon"]::before{display:none}
+  .edit[data-edit-mode="soon"] .ic{background:var(--accent-soft);color:var(--accent);box-shadow:none}
+  .edit[data-edit-mode="soon"] .k,.edit[data-edit-mode="soon"] .t{color:var(--muted)}
+  .edit[data-edit-mode="soon"] .go{background:var(--stone);color:var(--muted)}
+  .edit .soon,.edit[data-edit-mode="soon"] .ready{display:none}.edit[data-edit-mode="soon"] .soon{display:inline}
+
+  /* ---------- boxes (and the meeting card, which is a box too) ---------- */
+  .box{position:relative;display:flex;gap:16px;align-items:flex-start;background:var(--card);border-radius:18px;padding:20px;cursor:pointer;
+       box-shadow:0 0 0 1px var(--line),0 2px 0 rgba(36,34,31,.03);transition:box-shadow .18s,transform .18s}
+  .box:hover{box-shadow:0 0 0 2px var(--accent),0 14px 30px -16px rgba(194,84,27,.45);transform:translateY(-1px)}
+  .box .ic{flex:none;width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+  .box .ic svg{width:28px;height:28px}
+  .box b{display:block;font-size:19.5px;line-height:1.3}
+  .box span{display:block;color:var(--muted);font-size:16px;line-height:1.45;margin-top:3px}
+  .box .tap{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--accent);color:#fff;font-weight:650;font-size:15px;padding:7px 13px;border-radius:999px;font-style:normal;white-space:nowrap}
+  .meet{align-items:center;margin:0 0 50px}
+  .meet .ic{background:var(--sage-soft);color:var(--sage)}
+  .meet .grow{flex:1;min-width:0}
+  .meet .tap{margin:0;background:var(--sage);font-size:16px;padding:10px 18px}
+  .meet:hover{box-shadow:0 0 0 2px var(--sage),0 14px 30px -16px rgba(95,113,82,.5)}
+
+  .sec-h{font:700 27px/1.2 var(--slab);margin:0 0 6px}
+  .sub{margin:0 0 18px;color:var(--muted);font-size:17px}
+  .boxes{display:grid;gap:14px;margin:0 0 50px;padding:0;list-style:none}
+  @media (min-width:640px){.boxes{grid-template-columns:1fr 1fr}.box.wide{grid-column:1/-1}}
+
+  /* ---------- private ---------- */
+  .kept{background:var(--card);border-radius:20px;box-shadow:0 0 0 1px var(--line);padding:26px 26px 22px;margin:0 0 56px}
+  .kept h2{font:700 22px/1.2 var(--slab);margin:0 0 4px}
+  .kept > p{margin:0 0 18px;color:var(--muted);font-size:16px}
+  .kept ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+  @media (min-width:700px){.kept ul{grid-template-columns:repeat(3,1fr)}}
+  .kept li{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;align-items:start}
+  .kept li svg{grid-row:span 2;width:38px;height:38px;padding:9px;border-radius:11px;background:var(--sage-soft);color:var(--sage)}
+  .kept li b{font-size:16.5px;line-height:1.3}
+  .kept li span{color:var(--muted);font-size:15px;line-height:1.45}
+
+  /* ---------- footer ---------- */
+  [data-site-notes-spacer]{background:var(--char)}
+  .sw-foot{background:var(--char);color:#d8d2c8}
+  .sw-foot .wrap{max-width:1180px;padding-top:40px;padding-bottom:30px}
+  .sw-foot .row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
+  .sw-foot .row img{height:40px;width:auto;display:block}
+  .sw-foot .row .gap{flex:1}
+  .sw-foot .contact{font-size:15.5px;margin:0}
+  .sw-foot .contact a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(238,106,53,.7)}
+  .sw-foot .contact a:hover{border-color:#ee6a35}
+  .sw-foot .rule{height:1px;background:rgba(216,210,200,.16);margin:24px 0 16px}
+  .sw-foot .fine{display:flex;flex-wrap:wrap;gap:6px 20px;font:500 12px/1.6 var(--mono);letter-spacing:.06em;color:#a59d91}
+  .sw-foot .fine a{color:#d8d2c8;text-decoration:none}.sw-foot .fine a:hover{color:#fff;text-decoration:underline}
+  .sw-foot .fine .lock{display:inline-flex;align-items:center;gap:6px}
+  .sw-foot .fine svg{width:12px;height:12px}
+
+  @media (min-width:1800px){body{font-size:20px}.wrap{max-width:980px}.hero{padding-top:76px}.plate img{width:390px;max-height:185px}h1{font-size:64px}.edit b{font-size:33px}.box b{font-size:21px}.sw-brand img{height:42px}.sec-h{font-size:31px}}
+  @media (max-width:560px){
+    .sw-head .wrap{min-height:58px}.sw-brand img{height:28px}.secure{padding:7px 10px 7px 8px;font-size:10.5px;letter-spacing:.08em}
+    .hero{padding:30px 0 24px}.kicker{margin-bottom:16px}.plate{padding:16px 22px;margin-bottom:18px}.plate img{width:min(230px,60vw)}
+    h1{font-size:32px}.lead{font-size:16.5px}.trust{font-size:13.5px;gap:6px 14px}
+    .edit{grid-template-columns:1fr;padding:22px;gap:14px}.edit .ic{display:none}.edit b{font-size:24px}
+    .meet{flex-wrap:wrap}.meet .tap{width:100%;justify-content:center}
+    .sec-h{font-size:24px}.box{padding:18px}
+    .kept{padding:22px 20px 18px}
+  }
+  @media (max-width:360px){.secure .w{display:none}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  .flat{line-height:0}.nojs{padding:24px}
+</style>
+</head>
+<body>
+<header class="sw-head" data-keep>
+  <div class="wrap">
+    <a class="sw-brand" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-color.svg" alt="Stray Wolf Technology" width="154" height="36"></a>
+    <span class="gap"></span>
+    <span class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Private <span class="w">client page</span></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" data-area="Welcome">
+    <p class="kicker">Your project page</p>
+    <div class="plate"><img src="/assets/img/logo.svg" alt="{{name}} logo"></div>
+    <h1>Welcome, {{name}}.</h1>
+    <p class="lead">This is your own page for working with me. Send me what I need, ask for changes to your website, and set up a time to talk, all in one place.</p>
+    <ul class="trust">
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Password protected</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Sent over a secure connection</li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.3 2 12 2 12s3.5 7 10 7a9.8 9.8 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>Hidden from search engines</li>
+    </ul>
+  </section>
+
+  <a class="edit" href="/" data-edit-mode="/">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></div>
+    <div>
+      <p class="k">Edit mode</p>
+      <b><em class="ready">Want something changed on your website?</em><em class="soon">Your mockup will show up here</em></b>
+      <p class="t"><em class="ready">Open your website, tap the part you mean, and tell me what you'd like. Your website doesn't change until I make the update.</em><em class="soon">As soon as it's ready, this button opens it so you can tap anything and tell me what you think.</em></p>
+    </div>
+    <div class="go"><em class="ready">Open Edit mode</em><em class="soon">Coming soon</em>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+  </a>
+
+  <!-- Meeting requests come in as a note. Later this can link straight to a booking page instead. -->
+  <div class="meet box" data-note-box data-area="Meeting request" data-note-fields="Days that work for you=For example: Tuesday or Thursday|Best time of day=For example: mornings, or after 3|Phone, video or in person?=For example: a phone call is easiest" data-note-ask="When can we talk? I'll set it up and confirm with you.">
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8.5 15l2.2 2.2 4.8-4.8"/></svg></div>
+    <div class="grow"><b>Let's talk</b><span>Want to go over something together? Tell me what times work and I'll set up a call or a meeting.</span></div>
+    <em class="tap">Pick a time</em>
+  </div>
+
+  <h2 class="sec-h">What I need from you</h2>
+  <p class="sub">Tap a box, then type or add photos. Tap <b>Send to Jeremy</b> at the bottom when you're done.</p>
+  <ul class="boxes">
+    <li class="box" data-note-box data-area="Logo" data-note-ask="Add your logo below. Anything I should know about it?" data-note-hint="For example: This is the newest one. Use the round version.">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
+      <div><b>Your logo</b><span>The best copy you have. A photo of it works too.</span><em class="tap">Tap to add it</em></div>
+    </li>
+    <li class="box" data-note-box data-area="Photos" data-note-ask="Add your photos below. Anything to tell me about them?" data-note-hint="For example: The first three are our best jobs.">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></div>
+      <div><b>Photos</b><span>Your work, your place, your people. More is better.</span><em class="tap">Tap to add them</em></div>
+    </li>
+    <li class="box" data-note-box data-area="The words that matter" data-note-ask="What should your website say?" data-note-hint="For example: Family owned since 1998. Free estimates.">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></div>
+      <div><b>The words that matter</b><span>Your slogan, your prices, anything that must be said.</span><em class="tap">Tap to type it</em></div>
+    </li>
+    <li class="box" data-note-box data-area="Sites you like" data-note-ask="Which websites do you like the look of?" data-note-hint="Paste the address, and say what you like about it.">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div>
+      <div><b>Sites you like</b><span>Any website you like the look of.</span><em class="tap">Tap to paste it</em></div>
+    </li>
+    <li class="box wide" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-ask="Paste a link to each page you have. Skip any you don't use.">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></div>
+      <div><b>Your social pages</b><span>Facebook, Instagram, LinkedIn and your Google business listing. Just the ones you have.</span><em class="tap">Tap to add them</em></div>
+    </li>
+  </ul>
+
+  <section class="kept" aria-labelledby="kept-h">
+    <h2 id="kept-h">Your page is private</h2>
+    <p>You can't break anything here, and you can come back and send more any time.</p>
+    <ul>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <b>Only with your password</b><span>Nobody gets in without it. Ask me any time and I'll change it.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        <b>Sent straight to me</b><span>Your notes and photos travel over a secure connection, to me and no one else.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        <b>Your visitors never see it</b><span>Your website looks the same to everyone else while you're working here.</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="sw-foot" data-keep>
+  <div class="wrap">
+    <div class="row">
+      <a class="flat" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-reverse.svg" alt="Stray Wolf Technology" width="171" height="40"></a>
+      <span class="gap"></span>
+      <p class="contact">Questions? Email me at <a href="mailto:info@straywolftech.com">info@straywolftech.com</a></p>
+    </div>
+    <div class="rule"></div>
+    <div class="fine">
+      <span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Private page for {{name}}</span>
+      <a href="https://straywolftech.com/privacy.html" rel="noopener">Privacy</a>
+      <a href="https://straywolftech.com/terms.html" rel="noopener">Terms</a>
+      <span>© 2026 Stray Wolf Technology</span>
+    </div>
+  </div>
+</footer>
+<noscript><p class="nojs">Please turn on JavaScript to log in.</p></noscript>
+<script src="/assets/site-notes.js" data-site="{{notes_site}}" data-api="{{notes_api}}" data-hub data-name="{{name}}" data-logo="/assets/img/logo.svg"></script>
+</body>
+</html>

@@ -33,6 +33,8 @@
   "_reviews": "Google reviews about the business as a whole (not one job), copied exactly as Google shows them, with the name as Google shows it. They show in the homepage 'What customers say' section with a 'Read it on Google' link. A review about one job goes in that job's project.txt (review: / reviewer:) instead. Never shorten, change or invent one.",
   "googleSiteVerification": "2jRRDxl0NHKcagbnaPNGg1jdLlrFf4lMYD4fOA2nKkA",
   "_googleSiteVerification": "the code from Google Search Console > Settings > Ownership verification > HTML tag (just the content value). Leave empty if you verify through DNS instead.",
+  "notes": { "api": "https://site-notes.jsglisson.workers.dev", "site": "tvis-construction" },
+  "_notes": "Site Notes, Jeremy's way for Joey to send change requests and photos. api = the notes service address from Jeremy (https://site-notes.....workers.dev). Leave it empty and there is no /notes page and nothing extra on the site. Holding the 'Powered by Stray Wolf' wolf in the footer for 2 seconds opens tvisconstruction.com/notes.",
   "domain": "tvisconstruction.com",
   "formEndpoint": "https://usebasin.com/f/4513058586c6",
   "tracking": {

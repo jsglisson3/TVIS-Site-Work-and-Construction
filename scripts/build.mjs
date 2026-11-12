@@ -30,6 +30,20 @@ for (const k of ['facebook', 'instagram', 'googleBusinessProfile', 'formEndpoint
     config[k] = '';
   }
 }
+// Site Notes (Jeremy's notes kit): notes.api is the notes service address (https://...workers.dev) or "demo";
+// notes.site is the short name from Jeremy's admin page. Empty api = notes are off: no /notes page and no script.
+const NOTES = config.notes || {};
+NOTES.api = String(NOTES.api || '').trim();
+NOTES.site = String(NOTES.site || '').trim();
+if (NOTES.api && NOTES.api !== 'demo' && !/^https:\/\/[^\s"'<>`/]+\/?$/i.test(NOTES.api)) {
+  console.warn(`  ! site.config.json > notes.api must be the service's https:// address (or "demo"); notes left off: ${NOTES.api}`);
+  NOTES.api = '';
+}
+if (NOTES.api && !/^[a-z0-9-]{2,60}$/.test(NOTES.site)) {
+  console.warn(`  ! site.config.json > notes.site must be the short name from the admin page (like tvis-construction); notes left off`);
+  NOTES.api = '';
+}
+const notesOrigin = NOTES.api && NOTES.api !== 'demo' ? new URL(NOTES.api).origin : '';
 {
   const t = config.tracking || {};
   const ID = { googleAnalyticsId: /^G-[A-Z0-9]{4,20}$/, googleAdsId: /^AW-\d{6,15}$/, googleAdsLeadLabel: /^[A-Za-z0-9_-]{4,40}$/, metaPixelId: /^\d{8,20}$/ };
@@ -70,6 +84,10 @@ function addressLine(sep = ', ') {
 
 const vars = {
   name: esc(config.name),
+  // Site Notes on every page: invisible to visitors; holding the "Powered by Stray Wolf" wolf for 2 seconds opens /notes/
+  notes_tag: NOTES.api ? `<script src="/assets/site-notes.js" data-site="${esc(NOTES.site)}" data-api="${esc(NOTES.api)}" data-login-url="/notes/" defer></script>\n` : '',
+  notes_api: esc(NOTES.api),
+  notes_site: esc(NOTES.site),
   tagline: esc(config.tagline),
   phone: show('phone', 'PHONE'),
   phone_href: tel || '/estimate#contact',
@@ -743,7 +761,7 @@ function contentSecurityPolicy(html) {
     'style-src': ["'self'", ...(styleHashes.length ? ["'unsafe-hashes'", ...styleHashes] : [])],
     'img-src': ["'self'", 'data:', 'blob:', ga && 'https://*.google-analytics.com https://*.googletagmanager.com', ads && 'https://*.google.com https://googleads.g.doubleclick.net https://*.g.doubleclick.net', meta && 'https://www.facebook.com'],
     'font-src': ["'self'"],
-    'connect-src': ["'self'", form, ga && 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com', ads && 'https://*.g.doubleclick.net https://*.google.com https://pagead2.googlesyndication.com https://www.googleadservices.com', meta && 'https://www.facebook.com https://connect.facebook.net'],
+    'connect-src': ["'self'", form, notesOrigin, ga && 'https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com', ads && 'https://*.g.doubleclick.net https://*.google.com https://pagead2.googlesyndication.com https://www.googleadservices.com', meta && 'https://www.facebook.com https://connect.facebook.net'],
     'frame-src': ads ? ['https://td.doubleclick.net https://www.googletagmanager.com'] : ["'none'"],
     'form-action': ["'self'", form],
     'base-uri': ["'self'"],
@@ -762,7 +780,8 @@ async function main() {
   await copyDir(path.join(ROOT, 'src', 'assets'), path.join(DIST, 'assets'));
   // Version the stylesheet and script by their content, so a browser that cached an old copy
   // always fetches the new one when the pages change (otherwise new pages render with old styles).
-  for (const f of ['site.css', 'site.js']) {
+  if (!NOTES.api) await fs.rm(path.join(DIST, 'assets', 'site-notes.js'), { force: true });
+  for (const f of ['site.css', 'site.js', ...(NOTES.api ? ['site-notes.js'] : [])]) {
     const v = createHash('sha1').update(await fs.readFile(path.join(DIST, 'assets', f))).digest('hex').slice(0, 10);
     ASSET_VERSIONS.push([`/assets/${f}"`, `/assets/${f}?v=${v}"`]);
   }
@@ -888,6 +907,22 @@ async function main() {
 <p><a href="${to}">Tap here if nothing happens</a>. Thank you!</p>
 </body></html>
 `);
+  }
+  // tvisconstruction.com/notes: Joey's own page for sending Jeremy notes and photos (Site Notes). Hidden from search
+  // engines and only built once site.config.json > notes.api is filled in. Its own tight security policy: this
+  // site's script, its own inline styles (by hash), and the notes service.
+  if (NOTES.api) {
+    await copyDir(path.join(ROOT, 'src', 'notes', 'brand'), path.join(DIST, 'notes', 'brand'));
+    let html = await render(await fs.readFile(path.join(ROOT, 'src', 'notes', 'index.html'), 'utf8'), vars);
+    html = versionAssets(withBase(html));
+    const h = v => `'sha256-${createHash('sha256').update(v).digest('base64')}'`;
+    const styles = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(m => h(m[1]));
+    const attrs = [...new Set([...html.matchAll(/\sstyle="([^"]*)"/g)].map(m => m[1]))].map(h);
+    const csp = [`default-src 'self'`, `script-src 'self'`, `style-src 'self' ${styles.join(' ')}${attrs.length ? ` 'unsafe-hashes' ${attrs.join(' ')}` : ''}`,
+      `img-src 'self' data: blob:`, `font-src 'self'`, `connect-src 'self'${notesOrigin ? ' ' + notesOrigin : ''}`, `frame-src 'none'`,
+      `form-action 'none'`, `base-uri 'self'`, `object-src 'none'`, `worker-src 'none'`, 'upgrade-insecure-requests'].join('; ');
+    await fs.writeFile(path.join(DIST, 'notes', 'index.html'), html.replace('content="__CSP__"', `content="${csp}"`));
+    console.log('  page /notes/ (Site Notes)');
   }
   await fs.writeFile(path.join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${origin ? `Sitemap: ${origin}/sitemap.xml\n` : ''}`);
   await fs.writeFile(path.join(DIST, '.nojekyll'), '');
