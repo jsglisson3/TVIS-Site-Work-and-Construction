@@ -1,7 +1,7 @@
 /*!
  * site-notes.js  ·  Stray Wolf Technology  ·  v2
  *
- * Lets a client mark up their own site for Jeremy: tap "Add a note", tap the
+ * Lets a client mark up their own site for Stray Wolf: tap "Add a note", tap the
  * part of the page they mean, say what they want, add photos, send.
  * Normal visitors never see any of it. The site itself never changes.
  *
@@ -20,7 +20,7 @@
  *   data-site       the client's short name (must match the admin page)
  *   data-api        the service address, or "demo" to try it with no service
  *                   (demo password: wolf)
- *   data-to         who the notes go to (default: Jeremy)
+ *   data-to         who the notes go to (default: Stray Wolf)
  *   data-hub        this page is the client's own page (and the password page)
  *   data-login-url  where that page lives (default: /portal/)
  *   data-door       the hidden way in (default: the "Powered by Stray Wolf" badge).
@@ -46,7 +46,7 @@
   var SITE = (S.getAttribute("data-site") || "site").toLowerCase();
   var API = (S.getAttribute("data-api") || "demo").replace(/\/+$/, "");
   var DEMO = API === "demo";
-  var TO = S.getAttribute("data-to") || "Jeremy";
+  var TO = S.getAttribute("data-to") || "Stray Wolf";
   var IS_HUB = S.hasAttribute("data-hub") || S.hasAttribute("data-login");
   var MODE = IS_HUB ? "hub" : "edit";   // hub = their own page; edit = Edit mode on the site
   var LOGIN_URL = S.getAttribute("data-login-url") || "/portal/";
