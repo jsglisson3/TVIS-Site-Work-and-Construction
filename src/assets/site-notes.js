@@ -42,7 +42,9 @@
  *                   current value with a Change button, so they only type what's new
  * "Show me on the site": a page opened with #sw-find={...} (the admin builds it from a note's
  *   sel/path/fx/fy/snip) scrolls to that spot and rings it. Each note sends url, sel, path,
- *   fx, fy, py (how far down the page, 0 to 1), snip (its words) and vw (screen width).
+ *   fx, fy, py (how far down the page, 0 to 1), snip (its words) and vw (screen width), plus
+ *   shot: a small picture of the spot (uploaded like a photo; needs html2canvas.min.js next
+ *   to this file, or data-shot-lib="its address"; data-shot-lib="none" = no pictures).
  *   data-booking-url  on the Let's talk box: a booking page (like a Google Calendar
  *                   appointment schedule). Set = tapping it opens that page; empty = a note.
  *   data-alert-key  optional Web3Forms key: emails a heads-up when notes arrive
@@ -61,6 +63,9 @@
   var NAME = S.getAttribute("data-name") || "";   // the business name, for "Welcome, ..." on the login box
   var LOGO = S.getAttribute("data-logo") || "";   // their logo, shown on the login box
   var ALERT_KEY = S.getAttribute("data-alert-key") || "";
+  // html2canvas, for a small picture of the spot each note is about. Lives next to this file;
+  // data-shot-lib="none" turns the pictures off.
+  var SHOT_LIB = S.getAttribute("data-shot-lib") || (S.src || "").replace(/[^\/?#]*([?#].*)?$/, "html2canvas.min.js");
   var K = "swn:" + SITE + ":";
   var MAX_PICS = 20, MAX_SIDE = 2000;
 
@@ -192,6 +197,7 @@
 
     /* the dock at the bottom */
     ".dock{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#fff;box-shadow:0 -6px 24px rgba(0,0,0,.22)}",
+    ".dock.quiet .dock-main{display:none}",
     ".dock-main{padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}",
     ".dock-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px 16px}",
     ".dock .say{flex:1 1 auto;min-width:0;font-size:17px;line-height:1.35}",
@@ -497,7 +503,11 @@
   function snipOf(el) {
     var img = el.tagName === "IMG" ? el : (!tidy(el.innerText) && el.querySelector("img"));
     if (img) return short(img.alt || decodeURIComponent((img.currentSrc || img.src || "").split(/[?#]/)[0].split("/").pop() || ""), 160);
-    return short(tidy(textOf(el), true), 160);
+    // a whole card is too much: its headline, or else its first line
+    var all = tidy(textOf(el), true); if (all.length <= 90) return all;
+    var head = el.querySelector("h1,h2,h3,h4,h5,strong,b");
+    var first = head ? tidy(textOf(head), true) : tidy(textOf(el).split(/\n+/).filter(function (l) { return l.trim(); })[0] || "", true);
+    return short(first || all, 90);
   }
   function pageName() {
     if (/^\/(index\.html?)?$/.test(location.pathname)) return "Home";
@@ -570,7 +580,9 @@
   function render() {
     var n = st.notes.length;
     els.frame.className = "frame" + (picking ? " picking" : "");
-    els.dock.className = "dock " + MODE + (picking ? " picking" : "");
+    // on their own page with nothing written yet, only the slim "logged in" bar shows, so the boxes stay clear
+    var quiet = MODE === "hub" && !st.sent && !n && !picking && !(els.note && st.notes[active]);
+    els.dock.className = "dock " + MODE + (picking ? " picking" : "") + (quiet ? " quiet" : "");
     els.btns.textContent = "";
     els.say.textContent = "";
     if (st.sent) {
@@ -663,6 +675,7 @@
         note.py = Math.round(Math.min(1, Math.max(0, (r.top + window.scrollY) / Math.max(1, document.documentElement.scrollHeight))) * 1000) / 1000;
         if (MODE !== "hub") note.sel = selOf(target).slice(0, 300);
       } catch (e) {}
+      if (MODE !== "hub") snapSpot(note, target);
       lastPin = note.id;
     }
     st.notes.push(note); save();
@@ -835,7 +848,7 @@
   }
   function removeNote(i) {
     var note = st.notes[i]; if (!note) return;
-    note.pics.forEach(picDel); st.notes.splice(i, 1);
+    note.pics.forEach(picDel); if (note.shot) picDel(note.shot); st.notes.splice(i, 1);
     closePanels(); save(); render();
     toast("Note deleted.");
     if (panel === "review") openReview();
@@ -893,6 +906,51 @@
     });
   }
 
+  /* ----- a small picture of the spot, so Stray Wolf sees exactly what they mean ----- */
+  var shotLib = null;
+  function loadShotLib() {
+    if (window.html2canvas) return Promise.resolve(window.html2canvas);
+    if (!SHOT_LIB || SHOT_LIB === "none") return Promise.reject(new Error("off"));
+    return shotLib || (shotLib = new Promise(function (res, rej) {
+      var s = document.createElement("script"); s.src = SHOT_LIB; s.async = true;
+      s.onload = function () { window.html2canvas ? res(window.html2canvas) : rej(new Error("no lib")); };
+      s.onerror = function () { shotLib = null; rej(new Error("lib failed")); };
+      document.head.appendChild(s);
+    }));
+  }
+  // About 640px wide: the element with some of the page around it, ringed, with a pin where they tapped.
+  // Best effort and quiet: if anything goes wrong the note simply has no picture.
+  function snapSpot(note, el) {
+    var r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
+    var docW = document.documentElement.clientWidth, docH = document.documentElement.scrollHeight;
+    var ex = r.left + window.scrollX, ey = r.top + window.scrollY;
+    // always landscape (8:5), so the pictures line up in the admin
+    var w = Math.min(docW, Math.max(r.width + 120, Math.min(docW, 900), (r.height + 120) * 1.6)), hgt = w / 1.6;
+    var x = Math.max(0, Math.min(docW - w, ex + r.width / 2 - w / 2)), y = Math.max(0, Math.min(docH - hgt, ey + r.height / 2 - hgt / 2));
+    var px = ex + r.width * (note.fx == null ? .5 : note.fx), py = ey + r.height * (note.fy == null ? .5 : note.fy);
+    var keep = { left: ex - x, top: ey - y, w: r.width, h: r.height, px: px - x, py: py - y };
+    var late = new Promise(function (res, rej) { setTimeout(function () { rej(new Error("slow")); }, 6000); });   // too slow = no picture
+    Promise.race([late, loadShotLib().then(function (h2c) {
+      return h2c(document.body, { x: x, y: y, width: w, height: hgt, scale: 1, useCORS: true, logging: false, backgroundColor: "#ffffff",
+        windowWidth: docW, ignoreElements: function (n) { return n === host || n.hasAttribute && (n.hasAttribute("data-site-notes-spacer") || n.hasAttribute("data-site-notes-light")); } });
+    })]).then(function (c) {
+      var s = Math.min(1, 640 / c.width), out = document.createElement("canvas");
+      out.width = Math.round(c.width * s); out.height = Math.round(c.height * s);
+      var g = out.getContext("2d"); g.drawImage(c, 0, 0, out.width, out.height); g.scale(s, s);
+      g.strokeStyle = "#c2541b"; g.lineWidth = 4 / s; g.strokeRect(keep.left - 4, keep.top - 4, keep.w + 8, keep.h + 8);
+      g.beginPath(); g.arc(keep.px, keep.py, 12 / s, 0, Math.PI * 2); g.fillStyle = "rgba(194,84,27,.28)"; g.fill(); g.lineWidth = 3 / s; g.strokeStyle = "#c2541b"; g.stroke();   // see-through, so the words still show
+      return new Promise(function (res) { out.toBlob(res, "image/jpeg", .72); });
+    }).then(function (b) {
+      if (!b || st.notes.indexOf(note) < 0) return;
+      var id = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      return picPut(id, { blob: b, type: b.type, name: "spot.jpg" }).then(function () {
+        if (st.notes.indexOf(note) < 0) return picDel(id);
+        if (note.shot) picDel(note.shot);
+        note.shot = id; save();
+      });
+    }).catch(function () {});
+  }
+
   /* ----- the review list and sending ----- */
   function veil(card) {
     closePanels();
@@ -911,7 +969,8 @@
       list.appendChild(h("li", { class: "item" }, [
         h("span", { class: "num", text: String(i + 1) }),
         h("div", { style: "min-width:0;display:grid;gap:4px" }, [
-          h("div", { class: "w", text: (note.hub ? "Client Portal · " : note.title && note.title !== "Home" ? note.title + " page · " : "") + note.on }),
+          // a short, plain "where": the box on their portal, or just the page on the website (the exact spot still goes to Stray Wolf)
+          h("div", { class: "w", text: note.hub ? note.on : (note.title || "Home") + " page" }),
           h("div", { class: "s" + (note.text ? "" : " empty"), text: note.text || "(photos only)" }),
           note.pics.length ? th : null,
           h("div", { class: "acts" }, [
@@ -977,6 +1036,20 @@
     }, Promise.resolve(null)).then(function (stop) {
       if (stop) return failWith(stop);
       step("Sending notes…", total / (total + 1));
+      // the pictures of the spots: best effort, a failed one just leaves that note without a picture
+      return st.notes.reduce(function (p, n) {
+        return p.then(function () {
+          if (!n.shot) return;
+          return picGet(n.shot).then(function (rec) {
+            if (!rec) return;
+            if (rec.key) { keys[n.shot] = rec.key; return; }
+            var up = DEMO ? Promise.resolve({ ok: true, key: "pic:demo:" + n.shot }) : api("/api/pic", { token: token, raw: rec.blob, type: rec.type });
+            return up.then(function (d) { if (d && d.ok) { rec.key = d.key; keys[n.shot] = d.key; return picPut(n.shot, rec); } });
+          }).catch(function () {});
+        });
+      }, Promise.resolve()).then(function () { return null; });
+    }).then(function (stop) {
+      if (stop) return failWith(stop);
       var body = { notes: st.notes.map(function (n) {
         var sent = n.pics.filter(function (id) { return keys[id]; }), caps = n.caps || {};
         var said = sent.map(function (id) { return caps[id] || ""; });
@@ -987,7 +1060,8 @@
                  picNotes: lines.length ? said : undefined,         // same order as pics; "" = no words
                  // where it was left, for "Show me on the site" in the admin
                  url: n.url || location.origin + n.page, path: n.hub || !n.path ? undefined : n.path.slice(0, 40),
-                 sel: n.hub ? undefined : n.sel, fx: n.fx, fy: n.fy, py: n.py, snip: n.snip, vw: n.vw };
+                 sel: n.hub ? undefined : n.sel, fx: n.fx, fy: n.fy, py: n.py, snip: n.snip, vw: n.vw,
+                 shot: n.shot && keys[n.shot] || undefined };      // a small picture of the spot (a pic key, like pics)
       }) };
       var go = DEMO ? new Promise(function (r) { setTimeout(function () { r({ ok: true }); }, 600); }) : api("/api/notes", { token: token, body: body });
       return go.then(function (d) {
@@ -1008,14 +1082,14 @@
         h("p", { text: TO + " has your " + (st.sentNotes === 1 ? "note" : plural(st.sentNotes, "note")) + (st.sentPics ? " and " + plural(st.sentPics, "photo") : "") + "." }),
         h("p", { text: "You'll hear back soon. Nothing on your website changes until " + TO + " makes the update." })
       ]),
-      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: "Done", onclick: function () { closePanels(); render(); } })])
+      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: "Done", onclick: function () { if (MODE === "hub") newList(true); else { closePanels(); render(); } } })])
     ]));
     render();
   }
-  function newList() {
-    st.notes.forEach(function (n) { n.pics.forEach(picDel); });
+  function newList(quietly) {
+    st.notes.forEach(function (n) { n.pics.forEach(picDel); if (n.shot) picDel(n.shot); });
     st.notes = []; st.sent = false; st.sentNotes = st.sentPics = 0; save(); closePanels(); render();
-    toast("Ready for new notes.");
+    if (!quietly) toast("Ready for new notes.");
   }
   // A plain email saying "new notes came in". Best effort; the notes are already safely stored.
   function heads_up(notes, pictures) {
@@ -1275,6 +1349,7 @@
     var syncPickClass = function () { document.documentElement.classList.toggle("swn-pick", picking); };
     var oldRender = render; render = function () { oldRender(); syncPickClass(); };
 
+    if (MODE === "hub" && st.sent) newList(true);   // sent last time: their page starts fresh, no leftover "Sent" bar
     render();
     if (MODE === "hub") { loadStats(); dropOnBoxes(); }
     var introKey = MODE === "edit" ? "intro" : "introHub";
