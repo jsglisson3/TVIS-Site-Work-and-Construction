@@ -55,26 +55,21 @@
   .trust li{display:inline-flex;align-items:center;gap:6px}
   .trust svg{width:14px;height:14px;color:var(--sage)}
 
-  /* ---------- Edit mode ---------- */
-  .edit{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;gap:14px 18px;align-items:center;color:#fff;border-radius:18px;padding:18px 18px 18px 20px;margin:0 0 12px;text-decoration:none;cursor:pointer;
-        background:linear-gradient(135deg,#2e2a26,#1e1c19);box-shadow:0 18px 40px -24px rgba(36,34,31,.6)}
-  .edit::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 1.5px rgba(217,83,30,.85)}
-  .edit::before{content:"";position:absolute;right:-60px;top:-110px;width:280px;height:280px;pointer-events:none;
-        background:conic-gradient(from 200deg,rgba(255,255,255,.05) 0 50deg,transparent 50deg 95deg,rgba(255,255,255,.03) 95deg 150deg,transparent 150deg)}
-  .edit .ic{width:46px;height:46px;border-radius:13px;background:var(--accent-hi);display:grid;place-items:center;box-shadow:0 6px 16px -6px rgba(217,83,30,.6)}
+  /* ---------- Edit mode: the main action, in the same calm white card as the boxes ---------- */
+  .edit{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:14px 18px;align-items:center;color:var(--ink);border-radius:18px;padding:18px 18px 18px 20px;margin:0 0 36px;text-decoration:none;cursor:pointer;
+        background:var(--card);box-shadow:0 0 0 1px var(--line),0 10px 26px -18px rgba(36,34,31,.28);transition:box-shadow .18s}
+  .edit:hover{box-shadow:0 0 0 2px var(--accent),0 12px 26px -16px rgba(194,84,27,.4)}
+  .edit .ic{width:46px;height:46px;border-radius:13px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
   .edit .ic svg{width:23px;height:23px}
-  .edit .k{font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#f3a57d;margin:0 0 6px}
+  .edit .k{font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
   .edit b{display:block;font:700 20px/1.2 var(--slab)}
   .edit em{font-style:normal}
-  .edit .t{color:#d4cec5;font-size:14.5px;line-height:1.45;margin:4px 0 0}
-  .edit .go{position:relative;display:flex;justify-content:center;align-items:center;gap:8px;background:var(--accent-hi);color:#fff;font-weight:650;font-size:15.5px;border-radius:11px;min-height:46px;padding:0 18px;white-space:nowrap;transition:filter .15s}
+  .edit .t{color:var(--muted);font-size:14.5px;line-height:1.45;margin:4px 0 0}
+  .edit .go{position:relative;display:flex;justify-content:center;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:650;font-size:15.5px;border-radius:11px;min-height:46px;padding:0 18px;white-space:nowrap;transition:background .15s}
   .edit .go svg{width:18px;height:18px;transition:transform .2s}
-  .edit:hover .go{filter:brightness(1.07)}.edit:hover .go svg{transform:translateX(3px)}
+  .edit:hover .go{background:#a94816}.edit:hover .go svg{transform:translateX(3px)}
   .edit:focus-visible{outline:3px solid var(--accent-hi);outline-offset:4px}
-  .edit[data-edit-mode="soon"]{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
-  .edit[data-edit-mode="soon"]::after,.edit[data-edit-mode="soon"]::before{display:none}
-  .edit[data-edit-mode="soon"] .ic{background:var(--accent-soft);color:var(--accent);box-shadow:none}
-  .edit[data-edit-mode="soon"] .k,.edit[data-edit-mode="soon"] .t{color:var(--muted)}
+  .edit[data-edit-mode="soon"]{box-shadow:0 0 0 1px var(--line)}
   .edit[data-edit-mode="soon"] .go{background:var(--stone);color:var(--muted)}
   .edit .soon,.edit[data-edit-mode="soon"] .ready{display:none}.edit[data-edit-mode="soon"] .soon{display:inline}
 
@@ -214,11 +209,6 @@
     <div class="go"><em class="ready">Open Edit mode</em><em class="soon">Coming soon</em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
   </a>
 
-  <!-- Meeting requests come in as a note. Later this can link straight to a booking page instead. -->
-  <div class="meet box" data-note-box data-area="Meeting request" data-note-fields="Days that work for you=For example: Tuesday or Thursday|Best time of day=For example: mornings, or after 3|Phone, video or in person?=For example: a phone call is easiest" data-note-ask="When can we talk? I'll set it up and confirm with you.">
-    <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8.5 15l2.2 2.2 4.8-4.8"/></svg></div><div class="grow"><b>Let's talk</b><span>Tell me what times work and I'll set up a call or a meeting.</span></div><em class="tap">Pick a time</em></div>
-  </div>
-
   <h2 class="sec-h">What's on your site now</h2>
   <p class="sub">Here's what your website shows today. Tap a box to add something new or fix anything that's wrong, then tap <b>Send to Stray Wolf</b> at the bottom.</p>
   <ul class="boxes">
@@ -243,24 +233,19 @@
         <div class="pics"><img src="/img/site/home-hero-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-driveways-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-pads-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-drainage-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/homeowners-hero-480.webp" alt="" loading="lazy" decoding="async"><span class="more">More on<br>your site</span></div>
       </div>
     </li>
-    <li class="box" data-note-box data-area="The words that matter" data-note-ask="What should be added or changed? Anything you leave out stays the same." data-note-hint="For example: Change the headline to: Family owned since 1998.">
-      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></div><div class="grow"><b>The words that matter</b><span>Headline, slogan, prices.</span></div><em class="tap">Add or change</em></div>
-      <div class="now">
-        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
-        <dl class="facts"><div><dt>Headline</dt><dd class="q">Groundwork Done Right.</dd></div><div><dt>Slogan</dt><dd>From the Ground Up.</dd></div><div><dt>Intro</dt><dd>Site prep, driveways, drainage, concrete and pads for homeowners and builders.</dd></div><div><dt>Services</dt><dd>Site Prep &amp; Excavation, Drainage &amp; Culverts, Driveways &amp; Gravel Work, Concrete &amp; Flat Work, Pads for Sheds &amp; Garages, Demolition &amp; Removal</dd></div></dl>
-      </div>
-    </li>
-    <li class="box" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-ask="Paste a link for any page that&#x27;s new or wrong. Leave the rest empty.">
+    <li class="box wide" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-ask="Paste a link for any page that&#x27;s new or wrong. Leave the rest empty.">
       <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></div><div class="grow"><b>Your social pages</b><span>Just the ones you have.</span></div><em class="tap">Add or change</em></div>
       <div class="now">
         <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
         <ul class="soc"><li><span>Facebook</span><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site</span></li><li><span>Instagram</span><span class="off">Not on your site yet</span></li><li><span>LinkedIn</span><span class="off">Not on your site yet</span></li><li><span>Google</span><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site</span></li></ul>
       </div>
     </li>
-    <li class="box wide" data-note-box data-area="Sites you like" data-note-ask="Which websites do you like the look of?" data-note-hint="Paste the address, and say what you like about it.">
-      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div><div class="grow"><b>Sites you like</b><span>Seen a website you like the look of? Share it.</span></div><em class="tap">Share one</em></div>
-    </li>
   </ul>
+
+  <!-- Meeting requests come in as a note. Later this can link straight to a booking page instead. -->
+  <div class="meet box" data-note-box data-area="Meeting request" data-note-fields="Days that work for you=For example: Tuesday or Thursday|Best time of day=For example: mornings, or after 3|Phone, video or in person?=For example: a phone call is easiest" data-note-ask="When can we talk? I'll set it up and confirm with you.">
+    <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8.5 15l2.2 2.2 4.8-4.8"/></svg></div><div class="grow"><b>Let's talk</b><span>Tell me what times work and I'll set up a call or a meeting.</span></div><em class="tap">Pick a time</em></div>
+  </div>
 
   <section class="kept" aria-labelledby="kept-h">
     <h2 id="kept-h">Your portal is private</h2>

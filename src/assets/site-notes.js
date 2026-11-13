@@ -123,6 +123,23 @@
     arrow: ["M5 12h14", "M13 6l6 6-6 6"],
     plus: ["M12 5v14", "M5 12h14"]
   };
+  // Social sites the portal knows by name: their own colors, logo and an example of the address to paste.
+  var BRANDS = {
+    facebook: { bg: "#1877F2", ph: "facebook.com/yourpage",
+      svg: '<path fill="#fff" d="M13.6 21v-7.4h2.5l.4-2.9h-2.9V8.9c0-.8.2-1.4 1.4-1.4h1.6V4.9c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.1H8v2.9h2.5V21z"/>' },
+    instagram: { bg: "radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)", ph: "instagram.com/yourname",
+      svg: '<g fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.8"/></g><circle cx="16.8" cy="7.2" r="1.2" fill="#fff"/>' },
+    linkedin: { bg: "#0A66C2", ph: "linkedin.com/company/yourname",
+      svg: '<g fill="#fff"><circle cx="7" cy="6.8" r="1.8"/><rect x="5.5" y="9.6" width="3" height="9.4" rx=".4"/><path d="M10.8 9.6h2.9v1.3c.5-.9 1.6-1.6 3.1-1.6 2.5 0 3.4 1.6 3.4 4.2V19h-3v-4.9c0-1.3-.3-2.2-1.6-2.2s-1.8.9-1.8 2.2V19h-3z"/></g>' },
+    google: { bg: "#fff", ph: "Your Google Maps or business link",
+      svg: '<g fill="none" stroke-width="3.2"><path stroke="#EA4335" d="M16.95 7.05A7 7 0 0 0 5.94 8.5"/><path stroke="#FBBC05" d="M5.94 8.5A7 7 0 0 0 5.94 15.5"/><path stroke="#34A853" d="M5.94 15.5A7 7 0 0 0 16.95 16.95"/><path stroke="#4285F4" d="M16.95 16.95A7 7 0 0 0 19 12H12"/></g>' }
+  };
+  function brandLogo(b) {
+    var t = document.createElement("span"); t.className = "logo"; t.style.background = b.bg;
+    if (b.bg === "#fff") t.style.boxShadow = "inset 0 0 0 1px #e2dcd2";
+    t.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + b.svg + "</svg>";
+    return t;
+  }
   function icon(name, size) {
     var ns = "http://www.w3.org/2000/svg", s = document.createElementNS(ns, "svg");
     s.setAttribute("viewBox", "0 0 24 24"); s.setAttribute("aria-hidden", "true"); s.setAttribute("class", "ic");
@@ -153,7 +170,7 @@
     ".frame.picking{box-shadow:inset 0 0 0 6px var(--accent),inset 0 0 0 9999px rgba(194,84,27,.05)}",
     ".strip{background:var(--accent);color:#fff;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}",
     ".strip-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:8px;font-size:15px;line-height:1.2}",
-    ".strip .lbl{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:.01em;min-width:0;white-space:nowrap}",
+    ".strip .lbl{display:flex;align-items:center;gap:8px;transform-origin:left center;font-weight:800;letter-spacing:.01em;min-width:0;white-space:nowrap}",
     ".strip .lbl .ic{width:20px;height:20px}",
     ".strip .dot{width:9px;height:9px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:beat 2s infinite}",
     "@keyframes beat{70%{box-shadow:0 0 0 7px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}",
@@ -219,6 +236,16 @@
     ".field input{font:inherit;font-size:17px;color:var(--ink);width:100%;min-width:0;min-height:50px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--soft)}",
     ".field input:focus{outline:none;border-color:var(--accent);background:#fff}",
     "@media (max-width:420px){.field{grid-template-columns:1fr;gap:4px}}.fields.stack .field{grid-template-columns:1fr;gap:4px}",
+    /* social pages: one roomy row per site, with that site's own logo and an example address */
+    ".fields.brands{gap:12px}",
+    ".field.brand{grid-template-columns:48px minmax(0,1fr);gap:6px 14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}",
+    ".field.brand .logo{grid-row:span 2;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;color:#fff}",
+    ".field.brand .logo svg{width:28px;height:28px}",
+    ".field.brand label{font-size:17px;line-height:1.2}",
+    ".field.brand input{min-height:48px;font-size:16.5px;background:var(--soft)}",
+    ".field.brand:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,84,27,.12)}",
+    ".tip{display:flex;gap:10px;align-items:flex-start;margin:-4px 0 0;color:var(--muted);font-size:15px;line-height:1.45}.tip .ic{flex:none;width:20px;height:20px;margin-top:1px;color:var(--accent)}",
+    ".note.wide{width:480px}",
     "textarea{font:inherit;font-size:18px;color:var(--ink);width:100%;min-height:120px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--soft);resize:vertical}",
     "textarea:focus{border-color:var(--accent);background:#fff;outline:none}",
     "textarea::placeholder{color:#8d877e}",
@@ -255,15 +282,18 @@
     ".veil{position:fixed;inset:0;background:rgba(24,22,20,.55);display:grid;place-items:center;padding:16px}",
     ".veil > .card{position:relative;width:min(560px,100%);max-height:calc(100vh - 32px)}",
     "@media (max-width:719px){.veil{place-items:end stretch;padding:0}.veil > .card{width:100%;max-height:92vh;border-radius:20px 20px 0 0}}",
-    ".steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}",
-    ".steps li{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;align-items:center;background:var(--soft);border-radius:14px;padding:12px 14px}",
-    ".steps .circ{width:56px;height:56px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;position:relative;box-shadow:0 1px 0 var(--line)}",
-    ".steps .circ .ic{width:28px;height:28px}",
-    ".steps .circ i{position:absolute;top:-4px;left:-4px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;font:800 13px/24px system-ui,sans-serif;text-align:center;font-style:normal}",
-    ".steps b{display:block;font-size:18px}",
-    ".steps span{color:var(--muted);font-size:15px}",
-    ".calm{display:flex;gap:10px;align-items:center;background:#eef6f0;color:#24563a;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600}",
-    ".calm .ic{color:var(--go)}",
+    ".steps{list-style:none;margin:0;padding:0;display:grid;gap:10px}",
+    ".steps li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 18px 14px 14px}",
+    ".steps .circ{width:52px;height:52px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;position:relative}",
+    ".steps .circ .ic{width:26px;height:26px}",
+    ".steps .circ i{position:absolute;right:-7px;bottom:-7px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-sizing:content-box;background:var(--accent);color:#fff;font:800 12.5px/24px system-ui,sans-serif;text-align:center;font-style:normal}",
+    ".steps b{display:block;font-size:17.5px;line-height:1.3}",
+    ".steps span{display:block;color:var(--muted);font-size:15px;line-height:1.45;margin-top:2px}",
+    ".calm{display:flex;gap:12px;align-items:flex-start;background:#eef6f0;border:1px solid #d5e8db;color:#24563a;border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.45;font-weight:500;margin-top:4px}",
+    ".calm .ic{flex:none;width:20px;height:20px;margin-top:1px;color:var(--go)}",
+    ".card.help .hd{padding:26px 26px 6px}.card.help .hd h2{font-size:23px}.card.help .hd p{font-size:16px;margin-top:5px}",
+    ".card.help .bd{padding:14px 26px 22px;gap:12px}.card.help .ft{padding:16px 26px calc(20px + env(safe-area-inset-bottom,0px))}.card.help .ft .b{min-height:56px;font-size:18px}",
+    "@media (max-width:719px){.card.help .hd{padding:22px 20px 4px}.card.help .bd{padding:12px 20px 18px}.card.help .ft{padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px))}}",
 
     /* review list */
     ".list{list-style:none;margin:0;padding:0;display:grid;gap:12px}",
@@ -560,11 +590,15 @@
     // "Label" or "Label=example text"
     var fieldEls = (note.fields || []).map(function (raw, k) {
       var f = raw.split("=")[0], ex = raw.split("=")[1];
+      var b = !ex && BRANDS[f.toLowerCase()];
       var inp = h("input", ex ? { type: "text", id: "swn-f" + k, autocomplete: "off", placeholder: ex }
-                              : { type: "text", id: "swn-f" + k, inputmode: "url", autocapitalize: "off", autocomplete: "off", placeholder: "Paste the link here" });
+                              : { type: "text", id: "swn-f" + k, inputmode: "url", autocapitalize: "off", autocomplete: "off", placeholder: b ? b.ph : "Paste the link here" });
       inp.value = (note.vals && note.vals[f]) || "";
-      return { name: f, input: inp, row: h("div", { class: "field" }, [h("label", { for: "swn-f" + k, text: f }), inp]) };
+      var row = b ? h("div", { class: "field brand" }, [brandLogo(b), h("label", { for: "swn-f" + k, text: f === "Google" ? "Google business" : f }), inp])
+                  : h("div", { class: "field" }, [h("label", { for: "swn-f" + k, text: f }), inp]);
+      return { name: f, input: inp, brand: !!b, row: row };
     });
+    var brands = fieldEls.length && fieldEls.every(function (f) { return f.brand; });
     if (note.fields) { text.placeholder = "Anything else? (You can leave this empty.)"; text.style.minHeight = "70px"; }
     text.addEventListener("paste", function (e) { var f = e.clipboardData && e.clipboardData.files; if (f && f.length) { e.preventDefault(); addPictures(f); } });
     var thumbs = h("div", { class: "thumbs" });
@@ -574,7 +608,7 @@
     drop.addEventListener("dragleave", function () { drop.classList.remove("over"); });
     drop.addEventListener("drop", function (e) { e.preventDefault(); drop.classList.remove("over"); addPictures(e.dataTransfer.files); });
 
-    var card = h("div", { class: "card note" + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
+    var card = h("div", { class: "card note" + (brands ? " wide" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
       h("div", { class: "hd" }, [
         h("span", { class: "num", text: String(i + 1) }),
         h("div", { class: "grow" }, [h("h2", { text: note.text || note.pics.length ? "Your note" : "New note" })]),
@@ -583,7 +617,8 @@
       h("div", { class: "bd" }, [
         h("div", { class: "where" }, [h("span", { text: "About:" }), h("b", { text: note.on })]),
         h("label", { class: "q", for: note.fields ? "swn-f0" : "swn-text", text: note.ask || "What would you like changed?" }),
-        note.fields ? h("div", { class: "fields" + (fieldEls.some(function (f) { return f.name.length > 11; }) ? " stack" : "") }, fieldEls.map(function (f) { return f.row; })) : null,
+        brands ? h("p", { class: "tip" }, [icon("help"), h("span", { text: "Not sure where to find it? Open your page, then copy the address from the top of the screen." })]) : null,
+        note.fields ? h("div", { class: "fields" + (brands ? " brands" : fieldEls.some(function (f) { return f.name.length > 11; }) ? " stack" : "") }, fieldEls.map(function (f) { return f.row; })) : null,
         text, thumbs, drop
       ]),
       h("div", { class: "ft" }, [
@@ -828,7 +863,7 @@
   function showHelp(first) {
     panel = "help";
     var step = function (n, ic, title, text) { return h("li", {}, [h("div", { class: "circ" }, [icon(ic), h("i", { text: String(n) })]), h("div", {}, [h("b", { text: title }), h("span", { text: text })])]); };
-    veil(h("div", { class: "card", role: "dialog", "aria-label": "How this works" }, [
+    veil(h("div", { class: "card help", role: "dialog", "aria-label": "How this works" }, [
       h("div", { class: "hd" }, [
         h("div", { class: "grow" }, [h("h2", { text: first ? (MODE === "edit" ? "You're in Edit mode. Here's how it works." : "Welcome! Here's how it works.") : "How this works" }), h("p", { text: MODE === "edit" ? "Leave notes for " + TO + " right on your own website." : "This is your Client Portal for sending " + TO + " what you need." })]),
         first ? null : h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { closePanels(); render(); } }, [icon("x")])
@@ -847,9 +882,28 @@
         ]),
         h("div", { class: "calm" }, [icon("check"), h("span", { text: "You can't break anything. Your website stays exactly as it is until " + TO + " makes the change." })])
       ]),
-      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: first ? "Got it. Let's start." : "Got it", onclick: function () { st[MODE === "edit" ? "intro" : "introHub"] = true; save(); closePanels(); render(); } })])
+      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: first ? "Got it. Let's start." : "Got it", onclick: function () { st[MODE === "edit" ? "intro" : "introHub"] = true; save(); tuckAway(this.closest(".card")); } })])
     ]));
     els.dock.hidden = isPhone();
+  }
+  // "Got it": the steps shrink down into the bar at the bottom ("Edit mode is on" / "You're logged in"),
+  // so it's clear where they went and that the mode is still on. Help in that bar brings them back.
+  function tuckAway(card) {
+    var to = els.stripLbl, v = els.veil;
+    var finish = function () {
+      closePanels(); render();
+      if (to && to.animate && !reduceMotion) to.animate([{ transform: "scale(1)" }, { transform: "scale(1.12)", offset: .35 }, { transform: "scale(1)" }], { duration: 650, easing: "ease-out" });
+    };
+    if (!card || !card.animate || reduceMotion || !to) return finish();
+    if (els.dock) els.dock.hidden = false;             // the bar has to be on screen to shrink into it
+    var a = card.getBoundingClientRect(), b = to.getBoundingClientRect();
+    if (!b.width) return finish();
+    var dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+    card.style.pointerEvents = "none";
+    if (v) v.animate([{ backgroundColor: "rgba(24,22,20,.55)" }, { backgroundColor: "rgba(24,22,20,0)" }], { duration: 520, easing: "ease-in", fill: "forwards" });
+    card.animate([{ transform: "none", opacity: 1, borderRadius: "18px" },
+                  { transform: "translate(" + dx + "px," + dy + "px) scale(.06)", opacity: .2, borderRadius: "60px" }],
+                 { duration: 520, easing: "cubic-bezier(.5,0,.75,0)", fill: "forwards" }).onfinish = finish;
   }
   function goEdit(url) {
     if (!url || url === "soon") { toast("Your mockup isn't ready yet. " + TO + " will let you know when it is."); return; }
@@ -881,13 +935,13 @@
     var helpBtn = h("button", { type: "button", onclick: function () { showHelp(false); } }, [icon("help"), h("span", { text: "Help" })]);
     var strip = MODE === "edit"
       ? h("div", { class: "strip", role: "status" }, [h("div", { class: "strip-in" }, [
-          h("span", { class: "lbl" }, [h("span", { class: "dot" }), h("span", { text: "Edit mode is on" })]),
+          els.stripLbl = h("span", { class: "lbl" }, [h("span", { class: "dot" }), h("span", { text: "Edit mode is on" })]),
           h("span", { class: "sub", text: "· Your website isn't changing" }),
           h("span", { class: "gap" }), helpBtn,
           h("button", { type: "button", onclick: exitEdit }, [icon("power"), h("span", { class: "lg", text: "Exit edit mode" }), h("span", { class: "sm", text: "Exit" })])
         ])])
       : h("div", { class: "strip hub", role: "status" }, [h("div", { class: "strip-in" }, [
-          h("span", { class: "lbl" }, [icon("lock"), h("span", { class: "lg", text: "You're logged in" }), h("span", { class: "sm", text: "Logged in" })]),
+          els.stripLbl = h("span", { class: "lbl" }, [icon("lock"), h("span", { class: "lg", text: "You're logged in" }), h("span", { class: "sm", text: "Logged in" })]),
           h("span", { class: "sub", text: "· Only you can see this page" }),
           h("span", { class: "gap" }), helpBtn,
           h("button", { type: "button", onclick: askLogOut }, [icon("power"), h("span", { text: "Log out" })])
@@ -929,7 +983,8 @@
     var oldRender = render; render = function () { oldRender(); syncPickClass(); };
 
     render();
-    if (!st[MODE === "edit" ? "intro" : "introHub"]) showHelp(true);
+    var introKey = MODE === "edit" ? "intro" : "introHub";
+    if (!st[introKey]) { st[introKey] = true; save(); showHelp(true); }   // only ever the first time; Help brings it back
     else if (st.sent) { /* the dock already says it was sent */ }
   }
 
