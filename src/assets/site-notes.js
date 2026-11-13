@@ -32,6 +32,8 @@
  *                   data-door="none" turns it off.
  *   data-name       the business name ("Welcome, TVIS Construction")
  *   data-logo       their logo picture, shown big on the login box
+ *   data-caption-example  a photo caption that fits this client ("the new shed pad"), shown as
+ *                   the example under the first photo of a note. Empty = no example.
  * On the client's page:
  *   data-edit-mode="/"      on a button or card: opens the site in Edit mode
  *   data-edit-mode="soon"   the mockup isn't ready yet (says so when tapped)
@@ -69,6 +71,7 @@
   var DOOR = S.getAttribute("data-door") || ".swt-badge";   // the hidden way in: hold this for 2 seconds
   var NAME = S.getAttribute("data-name") || "";   // the business name, for "Welcome, ..." on the login box
   var LOGO = S.getAttribute("data-logo") || "";   // their logo, shown on the login box
+  var CAPTION_EXAMPLE = S.getAttribute("data-caption-example") || "";   // "the new shed pad": the example caption under a note's first photo
   var ALERT_KEY = S.getAttribute("data-alert-key") || "";
   // html2canvas, for a small picture of the spot each note is about. Lives next to this file;
   // data-shot-lib="none" turns the pictures off.
@@ -903,7 +906,7 @@
         note.pics.splice(note.pics.indexOf(id), 1); delete note.caps[id]; picDel(id); save(); drawThumbs(note, box, true); refreshDrop(note);
       } }, [icon("x")]) : null]);
       var cap = withCaps ? h(note.photos ? "textarea" : "input", { class: "cap", rows: note.photos ? "2" : null, type: note.photos ? null : "text", maxlength: "140", autocomplete: "off", "aria-label": "What is photo " + (k + 1) + "? (optional)",
-        placeholder: k === 0 && !note.photos ? "What is this? For example: the new shed pad" : "What is this? (optional)",
+        placeholder: k === 0 && !note.photos && CAPTION_EXAMPLE ? "What is this? For example: " + CAPTION_EXAMPLE : "What is this? (optional)",
         oninput: function () { var v = this.value.trim(); if (v) note.caps[id] = v; else delete note.caps[id]; img.alt = v || "Photo " + (k + 1); save(); } }) : null;
       if (cap) cap.value = note.caps[id] || "";
       box.appendChild(h("span", { class: "t", "data-id": id }, [ph, cap]));
@@ -1528,16 +1531,6 @@
   // A few headline numbers from Google Analytics for their page ([data-stats]). The notes service
   // asks GA4 and sends them back; with no numbers (or an older service) the card just stays hidden.
   // Same words as the admin's Analytics tab (admin-cockpit/analytics-wording.md), so client and Jeremy match.
-  function foundLine(src) {
-    var s = String(src || "").toLowerCase();
-    if (!s) return "";
-    if (s.indexOf("typed") >= 0 || s.indexOf("direct") >= 0) return "Most typed the address in directly.";
-    if (s.indexOf("google") >= 0) return "Most found it on Google.";
-    if (s.indexOf("bing") >= 0) return "Most found it on Bing.";
-    if (s.indexOf("facebook") >= 0 || s === "fb") return "Most found it on Facebook.";
-    if (s.indexOf("instagram") >= 0 || s === "ig") return "Most found it on Instagram.";
-    return "Most came from " + src + ".";
-  }
   var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   function shortDate(d) { return MON[d.getUTCMonth()] + " " + d.getUTCDate(); }
   function loadStats() {

@@ -85,7 +85,7 @@ function addressLine(sep = ', ') {
 const vars = {
   name: esc(config.name),
   // Site Notes on every page: invisible to visitors; holding the "Powered by Stray Wolf" wolf for 2 seconds opens /portal/
-  notes_tag: NOTES.api ? `<script src="/assets/site-notes.js" data-site="${esc(NOTES.site)}" data-api="${esc(NOTES.api)}" data-login-url="/portal/" defer></script>\n` : '',
+  notes_tag: NOTES.api ? `<script src="/assets/site-notes.js" data-site="${esc(NOTES.site)}" data-api="${esc(NOTES.api)}" data-login-url="/portal/" data-caption-example="the new shed pad" defer></script>\n` : '',
   notes_api: esc(NOTES.api),
   notes_site: esc(NOTES.site),
   tagline: esc(config.tagline),
