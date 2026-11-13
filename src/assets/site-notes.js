@@ -81,6 +81,37 @@
   function lsGet(k) { try { return localStorage.getItem(K + k); } catch (e) { return null; } }
   function lsSet(k, v) { try { v == null ? localStorage.removeItem(K + k) : localStorage.setItem(K + k, v); } catch (e) {} }
 
+  /* =========================================================== session */
+  // The login is kept as {t: token, at: when they logged in, seen: last time they did something}.
+  // It ends after IDLE_MS with nothing done, or MAX_MS after logging in, whichever comes first,
+  // and the service enforces the same limits on its side. A bare token saved by an older version
+  // has no times on it, so it counts as ended and they log in once more.
+  var IDLE_MS = 2 * 36e5, MAX_MS = 24 * 36e5;
+  function sessRead() {
+    var raw = lsGet("token"), s = null;
+    try { s = JSON.parse(raw || "null"); } catch (e) {}
+    return s && typeof s.t === "string" && s.at > 0 && s.seen > 0 ? s : null;
+  }
+  function sessLive(s, now) { now = now || Date.now(); return !!s && now - s.seen < IDLE_MS && now - s.at < MAX_MS && s.at <= now + 6e4; }
+  function getToken() {
+    var s = sessRead();
+    if (!sessLive(s)) { if (lsGet("token") != null) lsSet("token", null); return null; }
+    return s.t;
+  }
+  function setToken(t) { var now = Date.now(); lsSet("token", t ? JSON.stringify({ t: t, at: now, seen: now }) : null); }
+  var lastTouch = 0;
+  function touch() {   // something was done: push the idle limit back (at most once every 30 s)
+    var now = Date.now(); if (now - lastTouch < 3e4) return; lastTouch = now;
+    var s = sessRead(); if (!sessLive(s, now)) return;
+    s.seen = now; lsSet("token", JSON.stringify(s));
+  }
+  // Log out: the service forgets the login too, then this browser does.
+  function endSession() {
+    var t = getToken() || (sessRead() || {}).t;
+    if (t && !DEMO) { try { fetch(API + "/api/logout", { method: "POST", headers: { authorization: "Bearer " + t }, body: "{}", keepalive: true }).catch(function () {}); } catch (e) {} }
+    setToken(null); lsSet("on", null);
+  }
+
   var st = { notes: [], sent: false, intro: false, sentNotes: 0, sentPics: 0 };
   try { var saved = JSON.parse(lsGet("state") || "null"); if (saved && Array.isArray(saved.notes)) { for (var key in saved) st[key] = saved[key]; } } catch (e) {}
   function save() { lsSet("state", JSON.stringify(st)); }
@@ -489,11 +520,12 @@
   function api(path, opts) {
     opts = opts || {};
     var headers = {};
-    if (opts.token) headers.authorization = "Bearer " + opts.token;
+    if (opts.token) { headers.authorization = "Bearer " + opts.token; touch(); }
     if (opts.type) headers["content-type"] = opts.type;
     return fetch(API + path, { method: "POST", headers: headers, body: opts.raw || JSON.stringify(opts.body || {}) })
       .then(function (r) { return r.json().then(function (d) { d.status = r.status; return d; }, function () { return { ok: false, status: r.status, error: "Something went wrong on our end." }; }); },
-            function () { return { ok: false, status: 0, error: "Your internet seems to be off." }; });
+            function () { return { ok: false, status: 0, error: "Your internet seems to be off." }; })
+      .then(function (d) { if (d.status === 401 && opts.token) setToken(null); return d; });
   }
 
   /* =========================================================== login */
@@ -516,7 +548,7 @@
       var done = function (d) {
         btn.disabled = false; btn.textContent = "Log in";
         if (!d.ok) { err.textContent = d.status === 0 ? "Your internet seems to be off. Check it and try again." : (d.error || "That password isn't right. Check it and try again."); err.hidden = false; pw.select(); return; }
-        lsSet("token", d.token);
+        setToken(d.token); watchSession();
         veil.remove(); unlock(); start();
       };
       if (DEMO) setTimeout(function () { done(pw.value.trim().toLowerCase() === "wolf" ? { ok: true, token: "demo" } : { ok: false, status: 401, error: "That password isn't right. (In this demo it's: wolf)" }); }, 350);
@@ -1110,18 +1142,19 @@
   function send(btn, progress, err) {
     if (busy || !st.notes.length) return;
     busy = true; btn.disabled = true; err.hidden = true;
-    var token = lsGet("token"), total = picCount(), doneN = 0, label = btn.lastChild;
+    var token = getToken(), total = picCount(), doneN = 0, label = btn.lastChild;
     var bar = progress.firstChild;
     var step = function (t, frac) { label.textContent = t; if (total) { progress.hidden = false; bar.style.width = Math.round(frac * 100) + "%"; } };
     var failWith = function (d) {
       busy = false; btn.disabled = false; label.textContent = "Try again"; progress.hidden = true;
       err.textContent = "";
       if (d.status === 401) {
-        lsSet("token", null);
+        setToken(null);
         err.append("Your login timed out. Your notes are safe on this device. ", h("a", { href: LOGIN_URL, text: "Log in again" }), " and then tap Send.");
       } else err.textContent = (d.status === 0 ? "Your internet seems to be off." : "That didn't go through.") + " Your notes are safe on this device. Tap Try again in a minute.";
       err.hidden = false;
     };
+    if (!token && !DEMO) { failWith({ status: 401 }); return; }
     step(total ? "Sending photo 1 of " + total + "…" : "Sending…", 0.02);
     var ids = []; st.notes.forEach(function (n) { n.pics.forEach(function (id) { ids.push(id); }); });
     var keys = {};
@@ -1417,7 +1450,7 @@
   // Their sent photos come from the notes service, newest first, with "used" set by Stray Wolf.
   var sentUrls = {}, imgQ = [], imgBusy = 0;
   function loadSent(grid, sum, none) {
-    var got = DEMO ? new Promise(function (r) { setTimeout(function () { r(demoSent()); }, 350); }) : api("/api/my-photos", { token: lsGet("token") });
+    var got = DEMO ? new Promise(function (r) { setTimeout(function () { r(demoSent()); }, 350); }) : api("/api/my-photos", { token: getToken() });
     got.then(function (d) {
       if (!grid.isConnected) return;
       var list = d && d.ok && Array.isArray(d.photos) ? d.photos : null;
@@ -1461,7 +1494,7 @@
     if (!key) return Promise.resolve("");
     if (sentUrls[key]) return sentUrls[key];
     var p = DEMO ? Promise.resolve(demoPic(key))
-      : fetch(API + "/api/my-photo", { method: "POST", headers: { authorization: "Bearer " + lsGet("token") }, body: JSON.stringify({ key: key }) })
+      : fetch(API + "/api/my-photo", { method: "POST", headers: { authorization: "Bearer " + getToken() }, body: JSON.stringify({ key: key }) })
           .then(function (r) { return r.ok ? r.blob() : null; })
           .then(function (b) { return b && b.size && !/json|text/.test(b.type || "") ? URL.createObjectURL(b) : ""; }, function () { return ""; });
     sentUrls[key] = p;
@@ -1511,7 +1544,7 @@
     var box = document.querySelector("[data-stats]"); if (!box) return;
     var got = DEMO ? Promise.resolve({ ok: true, sample: true, days: 28, visitors: 109, visitorsPrev: 91, visitorsChange: 20, calls: 8, callsPrev: 4, callsChange: 100,
                                        leads: 3, leadsPrev: 0, leadsChange: 0, source: "Google", daily: { start: new Date(Date.now() - 28 * 864e5).toISOString().slice(0, 10) } })
-                   : api("/api/stats", { token: lsGet("token"), body: { site: SITE } });
+                   : api("/api/stats", { token: getToken(), body: { site: SITE } });
     got.then(function (d) {
       if (!d || !d.ok || d.visitors == null) return;
       var n = function (v) { return (Number(v) || 0).toLocaleString("en-US"); };
@@ -1616,7 +1649,7 @@
         h("p", { text: (n ? "Your " + plural(n, "note") + " will stay saved on this device. " : "") + "To come back, open this page again and type your password." })])]),
       h("div", { class: "ft" }, [
         stay,
-        h("button", { class: "b main push", type: "button", onclick: function () { lsSet("token", null); lsSet("on", null); location.reload(); } }, [icon("power"), h("span", { text: "Log out" })])
+        h("button", { class: "b main push", type: "button", onclick: function () { endSession(); location.reload(); } }, [icon("power"), h("span", { text: "Log out" })])
       ])
     ]), { focus: stay });
   }
@@ -1833,10 +1866,24 @@
     setTimeout(function () { document.addEventListener("pointerdown", off, true); }, 400);
     setTimeout(place, 700); window.addEventListener("load", place);
   }
+  // While logged in: taps and keys count as activity; once a minute, check the limits.
+  // A login that ends (here or in another tab) takes them back to the login box; their notes stay saved.
+  var watching = false;
+  function watchSession() {
+    if (watching) return; watching = true;
+    ["pointerdown", "keydown", "scroll"].forEach(function (ev) { window.addEventListener(ev, touch, { passive: true, capture: true }); });
+    // On their portal, or in Edit mode on the site: back to the portal's login box (their unsent notes come along).
+    // Just browsing their own site: nothing to do, the site looks the same either way.
+    var ended = function () { if (IS_HUB) location.reload(); else if (lsGet("on") === "1") { lsSet("on", null); location.href = LOGIN_URL; } };
+    setInterval(function () { if (!getToken()) ended(); }, 6e4);
+    window.addEventListener("storage", function (e) { if (e.key === K + "token" && !getToken()) ended(); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible" && !getToken()) ended(); });
+  }
   function boot() {
     findSpot();
     door();
-    var token = lsGet("token"), on = lsGet("on") === "1";
+    var token = getToken(), on = lsGet("on") === "1";
+    if (token && (IS_HUB || on)) watchSession();
     if (IS_HUB) {
       arrive();
       lsSet("on", null);                       // on their page, Edit mode is off until they tap it
