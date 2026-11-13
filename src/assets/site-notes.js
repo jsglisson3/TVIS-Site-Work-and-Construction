@@ -38,6 +38,13 @@
  *   data-note-box           a box that opens a note with one tap
  *     data-area / data-note-ask / data-note-hint   its name, question, example
  *     data-note-fields="Facebook|Instagram"         one line to fill in for each
+ *     data-note-now="Phone=423-555-0100|Email=..."  what's on the site now: those lines show the
+ *                   current value with a Change button, so they only type what's new
+ * "Show me on the site": a page opened with #sw-find={...} (the admin builds it from a note's
+ *   sel/path/fx/fy/snip) scrolls to that spot and rings it. Each note sends url, sel, path,
+ *   fx, fy, py (how far down the page, 0 to 1), snip (its words) and vw (screen width).
+ *   data-booking-url  on the Let's talk box: a booking page (like a Google Calendar
+ *                   appointment schedule). Set = tapping it opens that page; empty = a note.
  *   data-alert-key  optional Web3Forms key: emails a heads-up when notes arrive
  */
 (function () {
@@ -238,6 +245,16 @@
     "@media (max-width:420px){.field{grid-template-columns:1fr;gap:4px}}.fields.stack .field{grid-template-columns:1fr;gap:4px}",
     /* social pages: one roomy row per site, with that site's own logo and an example address */
     ".fields.brands{gap:12px}",
+    ".field .lb{font-weight:700;font-size:16px}.field.brand .lb{font-size:17px;line-height:1.2}",
+    ".fv{min-width:0}.fv [hidden]{display:none!important}",
+    ".cur{display:flex;align-items:center;gap:10px;min-height:50px;padding:5px 5px 5px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}",
+    ".cur svg{flex:none;width:18px;height:18px;color:var(--go)}",
+    ".cur .val{flex:1;min-width:0;font-size:16.5px;line-height:1.3;overflow-wrap:break-word}",
+    ".cur .chg,.ed .undo{flex:none;border:0;min-height:40px;padding:0 14px;border-radius:10px;font-size:15px;font-weight:700}",
+    ".cur .chg{background:var(--accent-soft);color:var(--accent)}.cur .chg:hover{background:#f6dccd}",
+    ".ed{display:flex;align-items:center;gap:8px}.ed input{flex:1}",
+    ".ed .undo{background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:0 8px}",
+    ".field.brand .cur{min-height:48px}",
     ".field.brand{grid-template-columns:48px minmax(0,1fr);gap:6px 14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}",
     ".field.brand .logo{grid-row:span 2;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;color:#fff}",
     ".field.brand .logo svg{width:28px;height:28px}",
@@ -463,6 +480,25 @@
 
   function pathOf(node) { var p = []; while (node && node !== document.body && node.parentNode) { p.unshift(Array.prototype.indexOf.call(node.parentNode.children, node)); node = node.parentNode; } return p; }
   function nodeAt(path) { var n = document.body; for (var i = 0; n && i < path.length; i++) n = n.children[path[i]]; return n && n !== host ? n : null; }
+  // A CSS selector for the spot: an id where there is one, otherwise tag:nth-of-type steps from <body>.
+  // Holds up better than child counts when something is added to the page later.
+  function selOf(el) {
+    var parts = [];
+    while (el && el.nodeType === 1 && el !== document.body && el !== document.documentElement) {
+      if (el.id && /^[A-Za-z][\w-]*$/.test(el.id) && document.querySelectorAll("#" + el.id).length === 1) { parts.unshift("#" + el.id); return parts.join(" > "); }
+      var tag = el.tagName.toLowerCase(), same = 0, at = 0;
+      for (var s = el.parentNode.firstElementChild; s; s = s.nextElementSibling) if (s.tagName === el.tagName) { same++; if (s === el) at = same; }
+      parts.unshift(same > 1 ? tag + ":nth-of-type(" + at + ")" : tag);
+      el = el.parentNode;
+    }
+    return "body > " + parts.join(" > ");
+  }
+  // What the spot says (or a picture's name), one tidy line, so it can be found again by its words.
+  function snipOf(el) {
+    var img = el.tagName === "IMG" ? el : (!tidy(el.innerText) && el.querySelector("img"));
+    if (img) return short(img.alt || decodeURIComponent((img.currentSrc || img.src || "").split(/[?#]/)[0].split("/").pop() || ""), 160);
+    return short(tidy(textOf(el), true), 160);
+  }
   function pageName() {
     if (/^\/(index\.html?)?$/.test(location.pathname)) return "Home";
     return short((document.title || "").split(/\s*[|–—:·]\s*|\s-\s/)[0], 40) || location.pathname;
@@ -613,9 +649,20 @@
       if (target.hasAttribute("data-note-ask")) note.ask = target.getAttribute("data-note-ask");
       if (target.hasAttribute("data-note-hint")) note.hint = target.getAttribute("data-note-hint");
       if (target.hasAttribute("data-note-fields")) { note.fields = target.getAttribute("data-note-fields").split("|"); note.vals = {}; note.extra = ""; }
+      if (target.hasAttribute("data-note-now")) {
+        note.now = {};
+        target.getAttribute("data-note-now").split("|").forEach(function (p) { var k = p.indexOf("="); if (k > 0) note.now[p.slice(0, k)] = p.slice(k + 1); });
+      }
       if (target.hasAttribute("data-note-photos")) { note.photos = true; note.ideas = (target.getAttribute("data-note-photos") || "").split("|").filter(Boolean); }
       if (ev && r.width) note.fx = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
       if (ev && r.height) note.fy = Math.min(1, Math.max(0, (ev.clientY - r.top) / r.height));
+      // so Stray Wolf can find the exact spot later ("Show me on the site")
+      try {
+        note.url = location.origin + location.pathname;
+        note.snip = snipOf(target); note.vw = window.innerWidth;
+        note.py = Math.round(Math.min(1, Math.max(0, (r.top + window.scrollY) / Math.max(1, document.documentElement.scrollHeight))) * 1000) / 1000;
+        if (MODE !== "hub") note.sel = selOf(target).slice(0, 300);
+      } catch (e) {}
       lastPin = note.id;
     }
     st.notes.push(note); save();
@@ -636,11 +683,28 @@
       var inp = h("input", ex ? { type: "text", id: "swn-f" + k, autocomplete: "off", placeholder: ex }
                               : { type: "text", id: "swn-f" + k, inputmode: "url", autocapitalize: "off", autocomplete: "off", placeholder: b ? b.ph : "Paste the link here" });
       inp.value = (note.vals && note.vals[f]) || "";
-      var row = b ? h("div", { class: "field brand" }, [brandLogo(b), h("label", { for: "swn-f" + k, text: f === "Google" ? "Google business" : f }), inp])
-                  : h("div", { class: "field" }, [h("label", { for: "swn-f" + k, text: f }), inp]);
-      return { name: f, input: inp, brand: !!b, row: row };
+      // Already on their site: show it, with a Change button. Only a tap on Change opens the box,
+      // filled in with what's there now, so they fix it instead of typing it all again.
+      var now = note.now && note.now[f], slot = inp, fe = { name: f, input: inp, brand: !!b, now: now || "" };
+      if (now) {
+        var cur = h("div", { class: "cur" }), ed = h("div", { class: "ed" });
+        var open = function (on, focus) {
+          fe.editing = on; cur.hidden = on; ed.hidden = !on;
+          if (on && !inp.value) inp.value = now;
+          if (!on) inp.value = "";
+          if (on && focus) { inp.focus(); try { inp.select(); } catch (e) {} }
+        };
+        cur.append(icon("check"), h("span", { class: "val" }, now.replace(/([@\/?])/g, "$1\u0001").split("\u0001").reduce(function (a, p, i) { if (i) a.push(h("wbr")); a.push(p); return a; }, [])), h("button", { class: "chg", type: "button", text: "Change", "aria-label": "Change " + f, onclick: function () { open(true, true); } }));
+        ed.append(inp, h("button", { class: "undo", type: "button", text: "Undo", "aria-label": "Keep " + f + " as it is", onclick: function () { open(false); } }));
+        slot = h("div", { class: "fv" }, [cur, ed]);
+        open(!!inp.value && inp.value !== now);
+      }
+      fe.row = b ? h("div", { class: "field brand" }, [brandLogo(b), h(now ? "span" : "label", now ? { class: "lb", text: f === "Google" ? "Google business" : f } : { for: "swn-f" + k, text: f === "Google" ? "Google business" : f }), slot])
+                 : h("div", { class: "field" }, [h(now ? "span" : "label", now ? { class: "lb", text: f } : { for: "swn-f" + k, text: f }), slot]);
+      return fe;
     });
     var brands = fieldEls.length && fieldEls.every(function (f) { return f.brand; });
+    var hasNow = fieldEls.some(function (f) { return f.now; });
     if (note.fields) { text.placeholder = "Anything else? (You can leave this empty.)"; text.style.minHeight = "70px"; }
     text.addEventListener("paste", function (e) { var f = e.clipboardData && e.clipboardData.files; if (f && f.length) { e.preventDefault(); addPictures(f); } });
     var thumbs = h("div", { class: "thumbs" });
@@ -654,7 +718,7 @@
       }))]) : null;
 
     if (note.photos) { text.placeholder = "Anything else about these photos? (optional)"; text.style.minHeight = "70px"; }
-    var card = h("div", { class: "card note" + (brands || note.photos ? " wide" : "") + (note.photos ? " photos" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
+    var card = h("div", { class: "card note" + (brands || hasNow || note.photos ? " wide" : "") + (note.photos ? " photos" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
       h("div", { class: "dropcover", "aria-hidden": "true" }, [icon("photo"), h("b", { text: "Drop your photos here" })]),
       h("div", { class: "hd" }, [
         h("span", { class: "num", text: String(i + 1) }),
@@ -667,7 +731,7 @@
         brands ? h("p", { class: "tip" }, [icon("help"), h("span", { text: "Not sure where to find it? Open your page, then copy the address from the top of the screen." })]) : null,
         note.fields ? h("div", { class: "fields" + (brands ? " brands" : fieldEls.some(function (f) { return f.name.length > 11; }) ? " stack" : "") }, fieldEls.map(function (f) { return f.row; })) : null,
         note.photos ? drop : null, note.photos ? thumbs : null, ideas,
-        text, note.photos ? null : thumbs, note.photos ? null : drop
+        text, note.photos ? null : thumbs, note.photos || note.fields ? null : drop
       ]),
       h("div", { class: "ft" }, [
         h("button", { class: "b danger", type: "button", onclick: function () { removeNote(active); } }, [icon("trash"), h("span", { text: "Delete" })]),
@@ -756,7 +820,12 @@
     if (note && els.note && note.fields) {
       note.extra = els.note.text.value.trim();
       var lines = [];
-      els.note.fields.forEach(function (f) { var v = f.input.value.trim(); note.vals[f.name] = v; if (v) lines.push(f.name.replace(/[?:.]+$/, "") + ": " + v); });
+      els.note.fields.forEach(function (f) {
+        var v = f.input.value.trim(), name = f.name.replace(/[?:.]+$/, "");
+        if (f.now) { if (!f.editing || !v || v === f.now) v = ""; }   // left as it is
+        note.vals[f.name] = v;
+        if (v) lines.push(name + ": " + v + (f.now ? " (was " + f.now + ")" : ""));
+      });
       note.text = lines.concat(note.extra ? [note.extra] : []).join("\n");
     } else if (note && els.note) note.text = els.note.text.value.trim();
     var kept = note && (note.text || note.pics.length);
@@ -915,7 +984,10 @@
         return { page: n.page, title: n.title, on: n.on,
                  text: n.text + (lines.length ? (n.text ? "\n\n" : "") + lines.join("\n") : ""),
                  pics: sent.map(function (id) { return keys[id]; }),
-                 picNotes: lines.length ? said : undefined };        // same order as pics; "" = no words
+                 picNotes: lines.length ? said : undefined,         // same order as pics; "" = no words
+                 // where it was left, for "Show me on the site" in the admin
+                 url: n.url || location.origin + n.page, path: n.hub || !n.path ? undefined : n.path.slice(0, 40),
+                 sel: n.hub ? undefined : n.sel, fx: n.fx, fy: n.fy, py: n.py, snip: n.snip, vw: n.vw };
       }) };
       var go = DEMO ? new Promise(function (r) { setTimeout(function () { r({ ok: true }); }, 600); }) : api("/api/notes", { token: token, body: body });
       return go.then(function (d) {
@@ -1050,11 +1122,15 @@
         if (typeof pct === "number" && pct !== 0) return pct > 0 ? { t: "▲ " + pct + "% more than " + before, c: "up" } : { t: "▼ " + -pct + "% fewer than " + before, c: "down" };
         return null;
       };
+      // nothing at all from the 4 weeks before (tracking is new): say it once in the footnote, not under every number
+      var fresh = [d.visitorsPrev, d.callsPrev, d.leadsPrev].every(function (p) { return p === 0; });
       var put = function (k, now, prev, pct) {
         var el = box.querySelector('[data-stat="' + k + '"]'); if (!el) return;
         el.textContent = n(now);
-        var ch = change(Number(now) || 0, prev, pct);
-        if (ch) el.appendChild(h("small", { class: ch.c || "", text: ch.t }));
+        var ch = fresh ? null : change(Number(now) || 0, prev, pct); if (!ch) return;
+        var slot = box.querySelector('[data-chg="' + k + '"]');
+        if (slot) { slot.textContent = ch.t; slot.className = ch.c || ""; }
+        else el.appendChild(h("small", { class: ch.c || "", text: ch.t }));
       };
       put("visitors", d.visitors, d.visitorsPrev, d.visitorsChange);
       put("calls", d.calls, d.callsPrev, d.callsChange);
@@ -1075,6 +1151,8 @@
         if (out) sum.append(h("b", { class: "out", text: n(out) + " reached out." }));
         else sum.append("Nobody reached out yet.");
       }
+      var src = box.querySelector('[data-stat="note"]');
+      if (fresh && src && !/compare/.test(src.textContent)) src.textContent += " · Nothing earlier to compare yet";
       if (d.sample) { var note = box.querySelector(".stats-f"); if (note && !note.querySelector(".sample")) note.appendChild(h("span", { class: "sample", text: "Sample" })); }
       box.hidden = false;
     });
@@ -1176,6 +1254,9 @@
       if (big) { e.preventDefault(); e.stopPropagation(); showPhoto(big); return; }
       // Boxes made for notes (like on the welcome page) open a note with one tap, no "Add a note" first.
       var box = !picking && !st.sent && !els.note && !els.veil && e.target.closest && e.target.closest("[data-note-box]");
+      // A booking page set on the box (Let's talk, later a Google Calendar schedule) opens that instead of a note.
+      var book = box && (box.getAttribute("data-booking-url") || "").trim();
+      if (book) { e.preventDefault(); window.open(book, "_blank", "noopener"); return; }
       if (box) { e.preventDefault(); addNote(box, box.getAttribute("data-area") || null, e); return; }
       if (!picking) return;
       e.preventDefault(); e.stopPropagation();
@@ -1270,7 +1351,52 @@
     if (!d.animate || calm) { setTimeout(function () { d.remove(); }, calm ? 60 : 400); return; }
     d.animate([{ opacity: 1 }, { opacity: 1, offset: .15 }, { opacity: 0 }], { duration: 900, easing: "ease-out", fill: "forwards" }).onfinish = function () { d.remove(); };
   }
+  // Stray Wolf opening "Show me on the site" from the admin: the page comes up with
+  // #sw-find={s: selector, p: child counts, x, y: where inside, t: its words, w: screen width}.
+  // Scroll to that spot and ring it, with a pin where they tapped. No login needed: it only points.
+  function findSpot() {
+    var m = /^#sw-find=(.+)$/.exec(location.hash || ""); if (!m) return;
+    var f; try { f = JSON.parse(decodeURIComponent(m[1])); } catch (e) { return; }
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    var norm = function (s) { return String(s || "").replace(/\s+/g, " ").replace(/…$/, "").trim().toLowerCase(); };
+    var t = norm(f.t), seen = function (el) { return el && el.getClientRects().length; };
+    var fits = function (el) { return seen(el) && (!t || norm(snipOf(el)).indexOf(t.slice(0, 40)) >= 0 || norm(el.innerText).indexOf(t.slice(0, 40)) >= 0); };
+    var el = null, moved = false;
+    try { if (f.s) el = document.querySelector(f.s); } catch (e) {}
+    if (!fits(el)) { var byPath = f.p && f.p.length ? nodeAt(f.p) : null; if (fits(byPath)) el = byPath; else if (!seen(el)) el = byPath; }
+    if (t && !fits(el)) {   // the page changed: look for the same words
+      var best = null;
+      Array.prototype.forEach.call(document.body.querySelectorAll("h1,h2,h3,h4,h5,p,li,a,button,img,figure,td,dt,dd,blockquote,label,span"), function (c) {
+        if (best || !seen(c)) return;
+        if ((c.tagName === "IMG" ? norm(snipOf(c)) : norm(c.innerText)).indexOf(t.slice(0, 40)) >= 0) best = c;
+      });
+      if (best) { el = best; moved = true; }
+    }
+    if (!seen(el)) return;
+    el.scrollIntoView({ block: "center", behavior: "smooth" });
+    var ring = document.createElement("div"), pin = document.createElement("div"), tag = document.createElement("div");
+    ring.setAttribute("aria-hidden", "true");
+    ring.style.cssText = "position:absolute;z-index:2147483645;pointer-events:none;border:3px solid #c2541b;border-radius:8px;background:rgba(194,84,27,.08);box-shadow:0 0 0 9999px rgba(20,18,16,.28);transition:opacity .3s";
+    pin.style.cssText = "position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#c2541b;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)";
+    tag.style.cssText = "position:absolute;left:-3px;bottom:100%;margin-bottom:6px;background:#c2541b;color:#fff;font:700 14px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:6px 10px;border-radius:8px;white-space:nowrap";
+    tag.textContent = moved ? "Note left here (the page has changed a little)" : "Note left here";
+    ring.append(tag, pin);
+    var place = function () {
+      var r = el.getBoundingClientRect();
+      ring.style.left = (r.left + window.scrollX - 5) + "px"; ring.style.top = (r.top + window.scrollY - 5) + "px";
+      ring.style.width = (r.width + 10) + "px"; ring.style.height = (r.height + 10) + "px";
+      pin.style.left = (5 + r.width * (f.x == null ? .5 : f.x)) + "px"; pin.style.top = (5 + r.height * (f.y == null ? .5 : f.y)) + "px";
+      if (r.top < 44) { tag.style.bottom = "auto"; tag.style.top = "100%"; tag.style.marginTop = "6px"; }
+    };
+    document.body.appendChild(ring); place();
+    var off = function () { ring.style.opacity = "0"; setTimeout(function () { ring.remove(); }, 300); window.removeEventListener("resize", place); document.removeEventListener("keydown", esc); document.removeEventListener("pointerdown", off, true); };
+    var esc = function (e) { if (e.key === "Escape") off(); };
+    window.addEventListener("resize", place); document.addEventListener("keydown", esc);
+    setTimeout(function () { document.addEventListener("pointerdown", off, true); }, 400);
+    setTimeout(place, 700); window.addEventListener("load", place);
+  }
   function boot() {
+    findSpot();
     door();
     var token = lsGet("token"), on = lsGet("on") === "1";
     if (IS_HUB) {
