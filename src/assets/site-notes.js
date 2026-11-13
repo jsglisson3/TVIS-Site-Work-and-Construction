@@ -189,13 +189,13 @@
     ".frame.picking{box-shadow:inset 0 0 0 6px var(--accent),inset 0 0 0 9999px rgba(194,84,27,.05)}",
     ".strip{background:var(--accent);color:#fff;padding:6px max(12px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}",
     ".strip-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:8px;font-size:15px;line-height:1.2}",
-    ".strip .lbl{display:flex;align-items:center;gap:8px;transform-origin:left center;font-weight:800;letter-spacing:.01em;min-width:0;white-space:nowrap}",
+    ".strip .lbl{display:flex;align-items:center;gap:8px;transform-origin:left center;font-weight:700;letter-spacing:.01em;min-width:0;white-space:nowrap}",
     ".strip .lbl .ic{width:20px;height:20px}",
     ".strip .dot{width:9px;height:9px;border-radius:50%;background:#fff;flex:none;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:beat 2s infinite}",
     "@keyframes beat{70%{box-shadow:0 0 0 7px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}",
     ".strip .sub{opacity:.95;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}",
     ".strip .gap{flex:1}",
-    ".strip button{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:999px;padding:6px 13px;font-size:15px;font-weight:700;min-height:38px;white-space:nowrap}",
+    ".strip button{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:999px;padding:6px 13px;font-size:15px;font-weight:600;min-height:38px;white-space:nowrap}",
     ".strip button:hover{background:rgba(255,255,255,.3)}",
     ".strip.hub{background:#3a3631}",
     ".strip button .ic{width:19px;height:19px}",
@@ -212,13 +212,13 @@
     ".dock .say b{display:block;font-size:18px}",
     ".dock .say span{opacity:.82;font-size:15px}",
     ".dock .btns{display:flex;gap:10px;flex:none}",
-    ".db{display:flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:0 20px;border-radius:12px;border:2px solid transparent;font-size:18px;font-weight:700;white-space:nowrap;transition:background .15s,transform .1s}",
+    ".db{display:flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:0 20px;border-radius:12px;border:2px solid transparent;font-size:18px;font-weight:600;white-space:nowrap;transition:background .15s,transform .1s}",
     ".db:active{transform:scale(.97)}",
     ".db.main{background:var(--accent);color:#fff}.db.main:hover{background:var(--accent-dk)}",
     ".db.second{background:transparent;color:#fff;border-color:rgba(255,255,255,.45)}.db.second:hover{background:rgba(255,255,255,.1)}",
     ".db.go{background:var(--go);color:#fff}.db.go:hover{background:var(--go-dk)}",
     ".db.go[disabled],.db.off{background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);cursor:default}",
-    ".badge{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:999px;background:#fff;color:var(--go-dk);font-size:15px;font-weight:800;padding:0 7px}",
+    ".badge{display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:999px;background:#fff;color:var(--go-dk);font-size:15px;font-weight:700;padding:0 7px}",
     "@media (max-width:719px){",
     "  .dock-main{padding-top:10px}.dock-in{flex-direction:column;align-items:stretch;gap:8px}",
     "  .dock .say{text-align:center;font-size:15px}.dock .say b{font-size:17px}.dock .say span{display:none}",
@@ -232,39 +232,39 @@
     "}",
 
     /* pins on the page */
-    ".pin{position:absolute;width:36px;height:36px;margin:-38px 0 0 -6px;border-radius:50% 50% 50% 6px;border:3px solid #fff;background:var(--accent);color:#fff;font-weight:800;font-size:16px;",
+    ".pin{position:absolute;width:36px;height:36px;margin:-38px 0 0 -6px;border-radius:50% 50% 50% 6px;border:3px solid #fff;background:var(--accent);color:#fff;font-weight:700;font-size:16px;",
     "  display:grid;place-items:center;padding:0;box-shadow:0 3px 10px rgba(0,0,0,.35);font-variant-numeric:tabular-nums;transform-origin:6px 36px}",
     ".pin.on{transform:scale(1.15);box-shadow:0 0 0 5px rgba(194,84,27,.35),0 3px 10px rgba(0,0,0,.35)}",
     ".pin.drop{animation:drop .35s cubic-bezier(.2,1.4,.4,1)}",
     "@keyframes drop{from{transform:translateY(-16px) scale(.6);opacity:0}}",
     ".hl{position:absolute;pointer-events:none;border:3px solid var(--accent);background:rgba(194,84,27,.08);border-radius:6px;transition:all .08s}",
-    ".hl span{position:absolute;left:-3px;top:-34px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;padding:5px 10px;border-radius:8px 8px 8px 0;white-space:nowrap}",
+    ".hl span{position:absolute;left:-3px;top:-34px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;padding:5px 10px;border-radius:8px 8px 8px 0;white-space:nowrap}",
     ".hl.below span{top:auto;bottom:-34px;border-radius:0 8px 8px 8px}",
 
     /* cards: the note box, the review list, help, login */
     ".card{position:fixed;background:var(--paper);border-radius:18px;box-shadow:0 18px 48px rgba(0,0,0,.3),0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column;overflow:hidden}",
     ".card .hd{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 10px}",
-    ".card .hd h2{margin:0;font-size:21px;line-height:1.25;font-weight:800}",
+    ".card .hd h2{margin:0;font-size:21px;line-height:1.25;font-weight:700}",
     ".card .hd p{margin:3px 0 0;color:var(--muted);font-size:15px;overflow-wrap:anywhere}",
     ".card .hd .grow{flex:1;min-width:0}",
     ".xbtn{flex:none;display:grid;place-items:center;width:44px;height:44px;margin:-6px -8px 0 0;border:0;background:none;border-radius:999px;color:var(--muted)}",
     ".xbtn:hover{background:var(--soft)}",
     ".card .bd{padding:6px 20px 16px;overflow:auto;display:grid;gap:14px;align-content:start}",
     ".card .ft{padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;background:var(--paper)}",
-    ".num{display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50% 50% 50% 6px;background:var(--accent);color:#fff;font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}",
-    "label.q{font-weight:700;font-size:17px}",
-    ".fields{display:grid;gap:10px}.field{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:10px}.field label{font-weight:700;font-size:16px}",
+    ".num{display:inline-grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50% 50% 50% 6px;background:var(--accent);color:#fff;font-weight:700;font-size:16px;font-variant-numeric:tabular-nums}",
+    "label.q{font-weight:600;font-size:17px}",
+    ".fields{display:grid;gap:10px}.field{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:10px}.field label{font-weight:600;font-size:16px}",
     ".field input{font:inherit;font-size:17px;color:var(--ink);width:100%;min-width:0;min-height:50px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--soft)}",
     ".field input:focus{outline:none;border-color:var(--accent);background:#fff}",
     "@media (max-width:420px){.field{grid-template-columns:1fr;gap:4px}}.fields.stack .field{grid-template-columns:1fr;gap:4px}",
     /* social pages: one roomy row per site, with that site's own logo and an example address */
     ".fields.brands{gap:12px}",
-    ".field .lb{font-weight:700;font-size:16px}.field.brand .lb{font-size:17px;line-height:1.2}",
+    ".field .lb{font-weight:600;font-size:16px}.field.brand .lb{font-size:17px;line-height:1.2}",
     ".fv{min-width:0}.fv [hidden]{display:none!important}",
     ".cur{display:flex;align-items:center;gap:10px;min-height:50px;padding:5px 5px 5px 12px;border:1px solid var(--line);border-radius:12px;background:#fff}",
     ".cur svg{flex:none;width:18px;height:18px;color:var(--go)}",
     ".cur .val{flex:1;min-width:0;font-size:16.5px;line-height:1.3;overflow-wrap:break-word}",
-    ".cur .chg,.ed .undo{flex:none;border:0;min-height:40px;padding:0 14px;border-radius:10px;font-size:15px;font-weight:700}",
+    ".cur .chg,.ed .undo{flex:none;border:0;min-height:40px;padding:0 14px;border-radius:10px;font-size:15px;font-weight:600}",
     ".cur .chg{background:var(--accent-soft);color:var(--accent)}.cur .chg:hover{background:#f6dccd}",
     ".ed{display:flex;align-items:center;gap:8px}.ed input{flex:1}",
     ".ed .undo{background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:0 8px}",
@@ -325,8 +325,8 @@
     ".thumbs.capt .rm{width:26px;height:26px;top:-7px;right:-7px}",
     ".thumbs .cap{font:inherit;font-size:16px;color:var(--ink);width:100%;min-width:0;min-height:46px;border:2px solid var(--line);border-radius:10px;padding:8px 11px;background:var(--soft)}",
     ".thumbs .cap:focus{outline:none;border-color:var(--accent);background:#fff}.thumbs .cap::placeholder{color:#8d877e}",
-    ".capts{justify-self:start;border:0;background:none;padding:6px 0;color:var(--accent);font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:3px}",
-    ".b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 20px;border-radius:12px;border:2px solid transparent;font-size:17px;font-weight:700;white-space:nowrap}",
+    ".capts{justify-self:start;border:0;background:none;padding:6px 0;color:var(--accent);font-weight:600;font-size:15px;text-decoration:underline;text-underline-offset:3px}",
+    ".b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 20px;border-radius:12px;border:2px solid transparent;font-size:17px;font-weight:600;white-space:nowrap}",
     ".b.main{background:var(--accent);color:#fff}.b.main:hover{background:var(--accent-dk)}",
     ".b.go{background:var(--go);color:#fff}.b.go:hover{background:var(--go-dk)}",
     ".b.plain{background:#fff;border-color:var(--line);color:var(--ink)}.b.plain:hover{border-color:#bdb5a9}",
@@ -340,7 +340,7 @@
     /* note box: popover on big screens, sheet on phones */
     ".note{width:400px;max-width:calc(100vw - 24px)}",
     ".note .where{display:flex;gap:8px;align-items:baseline;background:var(--soft);border-radius:10px;padding:9px 12px;font-size:15px;color:var(--muted)}",
-    ".note .where b{color:var(--ink);font-weight:700;overflow-wrap:anywhere}",
+    ".note .where b{color:var(--ink);font-weight:600;overflow-wrap:anywhere}",
     ".sheet{left:0;right:0;bottom:0;width:auto;max-width:none;max-height:88vh;border-radius:20px 20px 0 0}",
     ".sheet::before{content:'';display:block;width:44px;height:5px;border-radius:9px;background:#d6cfc4;margin:10px auto 0}",
 
@@ -352,7 +352,7 @@
     ".steps li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 18px 14px 14px}",
     ".steps .circ{width:52px;height:52px;border-radius:15px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;position:relative}",
     ".steps .circ .ic{width:26px;height:26px}",
-    ".steps .circ i{position:absolute;right:-7px;bottom:-7px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-sizing:content-box;background:var(--accent);color:#fff;font:800 12.5px/24px system-ui,sans-serif;text-align:center;font-style:normal}",
+    ".steps .circ i{position:absolute;right:-7px;bottom:-7px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;box-sizing:content-box;background:var(--accent);color:#fff;font:700 12.5px/24px system-ui,sans-serif;text-align:center;font-style:normal}",
     ".steps b{display:block;font-size:17.5px;line-height:1.3}",
     ".steps span{display:block;color:var(--muted);font-size:15px;line-height:1.45;margin-top:2px}",
     ".calm{display:flex;gap:12px;align-items:flex-start;background:#eef6f0;border:1px solid #d5e8db;color:#24563a;border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.45;font-weight:500;margin-top:4px}",
@@ -365,11 +365,11 @@
     ".card.photo .cap{margin:0;color:var(--muted);font-size:15px}",
     /* the Photos page: a whole page over their portal, with a Back button */
     ".pg{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:#f4f2ee}",
-    ".pg.note.photos{width:auto}",
+    ".pg.note.photos{width:auto;max-width:none}",
     ".pg .dropcover{position:fixed!important;inset:10px!important}",
     ".pg-top{position:sticky;top:0;z-index:2;background:rgba(244,242,238,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}",
     ".pg-top-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}",
-    ".pg-back{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px 0 12px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:16px;white-space:nowrap}",
+    ".pg-back{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px 0 12px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:16px;white-space:nowrap}",
     ".pg-back:hover{border-color:#bdb5a9}.pg-back .ic{transform:scaleX(-1)}",
     ".pg-top h1{margin:0;font:700 25px/1.15 'SW Zilla','Zilla Slab',Georgia,serif;letter-spacing:-.005em}",
     ".pg-in{max-width:1040px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:18px}",
@@ -386,11 +386,11 @@
     ".pg-ph .im.gone::after{content:'Photo not found';position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px}",
     ".pg-ph .cp{font-size:15px;line-height:1.3;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}",
     ".pg-ph .dt{font-size:13.5px;color:var(--muted);line-height:1.3}",
-    ".tag{white-space:nowrap;justify-self:start;display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:700;line-height:1.1;padding:6px 10px 6px 9px;border-radius:999px}",
+    ".tag{white-space:nowrap;justify-self:start;display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:600;line-height:1.1;padding:6px 10px 6px 9px;border-radius:999px}",
     ".tag .ic{width:15px;height:15px;stroke-width:3}",
     ".tag.on{background:#e3efe6;color:#22603a}.tag.off{background:#f0ebe4;color:#5f5a53;padding-left:10px}",
     ".pg-none{margin:0;padding:18px;border:2px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center;font-size:15.5px}",
-    ".pg-more{margin:0;font-size:15.5px;color:var(--muted)}.pg-more a{color:var(--accent);font-weight:700}",
+    ".pg-more{margin:0;font-size:15.5px;color:var(--muted)}.pg-more a{color:var(--accent);font-weight:600}",
     "@media (max-width:719px){.pg-grid{grid-template-columns:1fr 1fr;gap:14px 10px}.pg-sec{padding:16px;border-radius:16px}.pg-top h1{font-size:21px}.pg-back{min-height:44px;padding:0 14px 0 10px}.pg-in{padding-top:14px;gap:14px}.pg-act .b{width:100%}.tag{font-size:12.5px;padding:5px 8px}.tag.off{padding-left:8px}.card.photo .hd h2{font-size:17px}}",
     ".card.help .hd{padding:26px 26px 6px}.card.help .hd h2{font-size:23px}.card.help .hd p{font-size:16px;margin-top:5px}",
     ".card.help .bd{padding:14px 26px 22px;gap:12px}.card.help .ft{padding:16px 26px calc(20px + env(safe-area-inset-bottom,0px))}.card.help .ft .b{min-height:56px;font-size:18px}",
@@ -427,7 +427,7 @@
     ".kick{display:inline-flex;align-items:center;gap:6px}.kick .ic{width:14px;height:14px}",
     ".veil.solid .kick{color:#5F7152}",
     ".logo{display:grid;place-items:center;margin:4px auto 2px;max-width:260px}.logo img{width:240px;max-width:100%;height:auto;max-height:110px;object-fit:contain;display:block}",
-    ".kick{margin:0 0 2px;font-size:13px!important;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}",
+    ".kick{margin:0 0 2px;font-size:13px!important;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}",
     ".pw{display:flex;align-items:stretch;border:2px solid var(--line);border-radius:12px;background:var(--soft);overflow:hidden}",
     ".pw:focus-within{border-color:var(--accent);background:#fff}",
     ".pw input{flex:1;min-width:0;font:inherit;font-size:20px;border:0;background:none;padding:12px 14px;color:var(--ink);outline:none;letter-spacing:.02em}",
@@ -436,6 +436,10 @@
     ".toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(18px + env(safe-area-inset-top,0px));background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-size:16px;font-weight:600;",
     "  width:max-content;max-width:calc(100vw - 28px);box-sizing:border-box;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.3);display:flex;align-items:center;gap:10px}",
     ".toast .ic{color:#7fd39b}",
+    ".toast{z-index:10}.toast .undo-t{flex:none;margin:-4px -6px -4px 4px;border:0;border-radius:10px;min-height:38px;padding:0 14px;background:rgba(255,255,255,.16);color:#fff;font-size:15px;font-weight:600}.toast .undo-t:hover{background:rgba(255,255,255,.28)}",
+    ".sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}",
+    ".card:focus,.pg:focus{outline:none}",
+    ".card .hd:has(+ .ft){padding-bottom:18px}",
     ".toast{animation:tin .25s ease-out}@keyframes tin{from{opacity:0;transform:translate(-50%,-10px)}}",
     "@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"
   ].join("\n");
@@ -457,15 +461,27 @@
     root = host.attachShadow({ mode: "open" });
     addCss(root, CSS);
     layer = h("div", { class: "r" });
+    els.live = h("div", { class: "sr", role: "status", "aria-live": "polite" });
+    layer.appendChild(els.live);
     root.appendChild(layer);
     document.body.appendChild(host);
   }
-  var toastTimer;
-  function toast(text) {
+  // A short message at the top. Screen readers hear it through one quiet message area that stays put.
+  // Longer messages stay up longer. opts.undo adds an Undo button; opts.after runs once it's gone.
+  var toastTimer, toastEl = null, toastUndo = null, toastAfter = null;
+  function toast(text, opts) {
+    clearToast(); opts = opts || {};
+    toastUndo = opts.undo || null; toastAfter = opts.after || null;
+    toastEl = h("div", { class: "toast" }, [icon("check"), h("span", { text: text }),
+      toastUndo ? h("button", { class: "undo-t", type: "button", text: "Undo", onclick: function () { var u = toastUndo; toastUndo = toastAfter = null; clearToast(); if (u) u(); } }) : null]);
+    layer.appendChild(toastEl);
+    if (els.live) { els.live.textContent = ""; setTimeout(function () { els.live.textContent = text; }, 40); }
+    toastTimer = setTimeout(clearToast, toastUndo ? 7000 : Math.min(8000, Math.max(3800, text.length * 65)));
+  }
+  function clearToast() {
     clearTimeout(toastTimer);
-    var old = layer.querySelector(".toast"); if (old) old.remove();
-    var t = h("div", { class: "toast", role: "status" }, [icon("check"), h("span", { text: text })]);
-    layer.appendChild(t); toastTimer = setTimeout(function () { t.remove(); }, 3800);
+    if (toastEl) { toastEl.remove(); toastEl = null; }
+    var after = toastAfter; toastAfter = toastUndo = null; if (after) after();
   }
 
   /* =========================================================== service */
@@ -731,7 +747,7 @@
 
   function openNote(i, wantPhotos) {
     if (st.notes[i] && st.notes[i].pg && photosBox()) return openPhotos();   // the Photos box's note lives on the Photos page
-    closePanels();
+    remember(); closePanels();
     active = i; panel = "note";
     var note = st.notes[i], phone = isPhone();
     var text = h("textarea", { id: "swn-text", placeholder: note.hint || "For example: Change the price to $32.", onkeydown: function (e) { if (e.key === "Escape") saveNote(); } });
@@ -779,7 +795,7 @@
       }))]) : null;
 
     if (note.photos) { text.placeholder = "Anything else about these photos? (optional)"; text.style.minHeight = "70px"; }
-    var card = h("div", { class: "card note" + (brands || hasNow || note.photos ? " wide" : "") + (note.photos ? " photos" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
+    var card = h("div", { class: "card note" + (brands || hasNow || note.photos ? " wide" : "") + (note.photos ? " photos" : "") + (phone ? " sheet" : ""), role: "dialog", tabindex: "-1", "aria-label": "Note " + (i + 1) + ", about " + short(note.on, 60) }, [
       h("div", { class: "dropcover", "aria-hidden": "true" }, [icon("photo"), h("b", { text: "Drop your photos here" })]),
       h("div", { class: "hd" }, [
         h("span", { class: "num", text: String(i + 1) }),
@@ -817,6 +833,7 @@
     placeNoteCard();
     if (wantPhotos) els.file.click();
     else if (!phone) { var first = fieldEls.length ? fieldEls[0].input : text; try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }
+    else { try { card.focus({ preventScroll: true }); } catch (e) {} }   // phones: no keyboard popping up yet, but focus is in the note
   }
   // Big screens: the note box sits next to its pin. Phones: it's a sheet at the bottom.
   function placeNoteCard() {
@@ -894,19 +911,52 @@
     closePanels(); save(); render();
     if (kept) toast(st.notes.length === 1 ? "Note saved. Add another, or tap Send to " + TO + "." : "Note saved.");
   }
-  function removeNote(i) {
+  // Delete is one tap, with Undo for a few seconds. Its photos are only thrown away once Undo is gone.
+  function removeNote(i, inReview) {
     var note = st.notes[i]; if (!note) return;
-    note.pics.forEach(picDel); if (note.shot) picDel(note.shot); st.notes.splice(i, 1);
-    closePanels(); save(); render();
-    toast("Note deleted.");
-    if (panel === "review") openReview();
+    st.notes.splice(i, 1); closePanels(); save(); render();
+    if (inReview && st.notes.length) openReview();
+    var gone = true;
+    toast(inReview && !st.notes.length ? "Note deleted. Nothing left to send." : "Note deleted.", {
+      undo: function () { gone = false; st.notes.splice(Math.min(i, st.notes.length), 0, note); save(); closePanels(); render(); if (inReview) openReview(); toast("Your note is back."); },
+      after: function () { if (gone) { note.pics.forEach(picDel); if (note.shot) picDel(note.shot); } }
+    });
   }
   function closePanels() {
     closeLb();
     if (panel === "photos") leavePhotos();
     if (els.note) { els.note.card.remove(); els.note = null; }
-    if (els.veil) { els.veil.remove(); els.veil = null; }
+    if (els.veil) { els.veil.remove(); els.veil = null; els.veilClose = null; }
     active = -1; panel = null; if (els.dock) els.dock.hidden = false;
+    still(); giveBack();
+  }
+  // Pop-ups that need attention: the page behind stays still, Tab stays inside, and when the last
+  // one closes, focus goes back to what opened it (or a button with the same words, if it was redrawn).
+  var backTo = null, backText = "";
+  function remember() {
+    if (backTo) return;
+    var a = root.activeElement || document.activeElement;
+    if (!a || a === document.body || a === document.documentElement) return;
+    backTo = a; backText = (a.textContent || "").trim();
+  }
+  function giveBack() {
+    setTimeout(function () {
+      if (panel || els.lb || els.veil || els.note || !backTo) return;
+      var b = backTo; backTo = null;
+      if (!b.isConnected && backText) b = Array.prototype.filter.call(root.querySelectorAll("button"), function (x) { return x.getClientRects().length && (x.textContent || "").trim() === backText; })[0];
+      if (b && b.isConnected) try { b.focus({ preventScroll: true }); } catch (x) {}
+    }, 0);
+  }
+  function still() { document.documentElement.classList.toggle("swn-still", !!(els.veil || els.lb || panel === "photos")); }
+  function topModal() { return els.lb ? els.lb.firstChild : els.veil ? els.veil.firstChild : panel === "photos" && els.note ? els.note.card : null; }
+  function trapTab(e) {
+    var box = topModal(); if (e.key !== "Tab" || !box) return;
+    var f = Array.prototype.filter.call(box.querySelectorAll('button:not([disabled]),a[href],input:not([type="hidden"]):not([disabled]),textarea,[tabindex]:not([tabindex="-1"])'), function (x) { return x.getClientRects().length; });
+    if (!f.length) return;
+    var a = root.activeElement, first = f[0], last = f[f.length - 1];
+    if (!a || !box.contains(a)) { e.preventDefault(); (e.shiftKey ? last : first).focus(); }
+    else if (e.shiftKey && a === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
   }
 
   /* ----- photos: shrunk in the browser, kept until sent ----- */
@@ -1002,11 +1052,19 @@
   }
 
   /* ----- the review list and sending ----- */
-  function veil(card) {
-    closePanels();
-    clearTimeout(toastTimer); var oldToast = layer.querySelector(".toast"); if (oldToast) oldToast.remove();   // a big message replaces any small one
-    els.veil = h("div", { class: "veil", onclick: function (e) { if (e.target === els.veil && !busy) { if (panel === "review") backFromReview(); else { closePanels(); render(); } } } }, [card]);
+  // A centered box over a dimmed page (a sheet from the bottom on phones). opts.focus: what to put focus
+  // on first (default: the box itself, so it reads its name). opts.close: what Esc or a tap outside does.
+  function veil(card, opts) {
+    opts = opts || {};
+    remember();
+    var keep = panel; closePanels(); panel = keep;      // closing the last box mustn't forget which box this is
+    if (!toastUndo) clearToast();                        // a big message replaces a small one (but keeps an Undo)
+    card.setAttribute("aria-modal", "true"); card.setAttribute("tabindex", "-1");
+    els.veilClose = opts.close || function () { closePanels(); render(); };
+    els.veil = h("div", { class: "veil", onclick: function (e) { if (e.target === els.veil && !busy) els.veilClose(); } }, [card]);
     layer.appendChild(els.veil);
+    still();
+    try { (opts.focus || card).focus({ preventScroll: true }); } catch (x) {}
     return card;
   }
   function openReview(errText) {
@@ -1026,7 +1084,7 @@
           h("div", { class: "acts" }, [
             here ? h("button", { class: "b quiet", type: "button", onclick: function () { openNote(i); } }, [icon("pencil"), h("span", { text: "Change" })])
                  : h("button", { class: "b quiet", type: "button", onclick: function () { if (!note.hub) lsSet("on", "1"); location.href = note.page; } }, [icon("arrow"), h("span", { text: note.hub ? "Go to your portal" : "Go to that page" })]),
-            h("button", { class: "b danger", type: "button", onclick: function () { removeNote(i); openReview(); } }, [icon("trash"), h("span", { text: "Delete" })])
+            h("button", { class: "b danger", type: "button", onclick: function () { removeNote(i, true); } }, [icon("trash"), h("span", { text: "Delete" })])
           ])
         ])
       ]));
@@ -1045,7 +1103,7 @@
         h("div", { style: "display:flex;gap:10px;flex-wrap:wrap" }, [
           h("button", { class: "b plain", type: "button", text: reviewFrom === "photos" ? "Keep adding photos" : "Keep adding notes", onclick: function () { if (!busy) backFromReview(); } }),
           h("span", { class: "push" }), sendBtn])])
-    ]));
+    ]), { close: backFromReview });
     els.dock.hidden = isPhone();
   }
 
@@ -1125,6 +1183,12 @@
   }
   function showSent() {
     panel = "sent";
+    var done = function () {
+      if (MODE !== "hub") { closePanels(); render(); return; }
+      var back = reviewFrom === "photos"; reviewFrom = null; newList(true);
+      if (back) openPhotos();                       // back to the Photos page, where the new ones now show as sent
+    };
+    var doneBtn = h("button", { class: "b main wide", type: "button", text: "Done", onclick: done });
     veil(h("div", { class: "card", role: "dialog", "aria-label": "Sent" }, [
       h("div", { class: "bd center", style: "padding-top:26px;gap:8px" }, [
         h("div", { class: "done-ic pop" }, [icon("check")]),
@@ -1132,12 +1196,8 @@
         h("p", { text: TO + " has your " + (st.sentNotes === 1 ? "note" : plural(st.sentNotes, "note")) + (st.sentPics ? " and " + plural(st.sentPics, "photo") : "") + "." }),
         h("p", { text: "You'll hear back soon. Nothing on your website changes until " + TO + " makes the update." })
       ]),
-      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: "Done", onclick: function () {
-        if (MODE !== "hub") { closePanels(); render(); return; }
-        var back = reviewFrom === "photos"; reviewFrom = null; newList(true);
-        if (back) openPhotos();                       // back to the Photos page, where the new ones now show as sent
-      } })])
-    ]));
+      h("div", { class: "ft" }, [doneBtn])
+    ]), { focus: doneBtn, close: done });
     render();
   }
   function newList(quietly) {
@@ -1158,11 +1218,12 @@
   /* ----- help, and turning notes off ----- */
   function showHelp(first) {
     panel = "help";
+    var gotIt = h("button", { class: "b main wide", type: "button", text: first ? "Got it. Let's start." : "Got it", onclick: function () { st[MODE === "edit" ? "intro" : "introHub"] = true; save(); tuckAway(this.closest(".card")); } });
     var step = function (n, ic, title, text) { return h("li", {}, [h("div", { class: "circ" }, [icon(ic), h("i", { text: String(n) })]), h("div", {}, [h("b", { text: title }), h("span", { text: text })])]); };
     veil(h("div", { class: "card help", role: "dialog", "aria-label": "How this works" }, [
       h("div", { class: "hd" }, [
         h("div", { class: "grow" }, [h("h2", { text: first ? (MODE === "edit" ? "You're in Edit mode. Here's how it works." : "Welcome! Here's how it works.") : "How this works" }), h("p", { text: MODE === "edit" ? "Leave notes for " + TO + " right on your own website." : "This is your Client Portal for sending " + TO + " what you need." })]),
-        first ? null : h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { closePanels(); render(); } }, [icon("x")])
+        h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { closePanels(); render(); } }, [icon("x")])
       ]),
       h("div", { class: "bd" }, [
         MODE === "edit" ? h("ol", { class: "steps" }, [
@@ -1178,8 +1239,8 @@
         ]),
         h("div", { class: "calm" }, [icon("check"), h("span", { text: "You can't break anything. Your website stays exactly as it is until " + TO + " makes the change." })])
       ]),
-      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: first ? "Got it. Let's start." : "Got it", onclick: function () { st[MODE === "edit" ? "intro" : "introHub"] = true; save(); tuckAway(this.closest(".card")); } })])
-    ]));
+      h("div", { class: "ft" }, [gotIt])
+    ]), { focus: gotIt });
     els.dock.hidden = isPhone();
   }
   // "Got it": the steps shrink down into the bar at the bottom ("Edit mode is on" / "You're logged in"),
@@ -1187,7 +1248,9 @@
   // A photo, big. Close with the button, Esc or a tap outside; arrows step through.
   // items: [{ src, title, cap }]. swap (optional): "Swap this one", given the photo shown.
   function lightbox(items, at, swap) {
-    closeLb();
+    var from = els.lb ? els.lbFrom : root.activeElement || document.activeElement;
+    if (!panel && !els.veil) remember();
+    closeLb(true); els.lbFrom = from;
     if (!items.length) return;
     var pic = h("img", { alt: "" }), cap = h("p", { class: "cap" }), title = h("h2", {});
     var show = function (i) {
@@ -1198,7 +1261,7 @@
     };
     var nav = items.length > 1 ? [h("button", { class: "nav l", type: "button", "aria-label": "Previous photo", onclick: function () { show(at - 1); } }, [icon("arrow")]),
                                   h("button", { class: "nav r", type: "button", "aria-label": "Next photo", onclick: function () { show(at + 1); } }, [icon("arrow")])] : [];
-    var card = h("div", { class: "card photo", role: "dialog", "aria-label": "Photo" }, [
+    var card = h("div", { class: "card photo", role: "dialog", "aria-modal": "true", "aria-label": "Photo" }, [
       h("div", { class: "hd" }, [h("div", { class: "grow" }, [title]), h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: closeLb }, [icon("x")])]),
       h("div", { class: "bd" }, [h("div", { class: "shot" }, [pic].concat(nav)), cap]),
       h("div", { class: "ft" }, [
@@ -1208,11 +1271,19 @@
     ]);
     card.addEventListener("keydown", function (e) { if (e.key === "ArrowLeft") show(at - 1); if (e.key === "ArrowRight") show(at + 1); });
     els.lb = h("div", { class: "veil lb", onclick: function (e) { if (e.target === els.lb) closeLb(); } }, [card]);
-    layer.appendChild(els.lb);
+    layer.appendChild(els.lb); still();
     show(at);
     try { card.querySelector(".b.main").focus({ preventScroll: true }); } catch (x) {}
   }
-  function closeLb() { if (els.lb) { els.lb.remove(); els.lb = null; } }
+  // Over the Photos page, closing the photo puts focus back on the photo they tapped.
+  function closeLb(quiet) {
+    if (!els.lb) return;
+    els.lb.remove(); els.lb = null; still();
+    var from = els.lbFrom; els.lbFrom = null;
+    if (quiet) return;
+    if (panel && from && from.isConnected) { try { from.focus({ preventScroll: true }); } catch (x) {} }
+    else giveBack();
+  }
 
   // One of their site's photos on a box (data-big), big.
   function showPhoto(img) {
@@ -1247,7 +1318,7 @@
   }
   function openPhotos(fromHistory) {
     var box = photosBox(); if (!box || busy) return;
-    closePanels();
+    remember(); closePanels();
     var i = -1; st.notes.forEach(function (n, k) { if (n.pg) i = k; });
     if (i < 0) { var made = makeNote(box, box.getAttribute("data-area") || "Photos"); made.pg = true; made.photos = true; st.notes.push(made); save(); i = st.notes.length - 1; }
     active = i; panel = "photos";
@@ -1289,7 +1360,7 @@
         site.more ? h("p", { class: "pg-more" }, [site.more + " ", site.moreUrl ? h("a", { href: site.moreUrl, target: "_blank", rel: "noopener", text: "See them" }) : null]) : null]);
     }
 
-    var page = h("div", { class: "pg note photos", role: "dialog", "aria-label": "Your photos" }, [
+    var page = h("div", { class: "pg note photos", role: "dialog", "aria-modal": "true", "aria-label": "Your photos" }, [
       h("div", { class: "dropcover", "aria-hidden": "true" }, [icon("photo"), h("b", { text: "Drop your photos here" })]),
       h("div", { class: "pg-top" }, [h("div", { class: "pg-top-in" }, [
         h("button", { class: "pg-back", type: "button", onclick: backFromPhotos }, [icon("arrow"), h("span", { text: phone ? "Back" : "Back to your portal" })]),
@@ -1307,7 +1378,7 @@
     els.dock.hidden = true;
     els.scrollWas = document.documentElement.style.overflow; document.documentElement.style.overflow = "hidden";
     drawThumbs(note, thumbs, true);
-    render();
+    render(); still();
     loadSent(sentGrid, sentSum, sentNone);
     try { page.querySelector(".pg-back").focus({ preventScroll: true }); } catch (x) {}
   }
@@ -1539,14 +1610,15 @@
   function askLogOut() {
     panel = "off";
     var n = st.sent ? 0 : st.notes.length;
+    var stay = h("button", { class: "b plain", type: "button", text: "Stay logged in", onclick: function () { closePanels(); render(); } });
     veil(h("div", { class: "card", role: "dialog", "aria-label": "Log out" }, [
       h("div", { class: "hd" }, [h("div", { class: "grow" }, [h("h2", { text: "Log out?" }),
-        h("p", { text: (n ? "Your " + plural(n, "note") + " will stay saved on this device. " : "") + "To come back, tap Owner login at the bottom of your website and type your password." })])]),
+        h("p", { text: (n ? "Your " + plural(n, "note") + " will stay saved on this device. " : "") + "To come back, open this page again and type your password." })])]),
       h("div", { class: "ft" }, [
-        h("button", { class: "b plain", type: "button", text: "Stay logged in", onclick: function () { closePanels(); render(); } }),
+        stay,
         h("button", { class: "b main push", type: "button", onclick: function () { lsSet("token", null); lsSet("on", null); location.reload(); } }, [icon("power"), h("span", { text: "Log out" })])
       ])
-    ]));
+    ]), { focus: stay });
   }
 
   /* =========================================================== start */
@@ -1558,13 +1630,13 @@
     els.frame = h("div", { class: "frame", "aria-hidden": "true", hidden: MODE !== "edit" });
     var helpBtn = h("button", { type: "button", onclick: function () { showHelp(false); } }, [icon("help"), h("span", { text: "Help" })]);
     var strip = MODE === "edit"
-      ? h("div", { class: "strip", role: "status" }, [h("div", { class: "strip-in" }, [
+      ? h("div", { class: "strip" }, [h("div", { class: "strip-in" }, [
           els.stripLbl = h("span", { class: "lbl" }, [h("span", { class: "dot" }), h("span", { text: "Edit mode is on" })]),
           h("span", { class: "sub", text: "· Your website isn't changing" }),
           h("span", { class: "gap" }), helpBtn,
           h("button", { type: "button", onclick: exitEdit }, [icon("power"), h("span", { class: "lg", text: "Exit edit mode" }), h("span", { class: "sm", text: "Exit" })])
         ])])
-      : h("div", { class: "strip hub", role: "status" }, [h("div", { class: "strip-in" }, [
+      : h("div", { class: "strip hub" }, [h("div", { class: "strip-in" }, [
           els.stripLbl = h("span", { class: "lbl" }, [icon("lock"), h("span", { class: "lg", text: "You're logged in" }), h("span", { class: "sm", text: "Logged in" })]),
           h("span", { class: "sub", text: "· Only you can see this page" }),
           h("span", { class: "gap" }), helpBtn,
@@ -1585,7 +1657,7 @@
     [els.pins, els.hl, els.frame, els.dock, els.file].forEach(function (e) { layer.appendChild(e); });
 
     // room at the bottom of the page so the dock never hides the footer, and a pointer cursor while picking
-    addCss(document, "html.swn-pick,html.swn-pick *{cursor:pointer!important}");
+    addCss(document, "html.swn-pick,html.swn-pick *{cursor:pointer!important}html.swn-still{overflow:hidden!important}");
     document.body.appendChild(els.spacer = h("div", { "aria-hidden": "true", "data-site-notes-spacer": "", style: "height:150px" }));
     document.body.appendChild(host);
 
@@ -1618,8 +1690,10 @@
       if (e.key !== "Escape") return;
       if (els.lb) closeLb();
       else if (picking) stopPicking();
-      else if (panel && !busy) { if (panel === "note") saveNote(); else if (panel === "photos") backFromPhotos(); else if (panel === "review") backFromReview(); else { closePanels(); render(); } }
+      else if (panel && !busy) { if (panel === "note") saveNote(); else if (panel === "photos") backFromPhotos(); else if (els.veil && els.veilClose) els.veilClose(); else { closePanels(); render(); } }
     });
+    document.addEventListener("keydown", trapTab);
+    window.addEventListener("pagehide", function () { if (toastAfter) clearToast(); });   // a deleted note's photos go, even if they leave before Undo runs out
     var tick = false, again = function () { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; placePins(); if (hlFor) showHl(hlFor); }); };
     window.addEventListener("resize", again); window.addEventListener("scroll", again, { passive: true }); window.addEventListener("load", again);
     if (window.ResizeObserver) new ResizeObserver(again).observe(document.body);
@@ -1738,7 +1812,7 @@
     ring.setAttribute("aria-hidden", "true");
     ring.style.cssText = "position:absolute;z-index:2147483645;pointer-events:none;border:3px solid #c2541b;border-radius:8px;background:rgba(194,84,27,.08);box-shadow:0 0 0 9999px rgba(20,18,16,.28);transition:opacity .3s";
     pin.style.cssText = "position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#c2541b;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)";
-    tag.style.cssText = "position:absolute;left:-3px;bottom:100%;margin-bottom:6px;background:#c2541b;color:#fff;font:700 14px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:6px 10px;border-radius:8px;white-space:nowrap";
+    tag.style.cssText = "position:absolute;left:-3px;bottom:100%;margin-bottom:6px;background:#c2541b;color:#fff;font:600 14px/1.25 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:6px 10px;border-radius:8px;width:max-content;max-width:min(420px,calc(100vw - 24px));box-shadow:0 2px 8px rgba(0,0,0,.25)";
     tag.textContent = moved ? "Note left here (the page has changed a little)" : "Note left here";
     ring.append(tag, pin);
     var place = function () {
@@ -1747,6 +1821,10 @@
       ring.style.width = (r.width + 10) + "px"; ring.style.height = (r.height + 10) + "px";
       pin.style.left = (5 + r.width * (f.x == null ? .5 : f.x)) + "px"; pin.style.top = (5 + r.height * (f.y == null ? .5 : f.y)) + "px";
       if (r.top < 44) { tag.style.bottom = "auto"; tag.style.top = "100%"; tag.style.marginTop = "6px"; }
+      tag.style.left = "-3px";                         // keep the label on screen near either edge
+      var tr = tag.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+      if (tr.right > vw - 8) tag.style.left = (-3 - (tr.right - vw + 8)) + "px";
+      else if (tr.left < 8) tag.style.left = (-3 + 8 - tr.left) + "px";
     };
     document.body.appendChild(ring); place();
     var off = function () { ring.style.opacity = "0"; setTimeout(function () { ring.remove(); }, 300); window.removeEventListener("resize", place); document.removeEventListener("keydown", esc); document.removeEventListener("pointerdown", off, true); };
