@@ -246,6 +246,33 @@
     ".field.brand:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(194,84,27,.12)}",
     ".tip{display:flex;gap:10px;align-items:flex-start;margin:-4px 0 0;color:var(--muted);font-size:15px;line-height:1.45}.tip .ic{flex:none;width:20px;height:20px;margin-top:1px;color:var(--accent)}",
     ".note.wide{width:480px}",
+    /* photos: a big tap/drop area, big pictures with their words under them, idea chips */
+    ".note.photos{width:600px}",
+    ".note.sheet.wide,.note.sheet.photos{width:auto}",
+    ".add-ph.big{flex-direction:column;justify-content:center;text-align:center;gap:8px;min-height:150px;padding:22px 18px;border-width:2.5px;border-radius:16px;background:#fff}",
+    ".add-ph.big .ic{width:44px;height:44px;stroke-width:1.6}.add-ph.big b{font-size:19px}.add-ph.big span{font-size:15px}",
+    ".add-ph.busy{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}.add-ph.busy .ic{animation:swn-pulse 1s ease-in-out infinite}",
+    "@keyframes swn-pulse{50%{transform:scale(.85);opacity:.6}}",
+    ".note.photos .add-ph.big:has(~ .thumbs:not([hidden])){min-height:88px;flex-direction:row;text-align:left;padding:14px 18px}",
+    ".note.photos .add-ph.big:has(~ .thumbs:not([hidden])) .ic{width:32px;height:32px}",
+    ".note.photos .thumbs.capt{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}",
+    ".note.photos .thumbs .cap{min-height:0;height:auto;field-sizing:content;font-size:14.5px;line-height:1.35;padding:7px 9px;resize:none;border-radius:9px}",
+    ".note.photos .thumbs.capt .t{grid-template-columns:1fr;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px}",
+    ".note.photos .thumbs.capt .ph{width:100%;height:auto;aspect-ratio:4/3}.note.photos .thumbs.capt img{width:100%;height:100%;border-radius:9px}",
+    ".note.photos .thumbs.capt .rm{width:32px;height:32px;top:6px;right:6px}",
+    ".note.photos .thumbs:not(.capt){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}",
+    ".note.photos .thumbs:not(.capt) .t,.note.photos .thumbs:not(.capt) .ph{width:100%;height:auto;aspect-ratio:1}.note.photos .thumbs:not(.capt) img{width:100%;height:100%}",
+    ".note.photos .thumbs .capts{grid-column:1/-1}",
+    ".thumbs .cap.flash{border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(194,84,27,.15)}",
+    ".ideas p{margin:0 0 8px;font-size:15px;color:var(--muted)}.ideas p b{color:var(--ink)}",
+    ".ideas .chips{display:flex;flex-wrap:wrap;gap:8px}",
+    ".chip{border:1px solid #f0d3c2;background:var(--accent-soft);color:#8a3a12;border-radius:999px;padding:9px 14px;font-size:15px;font-weight:600;min-height:42px;text-align:left}",
+    ".chip:hover{border-color:var(--accent);background:#fff}",
+    "@media (max-width:719px){.note.photos .thumbs.capt{grid-template-columns:1fr 1fr;gap:10px}.note.photos .thumbs:not(.capt){grid-template-columns:repeat(3,minmax(0,1fr))}.add-ph.big{min-height:130px}}",
+    /* files dragged over any note: the whole card says "Drop your photos here" */
+    ".note .dropcover{display:none}",
+    ".note.dropping .dropcover{position:absolute;inset:8px;z-index:3;display:grid;place-content:center;justify-items:center;gap:10px;border:3px dashed var(--accent);border-radius:16px;background:rgba(251,238,230,.94);color:var(--accent);pointer-events:none}",
+    ".note .dropcover .ic{width:54px;height:54px}.note .dropcover b{font-size:21px}",
     "textarea{font:inherit;font-size:18px;color:var(--ink);width:100%;min-height:120px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--soft);resize:vertical}",
     "textarea:focus{border-color:var(--accent);background:#fff;outline:none}",
     "textarea::placeholder{color:#8d877e}",
@@ -586,6 +613,7 @@
       if (target.hasAttribute("data-note-ask")) note.ask = target.getAttribute("data-note-ask");
       if (target.hasAttribute("data-note-hint")) note.hint = target.getAttribute("data-note-hint");
       if (target.hasAttribute("data-note-fields")) { note.fields = target.getAttribute("data-note-fields").split("|"); note.vals = {}; note.extra = ""; }
+      if (target.hasAttribute("data-note-photos")) { note.photos = true; note.ideas = (target.getAttribute("data-note-photos") || "").split("|").filter(Boolean); }
       if (ev && r.width) note.fx = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
       if (ev && r.height) note.fy = Math.min(1, Math.max(0, (ev.clientY - r.top) / r.height));
       lastPin = note.id;
@@ -616,13 +644,18 @@
     if (note.fields) { text.placeholder = "Anything else? (You can leave this empty.)"; text.style.minHeight = "70px"; }
     text.addEventListener("paste", function (e) { var f = e.clipboardData && e.clipboardData.files; if (f && f.length) { e.preventDefault(); addPictures(f); } });
     var thumbs = h("div", { class: "thumbs" });
-    var drop = h("button", { class: "add-ph", type: "button", onclick: function () { els.file.click(); } }, [
-      icon("photo"), h("div", {}, [h("b", { text: note.pics.length ? "Add more photos" : "Add photos" }), h("span", { text: phone ? "From your phone, or take a new one" : "Click to choose, or drag them here" })])]);
-    ["dragenter", "dragover"].forEach(function (n) { drop.addEventListener(n, function (e) { e.preventDefault(); drop.classList.add("over"); }); });
-    drop.addEventListener("dragleave", function () { drop.classList.remove("over"); });
-    drop.addEventListener("drop", function (e) { e.preventDefault(); drop.classList.remove("over"); addPictures(e.dataTransfer.files); });
+    var drop = h("button", { class: "add-ph" + (note.photos ? " big" : ""), type: "button", onclick: function () { els.file.click(); } }, [
+      icon("photo"), h("div", {}, [h("b", { text: dropTitle(note, phone) }), h("span", { text: phone ? "From your photos, or take a new one" : "Click to choose, or drag them here from your computer" })])]);
+    // Ideas for what to send ("A shed on a finished gravel pad"): one tap puts the words on a photo.
+    var ideas = note.photos && note.ideas && note.ideas.length ? h("div", { class: "ideas" }, [
+      h("p", {}, [h("b", { text: "Need ideas?" }), " These would help most. Tap one to label a photo with it."]),
+      h("div", { class: "chips" }, note.ideas.map(function (idea) {
+        return h("button", { class: "chip", type: "button", text: idea, onclick: function () { useIdea(note, idea); } });
+      }))]) : null;
 
-    var card = h("div", { class: "card note" + (brands ? " wide" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
+    if (note.photos) { text.placeholder = "Anything else about these photos? (optional)"; text.style.minHeight = "70px"; }
+    var card = h("div", { class: "card note" + (brands || note.photos ? " wide" : "") + (note.photos ? " photos" : "") + (phone ? " sheet" : ""), role: "dialog", "aria-label": "Note " + (i + 1) }, [
+      h("div", { class: "dropcover", "aria-hidden": "true" }, [icon("photo"), h("b", { text: "Drop your photos here" })]),
       h("div", { class: "hd" }, [
         h("span", { class: "num", text: String(i + 1) }),
         h("div", { class: "grow" }, [h("h2", { text: note.text || note.pics.length ? "Your note" : "New note" })]),
@@ -633,13 +666,20 @@
         h("label", { class: "q", for: note.fields ? "swn-f0" : "swn-text", text: note.ask || "What would you like changed?" }),
         brands ? h("p", { class: "tip" }, [icon("help"), h("span", { text: "Not sure where to find it? Open your page, then copy the address from the top of the screen." })]) : null,
         note.fields ? h("div", { class: "fields" + (brands ? " brands" : fieldEls.some(function (f) { return f.name.length > 11; }) ? " stack" : "") }, fieldEls.map(function (f) { return f.row; })) : null,
-        text, thumbs, drop
+        note.photos ? drop : null, note.photos ? thumbs : null, ideas,
+        text, note.photos ? null : thumbs, note.photos ? null : drop
       ]),
       h("div", { class: "ft" }, [
         h("button", { class: "b danger", type: "button", onclick: function () { removeNote(active); } }, [icon("trash"), h("span", { text: "Delete" })]),
-        h("button", { class: "b main push", type: "button", onclick: saveNote }, [icon("check"), h("span", { text: "Save note" })])
+        h("button", { class: "b main push", type: "button", onclick: saveNote }, [icon("check"), h("span", { text: note.photos ? "Save photos" : "Save note" })])
       ])
     ]);
+    // Files dragged anywhere over the note: the whole card lights up and takes them.
+    var depth = 0, hasFiles = function (e) { var t = e.dataTransfer && e.dataTransfer.types; return t && Array.prototype.indexOf.call(t, "Files") >= 0; };
+    card.addEventListener("dragenter", function (e) { if (!hasFiles(e)) return; e.preventDefault(); depth++; card.classList.add("dropping"); });
+    card.addEventListener("dragover", function (e) { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = "copy"; });
+    card.addEventListener("dragleave", function () { if (--depth <= 0) { depth = 0; card.classList.remove("dropping"); } });
+    card.addEventListener("drop", function (e) { if (!hasFiles(e)) return; e.preventDefault(); e.stopPropagation(); depth = 0; card.classList.remove("dropping"); addPictures(e.dataTransfer.files); });
     els.note = { card: card, text: text, thumbs: thumbs, drop: drop, fields: fieldEls };
     layer.appendChild(card);
     els.dock.hidden = phone;
@@ -688,17 +728,29 @@
       var ph = h("span", { class: "ph" }, [img, editable ? h("button", { class: "rm", type: "button", "aria-label": "Take out photo " + (k + 1), onclick: function () {
         note.pics.splice(note.pics.indexOf(id), 1); delete note.caps[id]; picDel(id); save(); drawThumbs(note, box, true); refreshDrop(note);
       } }, [icon("x")]) : null]);
-      var cap = withCaps ? h("input", { class: "cap", type: "text", maxlength: "140", autocomplete: "off", "aria-label": "What is photo " + (k + 1) + "? (optional)",
-        placeholder: k === 0 ? "What is this? For example: the new shed pad" : "What is this? (optional)",
+      var cap = withCaps ? h(note.photos ? "textarea" : "input", { class: "cap", rows: note.photos ? "2" : null, type: note.photos ? null : "text", maxlength: "140", autocomplete: "off", "aria-label": "What is photo " + (k + 1) + "? (optional)",
+        placeholder: k === 0 && !note.photos ? "What is this? For example: the new shed pad" : "What is this? (optional)",
         oninput: function () { var v = this.value.trim(); if (v) note.caps[id] = v; else delete note.caps[id]; img.alt = v || "Photo " + (k + 1); save(); } }) : null;
       if (cap) cap.value = note.caps[id] || "";
-      box.appendChild(h("span", { class: "t" }, [ph, cap]));
+      box.appendChild(h("span", { class: "t", "data-id": id }, [ph, cap]));
     });
     if (editable && note.pics.length > CAPS_AT && !note.showCaps)
       box.appendChild(h("button", { class: "capts", type: "button", text: "Say what these are (optional)",
         onclick: function () { note.showCaps = true; save(); drawThumbs(note, box, true); var f = box.querySelector(".cap"); if (f) f.focus(); } }));
   }
-  function refreshDrop(note) { if (els.note) els.note.drop.querySelector("b").textContent = note.pics.length ? "Add more photos" : "Add photos"; }
+  function dropTitle(note, phone) {
+    if (note.pics.length) return "Add more photos";
+    return note.photos ? (phone ? "Tap to choose photos" : "Choose photos, or drop them here") : "Add photos";
+  }
+  function refreshDrop(note) { if (els.note) { els.note.drop.classList.remove("busy"); els.note.drop.querySelector("b").textContent = dropTitle(note, isPhone()); } }
+  // An idea chip: label the first photo with no words yet; with no photos yet, open the picker and label the first one added.
+  function useIdea(note, idea) {
+    note.caps = note.caps || {};
+    var free = note.pics.filter(function (id) { return !note.caps[id]; })[0];
+    if (!free) { note.pendingIdea = idea; save(); els.file.click(); return; }
+    note.caps[free] = idea; note.showCaps = true; save();
+    if (els.note) { drawThumbs(note, els.note.thumbs, true); var f = els.note.thumbs.querySelector('[data-id="' + free + '"] .cap'); if (f) { f.focus(); f.classList.add("flash"); } }
+  }
   function saveNote() {
     var note = st.notes[active];
     if (note && els.note && note.fields) {
@@ -745,19 +797,27 @@
   }
   function addPictures(files) {
     var note = st.notes[active]; if (!note) return;
-    var list = Array.prototype.slice.call(files || []), bad = 0, full = false, added = 0;
+    var list = Array.prototype.slice.call(files || []), bad = 0, full = false, added = 0, k = 0;
+    var dropB = els.note && els.note.drop && els.note.drop.querySelector("b");
+    if (dropB && list.length) els.note.drop.classList.add("busy");
     return list.reduce(function (p, f) {
       return p.then(function () {
+        k++; if (dropB) dropB.textContent = list.length > 1 ? "Adding photo " + k + " of " + list.length + "…" : "Adding your photo…";
         if (picCount() >= MAX_PICS) { full = true; return; }
         return shrink(f).then(function (rec) {
           if (!rec) { bad++; return; }
           var id = "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-          return picPut(id, rec).then(function () { note.pics.push(id); added++; });
+          return picPut(id, rec).then(function () {
+            note.pics.push(id); added++;
+            if (note.pendingIdea) { note.caps = note.caps || {}; note.caps[id] = note.pendingIdea; note.showCaps = true; delete note.pendingIdea; }
+            if (els.note && st.notes[active] === note) drawThumbs(note, els.note.thumbs, true);   // each photo shows as soon as it's ready
+          });
         });
       });
     }, Promise.resolve()).then(function () {
       save();
       if (els.note && st.notes[active] === note) { drawThumbs(note, els.note.thumbs, true); refreshDrop(note); placeNoteCard(); }
+      else if (els.note) refreshDrop(note);
       if (full) toast("That's " + MAX_PICS + " photos, the most for one send. Send these first, then add more.");
       else if (bad) toast(bad === 1 ? "One file wasn't a photo, so it was left out." : bad + " files weren't photos, so they were left out.");
       else if (added) toast(added === 1 ? "Photo added." : added + " photos added.");
@@ -955,22 +1015,81 @@
 
   // A few headline numbers from Google Analytics for their page ([data-stats]). The notes service
   // asks GA4 and sends them back; with no numbers (or an older service) the card just stays hidden.
+  // Same words as the admin's Analytics tab (admin-cockpit/analytics-wording.md), so client and Jeremy match.
+  function foundLine(src) {
+    var s = String(src || "").toLowerCase();
+    if (!s) return "";
+    if (s.indexOf("typed") >= 0 || s.indexOf("direct") >= 0) return "Most typed the address in directly.";
+    if (s.indexOf("google") >= 0) return "Most found it on Google.";
+    if (s.indexOf("bing") >= 0) return "Most found it on Bing.";
+    if (s.indexOf("facebook") >= 0 || s === "fb") return "Most found it on Facebook.";
+    if (s.indexOf("instagram") >= 0 || s === "ig") return "Most found it on Instagram.";
+    return "Most came from " + src + ".";
+  }
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function shortDate(d) { return MON[d.getUTCMonth()] + " " + d.getUTCDate(); }
   function loadStats() {
     var box = document.querySelector("[data-stats]"); if (!box) return;
-    var got = DEMO ? Promise.resolve({ ok: true, sample: true, days: 28, visitors: 412, visitorsChange: 18, calls: 23, callsChange: 9, leads: 7, leadsChange: -2, source: "Facebook" })
+    var got = DEMO ? Promise.resolve({ ok: true, sample: true, days: 28, visitors: 109, visitorsPrev: 91, visitorsChange: 20, calls: 8, callsPrev: 4, callsChange: 100,
+                                       leads: 3, leadsPrev: 0, leadsChange: 0, source: "Google", daily: { start: new Date(Date.now() - 28 * 864e5).toISOString().slice(0, 10) } })
                    : api("/api/stats", { token: lsGet("token"), body: { site: SITE } });
     got.then(function (d) {
       if (!d || !d.ok || d.visitors == null) return;
-      var put = function (k, v, ch) {
-        var el = box.querySelector('[data-stat="' + k + '"]'); if (!el) return;
-        el.textContent = typeof v === "number" ? v.toLocaleString() : String(v || "–");
-        if (typeof ch === "number" && ch !== 0) el.appendChild(h("small", { class: ch < 0 ? "down" : "", text: (ch > 0 ? "▲ " : "▼ ") + Math.abs(ch) + "% vs. before" }));
+      var n = function (v) { return (Number(v) || 0).toLocaleString("en-US"); };
+      // ▲ 4 more than before / ▼ 3 fewer than before / Same as before / None before to compare
+      var change = function (now, prev, pct) {
+        if (typeof prev === "number") {
+          if (prev === 0) return now ? { t: "None before to compare" } : { t: "Same as before" };
+          var diff = now - prev;
+          return diff > 0 ? { t: "▲ " + n(diff) + " more than before", c: "up" } : diff < 0 ? { t: "▼ " + n(-diff) + " fewer than before", c: "down" } : { t: "Same as before" };
+        }
+        if (typeof pct === "number" && pct !== 0) return pct > 0 ? { t: "▲ " + pct + "% more than before", c: "up" } : { t: "▼ " + -pct + "% fewer than before", c: "down" };
+        return null;
       };
-      put("visitors", d.visitors, d.visitorsChange); put("calls", d.calls, d.callsChange); put("leads", d.leads, d.leadsChange); put("source", d.source);
-      var r = box.querySelector('[data-stat="range"]'); if (r && d.days) r.textContent = "last " + d.days + " days";
-      var n = box.querySelector('[data-stat="note"]');
-      if (n) { n.textContent = "From Google Analytics"; if (d.sample) n.parentNode.appendChild(h("span", { class: "sample", text: "Sample" })); }
+      var put = function (k, now, prev, pct) {
+        var el = box.querySelector('[data-stat="' + k + '"]'); if (!el) return;
+        el.textContent = n(now);
+        var ch = change(Number(now) || 0, prev, pct);
+        if (ch) el.appendChild(h("small", { class: ch.c || "", text: ch.t }));
+      };
+      put("visitors", d.visitors, d.visitorsPrev, d.visitorsChange);
+      put("calls", d.calls, d.callsPrev, d.callsChange);
+      put("leads", d.leads, d.leadsPrev, d.leadsChange);
+      // the period, with real dates when the service sends the daily numbers
+      var days = d.days || 28, r = box.querySelector('[data-stat="range"]');
+      if (r) {
+        var t = "Last " + days + " days";
+        if (d.daily && d.daily.start) { var s0 = new Date(d.daily.start + "T00:00:00Z"); if (!isNaN(s0)) t += " · " + shortDate(s0) + " – " + shortDate(new Date(s0.getTime() + (days - 1) * 864e5)); }
+        r.textContent = t;
+      }
+      // one short line above the numbers: "109 people visited. 11 reached out."
+      var sum = box.querySelector('[data-stat="summary"]');
+      if (sum) {
+        var out = (Number(d.calls) || 0) + (Number(d.leads) || 0), v = Number(d.visitors) || 0;
+        sum.textContent = "";
+        sum.append(h("b", { text: n(v) + (v === 1 ? " person" : " people") }), " visited. ");
+        if (out) sum.append(h("b", { class: "out", text: n(out) + " reached out." }));
+        else sum.append("Nobody reached out yet.");
+      }
+      if (d.sample) { var note = box.querySelector(".stats-f"); if (note && !note.querySelector(".sample")) note.appendChild(h("span", { class: "sample", text: "Sample" })); }
       box.hidden = false;
+    });
+  }
+
+  // Photos dragged from the computer straight onto a box on their page: the box lights up
+  // ("Drop photos here"), and letting go opens that box's note with the photos already in it.
+  // A drop anywhere else never makes the browser leave the page.
+  function dropOnBoxes() {
+    var lit = null, files = function (e) { var t = e.dataTransfer && e.dataTransfer.types; return t && Array.prototype.indexOf.call(t, "Files") >= 0; };
+    var light = function (box) { if (lit === box) return; if (lit) lit.classList.remove("swn-drop"); lit = box; if (box) box.classList.add("swn-drop"); };
+    var boxAt = function (e) { return !st.sent && !els.note && !els.veil && e.target.closest ? e.target.closest("[data-note-box]") : null; };
+    document.addEventListener("dragover", function (e) { if (!files(e)) return; e.preventDefault(); var b = boxAt(e); e.dataTransfer.dropEffect = b || els.note ? "copy" : "none"; light(b); });
+    document.addEventListener("dragleave", function (e) { if (!e.relatedTarget) light(null); });
+    document.addEventListener("drop", function (e) {
+      if (!files(e)) return; e.preventDefault();
+      var b = boxAt(e), list = e.dataTransfer.files; light(null);
+      if (b) { addNote(b, b.getAttribute("data-area") || null); addPictures(list); }
+      else if (els.note) addPictures(list);
     });
   }
 
@@ -1072,7 +1191,7 @@
     var oldRender = render; render = function () { oldRender(); syncPickClass(); };
 
     render();
-    if (MODE === "hub") loadStats();
+    if (MODE === "hub") { loadStats(); dropOnBoxes(); }
     var introKey = MODE === "edit" ? "intro" : "introHub";
     if (!st[introKey]) { st[introKey] = true; save(); showHelp(true); }   // only ever the first time; Help brings it back
     else if (st.sent) { /* the dock already says it was sent */ }
