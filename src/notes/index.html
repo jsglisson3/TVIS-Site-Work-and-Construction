@@ -14,8 +14,9 @@
   writes it to dist/portal/index.html, only once notes.api is filled in. Hidden from search engines.
   "On your site now" in each box shows what the live site says today (copied from site.config.json and the
   home page, Nov 13 2026). When the site changes, update it here too. Never make anything up.
-  Photos box: "+69 more" = the 74 photos PHOTOGRAPHY-INDEX.md counts as used on the site, minus the 5 shown.
-  Update it after a photo review.
+  Photos box: opens the Photos page (site-notes.js). "On your site now" there is the list in
+  <template data-site-photos> at the bottom: every photo on the site's pages (src/pages, Nov 13 2026,
+  matching PHOTOGRAPHY-INDEX.md), with the pages it's on. Update it after a photo review.
 -->
 <style>
   @font-face{font-family:"SW Zilla";src:url("brand/zilla-slab-600.woff2") format("woff2");font-weight:600;font-display:swap}
@@ -277,11 +278,11 @@
         <dl class="facts"><div><dt>Phone</dt><dd>423-225-7038</dd></div><div><dt>Email</dt><dd>info@tvisconstruction.com</dd></div><div><dt>Address</dt><dd>1329 Gadd Rd, Hixson, TN 37343</dd></div><div><dt>Area</dt><dd>Chattanooga and the surrounding counties</dd></div><div><dt>Hours</dt><dd class="miss">Not on your site yet</dd></div></dl>
       </div>
     </li>
-    <li class="box wide" data-note-box data-note-photos data-area="Photos" data-note-ask="Add new photos below. Want a photo on your site swapped out? Tell me which one." data-note-hint="For example: Swap the driveway photo for this one.">
-      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></div><div class="grow"><b>Photos</b><span>Your work, your place, your people.</span></div><em class="tap">Add photos</em></div>
+    <li class="box wide" data-note-box data-photos-page data-note-photos data-area="Photos" data-note-ask="Add new photos below. Want a photo on your site swapped out? Tell me which one." data-note-hint="For example: Swap the driveway photo for this one.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></div><div class="grow"><b>Photos</b><span>Your work, your place, your people.</span></div><em class="tap">Open</em></div>
       <div class="now">
         <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
-        <div class="pics"><img src="/img/site/home-hero-480.webp" data-big="/img/site/home-hero-1200.webp" alt="Homepage, top photo" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-driveways-480.webp" data-big="/img/site/home-svc-driveways-1200.webp" alt="Homepage, Driveways" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-pads-480.webp" data-big="/img/site/home-svc-pads-1024.webp" alt="Homepage, Shed &amp; Garage Pads" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-drainage-480.webp" data-big="/img/site/home-svc-drainage-1200.webp" alt="Homepage, Drainage" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/homeowners-hero-480.webp" data-big="/img/site/homeowners-hero-1200.webp" alt="Homeowners page, top photo" title="Tap to see it bigger" loading="lazy" decoding="async"><span class="more"><img src="/img/site/more-hero-480.webp" alt="" loading="lazy" decoding="async"><span><b>+69</b>more on your site</span></span></div>
+        <div class="pics"><img src="/img/site/home-hero-480.webp" data-big="/img/site/home-hero-1200.webp" alt="Homepage, top photo" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-driveways-480.webp" data-big="/img/site/home-svc-driveways-1200.webp" alt="Homepage, Driveways" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-pads-480.webp" data-big="/img/site/home-svc-pads-1024.webp" alt="Homepage, Shed &amp; Garage Pads" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/home-svc-drainage-480.webp" data-big="/img/site/home-svc-drainage-1200.webp" alt="Homepage, Drainage" title="Tap to see it bigger" loading="lazy" decoding="async"><img src="/img/site/homeowners-hero-480.webp" data-big="/img/site/homeowners-hero-1200.webp" alt="Homeowners page, top photo" title="Tap to see it bigger" loading="lazy" decoding="async"><span class="more"><img src="/img/site/more-hero-480.webp" alt="" loading="lazy" decoding="async"><span><b>See all</b>your photos</span></span></div>
       </div>
     </li>
     <li class="box wide" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-now="Facebook=facebook.com/profile.php?id=61595961032699|Google=maps.app.goo.gl/1LQAVTGjWEykfpNc6" data-note-ask="Tap Change if a link is wrong, or paste a link for a page you have.">
@@ -304,6 +305,54 @@
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Sent only to Stray Wolf</li>
     <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Your visitors never see it</li>
   </ul>
+  <!-- Every photo on the site's pages, for the Photos page ("On your site now"). data-on = the pages it's on. -->
+  <template data-site-photos data-more="Your project pages have more photos." data-more-url="/projects">
+    <img src="/img/site/home-hero-480.webp" data-big="/img/site/home-hero-1200.webp" alt="Finished concrete driveway up a wooded hillside lot to a new two-story home with tall pines around it, East Ridge" data-on="Homepage">
+    <img src="/img/site/home-hero-before-480.webp" data-big="/img/site/home-hero-before-1200.webp" alt="The same hillside lot before the work (top of the homepage)" data-on="Homepage">
+    <img src="/img/site/home-homeowner-480.webp" data-big="/img/site/home-homeowner-1200.webp" alt="Finished driveway with landscaped stone beds beside a home" data-on="Homepage">
+    <img src="/img/site/home-builder-480.webp" data-big="/img/site/home-builder-1200.webp" alt="New-construction lot graded for the building pad, with silt fence and an excavator on site" data-on="Homepage">
+    <img src="/img/site/home-svc-siteprep-480.webp" data-big="/img/site/home-svc-siteprep-1200.webp" alt="Skid steer grading a backyard beside a new home" data-on="Homepage">
+    <img src="/img/site/home-svc-drainage-480.webp" data-big="/img/site/home-svc-drainage-1200.webp" alt="Mini excavator digging a drainage trench beside a house, with pipe laid in it" data-on="Homepage|Drainage page">
+    <img src="/img/site/home-svc-driveways-480.webp" data-big="/img/site/home-svc-driveways-1200.webp" alt="Fresh gravel spread around a new home" data-on="Homepage">
+    <img src="/img/site/home-svc-concrete-480.webp" data-big="/img/site/home-svc-concrete-1200.webp" alt="New concrete driveway poured up to two new homes on a wooded lot" data-on="Homepage">
+    <img src="/img/site/home-svc-pads-480.webp" data-big="/img/site/home-svc-pads-1024.webp" alt="Graded building pad set inside wood forms" data-on="Homepage">
+    <img src="/img/site/home-svc-demolition-480.webp" data-big="/img/site/home-svc-demolition-1200.webp" alt="Mini excavator pushing through heavy brush on an overgrown lot" data-on="Homepage">
+    <img src="/img/site/home-owner-480.webp" data-big="/img/site/home-owner-1200.webp" alt="Joey, the owner of TVIS Construction (right), with a customer beside the mini excavator after tearing down an old mobile home" data-on="Homepage">
+    <img src="/img/site/home-band-480.webp" data-big="/img/site/home-band-1200.webp" alt="Cleared wooded lot with new footings poured for a home" data-on="Homepage">
+    <img src="/img/site/homeowners-hero-480.webp" data-big="/img/site/homeowners-hero-1200.webp" alt="Finished lawn and paved driveway with a stone drain bed along the house" data-on="Homeowners page">
+    <img src="/img/site/homeowners-driveways-before-480.webp" data-big="/img/site/homeowners-driveways-before-1200.webp" alt="Hillside driveway, before" data-on="Homeowners page">
+    <img src="/img/site/homeowners-driveways-after-480.webp" data-big="/img/site/homeowners-driveways-after-1200.webp" alt="Hillside driveway, after" data-on="Homeowners page">
+    <img src="/img/site/pads-feature-480.webp" data-big="/img/site/pads-feature-1200.webp" alt="Finished building on its slab with fresh gravel around it, under tall pines" data-on="Homeowners page|Shed &amp; Garage Pads page">
+    <img src="/img/site/pads-step-1-480.webp" data-big="/img/site/pads-step-1-1005.webp" alt="Pad area laid out with wood forms in an open yard" data-on="Homeowners page|Shed &amp; Garage Pads page">
+    <img src="/img/site/pads-step-2-480.webp" data-big="/img/site/pads-step-2-1024.webp" alt="Graded dirt pad inside the forms" data-on="Homeowners page|Shed &amp; Garage Pads page">
+    <img src="/img/site/pads-step-3-480.webp" data-big="/img/site/pads-step-3-1200.webp" alt="Fresh crushed stone graded and compacted into a smooth, level pad" data-on="Homeowners page|Shed &amp; Garage Pads page">
+    <img src="/img/site/pads-step-4-480.webp" data-big="/img/site/pads-step-4-696.webp" alt="Finished building standing on the pad" data-on="Homeowners page|Shed &amp; Garage Pads page">
+    <img src="/img/site/homeowners-drainage-480.webp" data-big="/img/site/homeowners-drainage-1200.webp" alt="Rock-lined drainage swale beside a block retaining wall, with the lawn graded to it" data-on="Homeowners page">
+    <img src="/img/site/homeowners-cleanup-480.webp" data-big="/img/site/homeowners-cleanup-1200.webp" alt="Lot cleared and graded on a bright day, the home set behind it and the brush and debris gone" data-on="Homeowners page">
+    <img src="/img/site/builders-hero-480.webp" data-big="/img/site/builders-hero-1200.webp" alt="Concrete footings poured on a cleared and graded lot for a new home" data-on="Builders page">
+    <img src="/img/site/builders-site-prep-480.webp" data-big="/img/site/builders-site-prep-1200.webp" alt="Footing trenches cut into a graded building pad" data-on="Builders page">
+    <img src="/img/site/builders-utilities-480.webp" data-big="/img/site/builders-utilities-1200.webp" alt="Open trench cut across a graded lot, excavator in the background" data-on="Builders page">
+    <img src="/img/site/builders-concrete-before-480.webp" data-big="/img/site/builders-concrete-before-1200.webp" alt="Concrete driveway, before" data-on="Builders page">
+    <img src="/img/site/builders-concrete-after-480.webp" data-big="/img/site/builders-concrete-after-1200.webp" alt="Concrete driveway, after" data-on="Builders page">
+    <img src="/img/site/builders-final-grading-before-480.webp" data-big="/img/site/builders-final-grading-before-1200.webp" alt="Final grading around a new home, before" data-on="Builders page">
+    <img src="/img/site/builders-final-grading-after-480.webp" data-big="/img/site/builders-final-grading-after-1200.webp" alt="Final grading around a new home, after" data-on="Builders page">
+    <img src="/img/site/svc-siteprep-hero-480.webp" data-big="/img/site/svc-siteprep-hero-1200.webp" alt="New home on a freshly graded lot, with the dozer parked behind it" data-on="Site Prep page">
+    <img src="/img/site/svc-siteprep-panel-480.webp" data-big="/img/site/svc-siteprep-panel-1200.webp" alt="Two new homes on a freshly graded lot" data-on="Site Prep page">
+    <img src="/img/site/svc-drainage-hero-480.webp" data-big="/img/site/svc-drainage-hero-1200.webp" alt="Rock-lined drainage swale beside a block retaining wall, with the lawn graded to it" data-on="Drainage page">
+    <img src="/img/site/svc-driveways-hero-480.webp" data-big="/img/site/svc-driveways-hero-1200.webp" alt="Gravel driveway leading to a newly finished home" data-on="Driveways page">
+    <img src="/img/site/svc-driveways-panel-480.webp" data-big="/img/site/svc-driveways-panel-1200.webp" alt="Culvert pipe set under a new gravel driveway entrance, with silt fence along the bank" data-on="Driveways page">
+    <img src="/img/site/svc-concrete-hero-480.webp" data-big="/img/site/svc-concrete-hero-1200.webp" alt="Finished concrete driveway leading up to a gray two-story home, with a poured curb along the drive" data-on="Concrete page">
+    <img src="/img/site/svc-concrete-panel-480.webp" data-big="/img/site/svc-concrete-panel-1200.webp" alt="Finisher edging a freshly poured concrete slab, with the mixer truck behind" data-on="Concrete page">
+    <img src="/img/site/svc-pads-panel-480.webp" data-big="/img/site/svc-pads-panel-1200.webp" alt="Framed walls going up on a new concrete slab under tall pines" data-on="Shed &amp; Garage Pads page">
+    <img src="/img/site/more-demolition-480.webp" data-big="/img/site/more-demolition-1200.webp" alt="Excavator beside a pile of cleared stumps and brush on a lot being cleared" data-on="Demolition &amp; Cleanup page|More Services page">
+    <img src="/img/site/more-cleanup-480.webp" data-big="/img/site/more-cleanup-1200.webp" alt="Wooded lot cleared and graded, with the big trees left standing" data-on="Demolition &amp; Cleanup page|More Services page">
+    <img src="/img/site/more-hero-480.webp" data-big="/img/site/more-hero-1200.webp" alt="Machine clearing brush on a wooded lot" data-on="More Services page">
+    <img src="/img/site/more-dirt-gravel-480.webp" data-big="/img/site/more-dirt-gravel-1200.webp" alt="Skid steer spreading dirt beside a building" data-on="More Services page">
+    <img src="/img/site/more-small-excavation-480.webp" data-big="/img/site/more-small-excavation-1200.webp" alt="Mini excavator on a freshly graded lot" data-on="More Services page">
+    <img src="/img/site/lp-pads-hero-480.webp" data-big="/img/site/lp-pads-hero-1200.webp" alt="Finished building with a covered porch sitting on its concrete slab" data-on="Shed pad ad page">
+    <img src="/img/site/lp-pads-before-480.webp" data-big="/img/site/lp-pads-before-1200.webp" alt="Garage pad, before" data-on="Shed pad ad page">
+    <img src="/img/site/lp-pads-after-480.webp" data-big="/img/site/lp-pads-after-1200.webp" alt="Garage pad, after" data-on="Shed pad ad page">
+  </template>
 </main>
 
 <footer class="sw-foot" data-keep>

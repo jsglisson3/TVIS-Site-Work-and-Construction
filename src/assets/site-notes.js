@@ -48,6 +48,13 @@
  *   data-booking-url  on the Let's talk box: a booking page (like a Google Calendar
  *                   appointment schedule). Set = tapping it opens that page; empty = a note.
  *   data-alert-key  optional Web3Forms key: emails a heads-up when notes arrive
+ * The Photos page (their own page only): a box with data-photos-page opens a full page instead of
+ *   a small note (also at <portal>#photos). Adding photos (drag and drop, a few words each), then
+ *   "Photos you sent", each marked "On your site" or "Not on your site yet" (Stray Wolf ticks
+ *   "On the site" in the admin; POST /api/my-photos and /api/my-photo {key}), then
+ *   "On your site now" from <template data-site-photos> on their page:
+ *     <img src="small.jpg" data-big="big.jpg" alt="what it shows" data-on="Homepage|About page">
+ *   data-more="Your project pages have more photos." data-more-url="/projects" on the template adds a link.
  */
 (function () {
   "use strict";
@@ -356,6 +363,35 @@
     ".card.photo .nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.3)}",
     ".card.photo .nav.l{left:10px}.card.photo .nav.r{right:10px}.card.photo .nav.l .ic{transform:scaleX(-1)}",
     ".card.photo .cap{margin:0;color:var(--muted);font-size:15px}",
+    /* the Photos page: a whole page over their portal, with a Back button */
+    ".pg{position:fixed;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:#f4f2ee}",
+    ".pg.note.photos{width:auto}",
+    ".pg .dropcover{position:fixed!important;inset:10px!important}",
+    ".pg-top{position:sticky;top:0;z-index:2;background:rgba(244,242,238,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}",
+    ".pg-top-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}",
+    ".pg-back{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px 0 12px;border-radius:12px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:16px;white-space:nowrap}",
+    ".pg-back:hover{border-color:#bdb5a9}.pg-back .ic{transform:scaleX(-1)}",
+    ".pg-top h1{margin:0;font:700 25px/1.15 'SW Zilla','Zilla Slab',Georgia,serif;letter-spacing:-.005em}",
+    ".pg-in{max-width:1040px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));display:grid;gap:18px}",
+    ".pg-sec{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px 22px;display:grid;gap:14px;min-width:0}",
+    ".pg-hd{display:flex;align-items:baseline;justify-content:space-between;gap:4px 14px;flex-wrap:wrap}",
+    ".pg-sec h2{margin:0;font:700 22px/1.2 'SW Zilla','Zilla Slab',Georgia,serif}",
+    ".pg-sub{margin:0;color:var(--muted);font-size:15px}",
+    ".pg-act{display:flex;justify-content:flex-end}",
+    ".pg-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 12px}",
+    ".pg-ph{display:grid;gap:6px;align-content:start;text-align:left;padding:0;border:0;background:none;min-width:0;color:inherit}",
+    ".pg-ph .im{position:relative;display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--soft);border:1px solid var(--line)}",
+    ".pg-ph img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s}",
+    ".pg-ph:hover img{transform:scale(1.04)}",
+    ".pg-ph .im.gone::after{content:'Photo not found';position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px}",
+    ".pg-ph .cp{font-size:15px;line-height:1.3;font-weight:600;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}",
+    ".pg-ph .dt{font-size:13.5px;color:var(--muted);line-height:1.3}",
+    ".tag{white-space:nowrap;justify-self:start;display:inline-flex;align-items:center;gap:5px;font-size:13.5px;font-weight:700;line-height:1.1;padding:6px 10px 6px 9px;border-radius:999px}",
+    ".tag .ic{width:15px;height:15px;stroke-width:3}",
+    ".tag.on{background:#e3efe6;color:#22603a}.tag.off{background:#f0ebe4;color:#5f5a53;padding-left:10px}",
+    ".pg-none{margin:0;padding:18px;border:2px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center;font-size:15.5px}",
+    ".pg-more{margin:0;font-size:15.5px;color:var(--muted)}.pg-more a{color:var(--accent);font-weight:700}",
+    "@media (max-width:719px){.pg-grid{grid-template-columns:1fr 1fr;gap:14px 10px}.pg-sec{padding:16px;border-radius:16px}.pg-top h1{font-size:21px}.pg-back{min-height:44px;padding:0 14px 0 10px}.pg-in{padding-top:14px;gap:14px}.pg-act .b{width:100%}.tag{font-size:12.5px;padding:5px 8px}.tag.off{padding-left:8px}.card.photo .hd h2{font-size:17px}}",
     ".card.help .hd{padding:26px 26px 6px}.card.help .hd h2{font-size:23px}.card.help .hd p{font-size:16px;margin-top:5px}",
     ".card.help .bd{padding:14px 26px 22px;gap:12px}.card.help .ft{padding:16px 26px calc(20px + env(safe-area-inset-bottom,0px))}.card.help .ft .b{min-height:56px;font-size:18px}",
     "@media (max-width:719px){.card.help .hd{padding:22px 20px 4px}.card.help .bd{padding:12px 20px 18px}.card.help .ft{padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px))}}",
@@ -605,7 +641,7 @@
       els.say.append(
         h("b", { text: n ? plural(n, "note") + " ready" : "Tap a box to add something." }),
         h("span", { text: n ? "Add more, or send them to " + TO + " when you're done." : "Or tap Edit mode to point at things on your website." }));
-      els.btns.append(dockBtn("send", "Send to " + TO, n ? "go" : "go off", function () { if (st.notes.length) openReview(); else toast("Tap a box first. Then you can send it."); }, n));
+      els.btns.append(dockBtn("send", "Send to " + TO, n ? "go" : "go off", function () { reviewFrom = null; if (st.notes.length) openReview(); else toast("Tap a box first. Then you can send it."); }, n));
     } else if (els.note && st.notes[active]) {
       // one thing at a time: while a note is open, the bar only points at it
       els.say.append(h("b", { text: "You're writing note " + (active + 1) + "." }), h("span", { text: "Type what you'd like, then tap Save note." }));
@@ -617,7 +653,7 @@
       els.btns.append(
         dockBtn("note", "Add a note", "main", startPicking),
         dockBtn("photo", "Add photos", "second", function () { addNote(null, "Photos for the site", null, true); }),
-        dockBtn("send", "Send to " + TO, n ? "go" : "go off", function () { if (st.notes.length) openReview(); else toast("Add a note first. Then you can send it."); }, n));
+        dockBtn("send", "Send to " + TO, n ? "go" : "go off", function () { reviewFrom = null; if (st.notes.length) openReview(); else toast("Add a note first. Then you can send it."); }, n));
     }
     els.btns.className = "btns n" + els.btns.children.length;
     placePins();
@@ -662,6 +698,10 @@
   /* ----- one note ----- */
   function addNote(target, label, ev, wantPhotos) {
     closePanels();
+    st.notes.push(makeNote(target, label, ev)); save();
+    openNote(st.notes.length - 1, wantPhotos);
+  }
+  function makeNote(target, label, ev) {
     var note = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), page: location.pathname, title: MODE === "hub" ? "Client Portal" : pageName(), hub: MODE === "hub", path: null, fx: .5, fy: .5, on: label || "", text: "", pics: [] };
     if (target) {
       var r = target.getBoundingClientRect();
@@ -686,11 +726,11 @@
       if (MODE !== "hub") snapSpot(note, target);
       lastPin = note.id;
     }
-    st.notes.push(note); save();
-    openNote(st.notes.length - 1, wantPhotos);
+    return note;
   }
 
   function openNote(i, wantPhotos) {
+    if (st.notes[i] && st.notes[i].pg && photosBox()) return openPhotos();   // the Photos box's note lives on the Photos page
     closePanels();
     active = i; panel = "note";
     var note = st.notes[i], phone = isPhone();
@@ -862,6 +902,8 @@
     if (panel === "review") openReview();
   }
   function closePanels() {
+    closeLb();
+    if (panel === "photos") leavePhotos();
     if (els.note) { els.note.card.remove(); els.note = null; }
     if (els.veil) { els.veil.remove(); els.veil = null; }
     active = -1; panel = null; if (els.dock) els.dock.hidden = false;
@@ -963,7 +1005,7 @@
   function veil(card) {
     closePanels();
     clearTimeout(toastTimer); var oldToast = layer.querySelector(".toast"); if (oldToast) oldToast.remove();   // a big message replaces any small one
-    els.veil = h("div", { class: "veil", onclick: function (e) { if (e.target === els.veil && !busy) { closePanels(); render(); } } }, [card]);
+    els.veil = h("div", { class: "veil", onclick: function (e) { if (e.target === els.veil && !busy) { if (panel === "review") backFromReview(); else { closePanels(); render(); } } } }, [card]);
     layer.appendChild(els.veil);
     return card;
   }
@@ -996,12 +1038,12 @@
     veil(h("div", { class: "card", role: "dialog", "aria-label": "Ready to send" }, [
       h("div", { class: "hd" }, [
         h("div", { class: "grow" }, [h("h2", { text: "Ready to send?" }), h("p", { text: plural(n, "note") + (pics ? " and " + plural(pics, "photo") : "") + ". Check them over, then tap Send." })]),
-        h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { if (!busy) { closePanels(); render(); } } }, [icon("x")])
+        h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { if (!busy) backFromReview(); } }, [icon("x")])
       ]),
       h("div", { class: "bd" }, [list, h("div", { class: "calm" }, [icon("check"), h("span", { text: "Your website stays exactly as it is until " + TO + " makes the change." })])]),
       h("div", { class: "ft", style: "flex-direction:column;align-items:stretch" }, [progress, err,
         h("div", { style: "display:flex;gap:10px;flex-wrap:wrap" }, [
-          h("button", { class: "b plain", type: "button", text: "Keep adding notes", onclick: function () { if (!busy) { closePanels(); render(); } } }),
+          h("button", { class: "b plain", type: "button", text: reviewFrom === "photos" ? "Keep adding photos" : "Keep adding notes", onclick: function () { if (!busy) backFromReview(); } }),
           h("span", { class: "push" }), sendBtn])])
     ]));
     els.dock.hidden = isPhone();
@@ -1090,7 +1132,11 @@
         h("p", { text: TO + " has your " + (st.sentNotes === 1 ? "note" : plural(st.sentNotes, "note")) + (st.sentPics ? " and " + plural(st.sentPics, "photo") : "") + "." }),
         h("p", { text: "You'll hear back soon. Nothing on your website changes until " + TO + " makes the update." })
       ]),
-      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: "Done", onclick: function () { if (MODE === "hub") newList(true); else { closePanels(); render(); } } })])
+      h("div", { class: "ft" }, [h("button", { class: "b main wide", type: "button", text: "Done", onclick: function () {
+        if (MODE !== "hub") { closePanels(); render(); return; }
+        var back = reviewFrom === "photos"; reviewFrom = null; newList(true);
+        if (back) openPhotos();                       // back to the Photos page, where the new ones now show as sent
+      } })])
     ]));
     render();
   }
@@ -1138,33 +1184,241 @@
   }
   // "Got it": the steps shrink down into the bar at the bottom ("Edit mode is on" / "You're logged in"),
   // so it's clear where they went and that the mode is still on. Help in that bar brings them back.
-  // One of their site's photos, big. Close with the button, Esc or a tap outside; arrows step through.
-  function showPhoto(img) {
-    var all = Array.prototype.slice.call(document.querySelectorAll("[data-big]")), at = Math.max(0, all.indexOf(img));
+  // A photo, big. Close with the button, Esc or a tap outside; arrows step through.
+  // items: [{ src, title, cap }]. swap (optional): "Swap this one", given the photo shown.
+  function lightbox(items, at, swap) {
+    closeLb();
+    if (!items.length) return;
     var pic = h("img", { alt: "" }), cap = h("p", { class: "cap" }), title = h("h2", {});
     var show = function (i) {
-      at = (i + all.length) % all.length; var it = all[at];
-      pic.src = it.getAttribute("data-big"); pic.alt = it.alt || "";
-      title.textContent = it.alt || "On your site now"; cap.textContent = "Photo " + (at + 1) + " of " + all.length + " · on your website now";
+      at = (i + items.length) % items.length; var it = items[at];
+      pic.src = it.src; pic.alt = it.title || "";
+      title.textContent = it.title || "Photo";
+      cap.textContent = (items.length > 1 ? "Photo " + (at + 1) + " of " + items.length + (it.cap ? " · " : "") : "") + (it.cap || "");
     };
-    var nav = all.length > 1 ? [h("button", { class: "nav l", type: "button", "aria-label": "Previous photo", onclick: function () { show(at - 1); } }, [icon("arrow")]),
-                                h("button", { class: "nav r", type: "button", "aria-label": "Next photo", onclick: function () { show(at + 1); } }, [icon("arrow")])] : [];
+    var nav = items.length > 1 ? [h("button", { class: "nav l", type: "button", "aria-label": "Previous photo", onclick: function () { show(at - 1); } }, [icon("arrow")]),
+                                  h("button", { class: "nav r", type: "button", "aria-label": "Next photo", onclick: function () { show(at + 1); } }, [icon("arrow")])] : [];
     var card = h("div", { class: "card photo", role: "dialog", "aria-label": "Photo" }, [
-      h("div", { class: "hd" }, [h("div", { class: "grow" }, [title]), h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: function () { closePanels(); render(); } }, [icon("x")])]),
+      h("div", { class: "hd" }, [h("div", { class: "grow" }, [title]), h("button", { class: "xbtn", type: "button", "aria-label": "Close", onclick: closeLb }, [icon("x")])]),
       h("div", { class: "bd" }, [h("div", { class: "shot" }, [pic].concat(nav)), cap]),
       h("div", { class: "ft" }, [
-        h("button", { class: "b plain", type: "button", onclick: function () {
-          var box = img.closest("[data-note-box]"), which = all[at].alt || "this photo";
-          closePanels(); if (!box) return render();
-          addNote(box, box.getAttribute("data-area") || null);
-          var t = els.note && els.note.text; if (t) { t.value = "Please swap this photo: " + which + ". "; try { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } catch (x) {} }
-        } }, [icon("photo"), h("span", { text: "Swap this one" })]),
-        h("button", { class: "b main push", type: "button", text: "Close", onclick: function () { closePanels(); render(); } })
+        swap ? h("button", { class: "b plain", type: "button", onclick: function () { var it = items[at]; closeLb(); swap(it); } }, [icon("photo"), h("span", { text: "Swap this one" })]) : null,
+        h("button", { class: "b main push", type: "button", text: "Close", onclick: closeLb })
       ])
     ]);
     card.addEventListener("keydown", function (e) { if (e.key === "ArrowLeft") show(at - 1); if (e.key === "ArrowRight") show(at + 1); });
-    show(at); veil(card); panel = "photo";
+    els.lb = h("div", { class: "veil lb", onclick: function (e) { if (e.target === els.lb) closeLb(); } }, [card]);
+    layer.appendChild(els.lb);
+    show(at);
     try { card.querySelector(".b.main").focus({ preventScroll: true }); } catch (x) {}
+  }
+  function closeLb() { if (els.lb) { els.lb.remove(); els.lb = null; } }
+
+  // One of their site's photos on a box (data-big), big.
+  function showPhoto(img) {
+    var all = Array.prototype.slice.call(document.querySelectorAll("[data-big]"));
+    var box = img.closest("[data-note-box]");
+    lightbox(all.map(function (it) { return { src: it.getAttribute("data-big"), title: it.alt || "On your site now", cap: "on your website now" }; }), Math.max(0, all.indexOf(img)),
+      box ? function (it) {
+        if (box === photosBox()) { openPhotos(); askSwap(it.title); return; }
+        addNote(box, box.getAttribute("data-area") || null);
+        var t = els.note && els.note.text; if (t) { t.value = "Please swap this photo: " + it.title + ". "; try { t.focus(); t.setSelectionRange(t.value.length, t.value.length); } catch (x) {} }
+      } : null);
+  }
+
+  /* ----- the Photos page ----- */
+  // Opened by the Photos box (data-photos-page) or <portal>#photos. Three parts: add new photos
+  // (one note, sent like any other), every photo they've sent with "On your site" / "Not on your
+  // site yet", and the photos on their site now. Back (or the browser's Back) returns to the portal;
+  // photos they added stay saved on this device until they send them.
+  var reviewFrom = null;
+  function photosBox() { return MODE === "hub" ? document.querySelector("[data-photos-page]") : null; }
+  function sitePhotos() {
+    var tpl = document.querySelector("template[data-site-photos]");
+    var imgs = tpl && tpl.content ? tpl.content.querySelectorAll("img") : [];
+    var list = Array.prototype.map.call(imgs, function (im) {
+      return { thumb: im.getAttribute("src"), src: im.getAttribute("data-big") || im.getAttribute("src"), title: im.getAttribute("alt") || "",
+               on: (im.getAttribute("data-on") || "").split("|").filter(Boolean) };
+    });
+    if (!list.length) list = Array.prototype.map.call(document.querySelectorAll("[data-photos-page] [data-big]"), function (im) {   // no list: the ones on the box
+      return { thumb: im.getAttribute("src"), src: im.getAttribute("data-big"), title: im.alt || "", on: [] };
+    });
+    return { list: list, more: tpl && tpl.getAttribute("data-more"), moreUrl: tpl && tpl.getAttribute("data-more-url") };
+  }
+  function openPhotos(fromHistory) {
+    var box = photosBox(); if (!box || busy) return;
+    closePanels();
+    var i = -1; st.notes.forEach(function (n, k) { if (n.pg) i = k; });
+    if (i < 0) { var made = makeNote(box, box.getAttribute("data-area") || "Photos"); made.pg = true; made.photos = true; st.notes.push(made); save(); i = st.notes.length - 1; }
+    active = i; panel = "photos";
+    var note = st.notes[i], phone = isPhone();
+    if (!fromHistory && location.hash !== "#photos") { try { history.pushState({ swnPhotos: 1 }, "", "#photos"); } catch (x) {} }
+
+    // 1. new photos
+    var thumbs = h("div", { class: "thumbs" });
+    var drop = h("button", { class: "add-ph big", type: "button", onclick: function () { els.file.click(); } }, [
+      icon("photo"), h("div", {}, [h("b", { text: dropTitle(note, phone) }), h("span", { text: phone ? "From your photos, or take a new one" : "Click to choose, or drag them here from your computer" })])]);
+    var text = h("textarea", { id: "swn-text", placeholder: "Anything else about these photos? (optional)", oninput: function () { note.text = this.value.trim(); save(); } });
+    text.value = note.text || ""; text.style.minHeight = "70px";
+    text.addEventListener("paste", function (e) { var f = e.clipboardData && e.clipboardData.files; if (f && f.length) { e.preventDefault(); addPictures(f); } });
+    var sendBtn = h("button", { class: "b go", type: "button", onclick: function () {
+      note.text = text.value.trim(); save();
+      if (!note.pics.length && !note.text) { toast("Add a photo first. Then you can send it."); return; }
+      reviewFrom = "photos"; closePanels(); openReview();
+    } }, [icon("send"), h("span", { text: "Send to " + TO })]);
+    var addSec = h("section", { class: "pg-sec add", "aria-label": "Send new photos" }, [
+      h("div", { class: "pg-hd" }, [h("h2", { text: "Send new photos" })]),
+      drop, thumbs, text, h("div", { class: "pg-act" }, [sendBtn])]);
+
+    // 2. what they've sent, and which of those are on the site
+    var sentSum = h("p", { class: "pg-sub", text: "Loading…" }), sentGrid = h("div", { class: "pg-grid", hidden: true }), sentNone = h("p", { class: "pg-none", hidden: true });
+    var sentSec = h("section", { class: "pg-sec sent", "aria-label": "Photos you sent" }, [h("div", { class: "pg-hd" }, [h("h2", { text: "Photos you sent" }), sentSum]), sentGrid, sentNone]);
+
+    // 3. on the site now
+    var site = sitePhotos(), siteSec = null;
+    if (site.list.length) {
+      var siteItems = site.list.map(function (p) { return { src: p.src, title: p.title || "On your site", cap: p.on.length ? p.on.join(", ") : "on your website now" }; });
+      siteSec = h("section", { class: "pg-sec site", "aria-label": "On your site now" }, [
+        h("div", { class: "pg-hd" }, [h("h2", { text: "On your site now" }), h("p", { class: "pg-sub", text: plural(site.list.length, "photo") + ". Tap one to see it bigger." })]),
+        h("div", { class: "pg-grid" }, site.list.map(function (p, k) {
+          return h("button", { class: "pg-ph", type: "button", "aria-label": (p.title || "Photo " + (k + 1)) + ". See it bigger.", onclick: function () { lightbox(siteItems, k, function (it) { askSwap(it.title); }); } }, [
+            h("span", { class: "im" }, [h("img", { src: p.thumb, alt: "", loading: "lazy", decoding: "async" })]),
+            h("span", { class: "tag on" }, [icon("check"), h("span", { text: "On your site" })]),
+            p.on.length ? h("span", { class: "dt", text: p.on.join(", ") }) : null]);
+        })),
+        site.more ? h("p", { class: "pg-more" }, [site.more + " ", site.moreUrl ? h("a", { href: site.moreUrl, target: "_blank", rel: "noopener", text: "See them" }) : null]) : null]);
+    }
+
+    var page = h("div", { class: "pg note photos", role: "dialog", "aria-label": "Your photos" }, [
+      h("div", { class: "dropcover", "aria-hidden": "true" }, [icon("photo"), h("b", { text: "Drop your photos here" })]),
+      h("div", { class: "pg-top" }, [h("div", { class: "pg-top-in" }, [
+        h("button", { class: "pg-back", type: "button", onclick: backFromPhotos }, [icon("arrow"), h("span", { text: phone ? "Back" : "Back to your portal" })]),
+        h("h1", { text: "Your photos" })])]),
+      h("div", { class: "pg-in" }, [addSec, sentSec, siteSec])
+    ]);
+    var depth = 0, hasFiles = function (e) { var t = e.dataTransfer && e.dataTransfer.types; return t && Array.prototype.indexOf.call(t, "Files") >= 0; };
+    page.addEventListener("dragenter", function (e) { if (!hasFiles(e)) return; e.preventDefault(); depth++; page.classList.add("dropping"); });
+    page.addEventListener("dragover", function (e) { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = "copy"; });
+    page.addEventListener("dragleave", function () { if (--depth <= 0) { depth = 0; page.classList.remove("dropping"); } });
+    page.addEventListener("drop", function (e) { if (!hasFiles(e)) return; e.preventDefault(); e.stopPropagation(); depth = 0; page.classList.remove("dropping"); addPictures(e.dataTransfer.files); });
+
+    els.note = { card: page, text: text, thumbs: thumbs, drop: drop, fields: [], page: true };
+    layer.appendChild(page);
+    els.dock.hidden = true;
+    els.scrollWas = document.documentElement.style.overflow; document.documentElement.style.overflow = "hidden";
+    drawThumbs(note, thumbs, true);
+    render();
+    loadSent(sentGrid, sentSum, sentNone);
+    try { page.querySelector(".pg-back").focus({ preventScroll: true }); } catch (x) {}
+  }
+  // Leaving the page (Back, Esc, or Send): an empty photos note is dropped, the rest stays saved.
+  function leavePhotos() {
+    var note = st.notes[active];
+    if (note && els.note && els.note.page) note.text = els.note.text.value.trim();
+    if (note && note.pg && !note.text && !note.pics.length) { st.notes.splice(active, 1); }
+    save();
+    document.documentElement.style.overflow = els.scrollWas || "";
+    if (location.hash === "#photos") { try { history.replaceState(null, "", location.pathname + location.search); } catch (x) {} }
+  }
+  function backFromPhotos() {
+    var note = st.notes[active];
+    if (note && note.pics.length) closedToast = "Your photos are saved. Tap Send when you're ready.";
+    if (history.state && history.state.swnPhotos && location.hash === "#photos") { history.back(); return; }   // the browser's Back closes it
+    photosClosed();
+  }
+  var closedToast = "";
+  function photosClosed() { closePanels(); render(); if (closedToast) toast(closedToast); closedToast = ""; }
+  function backFromReview() {
+    var back = reviewFrom === "photos" && MODE === "hub"; reviewFrom = null;
+    closePanels(); render();
+    if (back) openPhotos();
+  }
+  // "Swap this one" on a photo of their site: the words go in the new photos' box, ready to add a photo.
+  function askSwap(which) {
+    var t = els.note && els.note.page && els.note.text; if (!t) return;
+    var line = "Please swap this photo: " + which + ".";
+    t.value = (t.value.trim() ? t.value.trim() + "\n" : "") + line + " ";
+    var note = st.notes[active]; if (note) { note.text = t.value.trim(); save(); }
+    try { t.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" }); t.focus({ preventScroll: true }); t.setSelectionRange(t.value.length, t.value.length); } catch (x) {}
+    toast("Now add the new photo, then tap Send.");
+  }
+
+  // Their sent photos come from the notes service, newest first, with "used" set by Stray Wolf.
+  var sentUrls = {}, imgQ = [], imgBusy = 0;
+  function loadSent(grid, sum, none) {
+    var got = DEMO ? new Promise(function (r) { setTimeout(function () { r(demoSent()); }, 350); }) : api("/api/my-photos", { token: lsGet("token") });
+    got.then(function (d) {
+      if (!grid.isConnected) return;
+      var list = d && d.ok && Array.isArray(d.photos) ? d.photos : null;
+      if (!list) {
+        sum.textContent = "";
+        none.hidden = false; none.textContent = d && d.status === 401 ? "Your login timed out. Log in again to see them." : "They can't be shown right now. Try again later.";
+        return;
+      }
+      if (!list.length) { sum.textContent = ""; none.hidden = false; none.textContent = "Nothing yet. Photos you send show up here."; return; }
+      var on = list.filter(function (p) { return p.used; }).length;
+      sum.textContent = plural(list.length, "photo") + ". " + (on ? on + " on your site." : "None on your site yet.");
+      var items = list.map(function (p) { return { key: p.key, src: "", title: p.caption || "A photo you sent", cap: (p.at ? "Sent " + dayWord(p.at) + " · " : "") + (p.used ? "On your site" : "Not on your site yet") }; });
+      grid.hidden = false; grid.textContent = "";
+      list.forEach(function (p, k) {
+        var img = h("img", { alt: "", decoding: "async" }), im = h("span", { class: "im" }, [img]);
+        grid.appendChild(h("button", { class: "pg-ph", type: "button", "aria-label": (p.caption || "Photo " + (k + 1)) + ". " + items[k].cap + ". See it bigger.", onclick: function () {
+          sentImg(items[k].key).then(function (u) {
+            items[k].src = u;
+            var shown = items.filter(function (it) { return it.src; });
+            if (u) lightbox(shown, Math.max(0, shown.indexOf(items[k])));
+          });
+        } }, [
+          im,
+          p.used ? h("span", { class: "tag on" }, [icon("check"), h("span", { text: "On your site" })]) : h("span", { class: "tag off", text: "Not on your site yet" }),
+          p.caption ? h("span", { class: "cp", text: p.caption }) : null,
+          p.at ? h("span", { class: "dt", text: "Sent " + dayWord(p.at) }) : null]));
+        imgQ.push([p.key, img, im, items[k]]);
+      });
+      pumpImgs();
+    });
+  }
+  function pumpImgs() {
+    while (imgBusy < 4 && imgQ.length) {
+      var j = imgQ.shift(); imgBusy++;
+      (function (img, im, it) {
+        sentImg(j[0]).then(function (u) { imgBusy--; it.src = u; if (u) img.src = u; else im.classList.add("gone"); pumpImgs(); });
+      })(j[1], j[2], j[3]);
+    }
+  }
+  function sentImg(key) {
+    if (!key) return Promise.resolve("");
+    if (sentUrls[key]) return sentUrls[key];
+    var p = DEMO ? Promise.resolve(demoPic(key))
+      : fetch(API + "/api/my-photo", { method: "POST", headers: { authorization: "Bearer " + lsGet("token") }, body: JSON.stringify({ key: key }) })
+          .then(function (r) { return r.ok ? r.blob() : null; })
+          .then(function (b) { return b && b.size && !/json|text/.test(b.type || "") ? URL.createObjectURL(b) : ""; }, function () { return ""; });
+    sentUrls[key] = p;
+    p.then(function (u) { if (!u) delete sentUrls[key]; });
+    return p;
+  }
+  function dayWord(at) {
+    var d = new Date(typeof at === "number" ? at : Date.parse(at)); if (isNaN(d)) return "";
+    var o = { month: "short", day: "numeric" }; if (d.getFullYear() !== new Date().getFullYear()) o.year = "numeric";
+    try { return d.toLocaleDateString(undefined, o); } catch (x) { return d.toDateString(); }
+  }
+  // Demo only: a few made-up photos so the page can be tried without the notes service.
+  function demoSent() {
+    var day = 864e5, now = Date.now();
+    return { ok: true, photos: [
+      { key: "demo1", at: now - day, caption: "The new sign out front", used: false },
+      { key: "demo2", at: now - 3 * day, caption: "", used: false },
+      { key: "demo3", at: now - 9 * day, caption: "Our crew this spring", used: true },
+      { key: "demo4", at: now - 9 * day, caption: "Before and after", used: true },
+      { key: "demo5", at: now - 20 * day, caption: "", used: false } ] };
+  }
+  function demoPic(key) {
+    var c = document.createElement("canvas"); c.width = 640; c.height = 480;
+    var g = c.getContext("2d"), hue = (key.charCodeAt(key.length - 1) * 67) % 360;
+    var gr = g.createLinearGradient(0, 0, 640, 480); gr.addColorStop(0, "hsl(" + hue + ",35%,62%)"); gr.addColorStop(1, "hsl(" + (hue + 40) + ",30%,38%)");
+    g.fillStyle = gr; g.fillRect(0, 0, 640, 480);
+    g.fillStyle = "rgba(255,255,255,.85)"; g.font = "bold 34px system-ui,sans-serif"; g.textAlign = "center"; g.fillText("Sample photo", 320, 250);
+    return c.toDataURL("image/jpeg", .8);
   }
 
   // A few headline numbers from Google Analytics for their page ([data-stats]). The notes service
@@ -1252,7 +1506,8 @@
     document.addEventListener("drop", function (e) {
       if (!files(e)) return; e.preventDefault();
       var b = boxAt(e), list = e.dataTransfer.files; light(null);
-      if (b) { addNote(b, b.getAttribute("data-area") || null); addPictures(list); }
+      if (b && b.hasAttribute("data-photos-page")) { openPhotos(); addPictures(list); }
+      else if (b) { addNote(b, b.getAttribute("data-area") || null); addPictures(list); }
       else if (els.note) addPictures(list);
     });
   }
@@ -1348,6 +1603,7 @@
       // A booking page set on the box (Let's talk, later a Google Calendar schedule) opens that instead of a note.
       var book = box && (box.getAttribute("data-booking-url") || "").trim();
       if (book) { e.preventDefault(); window.open(book, "_blank", "noopener"); return; }
+      if (box && box === photosBox()) { e.preventDefault(); openPhotos(); return; }   // the Photos box opens the Photos page
       if (box) { e.preventDefault(); addNote(box, box.getAttribute("data-area") || null, e); return; }
       if (!picking) return;
       e.preventDefault(); e.stopPropagation();
@@ -1358,7 +1614,12 @@
     }, true);
     ["mousedown", "pointerdown", "submit"].forEach(function (n) { document.addEventListener(n, function (e) { if (picking && !inUs(e) && n === "submit") e.preventDefault(); }, true); });
     document.addEventListener("mousemove", function (e) { if (!picking || !canHover) return; if (inUs(e)) return hideHl(); var t = targetOf(e.target); if (t !== hlFor) showHl(t); }, true);
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (picking) stopPicking(); else if (panel && !busy) { if (panel === "note") saveNote(); else { closePanels(); render(); } } } });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (els.lb) closeLb();
+      else if (picking) stopPicking();
+      else if (panel && !busy) { if (panel === "note") saveNote(); else if (panel === "photos") backFromPhotos(); else if (panel === "review") backFromReview(); else { closePanels(); render(); } }
+    });
     var tick = false, again = function () { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; placePins(); if (hlFor) showHl(hlFor); }); };
     window.addEventListener("resize", again); window.addEventListener("scroll", again, { passive: true }); window.addEventListener("load", again);
     if (window.ResizeObserver) new ResizeObserver(again).observe(document.body);
@@ -1369,6 +1630,13 @@
     if (MODE === "hub" && st.sent) newList(true);   // sent last time: their page starts fresh, no leftover "Sent" bar
     render();
     if (MODE === "hub") { loadStats(); dropOnBoxes(); }
+    if (photosBox()) {
+      window.addEventListener("popstate", function () {
+        if (location.hash === "#photos") { if (panel !== "photos" && !els.veil && !busy) openPhotos(true); }
+        else if (panel === "photos") photosClosed();
+      });
+      if (location.hash === "#photos") openPhotos(true);
+    }
     var introKey = MODE === "edit" ? "intro" : "introHub";
     if (!st[introKey]) { st[introKey] = true; save(); showHelp(true); }   // only ever the first time; Help brings it back
     else if (st.sent) { /* the dock already says it was sent */ }
