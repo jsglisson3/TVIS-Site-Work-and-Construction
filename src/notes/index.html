@@ -72,7 +72,9 @@
   .stats dt{font-size:13.5px;color:var(--ink);line-height:1.25;font-weight:650}
   .stats dt i{display:block;font-style:normal;font-weight:400;font-size:11.5px;color:var(--soft);margin-top:2px}
   .stats dd{margin:0;text-align:right;font:700 22px/1.05 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);font-variant-numeric:tabular-nums}
-  .stats dd small{display:block;font-weight:600;font-size:11.5px;line-height:1.2;margin-top:4px;color:var(--soft);white-space:nowrap}
+  .stats dd{max-width:132px}
+  /* the change line wraps under the number ("▲ 4 more than / the 4 weeks before") so the labels keep their room */
+  .stats dd small{display:block;font-weight:600;font-size:11.5px;line-height:1.25;margin-top:4px;color:var(--soft)}
   .stats dd small.up{color:#3f7a3a}.stats dd small.down{color:#b4361c}
   .stats-f{margin:4px 0 0;padding-top:8px;border-top:1px dashed var(--line);font-size:11px;line-height:1.4;color:var(--soft);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
   .stats-f .sample{flex:none;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);border-radius:999px;padding:3px 6px}

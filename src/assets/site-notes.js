@@ -1036,14 +1036,18 @@
     got.then(function (d) {
       if (!d || !d.ok || d.visitors == null) return;
       var n = function (v) { return (Number(v) || 0).toLocaleString("en-US"); };
-      // ▲ 4 more than before / ▼ 3 fewer than before / Same as before / None before to compare
+      // say the period in plain words: 28 days = "4 weeks"
+      var days = d.days || 28, span = days % 7 === 0 ? (days / 7) + " weeks" : days + " days";
+      // no-break spaces keep "the 4 weeks before" together when the line wraps
+      var before = ("the " + span + " before").replace(/ /g, "\u00a0");
+      // ▲ 4 more than the 4 weeks before / ▼ 3 fewer than the 4 weeks before / Same as the 4 weeks before / None in the 4 weeks before
       var change = function (now, prev, pct) {
         if (typeof prev === "number") {
-          if (prev === 0) return now ? { t: "None before to compare" } : { t: "Same as before" };
+          if (prev === 0) return now ? { t: "None in " + before } : { t: "Same as " + before };
           var diff = now - prev;
-          return diff > 0 ? { t: "▲ " + n(diff) + " more than before", c: "up" } : diff < 0 ? { t: "▼ " + n(-diff) + " fewer than before", c: "down" } : { t: "Same as before" };
+          return diff > 0 ? { t: "▲ " + n(diff) + " more than " + before, c: "up" } : diff < 0 ? { t: "▼ " + n(-diff) + " fewer than " + before, c: "down" } : { t: "Same as " + before };
         }
-        if (typeof pct === "number" && pct !== 0) return pct > 0 ? { t: "▲ " + pct + "% more than before", c: "up" } : { t: "▼ " + -pct + "% fewer than before", c: "down" };
+        if (typeof pct === "number" && pct !== 0) return pct > 0 ? { t: "▲ " + pct + "% more than " + before, c: "up" } : { t: "▼ " + -pct + "% fewer than " + before, c: "down" };
         return null;
       };
       var put = function (k, now, prev, pct) {
@@ -1056,9 +1060,9 @@
       put("calls", d.calls, d.callsPrev, d.callsChange);
       put("leads", d.leads, d.leadsPrev, d.leadsChange);
       // the period, with real dates when the service sends the daily numbers
-      var days = d.days || 28, r = box.querySelector('[data-stat="range"]');
+      var r = box.querySelector('[data-stat="range"]');
       if (r) {
-        var t = "Last " + days + " days";
+        var t = "Last " + span;
         if (d.daily && d.daily.start) { var s0 = new Date(d.daily.start + "T00:00:00Z"); if (!isNaN(s0)) t += " · " + shortDate(s0) + " – " + shortDate(new Date(s0.getTime() + (days - 1) * 864e5)); }
         r.textContent = t;
       }
