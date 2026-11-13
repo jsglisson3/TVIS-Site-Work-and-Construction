@@ -3,71 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#24221F">
 <title>Client Portal · Stray Wolf Technology</title>
-<meta http-equiv="Content-Security-Policy" content="__CSP__">
 <!--
   Joey's Client Portal for sending Stray Wolf changes and photos (Site Notes, by Stray Wolf Technology).
   scripts/build.mjs fills in {{name}} and the notes values from site.config.json > notes and
   writes it to dist/portal/index.html, only once notes.api is filled in. Hidden from search engines.
+  "On your site now" in each box shows what the live site says today (copied from site.config.json and the
+  home page, Nov 13 2026). When the site changes, update it here too. Never make anything up.
 -->
 <style>
   @font-face{font-family:"SW Zilla";src:url("brand/zilla-slab-600.woff2") format("woff2");font-weight:600;font-display:swap}
   @font-face{font-family:"SW Zilla";src:url("brand/zilla-slab-700.woff2") format("woff2");font-weight:700;font-display:swap}
   @font-face{font-family:"SW Mono";src:url("brand/plex-mono-500.woff2") format("woff2");font-weight:500;font-display:swap}
-  :root{--paper:#F4F2EE;--card:#fff;--stone:#E7E1D7;--ink:#24221F;--muted:#615b52;--line:#e2dcd2;--accent:#C2541B;--accent-hi:#D9531E;--accent-soft:#FBEEE6;
-        --sage:#5F7152;--sage-soft:#E9EFE4;--char:#24221F;
+  :root{--paper:#F4F2EE;--card:#fff;--stone:#EEE9E1;--ink:#24221F;--muted:#625c53;--soft:#8a8277;--line:#e4ded4;--accent:#C2541B;--accent-hi:#D9531E;--accent-soft:#FBEEE6;
+        --sage:#5F7152;--sage-soft:#EDF2E8;--char:#24221F;
         --slab:"SW Zilla","Zilla Slab",Georgia,serif;--mono:"SW Mono","IBM Plex Mono",ui-monospace,Menlo,monospace}
   *{box-sizing:border-box}
   html.swn-locked main{visibility:hidden}
-  body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:inherit}
-  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px}
 
   /* ---------- header ---------- */
   .sw-head{position:sticky;top:0;z-index:5;background:rgba(244,242,238,.9);-webkit-backdrop-filter:saturate(1.2) blur(10px);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--line)}
-  .sw-head .wrap{max-width:1180px;display:flex;align-items:center;gap:16px;min-height:70px}
+  .sw-head .wrap{max-width:1180px;display:flex;align-items:center;gap:16px;min-height:60px}
   .sw-brand{display:block;line-height:0}
-  .sw-brand img{height:36px;width:auto}
+  .sw-brand img{height:30px;width:auto}
   .sw-head .gap{flex:1}
-  .secure{display:inline-flex;align-items:center;gap:8px;font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sage);background:var(--sage-soft);border:1px solid #d3ddc9;border-radius:999px;padding:8px 13px 8px 10px;white-space:nowrap}
-  .secure svg{width:15px;height:15px;flex:none}
+  .secure{display:inline-flex;align-items:center;gap:7px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sage);background:var(--sage-soft);border:1px solid #d6dfcd;border-radius:999px;padding:7px 12px 7px 9px;white-space:nowrap}
+  .secure svg{width:13px;height:13px;flex:none}
 
   /* ---------- welcome ---------- */
-  .hero{position:relative;text-align:center;padding:56px 0 36px;isolation:isolate}
+  .hero{position:relative;display:flex;align-items:center;gap:26px;padding:40px 0 30px;isolation:isolate}
   .hero::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;
      background:
       linear-gradient(180deg,rgba(244,242,238,0) 50%,var(--paper)),
       conic-gradient(from 210deg at 14% 0%,rgba(36,34,31,.03) 0 38deg,transparent 38deg 66deg,rgba(36,34,31,.02) 66deg 118deg,transparent 118deg),
-      conic-gradient(from 125deg at 86% 6%,rgba(217,83,30,.045) 0 34deg,transparent 34deg 78deg,rgba(36,34,31,.025) 78deg 124deg,transparent 124deg)}
-  .kicker{display:flex;justify-content:center;align-items:center;gap:12px;font:500 12.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 22px}
-  .kicker::before,.kicker::after{content:"";width:30px;height:1px;background:currentColor;opacity:.45}
-  .plate{display:inline-grid;place-items:center;background:var(--card);border-radius:26px;padding:26px 42px;margin:0 0 26px;
-         box-shadow:0 0 0 1px var(--line),0 22px 44px -22px rgba(36,34,31,.32)}
-  .plate img{display:block;width:min(320px,62vw);height:auto;max-height:150px;object-fit:contain}
-  h1{font:700 clamp(34px,6.2vw,54px)/1.05 var(--slab);letter-spacing:-.005em;margin:0 0 14px}
-  .lead{margin:0 auto;color:var(--muted);max-width:560px;font-size:18px}
-  .trust{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;color:var(--muted);font-size:14.5px}
-  .trust li{display:inline-flex;align-items:center;gap:7px}
-  .trust svg{width:16px;height:16px;color:var(--sage)}
+      conic-gradient(from 125deg at 86% 6%,rgba(217,83,30,.04) 0 34deg,transparent 34deg 78deg,rgba(36,34,31,.025) 78deg 124deg,transparent 124deg)}
+  .plate{flex:none;display:grid;place-items:center;width:150px;height:150px;background:var(--card);border-radius:22px;padding:18px;
+         box-shadow:0 0 0 1px var(--line),0 16px 34px -20px rgba(36,34,31,.35)}
+  .plate img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+  .kicker{display:flex;align-items:center;gap:10px;font:500 11.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+  .kicker::after{content:"";width:28px;height:1px;background:currentColor;opacity:.5}
+  h1{font:700 clamp(28px,3.6vw,38px)/1.1 var(--slab);letter-spacing:-.005em;margin:0 0 8px;text-wrap:balance}
+  .lead{margin:0;color:var(--muted);max-width:540px;font-size:16px}
+  .trust{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--soft);font-size:13px}
+  .trust li{display:inline-flex;align-items:center;gap:6px}
+  .trust svg{width:14px;height:14px;color:var(--sage)}
 
   /* ---------- Edit mode ---------- */
-  .edit{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:16px 22px;align-items:center;color:#fff;border-radius:24px;padding:28px;margin:6px 0 14px;text-decoration:none;cursor:pointer;
-        background:linear-gradient(135deg,#2e2a26,#1e1c19);box-shadow:0 24px 50px -24px rgba(36,34,31,.6)}
-  .edit::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(217,83,30,.9)}
-  .edit::before{content:"";position:absolute;right:-70px;top:-90px;width:300px;height:300px;pointer-events:none;
-        background:conic-gradient(from 200deg,rgba(255,255,255,.055) 0 50deg,transparent 50deg 95deg,rgba(255,255,255,.035) 95deg 150deg,transparent 150deg)}
-  .edit .ic{width:68px;height:68px;border-radius:18px;background:var(--accent-hi);display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(217,83,30,.6)}
-  .edit .ic svg{width:34px;height:34px}
-  .edit .k{font:500 12.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#f3a57d;margin:0 0 9px}
-  .edit b{display:block;font:700 28px/1.15 var(--slab)}
+  .edit{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;gap:14px 18px;align-items:center;color:#fff;border-radius:18px;padding:18px 18px 18px 20px;margin:0 0 12px;text-decoration:none;cursor:pointer;
+        background:linear-gradient(135deg,#2e2a26,#1e1c19);box-shadow:0 18px 40px -24px rgba(36,34,31,.6)}
+  .edit::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 0 1.5px rgba(217,83,30,.85)}
+  .edit::before{content:"";position:absolute;right:-60px;top:-110px;width:280px;height:280px;pointer-events:none;
+        background:conic-gradient(from 200deg,rgba(255,255,255,.05) 0 50deg,transparent 50deg 95deg,rgba(255,255,255,.03) 95deg 150deg,transparent 150deg)}
+  .edit .ic{width:46px;height:46px;border-radius:13px;background:var(--accent-hi);display:grid;place-items:center;box-shadow:0 6px 16px -6px rgba(217,83,30,.6)}
+  .edit .ic svg{width:23px;height:23px}
+  .edit .k{font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#f3a57d;margin:0 0 6px}
+  .edit b{display:block;font:700 20px/1.2 var(--slab)}
   .edit em{font-style:normal}
-  .edit .t{color:#d9d3ca;font-size:17px;line-height:1.5;margin:6px 0 0}
-  .edit .go{grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:10px;background:var(--accent-hi);color:#fff;font-weight:700;font-size:19px;border-radius:14px;min-height:62px;padding:0 20px;transition:filter .15s}
-  .edit .go svg{width:22px;height:22px;transition:transform .2s}
-  .edit:hover .go{filter:brightness(1.07)}.edit:hover .go svg{transform:translateX(4px)}
+  .edit .t{color:#d4cec5;font-size:14.5px;line-height:1.45;margin:4px 0 0}
+  .edit .go{position:relative;display:flex;justify-content:center;align-items:center;gap:8px;background:var(--accent-hi);color:#fff;font-weight:650;font-size:15.5px;border-radius:11px;min-height:46px;padding:0 18px;white-space:nowrap;transition:filter .15s}
+  .edit .go svg{width:18px;height:18px;transition:transform .2s}
+  .edit:hover .go{filter:brightness(1.07)}.edit:hover .go svg{transform:translateX(3px)}
   .edit:focus-visible{outline:3px solid var(--accent-hi);outline-offset:4px}
   .edit[data-edit-mode="soon"]{background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
   .edit[data-edit-mode="soon"]::after,.edit[data-edit-mode="soon"]::before{display:none}
@@ -76,62 +78,102 @@
   .edit[data-edit-mode="soon"] .go{background:var(--stone);color:var(--muted)}
   .edit .soon,.edit[data-edit-mode="soon"] .ready{display:none}.edit[data-edit-mode="soon"] .soon{display:inline}
 
-  /* ---------- boxes (and the meeting card, which is a box too) ---------- */
-  .box{position:relative;display:flex;gap:16px;align-items:flex-start;background:var(--card);border-radius:18px;padding:20px;cursor:pointer;
-       box-shadow:0 0 0 1px var(--line),0 2px 0 rgba(36,34,31,.03);transition:box-shadow .18s,transform .18s}
-  .box:hover{box-shadow:0 0 0 2px var(--accent),0 14px 30px -16px rgba(194,84,27,.45);transform:translateY(-1px)}
-  .box .ic{flex:none;width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
-  .box .ic svg{width:28px;height:28px}
-  .box b{display:block;font-size:19.5px;line-height:1.3}
-  .box span{display:block;color:var(--muted);font-size:16px;line-height:1.45;margin-top:3px}
-  .box .tap{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--accent);color:#fff;font-weight:650;font-size:15px;padding:7px 13px;border-radius:999px;font-style:normal;white-space:nowrap}
-  .meet{align-items:center;margin:0 0 50px}
+  /* ---------- tappable cards ---------- */
+  .box{position:relative;background:var(--card);border-radius:16px;padding:16px 16px 16px 18px;cursor:pointer;
+       box-shadow:0 0 0 1px var(--line),0 1px 0 rgba(36,34,31,.03);transition:box-shadow .18s,transform .18s}
+  .box:hover{box-shadow:0 0 0 2px var(--accent),0 12px 26px -16px rgba(194,84,27,.45);transform:translateY(-1px)}
+  .bh{display:flex;align-items:center;gap:12px}
+  .bh .ic{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+  .bh .ic svg{width:20px;height:20px}
+  .bh .grow{flex:1;min-width:0}
+  .box b{display:block;font-size:16.5px;line-height:1.3;font-weight:650}
+  .bh span{display:block;color:var(--muted);font-size:14px;line-height:1.4;margin-top:1px}
+  .box .tap{flex:none;display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--accent);font-weight:650;font-size:13.5px;padding:7px 12px;border-radius:999px;font-style:normal;white-space:nowrap;transition:background .15s,color .15s}
+  .box .tap svg{width:14px;height:14px}
+  .box:hover .tap{background:var(--accent);color:#fff}
+  .meet{margin:0 0 40px;padding:14px 14px 14px 18px}
   .meet .ic{background:var(--sage-soft);color:var(--sage)}
-  .meet .grow{flex:1;min-width:0}
-  .meet .tap{margin:0;background:var(--sage);font-size:16px;padding:10px 18px}
-  .meet:hover{box-shadow:0 0 0 2px var(--sage),0 14px 30px -16px rgba(95,113,82,.5)}
+  .meet .tap{background:var(--sage-soft);color:var(--sage)}
+  .meet:hover{box-shadow:0 0 0 2px var(--sage),0 12px 26px -16px rgba(95,113,82,.5)}
+  .meet:hover .tap{background:var(--sage);color:#fff}
 
-  .sec-h{font:700 27px/1.2 var(--slab);margin:0 0 6px}
-  .sub{margin:0 0 18px;color:var(--muted);font-size:17px}
-  .boxes{display:grid;gap:14px;margin:0 0 50px;padding:0;list-style:none}
-  @media (min-width:640px){.boxes{grid-template-columns:1fr 1fr}.box.wide{grid-column:1/-1}}
+  .sec-h{font:700 24px/1.2 var(--slab);margin:0 0 4px}
+  .sub{margin:0 0 16px;color:var(--muted);font-size:15.5px;max-width:640px}
+  .boxes{display:grid;gap:12px;margin:0 0 40px;padding:0;list-style:none}
+  @media (min-width:700px){.boxes{grid-template-columns:1fr 1fr}.box.wide{grid-column:1/-1}}
+
+  /* ---------- what's on the site now ---------- */
+  .now{margin:14px 0 0;padding:12px 0 0;border-top:1px dashed var(--line)}
+  .now-k{display:flex;align-items:center;gap:6px;font:500 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin:0 0 10px}
+  .now-k svg{width:12px;height:12px}
+  .now.empty .now-k{color:var(--soft)}
+  .now .none{margin:0;color:var(--soft);font-size:14px}
+  .logo-now{display:grid;place-items:center;height:96px;border-radius:12px;padding:12px;
+            background:repeating-conic-gradient(#f3efe9 0 25%,#fff 0 50%) 0 0/14px 14px;box-shadow:inset 0 0 0 1px var(--line)}
+  .logo-now img{max-width:100%;max-height:72px;width:auto;height:auto;object-fit:contain}
+  .pics{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  .pics img,.pics .more{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:var(--stone)}
+  .pics .more{display:grid;place-items:center;text-align:center;font-size:12.5px;line-height:1.25;color:var(--muted);font-weight:600;padding:4px}
+  .facts{margin:0;display:grid;gap:7px}
+  .facts div{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+  .facts dt{color:var(--soft);font-size:13px}
+  .facts dd{margin:0;font-size:14.5px;line-height:1.45;overflow-wrap:anywhere}
+  .facts dd.miss{color:var(--soft);font-style:italic}
+  .facts .q{font-family:var(--slab);font-weight:600;font-size:16px}
+  .soc{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+  .soc li{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;font-size:14.5px}
+  .soc li > span:first-child{color:var(--soft);font-size:13px}
+  .soc .on{display:inline-flex;align-items:center;gap:6px;min-width:0;overflow-wrap:anywhere}
+  .soc .on svg{flex:none;width:15px;height:15px;color:var(--sage)}
+  .soc .off{color:var(--soft);font-style:italic}
 
   /* ---------- private ---------- */
-  .kept{background:var(--card);border-radius:20px;box-shadow:0 0 0 1px var(--line);padding:26px 26px 22px;margin:0 0 56px}
-  .kept h2{font:700 22px/1.2 var(--slab);margin:0 0 4px}
-  .kept > p{margin:0 0 18px;color:var(--muted);font-size:16px}
-  .kept ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
-  @media (min-width:700px){.kept ul{grid-template-columns:repeat(3,1fr)}}
-  .kept li{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;align-items:start}
-  .kept li svg{grid-row:span 2;width:38px;height:38px;padding:9px;border-radius:11px;background:var(--sage-soft);color:var(--sage)}
-  .kept li b{font-size:16.5px;line-height:1.3}
-  .kept li span{color:var(--muted);font-size:15px;line-height:1.45}
+  .kept{background:var(--card);border-radius:16px;box-shadow:0 0 0 1px var(--line);padding:20px 22px;margin:0 0 44px}
+  .kept h2{font:700 19px/1.2 var(--slab);margin:0 0 2px}
+  .kept > p{margin:0 0 14px;color:var(--muted);font-size:14.5px}
+  .kept ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  @media (min-width:700px){.kept ul{grid-template-columns:repeat(3,1fr);gap:18px}}
+  .kept li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:start}
+  .kept li svg{grid-row:span 2;width:32px;height:32px;padding:7px;border-radius:9px;background:var(--sage-soft);color:var(--sage)}
+  .kept li b{font-size:14.5px;line-height:1.3}
+  .kept li span{color:var(--muted);font-size:13.5px;line-height:1.45}
 
   /* ---------- footer ---------- */
   [data-site-notes-spacer]{background:var(--char)}
   .sw-foot{background:var(--char);color:#d8d2c8}
-  .sw-foot .wrap{max-width:1180px;padding-top:40px;padding-bottom:30px}
-  .sw-foot .row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
-  .sw-foot .row img{height:40px;width:auto;display:block}
+  .sw-foot .wrap{max-width:1180px;padding-top:32px;padding-bottom:26px}
+  .sw-foot .row{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px}
+  .sw-foot .row img{height:34px;width:auto;display:block}
   .sw-foot .row .gap{flex:1}
-  .sw-foot .contact{font-size:15.5px;margin:0}
+  .sw-foot .contact{font-size:14.5px;margin:0}
   .sw-foot .contact a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(238,106,53,.7)}
   .sw-foot .contact a:hover{border-color:#ee6a35}
-  .sw-foot .rule{height:1px;background:rgba(216,210,200,.16);margin:24px 0 16px}
-  .sw-foot .fine{display:flex;flex-wrap:wrap;gap:6px 20px;font:500 12px/1.6 var(--mono);letter-spacing:.06em;color:#a59d91}
+  .sw-foot .rule{height:1px;background:rgba(216,210,200,.16);margin:20px 0 14px}
+  .sw-foot .fine{display:flex;flex-wrap:wrap;gap:6px 20px;font:500 11.5px/1.6 var(--mono);letter-spacing:.06em;color:#a59d91}
   .sw-foot .fine a{color:#d8d2c8;text-decoration:none}.sw-foot .fine a:hover{color:#fff;text-decoration:underline}
   .sw-foot .fine .lock{display:inline-flex;align-items:center;gap:6px}
   .sw-foot .fine svg{width:12px;height:12px}
 
-  @media (min-width:1800px){body{font-size:20px}.wrap{max-width:980px}.hero{padding-top:76px}.plate img{width:390px;max-height:185px}h1{font-size:64px}.edit b{font-size:33px}.box b{font-size:21px}.sw-brand img{height:42px}.sec-h{font-size:31px}}
+  @media (min-width:1800px){body{font-size:17px}.wrap{max-width:1000px}.hero{padding-top:52px}.plate{width:170px;height:170px}h1{font-size:42px}
+    .edit b{font-size:22px}.box b{font-size:17.5px}.sw-brand img{height:34px}.sec-h{font-size:27px}.facts dd,.soc li{font-size:15.5px}.logo-now{height:110px}.logo-now img{max-height:84px}}
+  @media (min-width:2400px){body{font-size:18.5px}.wrap{max-width:1120px}.sw-head .wrap,.sw-foot .wrap{max-width:1400px}.plate{width:190px;height:190px}h1{font-size:48px}.lead{font-size:18px}
+    .trust{font-size:14.5px}.edit b{font-size:25px}.edit .t{font-size:16px}.edit .go{font-size:17px;min-height:52px}.box b{font-size:19px}.bh span{font-size:15.5px}.box .tap{font-size:15px}
+    .bh .ic{width:44px;height:44px}.sec-h{font-size:30px}.sub{font-size:17px;max-width:720px}.now-k{font-size:11.5px}.facts dt,.soc li > span:first-child{font-size:14.5px}.facts dd,.soc li{font-size:17px}
+    .facts div,.soc li{grid-template-columns:110px 1fr}.logo-now{height:124px}.logo-now img{max-height:94px}.kept li b{font-size:16px}.kept li span{font-size:15px}.sw-brand img{height:38px}}
+  @media (max-width:699px){
+    .pics{grid-template-columns:repeat(3,1fr)}
+  }
   @media (max-width:560px){
-    .sw-head .wrap{min-height:58px}.sw-brand img{height:28px}.secure{padding:7px 10px 7px 8px;font-size:10.5px;letter-spacing:.08em}
-    .hero{padding:30px 0 24px}.kicker{margin-bottom:16px}.plate{padding:16px 22px;margin-bottom:18px}.plate img{width:min(230px,60vw)}
-    h1{font-size:32px}.lead{font-size:16.5px}.trust{font-size:13.5px;gap:6px 14px}
-    .edit{grid-template-columns:1fr;padding:22px;gap:14px}.edit .ic{display:none}.edit b{font-size:24px}
-    .meet{flex-wrap:wrap}.meet .tap{width:100%;justify-content:center}
-    .sec-h{font-size:24px}.box{padding:18px}
-    .kept{padding:22px 20px 18px}
+    .sw-head .wrap{min-height:54px}.sw-brand img{height:26px}.secure{padding:6px 9px 6px 8px;font-size:10px;letter-spacing:.08em}
+    .hero{flex-direction:column;text-align:center;gap:16px;padding:26px 0 22px}.plate{width:116px;height:116px;padding:14px;border-radius:18px}
+    .kicker{justify-content:center}.kicker::before{content:"";width:28px;height:1px;background:currentColor;opacity:.5}
+    h1{font-size:27px}.lead{font-size:15.5px}.trust{justify-content:center;font-size:12.5px;gap:4px 12px}
+    .edit{grid-template-columns:auto 1fr;padding:16px;gap:12px 14px}.edit .ic{width:40px;height:40px;border-radius:11px}.edit .ic svg{width:20px;height:20px}
+    .edit b{font-size:18px}.edit .go{grid-column:1/-1;min-height:50px;font-size:16px}
+    .meet{flex-wrap:wrap}
+    .sec-h{font-size:22px}.box{padding:14px}.bh{gap:10px}.box .tap{font-size:12.5px;padding:6px 10px}
+    .facts div,.soc li{grid-template-columns:84px 1fr}
+    .kept{padding:18px}
   }
   @media (max-width:360px){.secure .w{display:none}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -141,7 +183,7 @@
 <body>
 <header class="sw-head" data-keep>
   <div class="wrap">
-    <a class="sw-brand" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-color.svg" alt="Stray Wolf Technology" width="154" height="36"></a>
+    <a class="sw-brand" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-color.svg" alt="Stray Wolf Technology" width="128" height="30"></a>
     <span class="gap"></span>
     <span class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Private <span class="w">and secure</span></span>
   </div>
@@ -149,15 +191,17 @@
 
 <main class="wrap">
   <section class="hero" data-area="Welcome">
-    <p class="kicker">Client Portal</p>
     <div class="plate"><img src="/assets/img/logo.svg" alt="{{name}} logo"></div>
-    <h1>Welcome, {{name}}.</h1>
-    <p class="lead">This is your Client Portal for working with me. Send me what I need, ask for changes to your website, and set up a time to talk, all in one place.</p>
-    <ul class="trust">
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Password protected</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Sent over a secure connection</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.3 2 12 2 12s3.5 7 10 7a9.8 9.8 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>Hidden from search engines</li>
-    </ul>
+    <div>
+      <p class="kicker">Client Portal</p>
+      <h1>Welcome, {{name}}.</h1>
+      <p class="lead">Send what's needed, ask for changes to your website, and set up a time to talk, all in one place.</p>
+      <ul class="trust">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Password protected</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Secure connection</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.3 2 12 2 12s3.5 7 10 7a9.8 9.8 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>Hidden from search engines</li>
+      </ul>
+    </div>
   </section>
 
   <a class="edit" href="/" data-edit-mode="/">
@@ -165,41 +209,56 @@
     <div>
       <p class="k">Edit mode</p>
       <b><em class="ready">Want something changed on your website?</em><em class="soon">Your mockup will show up here</em></b>
-      <p class="t"><em class="ready">Open your website, tap the part you mean, and tell me what you'd like. Your website doesn't change until I make the update.</em><em class="soon">As soon as it's ready, this button opens it so you can tap anything and tell me what you think.</em></p>
+      <p class="t"><em class="ready">Open your website, tap the part you mean, and say what you'd like. Nothing changes until the update is made.</em><em class="soon">As soon as it's ready, this opens it so you can tap anything and say what you think.</em></p>
     </div>
-    <div class="go"><em class="ready">Open Edit mode</em><em class="soon">Coming soon</em>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="go"><em class="ready">Open Edit mode</em><em class="soon">Coming soon</em><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
   </a>
 
   <!-- Meeting requests come in as a note. Later this can link straight to a booking page instead. -->
   <div class="meet box" data-note-box data-area="Meeting request" data-note-fields="Days that work for you=For example: Tuesday or Thursday|Best time of day=For example: mornings, or after 3|Phone, video or in person?=For example: a phone call is easiest" data-note-ask="When can we talk? I'll set it up and confirm with you.">
-    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8.5 15l2.2 2.2 4.8-4.8"/></svg></div>
-    <div class="grow"><b>Let's talk</b><span>Want to go over something together? Tell me what times work and I'll set up a call or a meeting.</span></div>
-    <em class="tap">Pick a time</em>
+    <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8.5 15l2.2 2.2 4.8-4.8"/></svg></div><div class="grow"><b>Let's talk</b><span>Tell me what times work and I'll set up a call or a meeting.</span></div><em class="tap">Pick a time</em></div>
   </div>
 
-  <h2 class="sec-h">What I need from you</h2>
-  <p class="sub">Tap a box, then type or add photos. Tap <b>Send to Stray Wolf</b> at the bottom when you're done.</p>
+  <h2 class="sec-h">What's on your site now</h2>
+  <p class="sub">Here's what your website shows today. Tap a box to add something new or fix anything that's wrong, then tap <b>Send to Stray Wolf</b> at the bottom.</p>
   <ul class="boxes">
     <li class="box" data-note-box data-area="Logo" data-note-ask="Add your logo below. Anything I should know about it?" data-note-hint="For example: This is the newest one. Use the round version.">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
-      <div><b>Your logo</b><span>The best copy you have. A photo of it works too.</span><em class="tap">Tap to add it</em></div>
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div><div class="grow"><b>Your logo</b><span>Have a newer one?</span></div><em class="tap">Add or change</em></div>
+      <div class="now">
+        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
+        <div class="logo-now"><img src="/assets/img/logo.svg" alt="{{name}} logo on the website"></div>
+      </div>
     </li>
-    <li class="box" data-note-box data-area="Photos" data-note-ask="Add your photos below. Anything to tell me about them?" data-note-hint="For example: The first three are our best jobs.">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></div>
-      <div><b>Photos</b><span>Your work, your place, your people. More is better.</span><em class="tap">Tap to add them</em></div>
+    <li class="box" data-note-box data-area="Contact info" data-note-fields="Phone=Leave empty if it&#x27;s right|Email=Leave empty if it&#x27;s right|Address=Leave empty if it&#x27;s right|Hours=For example: Mon to Fri, 7am to 5pm" data-note-ask="Type only what&#x27;s new or wrong. Leave the rest empty.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></div><div class="grow"><b>Contact info</b><span>How people reach you.</span></div><em class="tap">Add or change</em></div>
+      <div class="now">
+        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
+        <dl class="facts"><div><dt>Phone</dt><dd>423-225-7038</dd></div><div><dt>Email</dt><dd>info@tvisconstruction.com</dd></div><div><dt>Address</dt><dd>1329 Gadd Rd, Hixson, TN 37343</dd></div><div><dt>Area</dt><dd>Chattanooga and the surrounding counties</dd></div><div><dt>Hours</dt><dd class="miss">Not on your site yet</dd></div></dl>
+      </div>
     </li>
-    <li class="box" data-note-box data-area="The words that matter" data-note-ask="What should your website say?" data-note-hint="For example: Family owned since 1998. Free estimates.">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></div>
-      <div><b>The words that matter</b><span>Your slogan, your prices, anything that must be said.</span><em class="tap">Tap to type it</em></div>
+    <li class="box wide" data-note-box data-area="Photos" data-note-ask="Add new photos below. Want a photo on your site swapped out? Tell me which one." data-note-hint="For example: Swap the driveway photo for this one.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg></div><div class="grow"><b>Photos</b><span>Your work, your place, your people.</span></div><em class="tap">Add photos</em></div>
+      <div class="now">
+        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
+        <div class="pics"><img src="/img/site/home-hero-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-driveways-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-pads-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/home-svc-drainage-480.webp" alt="" loading="lazy" decoding="async"><img src="/img/site/homeowners-hero-480.webp" alt="" loading="lazy" decoding="async"><span class="more">More on<br>your site</span></div>
+      </div>
     </li>
-    <li class="box" data-note-box data-area="Sites you like" data-note-ask="Which websites do you like the look of?" data-note-hint="Paste the address, and say what you like about it.">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div>
-      <div><b>Sites you like</b><span>Any website you like the look of.</span><em class="tap">Tap to paste it</em></div>
+    <li class="box" data-note-box data-area="The words that matter" data-note-ask="What should be added or changed? Anything you leave out stays the same." data-note-hint="For example: Change the headline to: Family owned since 1998.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></div><div class="grow"><b>The words that matter</b><span>Headline, slogan, prices.</span></div><em class="tap">Add or change</em></div>
+      <div class="now">
+        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
+        <dl class="facts"><div><dt>Headline</dt><dd class="q">Groundwork Done Right.</dd></div><div><dt>Slogan</dt><dd>From the Ground Up.</dd></div><div><dt>Intro</dt><dd>Site prep, driveways, drainage, concrete and pads for homeowners and builders.</dd></div><div><dt>Services</dt><dd>Site Prep &amp; Excavation, Drainage &amp; Culverts, Driveways &amp; Gravel Work, Concrete &amp; Flat Work, Pads for Sheds &amp; Garages, Demolition &amp; Removal</dd></div></dl>
+      </div>
     </li>
-    <li class="box wide" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-ask="Paste a link to each page you have. Skip any you don't use.">
-      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></div>
-      <div><b>Your social pages</b><span>Facebook, Instagram, LinkedIn and your Google business listing. Just the ones you have.</span><em class="tap">Tap to add them</em></div>
+    <li class="box" data-note-box data-area="Your social pages" data-note-fields="Facebook|Instagram|LinkedIn|Google" data-note-ask="Paste a link for any page that&#x27;s new or wrong. Leave the rest empty.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/></svg></div><div class="grow"><b>Your social pages</b><span>Just the ones you have.</span></div><em class="tap">Add or change</em></div>
+      <div class="now">
+        <p class="now-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site now</p>
+        <ul class="soc"><li><span>Facebook</span><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site</span></li><li><span>Instagram</span><span class="off">Not on your site yet</span></li><li><span>LinkedIn</span><span class="off">Not on your site yet</span></li><li><span>Google</span><span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>On your site</span></li></ul>
+      </div>
+    </li>
+    <li class="box wide" data-note-box data-area="Sites you like" data-note-ask="Which websites do you like the look of?" data-note-hint="Paste the address, and say what you like about it.">
+      <div class="bh"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></div><div class="grow"><b>Sites you like</b><span>Seen a website you like the look of? Share it.</span></div><em class="tap">Share one</em></div>
     </li>
   </ul>
 
@@ -207,12 +266,9 @@
     <h2 id="kept-h">Your portal is private</h2>
     <p>You can't break anything here, and you can come back and send more any time.</p>
     <ul>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <b>Only with your password</b><span>Nobody gets in without it. Ask me any time and I'll change it.</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-        <b>Sent straight to me</b><span>Your notes and photos travel over a secure connection, to me and no one else.</span></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-        <b>Your visitors never see it</b><span>Your website looks the same to everyone else while you're working here.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Only with your password</b><span>Nobody gets in without it. Ask any time to have it changed.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>Sent straight to Stray Wolf</b><span>Your notes and photos travel over a secure connection, to Stray Wolf and no one else.</span></li>
+      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b>Your visitors never see it</b><span>Your website looks the same to everyone else while you're working here.</span></li>
     </ul>
   </section>
 </main>
@@ -220,9 +276,9 @@
 <footer class="sw-foot" data-keep>
   <div class="wrap">
     <div class="row">
-      <a class="flat" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-reverse.svg" alt="Stray Wolf Technology" width="171" height="40"></a>
+      <a class="flat" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-reverse.svg" alt="Stray Wolf Technology" width="146" height="34"></a>
       <span class="gap"></span>
-      <p class="contact">Questions? Email me at <a href="mailto:info@straywolftech.com">info@straywolftech.com</a></p>
+      <p class="contact">Questions? Email <a href="mailto:info@straywolftech.com">info@straywolftech.com</a></p>
     </div>
     <div class="rule"></div>
     <div class="fine">
