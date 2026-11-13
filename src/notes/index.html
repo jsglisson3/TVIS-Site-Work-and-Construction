@@ -38,6 +38,10 @@
   .sw-head .gap{flex:1}
   .secure{display:inline-flex;align-items:center;gap:7px;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sage);background:var(--sage-soft);border:1px solid #d6dfcd;border-radius:999px;padding:7px 12px 7px 9px;white-space:nowrap}
   .secure svg{width:13px;height:13px;flex:none}
+  .head-acts{display:flex;align-items:center;gap:6px}.head-acts:empty{display:none}
+  .head-acts button{display:inline-flex;align-items:center;gap:6px;font:600 14px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;min-height:36px;cursor:pointer}
+  .head-acts button:hover{border-color:var(--ink)}
+  .head-acts svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
   /* ---------- welcome ---------- */
   .hero{position:relative;display:flex;align-items:center;gap:26px;padding:40px 0 30px;isolation:isolate}
@@ -78,6 +82,7 @@
   .stats-nums small:empty{display:none}
   .stats-nums small.up{color:#3f7a3a}.stats-nums small.down{color:#b4361c}
   .stats-f{grid-column:1/-1;padding-top:8px;border-top:1px dashed var(--line);font-size:11px;line-height:1.4;color:var(--soft);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .stats-f .ga{display:inline-flex;align-items:center;gap:7px}.stats-f .ga svg{width:13px;height:13px;flex:none}
   .stats-f .sample{flex:none;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);border-radius:999px;padding:3px 6px}
 
   /* ---------- Edit mode: the main action, in the same calm white card as the boxes ---------- */
@@ -202,6 +207,7 @@
     .soc{gap:10px}.soc li{grid-template-columns:1fr;gap:1px}.soc .off{flex-wrap:wrap;row-gap:4px}
     .kept{padding:12px 14px;justify-content:flex-start;flex-direction:column;align-items:flex-start;gap:8px}
   }
+  @media (max-width:560px){.secure:has(~ .head-acts:not(:empty)){display:none}.head-acts button{padding:0 11px}}
   @media (max-width:360px){.secure .w{display:none}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   .flat{line-height:0}.nojs{padding:24px}
@@ -213,6 +219,8 @@
     <a class="sw-brand" href="https://straywolftech.com" rel="noopener"><img src="brand/stray-wolf-logo-color.svg" alt="Stray Wolf Technology" width="128" height="30"></a>
     <span class="gap"></span>
     <span class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Private <span class="w">and secure</span></span>
+    <!-- Help and Log out go here once they're logged in (site-notes.js fills it in) -->
+    <span class="head-acts" data-portal-actions></span>
   </div>
 </header>
 
@@ -239,7 +247,7 @@
       <li><b data-stat="calls">–</b><span>Phone calls</span><i>Tapped your number on the website</i><small data-chg="calls"></small></li>
       <li><b data-stat="leads">–</b><span>Form requests</span><i>Filled in and sent your form</i><small data-chg="leads"></small></li>
     </ul>
-    <p class="stats-f"><span data-stat="note">From Google Analytics</span></p>
+    <p class="stats-f"><span class="ga"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="16" y="2" width="6" height="20" rx="3" fill="#F9AB00"/><rect x="9" y="9" width="6" height="13" rx="3" fill="#E37400"/><circle cx="4.5" cy="18.5" r="3.5" fill="#E37400"/></svg><span data-stat="note">From Google Analytics</span></span></p>
   </aside>
 
   <a class="edit" href="/" data-edit-mode="/">

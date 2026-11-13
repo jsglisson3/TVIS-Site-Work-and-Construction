@@ -198,6 +198,7 @@
     /* the dock at the bottom */
     ".dock{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#fff;box-shadow:0 -6px 24px rgba(0,0,0,.22)}",
     ".dock.quiet .dock-main{display:none}",
+    ".dock.bare .strip{display:none}.dock.bare.quiet{display:none}",
     ".dock-main{padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}",
     ".dock-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px 16px}",
     ".dock .say{flex:1 1 auto;min-width:0;font-size:17px;line-height:1.35}",
@@ -578,11 +579,18 @@
   function picCount() { return st.notes.reduce(function (n, x) { return n + x.pics.length; }, 0); }
 
   function render() {
+    // On their own page, "Sent" is only ever the message in the middle. However that message is closed
+    // (Done, Esc, a tap outside), the page starts fresh: no leftover "Sent" bar at the bottom.
+    if (MODE === "hub" && st.sent && !els.veil) {
+      st.notes.forEach(function (x) { x.pics.forEach(picDel); if (x.shot) picDel(x.shot); });
+      st.notes = []; st.sent = false; st.sentNotes = st.sentPics = 0; save();
+    }
     var n = st.notes.length;
     els.frame.className = "frame" + (picking ? " picking" : "");
     // on their own page with nothing written yet, only the slim "logged in" bar shows, so the boxes stay clear
     var quiet = MODE === "hub" && !st.sent && !n && !picking && !(els.note && st.notes[active]);
-    els.dock.className = "dock " + MODE + (picking ? " picking" : "") + (quiet ? " quiet" : "");
+    els.dock.className = "dock " + MODE + (picking ? " picking" : "") + (quiet ? " quiet" : "") + (els.bare ? " bare" : "");
+    if (els.spacer) els.spacer.style.height = quiet && els.bare ? "0px" : "150px";
     els.btns.textContent = "";
     els.say.textContent = "";
     if (st.sent) {
@@ -1309,12 +1317,21 @@
         ])]);
     els.say = h("div", { class: "say", "aria-live": "polite" });
     els.btns = h("div", { class: "btns" });
+    // Their own page can hold Help and Log out up in its header ([data-portal-actions]). Then there's no
+    // bar at the bottom at all until they have a note to send.
+    var slot = MODE === "hub" && document.querySelector("[data-portal-actions]");
+    if (slot) {
+      els.bare = true;
+      slot.textContent = "";
+      slot.append(els.stripLbl = h("button", { type: "button", onclick: function () { showHelp(false); } }, [icon("help"), h("span", { text: "Help" })]),
+                  h("button", { type: "button", onclick: askLogOut }, [icon("power"), h("span", { text: "Log out" })]));
+    }
     els.dock = h("div", { class: "dock " + MODE }, [strip, h("div", { class: "dock-main" }, [h("div", { class: "dock-in" }, [els.say, els.btns])])]);
     [els.pins, els.hl, els.frame, els.dock, els.file].forEach(function (e) { layer.appendChild(e); });
 
     // room at the bottom of the page so the dock never hides the footer, and a pointer cursor while picking
     addCss(document, "html.swn-pick,html.swn-pick *{cursor:pointer!important}");
-    document.body.appendChild(h("div", { "aria-hidden": "true", "data-site-notes-spacer": "", style: "height:150px" }));
+    document.body.appendChild(els.spacer = h("div", { "aria-hidden": "true", "data-site-notes-spacer": "", style: "height:150px" }));
     document.body.appendChild(host);
 
     // While picking, a tap marks that spot instead of doing what it normally does.
